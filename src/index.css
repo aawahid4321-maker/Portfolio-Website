@@ -1,0 +1,305 @@
+@import 'tailwindcss';
+
+/* Named font utilities — avoids Tailwind v4 escaping bugs with arbitrary font-family selectors */
+@utility font-geist-medium-ss {
+  font-family: 'Geist:Medium', sans-serif;
+}
+@utility font-geist-regular-ss {
+  font-family: 'Geist:Regular', sans-serif;
+}
+@utility font-geist-semibold-ss {
+  font-family: 'Geist:SemiBold', sans-serif;
+}
+@utility font-pt-mono-ss {
+  font-family: 'PT Mono:Regular', sans-serif;
+}
+
+/* ---- Imported Figma faces (resolved via `figma fonts resolve`) ---- */
+@font-face {
+  font-family: "Poppins:Medium";
+  src: url("https://static.figma.com/font/Poppins-Medium_6") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Poppins:Regular";
+  src: url("https://static.figma.com/font/Poppins-Regular_6") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "PT Mono:Regular";
+  src: url("https://static.figma.com/font/PTM55FT_1") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist:Regular";
+  src: url("https://static.figma.com/font/Geist_wght__1") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist:Medium";
+  src: url("https://static.figma.com/font/Geist_wght__1") format("woff2");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Geist:SemiBold";
+  src: url("https://static.figma.com/font/Geist_wght__1") format("woff2");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+/* Inline emphasis span produced by the visual editor. */
+.inline-bold {
+  font-weight: 600;
+}
+
+html,
+body {
+  background-color: #e6e6e6;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+#root,
+.portfolio-viewport {
+  min-width: 0;
+}
+
+.portfolio-viewport {
+  overflow: clip;
+}
+
+@keyframes fadeScaleIn {
+  from { opacity: 0; scale: 1.12; }
+  to   { opacity: 1; scale: 1; }
+}
+@keyframes fadeUpIn {
+  from { opacity: 0; translate: 0 40px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+@keyframes fadeRotateIn {
+  from { opacity: 0; rotate: -90deg; }
+  to   { opacity: 1; rotate: 0deg; }
+}
+@keyframes fadeBlurIn {
+  from { opacity: 0; translate: 0 60px; filter: blur(10px); }
+  to   { opacity: 1; translate: 0 0;   filter: blur(0); }
+}
+
+/* Navbar text flip — overflow-clip and hover:opacity-60 are temporarily lifted
+   via JS before this plays so the full 3D spin is visible without clipping. */
+@keyframes navFlipY {
+  0%   { transform: perspective(800px) rotateY(0deg); }
+  100% { transform: perspective(800px) rotateY(360deg); }
+}
+
+/* Arrow thrust: button hover → arrow nudges NE and returns. */
+@keyframes arrowThrust {
+  0%   { transform: rotate(-45deg) translateX(0); }
+  45%  { transform: rotate(-45deg) translateX(7px); }
+  100% { transform: rotate(-45deg) translateX(0); }
+}
+.arrow-thrust {
+  animation: arrowThrust 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Page-transition overlay: covers content below the navbar and fades away. */
+@keyframes overlayFade {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+/* Premium editorial scroll-reveal primitives (applied from App.tsx). */
+@keyframes revealClipUp {
+  from { clip-path: inset(100% 0 0 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@keyframes revealClipDown {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+/* Center-out horizontal expansion: starts fully hidden, spreads left+right. */
+@keyframes revealExpandX {
+  from { clip-path: inset(0 50% 0 50%); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@keyframes revealImgZoom {
+  from { transform: scale(1.08); }
+  to   { transform: scale(1); }
+}
+@keyframes revealTextUp {
+  from { opacity: 0; transform: translateY(38px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Scroll-scrubbed portfolio cards: transform is driven per-frame from JS. */
+.card-hover-dim img {
+  will-change: transform;
+}
+
+/* Full-card dark veil — fades in on hover */
+.card-dark-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.42);
+  opacity: 0;
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+  z-index: 2;
+}
+
+.card-hover-dim.is-hovered .card-dark-overlay {
+  opacity: 1;
+}
+
+
+/* Shared fixed-position VIEW badge — lives in screen space, unaffected by scroll */
+.cursor-badge-global {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: left, top, opacity;
+}
+
+.cursor-badge-global.visible {
+  opacity: 1;
+}
+
+/* Ring — acts as the custom cursor indicator */
+.card-cursor-ring {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.72);
+  flex-shrink: 0;
+}
+
+/* VIEW pill */
+.card-cursor-pill {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 5px;
+  padding: 9px 20px;
+  font-family: "PT Mono:Regular", monospace;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-cursor-badge {
+    transition: opacity 0.3s ease;
+  }
+}
+
+/* Restrained hover scale for project/portfolio imagery. */
+.reveal-hover img {
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.reveal-hover:hover img {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal-hover:hover img {
+    transform: none;
+  }
+}
+
+/* ── Arrow slide button ───────────────────────────────────────────────────── */
+.arrow-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: #1e1e1f;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: "Geist:Medium", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+.arrow-btn:hover {
+  color: #555558;
+}
+
+.arrow-btn__box {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.arrow-btn__arrow {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.45s cubic-bezier(0.77, 0, 0.18, 1);
+}
+
+/* Arrow 1: center, exits NE on hover */
+.arrow-btn__arrow--one {
+  transform: translate(0, 0);
+}
+/* Arrow 2: waiting at SW (bottom-left) */
+.arrow-btn__arrow--two {
+  transform: translate(-120%, 120%);
+}
+
+.arrow-btn:hover .arrow-btn__arrow--one {
+  transform: translate(120%, -120%);
+}
+.arrow-btn:hover .arrow-btn__arrow--two {
+  transform: translate(0, 0);
+}
+
+/* Dark pill variant */
+.arrow-btn--dark {
+  background: #1e1e1f;
+  color: #fff;
+  padding: 14px 20px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.arrow-btn--dark:hover {
+  background: #38383a;
+  color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow-btn__arrow { transition: none; }
+}
+
+
+@media (max-width: 767px) {
+  /* Keep the complete Figma composition in view on phone widths while
+     preventing the browser from introducing a horizontal scroll area. */
+  .portfolio-viewport {
+    overflow: hidden;
+  }
+}
