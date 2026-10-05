@@ -1,0 +1,22 @@
+{
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  },
+  "description": "Creates a visually appealing, well-structured website with consistent fonts, spacing, animations, and interactive hover effects for enhanced user engagement.",
+  "icons": {
+    "icon": "/.figma/make/favicon.png"
+  },
+  "openGraph": {
+    "image": "/.figma/make/social-image.png"
+  },
+  "retrieved_at": {
+    "user_local": "2026-10-06T01:27:22.495+05:00",
+    "user_timezone": "Asia/Karachi",
+    "utc": "2026-10-05T20:27:22.495Z"
+  },
+  "robots": {
+    "index": false
+  },
+  "title": "Abdul"
+}
