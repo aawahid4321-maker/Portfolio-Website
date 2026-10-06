@@ -9,7 +9,7 @@ import imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637C
 import imgContainer2 from "@/assets/fitflow-hero.webp";
 import imgContainer3 from "@/assets/stint-hero.webp";
 import imgContainer4 from "@/assets/axorix-hero.webp";
-import imgContainer5 from "./44b06372b0699e2262a1fdc0f42d8316cc3e0490.webp";
+import imgContainer5 from "@/assets/brand-hero.webp";
 import imgContainer6 from "./6a88948097cfeb2e96bc34f6271242b4322f8bd5.webp";
 import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy3 } from "./svg-8vx37";
 import SharedFooterContent from "@/components/SharedFooterContent";
@@ -857,7 +857,7 @@ function Group3() {
 
 function Container70() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4118.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="gradia">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4118.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="brand">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer5} loading="eager" decoding="async" />
     </div>
   );
@@ -866,7 +866,7 @@ function Container70() {
 function Container72() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">Gradia</p>
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">Brand</p>
     </div>
   );
 }
@@ -874,7 +874,7 @@ function Container72() {
 function Container73() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
     </div>
   );
 }
