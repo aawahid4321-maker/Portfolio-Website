@@ -8,7 +8,7 @@ import imgFreepikTheStyleIsCandidImagePhotographyWithNatural586812 from "./4ddbf
 import imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy4 from "./ea06e812aa65275c221aead57689d9e0e21304d3.webp";
 import imgContainer2 from "@/assets/fitflow-hero.webp";
 import imgContainer3 from "@/assets/stint-hero.webp";
-import imgContainer4 from "./8c0a4d5a7dcb429e28b32bb9bacdacf01b45b101.webp";
+import imgContainer4 from "@/assets/axorix-hero.webp";
 import imgContainer5 from "./44b06372b0699e2262a1fdc0f42d8316cc3e0490.webp";
 import imgContainer6 from "./6a88948097cfeb2e96bc34f6271242b4322f8bd5.webp";
 import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy3 } from "./svg-8vx37";
