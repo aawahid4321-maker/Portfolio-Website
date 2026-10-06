@@ -205,23 +205,7 @@ function Group() {
 function Group12() {
   return (
     <div className="absolute contents left-[974.8px] top-[9780.99px]">
-      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[9780.99px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
-      {/* Contact → WhatsApp button */}
-      <a
-        href="https://wa.me/923295460848"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute flex items-center gap-[12px] cursor-pointer group/contact"
-        style={{ left: "974.8px", top: "11013.42px" }}
-      >
-        <p className="[word-break:break-word] font-pt-mono-ss leading-[41.009px] not-italic text-[31.546px] text-white uppercase whitespace-nowrap transition-opacity duration-300 group-hover/contact:opacity-60">
-          Contact
-        </p>
-        <div className="relative flex items-center justify-center w-[42px] h-[42px] overflow-hidden">
-          <span className="absolute block -rotate-45 font-geist-medium-ss text-[34px] text-[#f2f2f2] leading-none transition-transform duration-[450ms] cubic-bezier(0.77,0,0.18,1) group-hover/contact:translate-x-[120%] group-hover/contact:-translate-y-[120%]">→</span>
-          <span className="absolute block -rotate-45 font-geist-medium-ss text-[34px] text-[#f2f2f2] leading-none -translate-x-[120%] translate-y-[120%] transition-transform duration-[450ms] cubic-bezier(0.77,0,0.18,1) group-hover/contact:translate-x-0 group-hover/contact:translate-y-0">→</span>
-        </div>
-      </a>
+      <p className="absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[9780.99px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
     </div>
   );
 }
@@ -431,7 +415,7 @@ function Container21() {
 
 function Container20() {
   return (
-    <div className="-translate-x-1/2 absolute bg-[#0f0f0f] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[10292.27px] w-[1920px]" data-name="Container">
+    <div className="-translate-x-1/2 absolute bg-[#111111] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[10292.27px] w-[1920px]" data-name="Container">
       <Container21 />
     </div>
   );
@@ -440,7 +424,7 @@ function Container20() {
 function Group14() {
   return (
     <div className="absolute contents left-0 top-[9529.15px]">
-      <div className="absolute h-[763.125px] left-0 top-[9529.15px] w-[1928.035px]" data-name="ChatGPT Image Sep 13, 2026, 01_21_19 AM 2">
+      <div className="absolute h-[763.125px] left-0 top-[9529.15px] w-[1920px]" data-name="ChatGPT Image Sep 13, 2026, 01_21_19 AM 2">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <img alt="" className="absolute h-[171.51%] left-[-11.74%] max-w-none top-[-49.8%] w-[123.48%]" src={imgChatGptImageSep132026012119Am2} loading="eager" decoding="async" />
         </div>
@@ -606,7 +590,7 @@ function Link12() {
 
 function Banner() {
   return (
-    <div className="absolute content-stretch flex items-center justify-between left-[0.29px] px-[16px] py-[32px] top-[-0.05px] w-[1920px]" data-name="Banner">
+    <div className="absolute content-stretch flex items-center justify-between left-0 px-[16px] py-[32px] top-[-0.05px] w-[1920px]" data-name="Banner">
       <Link8 />
       <Container42 />
       <Link12 />
