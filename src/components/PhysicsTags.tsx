@@ -61,6 +61,21 @@ export default function PhysicsTags() {
       const j = Math.floor(Math.random() * (i + 1));
       [colorOrder[i], colorOrder[j]] = [colorOrder[j], colorOrder[i]];
     }
+    /* font mix: ~30% Caveat Brush script, spread evenly, never adjacent */
+    const scriptFlags: boolean[] = new Array(tagCount).fill(false);
+    const scriptCount = Math.round(tagCount * 0.3);
+    const step = tagCount / scriptCount;
+    for (let k = 0; k < scriptCount; k++) {
+      const idx = Math.floor(k * step + step / 2 + (Math.random() - 0.5) * 1.5);
+      const clamped = Math.max(0, Math.min(tagCount - 1, idx));
+      // avoid adjacency: nudge if neighbor already script
+      let final = clamped;
+      if (scriptFlags[final - 1] || scriptFlags[final + 1]) {
+        final = scriptFlags[final - 1] ? clamped + 1 : clamped - 1;
+        final = Math.max(0, Math.min(tagCount - 1, final));
+      }
+      scriptFlags[final] = true;
+    }
 
     const tags: Tag[] = [];
     for (let i = 0; i < tagCount; i++) {
@@ -71,7 +86,14 @@ export default function PhysicsTags() {
       const shape = SHAPES[i % SHAPES.length];
       if (shape !== "pill") el.classList.add(`ptag--${shape}`);
       if (i % 7 === 3) el.classList.add("ptag--lg");
-      inner.textContent = shape === "circle" && i % 5 === 0 ? "" : WORD_POOL[i % WORD_POOL.length];
+      const word = WORD_POOL[i % WORD_POOL.length];
+      const isScript = scriptFlags[i] && shape === "pill"; // script only on pills for readability
+      if (isScript) {
+        el.classList.add("ptag--script");
+        inner.textContent = word.toLowerCase(); // NO uppercase for script
+      } else {
+        inner.textContent = shape === "circle" && i % 5 === 0 ? "" : word;
+      }
       if (shape === "circle" && inner.textContent === "") el.classList.add("ptag--dot");
       const [bg, fg, outline] = PALETTE[colorOrder[i]];
       inner.style.background = bg;
@@ -79,14 +101,22 @@ export default function PhysicsTags() {
       if (outline) inner.style.border = outline;
       el.appendChild(inner);
       section.appendChild(el);
-      // cache size after layout
       tags.push({ el, inner, w: 0, h: 0, body: null });
     }
-    // measure once (not in the loop)
-    tags.forEach((t) => {
-      t.w = Math.max(t.el.offsetWidth, 40);
-      t.h = Math.max(t.el.offsetHeight, 32);
-    });
+
+    /* ── Wait for fonts (Geist + Caveat Brush) before measuring ────────── */
+    const doMeasure = () => {
+      tags.forEach((t) => {
+        t.w = Math.max(t.el.offsetWidth, 40);
+        t.h = Math.max(t.el.offsetHeight, 32);
+      });
+    };
+    doMeasure();
+    // re-measure once webfonts arrive — bodies are only created on scroll
+    // entry (dropAll), so the cache is correct before physics starts
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => doMeasure());
+    }
 
     const W = () => section.clientWidth;
     const H = () => section.clientHeight;
@@ -346,6 +376,16 @@ export default function PhysicsTags() {
 
   return (
     <>
+      {/* preload Caveat Brush so there's no flash; font-display: swap */}
+      <link
+        rel="preload"
+        href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap"
+        as="style"
+      />
+      <link
+        href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap"
+        rel="stylesheet"
+      />
       <style>{`
         .physics-tags-section {
           position: relative;
@@ -386,6 +426,17 @@ export default function PhysicsTags() {
           transition: scale 0.18s ease, filter 0.18s ease;
         }
         .ptag--lg .ptag-inner { font-size: 26px; padding: 16px 34px; }
+        /* script font: Caveat Brush, lowercase, larger to match x-height */
+        .ptag--script .ptag-inner {
+          font-family: "Caveat Brush", "Comic Sans MS", cursive;
+          font-weight: 400;
+          text-transform: none;
+          letter-spacing: 0;
+          font-size: 30px;
+          line-height: 1;
+          padding: 10px 26px 14px;
+        }
+        .ptag--script.ptag--lg .ptag-inner { font-size: 34px; }
         .ptag--circle .ptag-inner, .ptag--dot .ptag-inner {
           width: 58px; height: 58px; padding: 0;
           display: flex; align-items: center; justify-content: center;
@@ -396,6 +447,7 @@ export default function PhysicsTags() {
         @media (max-width: 767px) {
           .ptag-inner { font-size: 15px; padding: 10px 20px; }
           .ptag--lg .ptag-inner { font-size: 18px; padding: 12px 24px; }
+          .ptag--script .ptag-inner { font-size: 22px; }
           .ptag--circle .ptag-inner, .ptag--dot .ptag-inner { width: 44px; height: 44px; }
         }
         @media (prefers-reduced-motion: reduce) {
