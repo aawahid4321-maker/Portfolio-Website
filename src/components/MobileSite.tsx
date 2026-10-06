@@ -274,7 +274,7 @@ function MobileNav({
 function ProjectCard({ project, onClick }: { project: ProjectData; onClick: () => void }) {
   return (
     <button onClick={onClick} className="block w-full text-left">
-      <MobileImage src={project.thumbnail} alt={project.title} ratio="4 / 3" />
+      <MobileImage src={project.thumbnail} alt={project.title} ratio="16 / 9" />
       <Reveal>
         <div className="mt-[14px] flex items-baseline justify-between">
           <span className="font-geist-semibold-ss text-[24px] tracking-[-0.8px] text-[#1e1e1f] uppercase">
