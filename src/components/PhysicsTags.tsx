@@ -1,143 +1,140 @@
 import { useEffect, useRef } from "react";
 import Matter from "matter-js";
 
-/* ── Colors ─────────────────────────────────────────────────────────────── */
-const CSS_VARS = {
-  "--tags-bg": "#1a1a1a",
-  "--tags-radius": "24px",
-  "--c-pink": "#ff0a8a",
-  "--c-blue": "#1a1aff",
-  "--c-orange": "#ff5a00",
-  "--c-amber": "#ff9f0a",
-  "--c-yellow": "#ffd60a",
-  "--c-offwhite": "#f4f4f2",
-  "--c-black": "#000000",
-} as React.CSSProperties;
+/* ── Palette ────────────────────────────────────────────────────────────── */
+const COLORS = {
+  bg: "#1a1a1a",
+  pink: "#ff0a8a",
+  blue: "#1a1aff",
+  orange: "#ff5a00",
+  amber: "#ff9f0a",
+  yellow: "#ffd60a",
+  offwhite: "#f4f4f2",
+  black: "#000000",
+  ink: "#111111",
+  white: "#ffffff",
+} as const;
 
-const WORD_POOL = [
-  "BRANDING", "LOGO", "IDENTITY", "SOCIAL MEDIA", "PRINT",
-  "PACKAGING", "TYPOGRAPHY", "GUIDELINES", "DESIGN", "STRATEGY",
+type PillDef = { bg: string; fg: string; outline?: string };
+const PALETTE: PillDef[] = [
+  { bg: COLORS.pink, fg: COLORS.white },
+  { bg: COLORS.blue, fg: COLORS.white },
+  { bg: COLORS.orange, fg: COLORS.white },
+  { bg: COLORS.amber, fg: COLORS.ink },
+  { bg: COLORS.yellow, fg: COLORS.ink },
+  { bg: COLORS.offwhite, fg: COLORS.ink },
+  { bg: COLORS.black, fg: COLORS.white, outline: COLORS.white },
 ];
-const PALETTE: Array<[string, string, string?]> = [
-  ["var(--c-pink)", "#ffffff"],
-  ["var(--c-blue)", "#ffffff"],
-  ["var(--c-orange)", "#ffffff"],
-  ["var(--c-amber)", "#111111"],
-  ["var(--c-yellow)", "#111111"],
-  ["var(--c-offwhite)", "#111111"],
-  ["var(--c-black)", "#ffffff", "1.5px solid #ffffff"],
-];
-/* shape variety: pill | circle | rect | squircle */
-const SHAPES = ["pill", "pill", "pill", "circle", "rect", "squircle"] as const;
 
-const TAG_COUNT_DESKTOP = 32;
-const TAG_COUNT_MOBILE = 16;
+const GEIST_WORDS = ["LOGO", "BRANDING", "IDENTITY", "PACKAGING", "PRINT", "DESIGN", "TYPOGRAPHY", "SOCIAL MEDIA", "GUIDELINES", "STRATEGY"];
+const SCRIPT_WORDS = ["hello!", "ideas", "let's talk", "cool stuff", "made with love", "brand story", "say hi"];
+
+const TAG_COUNT_DESKTOP = 26;
+const TAG_COUNT_MOBILE = 14;
+const SHAPE_COUNT_DESKTOP = 16;
+const SHAPE_COUNT_MOBILE = 8;
 const FLOOR_PADDING = 96;
 
-interface Tag {
-  el: HTMLDivElement;      // outer: synced to physics via transform only
-  inner: HTMLDivElement;   // inner: hover scale (never fights physics transform)
-  w: number; h: number;    // cached size
+interface PTag {
+  word: string;
+  script: boolean;
+  w: number; h: number;
+  color: PillDef;
+  body: Matter.Body | null;
+}
+interface PShape {
+  kind: "circle" | "face" | "ring" | "star" | "square" | "dome" | "triangle" | "plus" | "squiggle";
+  size: number;
+  color: string;
+  outline?: string;
   body: Matter.Body | null;
 }
 
 export default function PhysicsTags() {
   const sectionRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const startedRef = useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section || startedRef.current) return;
+    const canvas = canvasRef.current;
+    if (!section || !canvas || startedRef.current) return;
     startedRef.current = true;
 
+    const ctx = canvas.getContext("2d")!;
     const isMobile = window.innerWidth < 768;
     const tagCount = isMobile ? TAG_COUNT_MOBILE : TAG_COUNT_DESKTOP;
+    const shapeCount = isMobile ? SHAPE_COUNT_MOBILE : SHAPE_COUNT_DESKTOP;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
-    /* ── Build tags: outer (physics) > inner (hover scale) ──────────────── */
-    const colorOrder: number[] = [];
-    for (let i = 0; i < tagCount; i++) colorOrder.push(i % PALETTE.length);
-    for (let i = colorOrder.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [colorOrder[i], colorOrder[j]] = [colorOrder[j], colorOrder[i]];
-    }
-    /* font mix: ~30% Caveat Brush script, spread evenly, never adjacent */
-    const scriptFlags: boolean[] = new Array(tagCount).fill(false);
-    const scriptCount = Math.round(tagCount * 0.3);
-    const step = tagCount / scriptCount;
-    for (let k = 0; k < scriptCount; k++) {
-      const idx = Math.floor(k * step + step / 2 + (Math.random() - 0.5) * 1.5);
-      const clamped = Math.max(0, Math.min(tagCount - 1, idx));
-      // avoid adjacency: nudge if neighbor already script
-      let final = clamped;
-      if (scriptFlags[final - 1] || scriptFlags[final + 1]) {
-        final = scriptFlags[final - 1] ? clamped + 1 : clamped - 1;
-        final = Math.max(0, Math.min(tagCount - 1, final));
-      }
-      scriptFlags[final] = true;
-    }
-
-    const tags: Tag[] = [];
-    for (let i = 0; i < tagCount; i++) {
-      const el = document.createElement("div");
-      el.className = "ptag";
-      const inner = document.createElement("div");
-      inner.className = "ptag-inner";
-      const shape = SHAPES[i % SHAPES.length];
-      if (shape !== "pill") el.classList.add(`ptag--${shape}`);
-      if (i % 7 === 3) el.classList.add("ptag--lg");
-      const word = WORD_POOL[i % WORD_POOL.length];
-      const isScript = scriptFlags[i] && shape === "pill"; // script only on pills for readability
-      if (isScript) {
-        el.classList.add("ptag--script");
-        inner.textContent = word.toLowerCase(); // NO uppercase for script
-      } else {
-        inner.textContent = shape === "circle" && i % 5 === 0 ? "" : word;
-      }
-      if (shape === "circle" && inner.textContent === "") el.classList.add("ptag--dot");
-      const [bg, fg, outline] = PALETTE[colorOrder[i]];
-      inner.style.background = bg;
-      inner.style.color = fg;
-      if (outline) inner.style.border = outline;
-      el.appendChild(inner);
-      section.appendChild(el);
-      tags.push({ el, inner, w: 0, h: 0, body: null });
-    }
-
-    /* ── Wait for fonts (Geist + Caveat Brush) before measuring ────────── */
-    const doMeasure = () => {
-      tags.forEach((t) => {
-        t.w = Math.max(t.el.offsetWidth, 40);
-        t.h = Math.max(t.el.offsetHeight, 32);
-      });
+    let W = 0, H = 0;
+    const resizeCanvas = () => {
+      W = section.clientWidth;
+      H = section.clientHeight;
+      canvas.width = Math.round(W * DPR);
+      canvas.height = Math.round(H * DPR);
+      canvas.style.width = `${W}px`;
+      canvas.style.height = `${H}px`;
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     };
-    doMeasure();
-    // re-measure once webfonts arrive — bodies are only created on scroll
-    // entry (dropAll), so the cache is correct before physics starts
-    if (document.fonts?.ready) {
-      document.fonts.ready.then(() => doMeasure());
+    resizeCanvas();
+
+    /* ── Build tag defs: 70% Geist / 30% script, colors spread evenly ────── */
+    const colorIdx: number[] = [];
+    for (let i = 0; i < tagCount; i++) colorIdx.push(i % PALETTE.length);
+    for (let i = colorIdx.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [colorIdx[i], colorIdx[j]] = [colorIdx[j], colorIdx[i]];
+    }
+    const scriptCount = Math.round(tagCount * 0.3);
+    const scriptAt = new Set<number>();
+    const sStep = tagCount / scriptCount;
+    for (let k = 0; k < scriptCount; k++) {
+      let idx = Math.floor(k * sStep + sStep / 2);
+      if (scriptAt.has(idx - 1) || scriptAt.has(idx + 1)) idx = Math.min(tagCount - 1, idx + 2);
+      scriptAt.add(Math.max(0, Math.min(tagCount - 1, idx)));
     }
 
-    const W = () => section.clientWidth;
-    const H = () => section.clientHeight;
-    const floorY = () => H() - FLOOR_PADDING;
-
-    if (reduceMotion) {
-      tags.forEach((t) => {
-        const px = 0.08 + Math.random() * 0.84;
-        const py = 0.35 + Math.random() * 0.5;
-        const rot = (Math.random() - 0.5) * 70;
-        t.el.style.transform =
-          `translate3d(${px * W() - t.w / 2}px, ${Math.min(py * H(), floorY() - t.h)}px, 0) rotate(${rot}deg)`;
+    const tags: PTag[] = [];
+    for (let i = 0; i < tagCount; i++) {
+      const script = scriptAt.has(i);
+      tags.push({
+        word: script ? SCRIPT_WORDS[i % SCRIPT_WORDS.length] : GEIST_WORDS[i % GEIST_WORDS.length],
+        script,
+        w: 0, h: 0,
+        color: PALETTE[colorIdx[i]],
+        body: null,
       });
-      return;
     }
 
-    /* ── Engine: single rAF loop, fixed timestep, no sleeping ───────────── */
+    /* ── Shapes: NO text, ever ──────────────────────────────────────────── */
+    const SHAPE_KINDS: PShape["kind"][] = [
+      "circle", "circle", "circle",
+      "face", "face",
+      "ring",
+      "star", "star", "star",
+      "square", "square",
+      "dome", "dome",
+      "triangle",
+      "plus",
+      "squiggle",
+    ];
+    const shapes: PShape[] = [];
+    for (let i = 0; i < shapeCount; i++) {
+      const kind = SHAPE_KINDS[i % SHAPE_KINDS.length];
+      const size = 28 + Math.random() * 28; // 28–56px (max 64)
+      const pal = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+      shapes.push({ kind, size: Math.min(size, 64), color: pal.bg, outline: pal.outline, body: null });
+    }
+
+    const floorY = () => H - FLOOR_PADDING;
+
+    /* ── Engine ─────────────────────────────────────────────────────────── */
     const engine = Matter.Engine.create({ enableSleeping: false });
     engine.gravity.y = 1;
-    engine.positionIterations = 8;
-    engine.velocityIterations = 6;
+    engine.positionIterations = 6;
+    engine.velocityIterations = 4;
 
     const wallOpts: Matter.IBodyDefinition = {
       isStatic: true, restitution: 0.55, friction: 0.15, render: { visible: false },
@@ -146,162 +143,364 @@ export default function PhysicsTags() {
     let walls: Matter.Body[] = [];
     const buildWalls = () => {
       walls = [
-        Matter.Bodies.rectangle(W() / 2, floorY() + THICK / 2, W() + THICK * 2, THICK, wallOpts),
-        Matter.Bodies.rectangle(W() / 2, -THICK * 3, W() + THICK * 2, THICK, wallOpts),
-        Matter.Bodies.rectangle(-THICK / 2, H() / 2, THICK, H() * 5, wallOpts),
-        Matter.Bodies.rectangle(W() + THICK / 2, H() / 2, THICK, H() * 5, wallOpts),
+        Matter.Bodies.rectangle(W / 2, floorY() + THICK / 2, W + THICK * 2, THICK, wallOpts),
+        Matter.Bodies.rectangle(W / 2, -THICK * 3, W + THICK * 2, THICK, wallOpts),
+        Matter.Bodies.rectangle(-THICK / 2, H / 2, THICK, H * 5, wallOpts),
+        Matter.Bodies.rectangle(W + THICK / 2, H / 2, THICK, H * 5, wallOpts),
       ];
       Matter.Composite.add(engine.world, walls);
     };
-    buildWalls();
+
+    /* Measure text AFTER fonts load, then create bodies */
+    const GEIST_FONT = '600 20px "Geist:SemiBold", "Geist", sans-serif';
+    const SCRIPT_FONT = '28px "Caveat Brush", "Comic Sans MS", cursive';
+    let ready = false;
+
+    const measureAndBuild = () => {
+      tags.forEach((t) => {
+        ctx.font = t.script ? SCRIPT_FONT : GEIST_FONT;
+        // letter-spacing isn't supported on canvas in all browsers; add manually
+        const raw = ctx.measureText(t.word).width;
+        t.h = 56; // 52–60px pill height
+        t.w = raw + 56 + (t.script ? 0 : t.word.length * 0.4); // ~0.02em spacing
+      });
+      buildWalls();
+      ready = true;
+      dropAll();
+    };
 
     const timeouts: number[] = [];
-    const makeBody = (i: number) => {
+    const spawnTag = (i: number) => {
       const t = tags[i];
-      const isCircle = t.el.classList.contains("ptag--circle") || t.el.classList.contains("ptag--dot");
-      const opts: Matter.IBodyDefinition = {
+      const x = W * (0.1 + Math.random() * 0.8);
+      const y = -60 - Math.random() * 200;
+      // FIX 1: perfect full-round pill collider matches visual
+      const body = Matter.Bodies.rectangle(x, y, t.w, t.h, {
+        chamfer: { radius: t.h / 2 },
         restitution: 0.55, friction: 0.15, frictionAir: 0.015, density: 0.0009,
-      };
-      let body: Matter.Body;
-      if (isCircle) {
-        body = Matter.Bodies.circle(W() * (0.1 + Math.random() * 0.8), -60 - Math.random() * 200, Math.max(t.w, t.h) / 2, opts);
-      } else if (t.el.classList.contains("ptag--rect")) {
-        body = Matter.Bodies.rectangle(W() * (0.1 + Math.random() * 0.8), -60 - Math.random() * 200, t.w, t.h, opts);
-      } else {
-        body = Matter.Bodies.rectangle(W() * (0.1 + Math.random() * 0.8), -60 - Math.random() * 200, t.w, t.h,
-          { ...opts, chamfer: { radius: t.el.classList.contains("ptag--squircle") ? 18 : t.h / 2 } });
-      }
+      });
       Matter.Body.setAngle(body, (Math.random() - 0.5) * 0.6);
-      Matter.Body.setAngularVelocity(body, (Math.random() - 0.5) * 0.2);
       t.body = body;
       Matter.Composite.add(engine.world, body);
+    };
+    const spawnShape = (i: number) => {
+      const s = shapes[i];
+      const x = W * (0.1 + Math.random() * 0.8);
+      const y = -60 - Math.random() * 200;
+      const o = { restitution: 0.55, friction: 0.15, frictionAir: 0.015, density: 0.0009 };
+      let body: Matter.Body;
+      const r = s.size / 2;
+      switch (s.kind) {
+        case "circle": case "face": case "ring":
+          body = Matter.Bodies.circle(x, y, r, o); break;
+        case "star":
+          body = Matter.Bodies.polygon(x, y, 4, r, o); break;
+        case "triangle":
+          body = Matter.Bodies.polygon(x, y, 3, r, o); break;
+        case "square":
+          body = Matter.Bodies.rectangle(x, y, s.size, s.size, { ...o, chamfer: { radius: 10 } }); break;
+        case "dome":
+          body = Matter.Bodies.circle(x, y, r, o); break; // approx
+        case "plus":
+          body = Matter.Bodies.rectangle(x, y, s.size, s.size * 0.36, o); break;
+        case "squiggle":
+          body = Matter.Bodies.rectangle(x, y, s.size * 1.6, 14, { ...o, chamfer: { radius: 7 } }); break;
+      }
+      Matter.Body.setAngle(body!, Math.random() * Math.PI);
+      s.body = body!;
+      Matter.Composite.add(engine.world, body!);
     };
     const dropAll = () => {
       timeouts.forEach((t) => window.clearTimeout(t));
       timeouts.length = 0;
+      // reposition existing bodies above (no re-creation, no teleport pop)
+      let n = 0;
       tags.forEach((t) => {
-        if (t.body) Matter.Composite.remove(engine.world, t.body);
-        t.body = null;
+        if (t.body) {
+          Matter.Body.setPosition(t.body, { x: W * (0.1 + Math.random() * 0.8), y: -60 - Math.random() * 200 });
+          Matter.Body.setVelocity(t.body, { x: 0, y: 0 });
+          Matter.Body.setAngle(t.body, (Math.random() - 0.5) * 0.6);
+        } else {
+          timeouts.push(window.setTimeout(() => spawnTag(n), n * (70 + Math.random() * 30)));
+        }
+        n++;
       });
-      tags.forEach((_, i) => {
-        timeouts.push(window.setTimeout(() => makeBody(i), i * (70 + Math.random() * 30)));
+      shapes.forEach((s, i) => {
+        if (s.body) {
+          Matter.Body.setPosition(s.body, { x: W * (0.1 + Math.random() * 0.8), y: -60 - Math.random() * 200 });
+          Matter.Body.setVelocity(s.body, { x: 0, y: 0 });
+        } else {
+          timeouts.push(window.setTimeout(() => spawnShape(i), (n + i) * (70 + Math.random() * 30)));
+        }
       });
     };
 
-    /* ── Mouse (forces applied in loop, not in handler) ──────────────────── */
+    /* Wait for both fonts, then measure + build */
+    const start = () => {
+      const loads = [
+        document.fonts.load('600 20px "Geist:SemiBold"'),
+        document.fonts.load('28px "Caveat Brush"'),
+      ];
+      Promise.all(loads).catch(() => {}).finally(() => {
+        if (reduceMotion) { drawSettled(); return; }
+        measureAndBuild();
+      });
+      // safety: don't wait forever
+      window.setTimeout(() => { if (!ready && !reduceMotion) measureAndBuild(); }, 2500);
+    };
+
+    /* ── Mouse ──────────────────────────────────────────────────────────── */
     const mouse = Matter.Mouse.create(section);
     const syncMouse = () => {
       const r = section.getBoundingClientRect();
       Matter.Mouse.setOffset(mouse, { x: r.left, y: r.top });
-      mouse.pixelRatio = window.devicePixelRatio || 1;
+      mouse.pixelRatio = DPR;
     };
-    syncMouse();
     const mouseConstraint = Matter.MouseConstraint.create({
       mouse, constraint: { stiffness: 0.2, render: { visible: false } },
     });
-    Matter.Composite.add(engine.world, mouseConstraint);
     const mEl = mouse.element as HTMLElement & { mousewheel?: EventListener };
-    if (mEl.mousewheel) {
-      mouse.element.removeEventListener("mousewheel", mEl.mousewheel);
-      mouse.element.removeEventListener("DOMMouseScroll", mEl.mousewheel);
-    }
+    const stripWheel = () => {
+      if (mEl.mousewheel) {
+        mouse.element.removeEventListener("mousewheel", mEl.mousewheel);
+        mouse.element.removeEventListener("DOMMouseScroll", mEl.mousewheel);
+      }
+    };
 
-    /* cursor state: throttled, lerped velocity, applied in the loop */
     const cursor = { x: -9999, y: -9999, vx: 0, vy: 0, tx: -9999, ty: -9999, active: false };
-    let lastMove = 0;
-    section.addEventListener("mousemove", (e) => {
+    let lastMove = 0, rectCache = section.getBoundingClientRect();
+    const onMove = (e: MouseEvent) => {
       const now = performance.now();
-      if (now - lastMove < 16) return; // throttle to ~60fps
+      if (now - lastMove < 16) return;
       lastMove = now;
-      const r = cachedRect;
-      cursor.tx = e.clientX - r.left;
-      cursor.ty = e.clientY - r.top;
+      cursor.tx = e.clientX - rectCache.left;
+      cursor.ty = e.clientY - rectCache.top;
       cursor.active = true;
-    });
-    section.addEventListener("mouseleave", () => { cursor.active = false; cursor.x = -9999; });
-
-    let cachedRect = section.getBoundingClientRect();
-    const recacheRect = () => { cachedRect = section.getBoundingClientRect(); };
-
-    /* click: shockwave or tag jump */
-    section.addEventListener("pointerdown", (e) => {
-      const r = cachedRect;
-      const cx = e.clientX - r.left, cy = e.clientY - r.top;
-      const target = e.target as HTMLElement;
-      const tagEl = target.closest(".ptag");
-      tags.forEach((t) => {
-        if (!t.body || t.body.isStatic) return;
-        if (tagEl === t.el) {
-          Matter.Body.applyForce(t.body, t.body.position, { x: 0, y: -0.005 });
-          return;
-        }
-        if (tagEl) return;
-        const dx = t.body.position.x - cx, dy = t.body.position.y - cy;
-        const dist = Math.max(Math.hypot(dx, dy), 1);
-        if (dist > 280) return;
-        const falloff = 1 - dist / 280;
-        const f = Math.min(0.005 * falloff, 0.004);
-        Matter.Body.applyForce(t.body, t.body.position, {
-          x: (dx / dist) * f, y: (dy / dist) * f - f * 0.35,
+    };
+    const onLeave = () => { cursor.active = false; cursor.x = -9999; };
+    const onDown = (e: PointerEvent) => {
+      const cx = e.clientX - rectCache.left, cy = e.clientY - rectCache.top;
+      const all = [...tags.map((t) => t.body), ...shapes.map((s) => s.body)].filter(Boolean) as Matter.Body[];
+      const found = Matter.Query.point(all, { x: cx, y: cy })[0];
+      if (found) {
+        Matter.Body.applyForce(found, found.position, { x: 0, y: -0.004 });
+      } else {
+        all.forEach((b) => {
+          const dx = b.position.x - cx, dy = b.position.y - cy;
+          const dist = Math.max(Math.hypot(dx, dy), 1);
+          if (dist > 280) return;
+          const f = Math.min(0.005 * (1 - dist / 280), 0.004);
+          Matter.Body.applyForce(b, b.position, { x: (dx / dist) * f, y: (dy / dist) * f - f * 0.35 });
         });
+      }
+    };
+
+    /* ── Draw helpers ───────────────────────────────────────────────────── */
+    const drawPill = (t: PTag) => {
+      const b = t.body!;
+      ctx.save();
+      ctx.translate(b.position.x, b.position.y);
+      ctx.rotate(b.angle);
+      const hw = t.w / 2, hh = t.h / 2;
+      const hov = hoverBody === b;
+      if (hov) ctx.scale(1.06, 1.06);
+      // FIX 1: perfect pill — radius = height/2
+      ctx.beginPath();
+      ctx.roundRect(-hw, -hh, t.w, t.h, t.h / 2);
+      ctx.fillStyle = t.color.bg;
+      ctx.fill();
+      if (t.color.outline) {
+        ctx.strokeStyle = t.color.outline;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+      ctx.font = t.script ? SCRIPT_FONT : GEIST_FONT;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillStyle = t.color.fg;
+      ctx.fillText(t.word, 0, t.script ? 2 : 1);
+      ctx.restore();
+    };
+
+    const drawShape = (s: PShape) => {
+      const b = s.body!;
+      ctx.save();
+      ctx.translate(b.position.x, b.position.y);
+      ctx.rotate(b.angle);
+      const r = s.size / 2;
+      const hov = hoverBody === b;
+      if (hov) ctx.scale(1.06, 1.06);
+      ctx.fillStyle = s.color;
+      ctx.strokeStyle = s.outline || "transparent";
+      ctx.lineWidth = 1.5;
+      switch (s.kind) {
+        case "circle":
+          ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+          if (s.outline) ctx.stroke();
+          break;
+        case "face":
+          ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = COLORS.ink;
+          ctx.beginPath(); ctx.arc(-r * 0.3, -r * 0.15, r * 0.12, 0, Math.PI * 2); ctx.fill();
+          ctx.beginPath(); ctx.arc(r * 0.3, -r * 0.15, r * 0.12, 0, Math.PI * 2); ctx.fill();
+          break;
+        case "ring":
+          ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
+          ctx.strokeStyle = s.color; ctx.lineWidth = 5; ctx.stroke();
+          break;
+        case "star": {
+          // 4-point sparkle
+          ctx.beginPath();
+          for (let i = 0; i < 8; i++) {
+            const rr = i % 2 === 0 ? r : r * 0.38;
+            const a = (i / 8) * Math.PI * 2 - Math.PI / 2;
+            const px = Math.cos(a) * rr, py = Math.sin(a) * rr;
+            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+          }
+          ctx.closePath(); ctx.fill();
+          break;
+        }
+        case "square":
+          ctx.beginPath(); ctx.roundRect(-r, -r, s.size, s.size, 10); ctx.fill();
+          break;
+        case "dome":
+          ctx.beginPath(); ctx.arc(0, r * 0.4, r, Math.PI, 0); ctx.closePath(); ctx.fill();
+          ctx.fillRect(-r, r * 0.4 - 2, s.size, r * 0.6);
+          break;
+        case "triangle":
+          ctx.beginPath();
+          ctx.moveTo(0, -r);
+          ctx.quadraticCurveTo(r * 0.15, -r * 0.7, r * 0.87, r * 0.7);
+          ctx.quadraticCurveTo(0, r * 0.45, -r * 0.87, r * 0.7);
+          ctx.quadraticCurveTo(-r * 0.15, -r * 0.7, 0, -r);
+          ctx.fill();
+          break;
+        case "plus":
+          ctx.fillRect(-r, -r * 0.18, s.size, s.size * 0.36);
+          ctx.fillRect(-r * 0.18, -r, s.size * 0.36, s.size);
+          break;
+        case "squiggle":
+          ctx.strokeStyle = s.color; ctx.lineWidth = 13; ctx.lineCap = "round";
+          ctx.beginPath();
+          ctx.moveTo(-r * 1.2, 0);
+          ctx.quadraticCurveTo(-r * 0.6, -r * 0.7, 0, 0);
+          ctx.quadraticCurveTo(r * 0.6, r * 0.7, r * 1.2, 0);
+          ctx.stroke();
+          break;
+      }
+      ctx.restore();
+    };
+
+    const drawSettled = () => {
+      // reduced motion: single static draw
+      resizeCanvas();
+      ctx.fillStyle = COLORS.bg;
+      ctx.fillRect(0, 0, W, H);
+      measureAndBuildStatic();
+    };
+    const measureAndBuildStatic = () => {
+      tags.forEach((t) => {
+        ctx.font = t.script ? SCRIPT_FONT : GEIST_FONT;
+        t.h = 56;
+        t.w = ctx.measureText(t.word).width + 56;
       });
-    });
-
-    /* idle nudge */
-    const idleTimer = window.setInterval(() => {
-      if (document.hidden || !loopOn) return;
-      const alive = tags.filter((t) => t.body && !t.body.isStatic);
-      if (!alive.length) return;
-      const t = alive[Math.floor(Math.random() * alive.length)];
-      Matter.Body.applyForce(t.body!, t.body!.position, {
-        x: (Math.random() - 0.5) * 0.0006, y: -Math.random() * 0.0007,
+      // scatter statically
+      const placed: Array<{ x: number; y: number; w: number; h: number }> = [];
+      [...tags, ...shapes].forEach((item: unknown) => {
+        const isT = (item as PTag).word !== undefined;
+        const w = isT ? (item as PTag).w : (item as PShape).size;
+        const h = isT ? (item as PTag).h : (item as PShape).size;
+        let x = 0, y = 0, ok = false;
+        for (let tries = 0; tries < 40 && !ok; tries++) {
+          x = w / 2 + Math.random() * (W - w);
+          y = H * 0.4 + Math.random() * (floorY() - H * 0.4 - h);
+          ok = placed.every((p) => Math.abs(p.x - x) > (p.w + w) / 2 * 0.7 || Math.abs(p.y - y) > (p.h + h) / 2 * 0.7);
+        }
+        placed.push({ x, y, w, h });
+        (item as { _sx?: number; _sy?: number; _sr?: number })._sx = x;
+        (item as { _sx?: number; _sy?: number; _sr?: number })._sy = y;
+        (item as { _sx?: number; _sy?: number; _sr?: number })._sr = (Math.random() - 0.5) * 0.6;
       });
-    }, 3000);
+      tags.forEach((t) => {
+        const { _sx = 0, _sy = 0, _sr = 0 } = t as unknown as { _sx: number; _sy: number; _sr: number };
+        ctx.save();
+        ctx.translate(_sx, _sy); ctx.rotate(_sr);
+        ctx.beginPath(); ctx.roundRect(-t.w / 2, -t.h / 2, t.w, t.h, t.h / 2);
+        ctx.fillStyle = t.color.bg; ctx.fill();
+        if (t.color.outline) { ctx.strokeStyle = t.color.outline; ctx.lineWidth = 1.5; ctx.stroke(); }
+        ctx.font = t.script ? SCRIPT_FONT : GEIST_FONT;
+        ctx.textAlign = "center"; ctx.textBaseline = "middle";
+        ctx.fillStyle = t.color.fg;
+        ctx.fillText(t.word, 0, 1);
+        ctx.restore();
+      });
+      shapes.forEach((s) => {
+        const { _sx = 0, _sy = 0, _sr = 0 } = s as unknown as { _sx: number; _sy: number; _sr: number };
+        // reuse drawShape with a fake body
+        const fake = { position: { x: _sx, y: _sy }, angle: _sr } as Matter.Body;
+        const real = s.body; s.body = fake;
+        drawShape(s);
+        s.body = real;
+      });
+    };
 
-    /* hover: scale inner (never fights physics transform) */
-    tags.forEach((t) => {
-      t.el.addEventListener("mouseenter", () => t.inner.classList.add("is-hover"));
-      t.el.addEventListener("mouseleave", () => t.inner.classList.remove("is-hover"));
-    });
-
-    /* ── THE single loop: fixed timestep, no Runner ──────────────────────── */
-    let raf = 0;
-    let loopOn = false;
-    let lastTime = 0;
-    const FIXED = 1000 / 60;
-    const MAX_FORCE = 0.0012;
+    /* ── THE single loop ────────────────────────────────────────────────── */
+    let raf = 0, loopOn = false, lastT = 0;
+    let hoverBody: Matter.Body | null = null;
+    let frameTimes: number[] = [];
+    let degraded = false;
 
     const loop = (now: number) => {
       if (!loopOn) return;
       raf = requestAnimationFrame(loop);
-      // clamp delta: slow frames never cause a big jump
-      let delta = Math.min(now - lastTime, 50);
-      lastTime = now;
-      // fixed-ish steps
-      let acc = delta;
-      while (acc >= FIXED) {
-        Matter.Engine.update(engine, FIXED);
-        acc -= FIXED;
+      const delta = Math.min(now - lastT, 33); // clamp: no big jumps
+      lastT = now;
+
+      // quality guard: first 60 frames
+      frameTimes.push(delta);
+      if (!degraded && frameTimes.length === 60) {
+        const avg = frameTimes.reduce((a, b) => a + b, 0) / 60;
+        if (avg > 24) {
+          degraded = true;
+          // remove 30% of bodies, shapes first
+          const allBodies = Matter.Composite.allBodies(engine.world).filter((b) => !b.isStatic);
+          const removeCount = Math.floor(allBodies.length * 0.3);
+          const shapeBodies = shapes.map((s) => s.body).filter(Boolean) as Matter.Body[];
+          const victims = [...shapeBodies.slice(0, removeCount)];
+          if (victims.length < removeCount) {
+            victims.push(...allBodies.filter((b) => !victims.includes(b)).slice(0, removeCount - victims.length));
+          }
+          victims.forEach((b) => {
+            Matter.Composite.remove(engine.world, b);
+            const ti = tags.findIndex((t) => t.body === b);
+            if (ti >= 0) tags[ti].body = null;
+            const si = shapes.findIndex((s) => s.body === b);
+            if (si >= 0) shapes[si].body = null;
+          });
+          engine.positionIterations = 4;
+          engine.velocityIterations = 3;
+        }
+        frameTimes = [];
       }
 
-      /* smooth cursor velocity (lerp 0.2), apply capped push forces */
+      Matter.Engine.update(engine, 1000 / 60);
+
+      // cursor push: forces applied here, once per frame
       if (cursor.active) {
         const sx = cursor.tx - cursor.x, sy = cursor.ty - cursor.y;
         cursor.vx += (sx - cursor.vx) * 0.2;
         cursor.vy += (sy - cursor.vy) * 0.2;
-        cursor.x += cursor.vx;
-        cursor.y += cursor.vy;
+        cursor.x += cursor.vx; cursor.y += cursor.vy;
         const speed = Math.hypot(cursor.vx, cursor.vy);
         if (speed > 0.5) {
-          tags.forEach((t) => {
-            const b = t.body;
-            if (!b || b.isStatic) return;
+          const all = [...tags.map((t) => t.body), ...shapes.map((s) => s.body)].filter(Boolean) as Matter.Body[];
+          all.forEach((b) => {
             const dx = b.position.x - cursor.x, dy = b.position.y - cursor.y;
             const dist = Math.hypot(dx, dy);
             if (dist > 140 || dist < 1) return;
             const falloff = 1 - dist / 140;
             let f = 0.00045 * falloff * Math.min(speed, 32);
-            f = Math.min(f, MAX_FORCE); // cap so tags never explode
+            f = Math.min(f, 0.0012);
             Matter.Body.applyForce(b, b.position, {
               x: (dx / dist) * f + (cursor.vx / Math.max(speed, 1)) * f * 0.7,
               y: (dy / dist) * f + (cursor.vy / Math.max(speed, 1)) * f * 0.7 - f * 0.2,
@@ -311,11 +510,20 @@ export default function PhysicsTags() {
         }
       }
 
-      /* sync DOM: transform only, cached sizes */
-      tags.forEach((t) => {
-        const b = t.body;
-        if (!b) return;
-        // angular damping: don't spin forever
+      // hover detection for grab cursor + scale
+      if (cursor.active) {
+        const all = [...tags.map((t) => t.body), ...shapes.map((s) => s.body)].filter(Boolean) as Matter.Body[];
+        const found = Matter.Query.point(all, { x: cursor.x, y: cursor.y })[0] || null;
+        hoverBody = found;
+        const dragging = (mouseConstraint as unknown as { constraint: { bodyB: Matter.Body | null } }).constraint.bodyB;
+        section.style.cursor = dragging ? "grabbing" : found ? "grab" : "";
+      } else {
+        hoverBody = null;
+      }
+
+      // angular damping + upright nudge
+      const allB = [...tags.map((t) => t.body), ...shapes.map((s) => s.body)].filter(Boolean) as Matter.Body[];
+      allB.forEach((b) => {
         if (Math.abs(b.angularVelocity) > 0.25) {
           Matter.Body.setAngularVelocity(b, b.angularVelocity * 0.97);
         } else if (Math.abs(b.velocity.x) < 0.35 && Math.abs(b.velocity.y) < 0.35) {
@@ -324,137 +532,117 @@ export default function PhysicsTags() {
           if (a > Math.PI) a -= twoPi;
           Matter.Body.setAngle(b, b.angle - a * 0.02);
         }
-        t.el.style.transform =
-          `translate3d(${b.position.x - t.w / 2}px, ${b.position.y - t.h / 2}px, 0)` +
-          ` rotate(${(b.angle * 180) / Math.PI}deg)`;
       });
+
+      // draw
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = COLORS.bg;
+      ctx.fillRect(0, 0, W, H);
+      shapes.forEach((s) => { if (s.body) drawShape(s); });
+      tags.forEach((t) => { if (t.body) drawPill(t); });
     };
+
     const startLoop = () => {
-      if (loopOn) return;
+      if (loopOn || !ready) return;
       loopOn = true;
-      lastTime = performance.now();
+      lastT = performance.now(); // reset: no time jump on resume
       raf = requestAnimationFrame(loop);
     };
     const stopLoop = () => { loopOn = false; cancelAnimationFrame(raf); };
 
-    /* scroll: re-drop on entry, pause off-screen (no time jump on resume) */
+    /* idle nudge */
+    const idleTimer = window.setInterval(() => {
+      if (document.hidden || !loopOn) return;
+      const all = [...tags.map((t) => t.body), ...shapes.map((s) => s.body)].filter(Boolean) as Matter.Body[];
+      if (!all.length) return;
+      const b = all[Math.floor(Math.random() * all.length)];
+      Matter.Body.applyForce(b, b.position, { x: (Math.random() - 0.5) * 0.0006, y: -Math.random() * 0.0007 });
+    }, 3000);
+
+    /* scroll */
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
-            syncMouse(); recacheRect();
+            syncMouse();
+            rectCache = section.getBoundingClientRect();
             startLoop();
-            dropAll();
+            if (ready) dropAll();
           } else if (!entry.isIntersecting) {
-            stopLoop();
+            stopLoop(); // rAF cancelled completely off-screen
           }
         });
       },
       { threshold: [0, 0.3, 0.6, 1] }
     );
-    observer.observe(section);
 
     const onResize = () => {
+      resizeCanvas();
       Matter.Composite.remove(engine.world, walls);
       buildWalls();
-      syncMouse(); recacheRect();
-      tags.forEach((t) => { t.w = Math.max(t.el.offsetWidth, 40); t.h = Math.max(t.el.offsetHeight, 32); });
+      syncMouse();
+      rectCache = section.getBoundingClientRect();
     };
-    window.addEventListener("resize", onResize);
-    window.addEventListener("scroll", () => { syncMouse(); recacheRect(); }, { passive: true });
+
+    /* wire up after fonts */
+    const boot = () => {
+      Matter.Composite.add(engine.world, mouseConstraint);
+      stripWheel();
+      syncMouse();
+      section.addEventListener("mousemove", onMove);
+      section.addEventListener("mouseleave", onLeave);
+      section.addEventListener("pointerdown", onDown);
+      window.addEventListener("resize", onResize);
+      window.addEventListener("scroll", () => { syncMouse(); rectCache = section.getBoundingClientRect(); }, { passive: true });
+      observer.observe(section);
+    };
+
+    // defer boot until ready (fonts measured)
+    const bootCheck = window.setInterval(() => {
+      if (ready) { window.clearInterval(bootCheck); boot(); }
+    }, 100);
+
+    start();
 
     return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", onResize);
+      window.clearInterval(bootCheck);
       window.clearInterval(idleTimer);
+      observer.disconnect();
+      section.removeEventListener("mousemove", onMove);
+      section.removeEventListener("mouseleave", onLeave);
+      section.removeEventListener("pointerdown", onDown);
+      window.removeEventListener("resize", onResize);
       timeouts.forEach((t) => window.clearTimeout(t));
       stopLoop();
       Matter.Engine.clear(engine);
-      tags.forEach((t) => t.el.remove());
     };
   }, []);
 
   return (
     <>
-      {/* preload Caveat Brush so there's no flash; font-display: swap */}
-      <link
-        rel="preload"
-        href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap"
-        as="style"
-      />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap"
-        rel="stylesheet"
-      />
+      <link rel="preload" href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" as="style" />
+      <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet" />
       <style>{`
         .physics-tags-section {
           position: relative;
           width: 100%;
           height: 80vh;
           min-height: 520px;
-          background: var(--tags-bg);
-          border-radius: var(--tags-radius);
+          background: ${COLORS.bg};
+          border-radius: 24px;
           overflow: hidden;
           touch-action: pan-y;
           contain: layout paint;
         }
-        .physics-tags-section, .physics-tags-section .ptag { pointer-events: auto; }
-        /* outer: physics transform ONLY — no transition, no shadow/filter */
-        .ptag {
+        .physics-tags-section canvas {
           position: absolute;
-          left: 0; top: 0;
-          will-change: transform;
-          backface-visibility: hidden;
-          cursor: grab;
-          user-select: none;
-          -webkit-user-select: none;
-          -webkit-tap-highlight-color: transparent;
-          touch-action: pan-y;
-        }
-        .ptag:active { cursor: grabbing; }
-        /* inner: visuals + hover scale (never fights physics) */
-        .ptag-inner {
-          padding: 14px 28px;
-          border: none;
-          border-radius: 9999px;
-          font-family: "Geist:SemiBold", "Geist", system-ui, sans-serif;
-          font-weight: 600;
-          font-size: 22px;
-          text-transform: uppercase;
-          letter-spacing: 0.02em;
-          white-space: nowrap;
-          transition: scale 0.18s ease, filter 0.18s ease;
-        }
-        .ptag--lg .ptag-inner { font-size: 26px; padding: 16px 34px; }
-        /* script font: Caveat Brush, lowercase, larger to match x-height */
-        .ptag--script .ptag-inner {
-          font-family: "Caveat Brush", "Comic Sans MS", cursive;
-          font-weight: 400;
-          text-transform: none;
-          letter-spacing: 0;
-          font-size: 30px;
-          line-height: 1;
-          padding: 10px 26px 14px;
-        }
-        .ptag--script.ptag--lg .ptag-inner { font-size: 34px; }
-        .ptag--circle .ptag-inner, .ptag--dot .ptag-inner {
-          width: 58px; height: 58px; padding: 0;
-          display: flex; align-items: center; justify-content: center;
-        }
-        .ptag--rect .ptag-inner { border-radius: 10px; }
-        .ptag--squircle .ptag-inner { border-radius: 22px; }
-        .ptag-inner.is-hover { scale: 1.06; filter: brightness(1.12); }
-        @media (max-width: 767px) {
-          .ptag-inner { font-size: 15px; padding: 10px 20px; }
-          .ptag--lg .ptag-inner { font-size: 18px; padding: 12px 24px; }
-          .ptag--script .ptag-inner { font-size: 22px; }
-          .ptag--circle .ptag-inner, .ptag--dot .ptag-inner { width: 44px; height: 44px; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .ptag-inner { transition: none; }
+          inset: 0;
+          display: block;
         }
       `}</style>
-      <div ref={sectionRef} className="physics-tags-section" style={CSS_VARS} aria-label="Design services tags" />
+      <div ref={sectionRef} className="physics-tags-section" aria-label="Design services tags">
+        <canvas ref={canvasRef} />
+      </div>
     </>
   );
 }
