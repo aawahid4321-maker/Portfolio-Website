@@ -1,5 +1,4 @@
 import svgPaths from "./svg-6ykejc1m59";
-import imgContainer from "./9a49703d51cf2c0af9180805def3889aeb3ef9c6.webp";
 import imgChatGptImageSep132026012119Am2 from "./9c7fd0b5ce7362a6a763479384adfd65f38440cc.webp";
 import imgChatGptImageSep132026012119Am1 from "./a802e39c0a569dd08888c01370ae28cb47976544.webp";
 import imgContainer1 from "@/assets/noire-hero.webp";
@@ -13,6 +12,7 @@ import imgContainer5 from "@/assets/brand-hero.webp";
 import imgContainer6 from "@/assets/brochure-hero.webp";
 import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy3 } from "./svg-8vx37";
 import SharedFooterContent from "@/components/SharedFooterContent";
+import PhysicsTags from "@/components/PhysicsTags";
 
 function Container() {
   return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[48px] top-0 w-[207px]" data-name="Container" />;
@@ -115,10 +115,7 @@ function Container12() {
 function Container13() {
   return (
     <div className="-translate-x-1/2 absolute h-[940px] left-1/2 top-[6641px] w-[1818px]" data-name="Container">
-      <div aria-hidden className="absolute inset-0 pointer-events-none">
-        <div className="absolute bg-[#a4a4a4] inset-0" />
-        <img alt="" className="absolute max-w-none object-bottom size-full" src={imgContainer} loading="eager" decoding="async" />
-      </div>
+      <PhysicsTags />
     </div>
   );
 }
