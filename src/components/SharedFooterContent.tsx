@@ -29,10 +29,10 @@ export default function SharedFooterContent() {
       <div className="absolute left-[700px] top-0 flex flex-col">
         {/* Abdul + designation */}
         <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#f2f2f2] text-[22px] uppercase whitespace-nowrap">
-          Abdul
+          Wahid
         </p>
         <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase mt-[8px] whitespace-nowrap">
-          Brand Developer + Creative Strategist
+          Multidisciplinary Designer
         </p>
 
         {/* [CONTACT] */}

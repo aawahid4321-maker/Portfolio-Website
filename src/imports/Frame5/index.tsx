@@ -611,13 +611,13 @@ export default function Frame() {
       <Container8 />
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[23.04px] left-[510px] not-italic text-[#29292b] text-[19.2px] top-[1369.75px] uppercase whitespace-nowrap">[about me]</p>
       <div className="[word-break:break-word] absolute font-geist-medium-ss leading-[0] left-[716.01px] text-[#1e1e1f] text-[23.04px] top-[1369.75px] tracking-[-0.6912px] w-[926.565px] whitespace-pre-wrap">
-        <p className="leading-[29.952px] mb-0">I’m a Brand Developer and Creative Strategist with 10+ years of experience shaping brands, digital experiences, campaigns, and visual systems. I’ve led teams of up to 10 creatives and worked with founders and businesses to turn rough ideas into clear, memorable work.</p>
+        <p className="leading-[29.952px] mb-0">I’m Abdul Wahid, a multidisciplinary designer with hands-on experience in branding, visual identity, logo design, and social media creatives. Skilled at transforming concepts into compelling visual experiences that build strong brand identities and effectively engage target audiences.</p>
         <p className="leading-[29.952px] mb-0">​</p>
-        <p className="leading-[29.952px]">I like working where strategy meets creativity, finding the idea that gives a brand its character and making sure it carries through every touchpoint.</p>
+        <p className="leading-[29.952px]">I like working where creativity meets strategy — finding the idea that gives a brand its character and making sure it carries through every touchpoint, from logo and typography to social media and motion.</p>
       </div>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[71.674px] left-[48px] text-[#0f0f0f] text-[71.674px] top-[2076.42px] tracking-[-2.8669px] w-[1133.111px] whitespace-pre-wrap">{`        Results: A Snapshot of My Professional Achievements and Key Performance Metrics.`}</p>
       <p className="[word-break:break-word] absolute leading-[66.269px] left-[972.29px] text-[#0f0f0f] text-[32px] top-[4327.09px] whitespace-nowrap" style={{ letterSpacing: "-2px", fontFamily: "’Geist:Regular’,sans-serif", fontWeight: 700 }}>Stint</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[24.96px] left-[510px] not-italic text-[#0f0f0f] text-[19.2px] top-[545.07px] uppercase w-[523.479px]">Brand Developer + Creative Strategist</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[24.96px] left-[510px] not-italic text-[#0f0f0f] text-[19.2px] top-[545.07px] uppercase w-[523.479px]">Multidisciplinary Designer</p>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[108.446px] left-[44.52px] text-[83.42px] text-black top-[1788.58px] tracking-[-2.5026px] w-[1827.479px]">STRATEGY → BRAND → PRODUCT → EXPERIENCE</p>
       <Group1 />
       <Group2 />
