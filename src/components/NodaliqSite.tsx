@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const assetPathPrefix = "/assets";
+const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const imgGroup2085662843 = `${assetPathPrefix}/84644.webp`;
 const imgGroup2085662846 = `${assetPathPrefix}/3443c.webp`;
 const imgRectangle240650805 = `${assetPathPrefix}/45510.webp`;
