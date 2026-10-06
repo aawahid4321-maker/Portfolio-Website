@@ -414,7 +414,7 @@ export default function ProjectPage({
       </p>
 
       <a
-        href="https://wa.me/923170510224"
+        href="https://wa.me/923295460848"
         target="_blank"
         rel="noopener noreferrer"
         className="absolute flex items-center gap-[12px] cursor-pointer group/contact"

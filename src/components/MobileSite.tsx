@@ -483,7 +483,7 @@ function MobileAbout() {
         <DisplayHeading text="About" size="84px" />
         <Reveal delay={60}>
           <div className="mt-[24px] flex justify-end">
-            <Label>[EST 1996]</Label>
+            <Label>[EST 2005]</Label>
           </div>
         </Reveal>
       </section>

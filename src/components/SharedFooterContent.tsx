@@ -48,10 +48,10 @@ export default function SharedFooterContent() {
               aawahid321@gmail.com
             </a>
             <a
-              href="tel:+923170510224"
+              href="tel:+923295460848"
               className="font-['Geist:Medium'] leading-[27.648px] text-[#f2f2f2] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap hover:opacity-70 transition-opacity"
             >
-              +92 317 051 0224
+              +92 329 5460848
             </a>
           </div>
         </div>
