@@ -114,7 +114,7 @@ function Container12() {
 
 function Container13() {
   return (
-    <div className="-translate-x-1/2 absolute h-[940px] left-1/2 top-[6641px] w-[1818px]" data-name="Container">
+    <div className="-translate-x-1/2 absolute left-1/2 top-[6641px] w-[1818px]" data-name="Container">
       <PhysicsTags />
     </div>
   );
