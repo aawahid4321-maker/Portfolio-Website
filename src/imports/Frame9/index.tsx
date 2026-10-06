@@ -1,5 +1,4 @@
 import svgPaths from "./svg-6ykejc1m59";
-import imgChatGptImageSep132026012119Am2 from "./9c7fd0b5ce7362a6a763479384adfd65f38440cc.webp";
 import imgChatGptImageSep132026012119Am1 from "./a802e39c0a569dd08888c01370ae28cb47976544.webp";
 import imgContainer1 from "@/assets/noire-hero.webp";
 import imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy2 from "./7c8da17f8b5902887b65a103f15f7aae9564a776.webp";
@@ -13,6 +12,7 @@ import imgContainer6 from "@/assets/brochure-hero.webp";
 import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy3 } from "./svg-8vx37";
 import SharedFooterContent from "@/components/SharedFooterContent";
 import PhysicsTags from "@/components/PhysicsTags";
+import LetsConnect from "@/components/LetsConnect";
 
 function Container() {
   return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[48px] top-0 w-[207px]" data-name="Container" />;
@@ -424,13 +424,9 @@ function Container20() {
 function Group14() {
   return (
     <div className="absolute contents left-0 top-[9529.15px]">
-      <div className="absolute h-[763.125px] left-0 top-[9529.15px] w-[1920px]" data-name="ChatGPT Image Sep 13, 2026, 01_21_19 AM 2">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <img alt="" className="absolute h-[171.51%] left-[-11.74%] max-w-none top-[-49.8%] w-[123.48%]" src={imgChatGptImageSep132026012119Am2} loading="eager" decoding="async" />
-        </div>
+      <div className="absolute left-0 top-[9529.15px] w-[1920px] h-[763px]">
+        <LetsConnect />
       </div>
-      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[94.952px] left-[106.79px] text-[94.952px] text-white top-[9863.21px] tracking-[-3.7981px] whitespace-nowrap">{`Let's Connect`}</p>
-      <Group12 />
       <Container20 />
     </div>
   );
