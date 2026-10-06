@@ -10,7 +10,7 @@ import imgContainer2 from "@/assets/fitflow-hero.webp";
 import imgContainer3 from "@/assets/stint-hero.webp";
 import imgContainer4 from "@/assets/axorix-hero.webp";
 import imgContainer5 from "@/assets/brand-hero.webp";
-import imgContainer6 from "./6a88948097cfeb2e96bc34f6271242b4322f8bd5.webp";
+import imgContainer6 from "@/assets/brochure-hero.webp";
 import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy3 } from "./svg-8vx37";
 import SharedFooterContent from "@/components/SharedFooterContent";
 
@@ -899,7 +899,7 @@ function Group4() {
 
 function Container74() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4769.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="campus-app">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4769.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="brochure">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute bg-[#a4a4a4] inset-0" />
         <img alt="" className="absolute max-w-none object-cover size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer6} loading="eager" decoding="async" />
@@ -911,7 +911,7 @@ function Container74() {
 function Container76() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">THE CAMPUS APP</p>
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">BROCHURE</p>
     </div>
   );
 }
