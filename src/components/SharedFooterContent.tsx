@@ -64,7 +64,7 @@ export default function SharedFooterContent() {
         </p>
         <div className="flex gap-[12px]">
           <a
-            href="https://www.linkedin.com/in/abdulmujahid/"
+            href="https://www.linkedin.com/in/abdul-wahid-7763b8377/"
             target="_blank"
             rel="noopener noreferrer"
             className="w-[52px] h-[52px] rounded-full border border-[rgba(242,242,242,0.22)] flex items-center justify-center text-[rgba(242,242,242,0.85)] hover:border-[rgba(242,242,242,0.55)] hover:bg-[rgba(242,242,242,0.07)] transition-all duration-300"

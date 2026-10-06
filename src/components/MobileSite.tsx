@@ -19,7 +19,7 @@ interface MobileSiteProps {
 
 const CONTACT_EMAIL = "aawahid321@gmail.com";
 const CONTACT_PHONE = "0329 5460848";
-const LINKEDIN = "https://www.linkedin.com/in/abdulmujahid/";
+const LINKEDIN = "https://www.linkedin.com/in/abdul-wahid-7763b8377/";
 const INSTAGRAM = "https://www.instagram.com/";
 const DRIBBBLE = "https://dribbble.com/";
 
