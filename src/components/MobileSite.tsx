@@ -17,8 +17,8 @@ interface MobileSiteProps {
   onNavigateSite?: () => void;
 }
 
-const CONTACT_EMAIL = "abdul@thevoyage.studio";
-const CONTACT_PHONE = "+92 317 051 0224";
+const CONTACT_EMAIL = "aawahid321@gmail.com";
+const CONTACT_PHONE = "0329 5460848";
 const LINKEDIN = "https://www.linkedin.com/in/abdulmujahid/";
 const INSTAGRAM = "https://www.instagram.com/";
 const DRIBBBLE = "https://dribbble.com/";
@@ -305,9 +305,9 @@ function MobileFooter() {
       </Reveal>
 
       <div className="mt-[48px] flex flex-col gap-[6px]">
-        <span className="font-pt-mono-ss text-[19px] uppercase text-[#f2f2f2]">Abdul</span>
+        <span className="font-pt-mono-ss text-[19px] uppercase text-[#f2f2f2]">Wahid</span>
         <span className="font-pt-mono-ss text-[14px] uppercase text-[rgba(242,242,242,0.4)]">
-          Brand Developer + Creative Strategist
+          Multidisciplinary Designer
         </span>
       </div>
 
@@ -391,10 +391,9 @@ function MobileHome({ onProject }: { onProject: (id: string) => void }) {
         <Reveal>
           <Label>[Introduction]</Label>
           <p className="mt-[16px] font-geist-regular-ss text-[19px] leading-[1.55] tracking-[-0.2px] text-[#1e1e1f]">
-            I'm a Brand Developer and Creative Strategist who likes figuring out what makes a
-            brand feel like itself. I work across branding, digital experiences, product design,
-            and visual communication, bringing ideas together in a way that feels clear,
-            considered, and easy to remember.
+            I'm Abdul Wahid, a multidisciplinary designer working across branding, visual
+            identity, logo design, social media creatives, and presentation design — with
+            hands-on experience in video editing and motion graphics.
           </p>
         </Reveal>
       </section>
@@ -500,16 +499,17 @@ function MobileAbout() {
         <div className="mt-[16px] flex flex-col gap-[22px]">
           <Reveal>
             <p className="font-geist-regular-ss text-[19px] leading-[1.55] tracking-[-0.2px] text-[#1e1e1f]">
-              I'm a Brand Developer and Creative Strategist with 10+ years of experience shaping
-              brands, digital experiences, campaigns, and visual systems. I've led teams of up to
-              10 creatives and worked with founders and businesses to turn rough ideas into clear,
-              memorable work.
+              I'm a multidisciplinary designer with hands-on experience in branding, visual
+              identity, logo design, and social media creatives. Skilled at transforming
+              concepts into compelling visual experiences that build strong brand identities
+              and effectively engage target audiences.
             </p>
           </Reveal>
           <Reveal delay={60}>
             <p className="font-geist-regular-ss text-[19px] leading-[1.55] tracking-[-0.2px] text-[#1e1e1f]">
-              I like working where strategy meets creativity, finding the idea that gives a brand
-              its character and making sure it carries through every touchpoint.
+              I like working where creativity meets strategy — finding the idea that gives a
+              brand its character and making sure it carries through every touchpoint, from
+              logo and typography to social media and motion.
             </p>
           </Reveal>
         </div>
@@ -517,8 +517,8 @@ function MobileAbout() {
 
       <section className="relative z-10 px-[24px] mt-[56px] grid grid-cols-2 gap-[20px]">
         {[
-          { n: "1000+", l: "Projects Completed" },
-          { n: "10+", l: "Years Experience" },
+          { n: "13+", l: "Design Tools & Skills" },
+          { n: "5", l: "Creative Roles" },
         ].map((stat) => (
           <Reveal key={stat.l}>
             <div className="border-t border-[#cfcfcf] pt-[14px]">

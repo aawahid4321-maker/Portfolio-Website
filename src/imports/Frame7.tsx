@@ -1,8 +1,8 @@
 import SharedFooterContent from "@/components/SharedFooterContent";
 import imgCampusApp from "@/imports/Frame9/6a88948097cfeb2e96bc34f6271242b4322f8bd5.webp";
 import imgGradia from "@/imports/image_571.webp";
-import imgVoyageStudio from "@/assets/voyage-studio.webp";
-const assetPathPrefix = "/assets";
+const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
+const imgNoireCoffee = `${assetPathPrefix}/noire-hero.webp`;
 const imgContainer = `${assetPathPrefix}/35bcf.webp`;
 const imgFireflyGlass2 = `${assetPathPrefix}/67005.webp`;
 const imgFreepikPhoto1 = `${assetPathPrefix}/883ae.webp`;
@@ -117,13 +117,13 @@ export default function Frame7() {
       <div className="absolute left-[-0.08px] top-[908.31px] w-[1920px] px-[48px] py-[160px]">
         <div className="relative w-[1824px] h-[5936.18px]">
 
-          {/* 1 — THE VOYAGE STUDIO (left, tall) */}
+          {/* 1 — NOIRÉ COFFEE (left, tall) */}
           <div className="absolute left-0 top-0 w-[900px] h-[1156.031px] flex flex-col gap-[8px]" data-name="work-card">
             <div className="h-[1125px] overflow-clip relative shrink-0 w-[900px]" data-name="work-card-img">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgVoyageStudio} loading="eager" decoding="async" />
+              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgNoireCoffee} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">THE VOYAGE STUDIO</p>
+              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">NOIRÉ COFFEE</p>
               <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
             </div>
           </div>

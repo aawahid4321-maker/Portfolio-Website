@@ -395,7 +395,7 @@ export default function ProjectPage({
         <img
           alt=""
           className="absolute h-[171.51%] left-[-11.74%] max-w-none top-[-49.8%] w-[123.48%]"
-          src="/assets/870fa.webp" loading="lazy" decoding="async"
+          src={`${import.meta.env.BASE_URL}assets/870fa.webp`} loading="lazy" decoding="async"
         />
       </div>
 
