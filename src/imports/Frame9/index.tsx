@@ -15,15 +15,15 @@ import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFirefly
 import SharedFooterContent from "@/components/SharedFooterContent";
 
 function Container() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[11035px] left-[48px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[48px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container1() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[11035px] left-[279px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[279px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container2() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[11035px] left-[510px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[510px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container4() {
@@ -77,7 +77,7 @@ function Container5() {
 
 function Link() {
   return (
-    <div className="absolute bg-[#1e1e1f] content-stretch flex gap-[8px] h-[47px] items-center justify-center left-[-1px] overflow-clip p-[12px] rounded-[5px] top-[7438px] w-[180px] cursor-pointer transition-colors duration-300 hover:bg-black" data-name="Link">
+    <div className="absolute bg-[#1e1e1f] content-stretch flex gap-[8px] h-[47px] items-center justify-center left-[-1px] overflow-clip p-[12px] rounded-[5px] top-[6424px] w-[180px] cursor-pointer transition-colors duration-300 hover:bg-black" data-name="Link">
       <Container4 />
       <Container5 />
     </div>
@@ -86,35 +86,35 @@ function Link() {
 
 function Container3() {
   return (
-    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[11035px] left-[741px] top-0 w-[207px]" data-name="Container">
+    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[741px] top-0 w-[207px]" data-name="Container">
       <Link />
     </div>
   );
 }
 
 function Container8() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[11035px] left-[972px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[972px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container9() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[11035px] left-[1203px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[1203px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container10() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[11035px] left-[1434px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[1434px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container11() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[11035px] left-[1665px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[1665px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container12() {
-  return <div className="absolute h-[423.999px] left-[486px] top-[5628.75px] w-[579px]" data-name="Container" />;
+  return <div className="absolute h-[423.999px] left-[486px] top-[4614.75px] w-[579px]" data-name="Container" />;
 }
 
 function Container13() {
   return (
-    <div className="-translate-x-1/2 absolute h-[940px] left-1/2 top-[7655px] w-[1818px]" data-name="Container">
+    <div className="-translate-x-1/2 absolute h-[940px] left-1/2 top-[6641px] w-[1818px]" data-name="Container">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute bg-[#a4a4a4] inset-0" />
         <img alt="" className="absolute max-w-none object-bottom size-full" src={imgContainer} loading="eager" decoding="async" />
@@ -141,7 +141,7 @@ function Container16() {
 
 function Container14() {
   return (
-    <div className="absolute content-stretch flex h-[38.092px] items-start justify-between left-[51.49px] top-[8629px] w-[1817.023px]" data-name="Container">
+    <div className="absolute content-stretch flex h-[38.092px] items-start justify-between left-[51.49px] top-[7615px] w-[1817.023px]" data-name="Container">
       <Container15 />
       <Container16 />
     </div>
@@ -150,28 +150,28 @@ function Container14() {
 
 function Group13() {
   return (
-    <div className="[word-break:break-word] absolute contents font-pt-mono-ss left-[1203.29px] not-italic text-[#0f0f0f] text-[22px] top-[9032.03px] uppercase">
-      <div className="absolute leading-[0] left-[1203.29px] top-[9032.03px] w-[589.484px]">
+    <div className="[word-break:break-word] absolute contents font-pt-mono-ss left-[1203.29px] not-italic text-[#0f0f0f] text-[22px] top-[8018.03px] uppercase">
+      <div className="absolute leading-[0] left-[1203.29px] top-[8018.03px] w-[589.484px]">
         <p className="leading-[33px] mb-0">1.1 / BUILDING A CLEAR BRAND DIRECTION</p>
         <p className="leading-[33px]">I define the positioning, personality, audience, and visual direction that give a brand a clear place in the market.</p>
       </div>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[9288.42px] w-[589.484px]">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[8274.42px] w-[589.484px]">
         2.1 / SHAPING THE VISUAL WORLD OF A BRAND
         <br aria-hidden />I develop the creative direction, mood, and visual language that bring an idea to life and make it feel distinctive.
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[9544.81px] w-[589.484px]">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[8530.81px] w-[589.484px]">
         3.1 / CREATING IDENTITIES PEOPLE REMEMBER
         <br aria-hidden />
         From logos and visual systems to typography and color, I build cohesive identities that feel recognizable and built to last.
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[9801.2px] w-[641.38px]">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[8787.20px] w-[641.38px]">
         4.1 / TURNING BRAND INTO DIGITAL EXPERIENCE
         <br aria-hidden />I design websites that bring the brand together with clear structure, thoughtful interactions, and a strong visual point of view.
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[10057.59px] w-[589.484px] whitespace-pre-wrap">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[9043.59px] w-[589.484px] whitespace-pre-wrap">
         {`5.1 / MAKING DIGITAL PRODUCTS FEEL SIMPLEI create intuitive interfaces and user experiences that balance function, clarity, and visual character.`}
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[10300.37px] w-[641.38px] whitespace-pre-wrap">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[9286.37px] w-[641.38px] whitespace-pre-wrap">
         {`6.1 / TURNING IDEAS INTO CAMPAIGNS PEOPLE NOTICEI develop big creative ideas and campaign directions that give brands something worth saying, seeing, and remembering.`}
       </p>
     </div>
@@ -193,13 +193,13 @@ function Group() {
       <Container13 />
       <Container14 />
       <Group13 />
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9044.03px] tracking-[0.5px] whitespace-nowrap">Brand Strategy</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9300.42px] tracking-[0.5px] whitespace-nowrap">Art Direction</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9556.81px] tracking-[0.5px] whitespace-nowrap">Brand Visuals</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9813.2px] tracking-[0.5px] whitespace-nowrap">Website Design</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[10069.59px] tracking-[0.5px] whitespace-nowrap">UI/UX Design</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[10312.37px] tracking-[0.5px] whitespace-nowrap">Campaign Big Ideas</p>
-      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[8740.56px] tracking-[-9.6861px] whitespace-nowrap">My Services</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8030.03px] tracking-[0.5px] whitespace-nowrap">Brand Strategy</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8286.42px] tracking-[0.5px] whitespace-nowrap">Art Direction</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8542.81px] tracking-[0.5px] whitespace-nowrap">Brand Visuals</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8799.20px] tracking-[0.5px] whitespace-nowrap">Website Design</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9055.59px] tracking-[0.5px] whitespace-nowrap">UI/UX Design</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9298.37px] tracking-[0.5px] whitespace-nowrap">Campaign Big Ideas</p>
+      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[7726.56px] tracking-[-9.6861px] whitespace-nowrap">My Services</p>
     </div>
   );
 }
@@ -207,8 +207,8 @@ function Group() {
 
 function Group12() {
   return (
-    <div className="absolute contents left-[974.8px] top-[10794.99px]">
-      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[10794.99px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
+    <div className="absolute contents left-[974.8px] top-[9780.99px]">
+      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[9780.99px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
       {/* Contact → WhatsApp button */}
       <a
         href="https://wa.me/923295460848"
@@ -434,7 +434,7 @@ function Container21() {
 
 function Container20() {
   return (
-    <div className="-translate-x-1/2 absolute bg-[#0f0f0f] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[11306.27px] w-[1920px]" data-name="Container">
+    <div className="-translate-x-1/2 absolute bg-[#0f0f0f] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[10292.27px] w-[1920px]" data-name="Container">
       <Container21 />
     </div>
   );
@@ -442,13 +442,13 @@ function Container20() {
 
 function Group14() {
   return (
-    <div className="absolute contents left-0 top-[10543.15px]">
-      <div className="absolute h-[763.125px] left-0 top-[10543.15px] w-[1928.035px]" data-name="ChatGPT Image Sep 13, 2026, 01_21_19 AM 2">
+    <div className="absolute contents left-0 top-[9529.15px]">
+      <div className="absolute h-[763.125px] left-0 top-[9529.15px] w-[1928.035px]" data-name="ChatGPT Image Sep 13, 2026, 01_21_19 AM 2">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <img alt="" className="absolute h-[171.51%] left-[-11.74%] max-w-none top-[-49.8%] w-[123.48%]" src={imgChatGptImageSep132026012119Am2} loading="eager" decoding="async" />
         </div>
       </div>
-      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[94.952px] left-[106.79px] text-[94.952px] text-white top-[10877.21px] tracking-[-3.7981px] whitespace-nowrap">{`Let's Connect`}</p>
+      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[94.952px] left-[106.79px] text-[94.952px] text-white top-[9863.21px] tracking-[-3.7981px] whitespace-nowrap">{`Let's Connect`}</p>
       <Group12 />
       <Container20 />
     </div>
@@ -688,7 +688,7 @@ function Group11() {
 
 function Container54() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[1514.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="noire-coffee">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[1514.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="noire-coffee">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer1} loading="eager" decoding="async" />
       <Group11 />
     </div>
@@ -713,7 +713,7 @@ function Container57() {
 
 function Container55() {
   return (
-    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[2197.63px] w-[900px]" data-name="Container">
+    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[2028.63px] w-[900px]" data-name="Container">
       <Container56 />
       <Container57 />
     </div>
@@ -731,7 +731,7 @@ function Group1() {
 
 function Container58() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[2334.62px] w-[900px] cursor-pointer" data-name="Container" data-project-id="fitflow">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[2165.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="fitflow">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer2} loading="eager" decoding="async" />
     </div>
   );
@@ -755,7 +755,7 @@ function Container61() {
 
 function Container59() {
   return (
-    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[3017.62px] w-[900px]" data-name="Container">
+    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[2679.63px] w-[900px]" data-name="Container">
       <Container60 />
       <Container61 />
     </div>
@@ -773,7 +773,7 @@ function Group6() {
 
 function Container62() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[3154.61px] w-[900px] cursor-pointer" data-name="Container" data-project-id="stint">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[2816.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="stint">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer3} loading="eager" decoding="async" />
     </div>
   );
@@ -797,7 +797,7 @@ function Container65() {
 
 function Container63() {
   return (
-    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[3837.61px] w-[900px]" data-name="Container">
+    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[3330.63px] w-[900px]" data-name="Container">
       <Container64 />
       <Container65 />
     </div>
@@ -815,7 +815,7 @@ function Group2() {
 
 function Container66() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[3974.6px] w-[900px] cursor-pointer" data-name="Container" data-project-id="axorix">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[3467.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="axorix">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer4} loading="eager" decoding="async" />
     </div>
   );
@@ -839,7 +839,7 @@ function Container69() {
 
 function Container67() {
   return (
-    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[4657.6px] w-[900px]" data-name="Container">
+    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[3981.63px] w-[900px]" data-name="Container">
       <Container68 />
       <Container69 />
     </div>
@@ -857,7 +857,7 @@ function Group3() {
 
 function Container70() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[4794.59px] w-[900px] cursor-pointer" data-name="Container" data-project-id="gradia">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4118.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="gradia">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer5} loading="eager" decoding="async" />
     </div>
   );
@@ -881,7 +881,7 @@ function Container73() {
 
 function Container71() {
   return (
-    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[5477.59px] w-[900px]" data-name="Container">
+    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[4632.63px] w-[900px]" data-name="Container">
       <Container72 />
       <Container73 />
     </div>
@@ -899,7 +899,7 @@ function Group4() {
 
 function Container74() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[5614.58px] w-[900px] cursor-pointer" data-name="Container" data-project-id="campus-app">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4769.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="campus-app">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute bg-[#a4a4a4] inset-0" />
         <img alt="" className="absolute max-w-none object-cover size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer6} loading="eager" decoding="async" />
@@ -926,7 +926,7 @@ function Container77() {
 
 function Container75() {
   return (
-    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[6297.58px] w-[900px]" data-name="Container">
+    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[5283.63px] w-[900px]" data-name="Container">
       <Container76 />
       <Container77 />
     </div>
@@ -935,7 +935,7 @@ function Container75() {
 
 function Group5() {
   return (
-    <div className="absolute contents left-[510.29px] top-[5614.58px]">
+    <div className="absolute contents left-[510.29px] top-[4600.58px]">
       <Container74 />
       <Container75 />
     </div>
@@ -944,14 +944,14 @@ function Group5() {
 
 function Group15() {
   return (
-    <div className="[word-break:break-word] absolute contents left-[30.29px] top-[6692px]">
-      <p className="absolute font-pt-mono-ss leading-[23.04px] left-[510.29px] not-italic text-[#29292b] text-[19.2px] top-[7103.12px] uppercase whitespace-nowrap">[Process]</p>
-      <div className="absolute font-geist-medium-ss leading-[0] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[7103.12px] tracking-[-0.6912px] w-[786.817px] whitespace-pre-wrap">
+    <div className="[word-break:break-word] absolute contents left-[30.29px] top-[5678px]">
+      <p className="absolute font-pt-mono-ss leading-[23.04px] left-[510.29px] not-italic text-[#29292b] text-[19.2px] top-[6089.12px] uppercase whitespace-nowrap">[Process]</p>
+      <div className="absolute font-geist-medium-ss leading-[0] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[6089.12px] tracking-[-0.6912px] w-[786.817px] whitespace-pre-wrap">
         <p className="leading-[29.952px] mb-0">I’m Abdul Wahid, a multidisciplinary designer working across branding, visual identity, logo design, social media creatives, and presentation design — with hands-on experience in video editing and motion graphics.</p>
         <p className="leading-[29.952px] mb-0">​</p>
         <p className="leading-[29.952px]">{`For me, good design starts with understanding the business, the audience, and the goal. I turn those insights into a clear creative direction — building strong brand identities and compelling visual experiences that communicate clearly, connect with people, and help businesses grow.`}</p>
       </div>
-      <p className="absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[6692px] tracking-[-9.6861px] whitespace-nowrap">Introduction</p>
+      <p className="absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[5678px] tracking-[-9.6861px] whitespace-nowrap">Introduction</p>
     </div>
   );
 }
@@ -962,12 +962,12 @@ export default function Frame() {
       <Group />
       <Group14 />
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[71.674px] left-[46px] text-[#0f0f0f] text-[71.674px] top-[1144px] tracking-[-2.8669px] w-[912px] animate-[fadeUpIn_0.9s_0.35s_cubic-bezier(0.22,1,0.36,1)_both]">Selected Works</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9032.03px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9288.42px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9544.81px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9801.2px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[10057.59px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[10300.37px] uppercase w-[85.255px]">[01]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8018.03px] uppercase w-[85.255px]">[01]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8274.42px] uppercase w-[85.255px]">[01]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8530.81px] uppercase w-[85.255px]">[01]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8787.20px] uppercase w-[85.255px]">[01]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9043.59px] uppercase w-[85.255px]">[01]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9286.37px] uppercase w-[85.255px]">[01]</p>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[1203.29px] text-[#1e1e1f] text-[35px] top-[357.07px] tracking-[-0.6912px] w-[523.479px]">/ 30</p>
       <Banner />
       <div className="absolute inset-[3.14%_50.92%_96.42%_46.37%] animate-[fadeRotateIn_1s_0.5s_cubic-bezier(0.22,1,0.36,1)_both]" data-name="Vector">
@@ -987,35 +987,35 @@ export default function Frame() {
       <Group5 />
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[27.648px] left-[48px] text-[#1e1e1f] text-[23.04px] top-[1063px] tracking-[-0.6912px] whitespace-nowrap" style={{ marginTop: "-85px", marginBottom: "-85px" }}>Scroll Down</p>
       <Group15 />
-      <div className="absolute h-0 left-[1203.29px] top-[9221.25px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[8207.25px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[9477.09px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[8463.09px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[9732.93px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[8718.93px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[9988.77px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[8974.77px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[10240.3px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[9226.30px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
