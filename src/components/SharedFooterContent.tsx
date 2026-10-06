@@ -53,6 +53,12 @@ export default function SharedFooterContent() {
             >
               +92 329 5460848
             </a>
+            <a
+              href="tel:+923365934828"
+              className="font-['Geist:Medium'] leading-[27.648px] text-[#f2f2f2] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap hover:opacity-70 transition-opacity"
+            >
+              +92 336 5934828
+            </a>
           </div>
         </div>
       </div>

@@ -19,6 +19,7 @@ interface MobileSiteProps {
 
 const CONTACT_EMAIL = "aawahid321@gmail.com";
 const CONTACT_PHONE = "0329 5460848";
+const CONTACT_PHONE_2 = "0336 5934828";
 const LINKEDIN = "https://www.linkedin.com/in/abdul-wahid-7763b8377/";
 const INSTAGRAM = "https://www.instagram.com/";
 const DRIBBBLE = "https://dribbble.com/";
@@ -318,6 +319,9 @@ function MobileFooter() {
         </a>
         <a href={`tel:${CONTACT_PHONE.replace(/\s/g, "")}`} className="font-geist-medium-ss text-[21px] text-[#f2f2f2]">
           {CONTACT_PHONE}
+        </a>
+        <a href={`tel:${CONTACT_PHONE_2.replace(/\s/g, "")}`} className="font-geist-medium-ss text-[21px] text-[#f2f2f2]">
+          {CONTACT_PHONE_2}
         </a>
       </div>
 
