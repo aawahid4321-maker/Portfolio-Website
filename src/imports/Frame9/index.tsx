@@ -6,8 +6,8 @@ import imgContainer1 from "@/assets/noire-hero.webp";
 import imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy2 from "./7c8da17f8b5902887b65a103f15f7aae9564a776.webp";
 import imgFreepikTheStyleIsCandidImagePhotographyWithNatural586812 from "./4ddbfcc7eb77e420684d6efe824f92a440486a1f.webp";
 import imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy4 from "./ea06e812aa65275c221aead57689d9e0e21304d3.webp";
-import imgContainer2 from "./8bb01c325a9931152d280f6cbff78eaeaa767a66.webp";
-import imgContainer3 from "./384bf193efc93b2e44bbf780853a36579c46acf7.webp";
+import imgContainer2 from "@/assets/fitflow-hero.webp";
+import imgContainer3 from "@/assets/stint-hero.webp";
 import imgContainer4 from "./8c0a4d5a7dcb429e28b32bb9bacdacf01b45b101.webp";
 import imgContainer5 from "./44b06372b0699e2262a1fdc0f42d8316cc3e0490.webp";
 import imgContainer6 from "./6a88948097cfeb2e96bc34f6271242b4322f8bd5.webp";
@@ -731,7 +731,7 @@ function Group1() {
 
 function Container58() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[2334.62px] w-[900px] cursor-pointer" data-name="Container" data-project-id="nodaliq">
+    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[2334.62px] w-[900px] cursor-pointer" data-name="Container" data-project-id="fitflow">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer2} loading="eager" decoding="async" />
     </div>
   );
@@ -740,7 +740,7 @@ function Container58() {
 function Container60() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">NODALiQ</p>
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">FITFLOW</p>
     </div>
   );
 }
@@ -748,7 +748,7 @@ function Container60() {
 function Container61() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
     </div>
   );
 }
@@ -773,7 +773,7 @@ function Group6() {
 
 function Container62() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[3154.61px] w-[900px] cursor-pointer" data-name="Container" data-project-id="sint">
+    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[3154.61px] w-[900px] cursor-pointer" data-name="Container" data-project-id="stint">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer3} loading="eager" decoding="async" />
     </div>
   );
@@ -790,7 +790,7 @@ function Container64() {
 function Container65() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2023</p>
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
     </div>
   );
 }

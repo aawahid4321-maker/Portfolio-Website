@@ -11,10 +11,10 @@ const imgFireflyMask2 = `${assetPathPrefix}/48a62.svg`;
 const imgFireflyGlass4 = `${assetPathPrefix}/aca21.webp`;
 const imgGroup42 = `${assetPathPrefix}/0986f.svg`;
 const imgGroup43 = `${assetPathPrefix}/0ec31.svg`;
-const imgContainer1 = `${assetPathPrefix}/222e9.webp`;
+const imgContainer1 = `${assetPathPrefix}/fitflow-hero.webp`;
 const imgContainer2 = `${assetPathPrefix}/f95a7.webp`;
 const imgContainer3 = `${assetPathPrefix}/91219.webp`;
-const imgContainer4 = `${assetPathPrefix}/c4552.webp`;
+const imgContainer4 = `${assetPathPrefix}/stint-hero.webp`;
 const imgContainer5 = `${assetPathPrefix}/49ca5.webp`;
 const imgSpaceBg = `${assetPathPrefix}/870fa.webp`;
 
@@ -128,14 +128,14 @@ export default function Frame7() {
             </div>
           </div>
 
-          {/* 2 — NODALiQ (right, short) */}
+          {/* 2 — FITFLOW (right, short) */}
           <div className="absolute left-[1155px] top-0 w-[669px] h-[532.781px] flex flex-col gap-[8px]" data-name="work-card">
             <div className="h-[501.75px] relative shrink-0 w-[669px] overflow-clip" data-name="work-card-img">
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer1} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[669px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">NODALiQ</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
+              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">FITFLOW</p>
+              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
             </div>
           </div>
 
@@ -161,14 +161,14 @@ export default function Frame7() {
             </div>
           </div>
 
-          {/* 5 — SINT (left, short) */}
+          {/* 5 — STINT (left, short) */}
           <div className="absolute left-0 top-[2182.06px] w-[669px] h-[532.781px] flex flex-col gap-[8px]" data-name="work-card">
             <div className="h-[501.75px] relative shrink-0 w-[669px] overflow-clip" data-name="work-card-img">
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer4} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[669px] shrink-0">
               <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">STINT</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2023</p>
+              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
             </div>
           </div>
 
