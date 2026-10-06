@@ -214,23 +214,22 @@ export default function PhysicsTags() {
       timeouts.forEach((t) => window.clearTimeout(t));
       timeouts.length = 0;
       // reposition existing bodies above (no re-creation, no teleport pop)
-      let n = 0;
-      tags.forEach((t) => {
+      tags.forEach((t, i) => {
         if (t.body) {
           Matter.Body.setPosition(t.body, { x: W * (0.1 + Math.random() * 0.8), y: -60 - Math.random() * 200 });
           Matter.Body.setVelocity(t.body, { x: 0, y: 0 });
           Matter.Body.setAngle(t.body, (Math.random() - 0.5) * 0.6);
         } else {
-          timeouts.push(window.setTimeout(() => spawnTag(n), n * (70 + Math.random() * 30)));
+          // FIX: capture i per-iteration (forEach scope), not a shared counter
+          timeouts.push(window.setTimeout(() => spawnTag(i), i * (70 + Math.random() * 30)));
         }
-        n++;
       });
       shapes.forEach((s, i) => {
         if (s.body) {
           Matter.Body.setPosition(s.body, { x: W * (0.1 + Math.random() * 0.8), y: -60 - Math.random() * 200 });
           Matter.Body.setVelocity(s.body, { x: 0, y: 0 });
         } else {
-          timeouts.push(window.setTimeout(() => spawnShape(i), (n + i) * (70 + Math.random() * 30)));
+          timeouts.push(window.setTimeout(() => spawnShape(i), (tags.length + i) * (70 + Math.random() * 30)));
         }
       });
     };
