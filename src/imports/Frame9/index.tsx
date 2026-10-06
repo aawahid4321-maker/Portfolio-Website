@@ -211,7 +211,7 @@ function Group12() {
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[10794.99px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
       {/* Contact → WhatsApp button */}
       <a
-        href="https://wa.me/923170510224"
+        href="https://wa.me/923295460848"
         target="_blank"
         rel="noopener noreferrer"
         className="absolute flex items-center gap-[12px] cursor-pointer group/contact"

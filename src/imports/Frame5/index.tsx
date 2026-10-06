@@ -353,7 +353,7 @@ function Group5() {
     <div className="absolute contents left-[974.8px] top-[4851.84px]">
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[4851.84px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
       <a
-        href="https://wa.me/923170510224"
+        href="https://wa.me/923295460848"
         target="_blank"
         rel="noopener noreferrer"
         className="absolute flex items-center gap-[12px] cursor-pointer group/contact"
@@ -626,7 +626,7 @@ export default function Frame() {
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[1434.29px] not-italic text-[#0f0f0f] text-[24px] top-[4264.25px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[07]</p>
       <Group4 />
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[1665.29px] not-italic text-[#0f0f0f] text-[24px] top-[4264.25px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[08]</p>
-      <p className="-translate-x-full [word-break:break-word] absolute font-pt-mono-ss leading-[24.96px] left-[1874.29px] not-italic text-[#0f0f0f] text-[19.2px] text-right top-[545.07px] uppercase w-[523.479px]">[EST 1996]</p>
+      <p className="-translate-x-full [word-break:break-word] absolute font-pt-mono-ss leading-[24.96px] left-[1874.29px] not-italic text-[#0f0f0f] text-[19.2px] text-right top-[545.07px] uppercase w-[523.479px]">[EST 2005]</p>
       <Banner />
       <p className="[word-break:break-word] absolute font-['Geist:SemiBold','Noto_Sans:SemiBold','Noto_Sans_Math:Regular','Noto_Sans_Symbols:SemiBold','Noto_Sans_Symbols2:Regular',sans-serif] leading-[normal] left-[30.29px] ml-[17px] mr-[17px] text-[#1e1e1f] text-[178.941px] top-[312.07px] tracking-[-7.3133px] whitespace-nowrap">{`About `}</p>
       <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] ml-[14px] mr-[14px] mt-0 mb-0 text-[#1e1e1f] text-[178.941px] top-[3802.09px] tracking-[-7.3133px] whitespace-nowrap">Clients</p>

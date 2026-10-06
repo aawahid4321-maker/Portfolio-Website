@@ -218,7 +218,7 @@ export default function Frame7() {
         {`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}
       </p>
       <a
-        href="https://wa.me/923170510224"
+        href="https://wa.me/923295460848"
         target="_blank"
         rel="noopener noreferrer"
         className="absolute flex items-center gap-[12px] cursor-pointer group/contact"
