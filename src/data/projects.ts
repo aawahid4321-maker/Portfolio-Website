@@ -25,25 +25,35 @@ const desc =
 
 export const projects: ProjectData[] = [
   {
-    id: "voyage-studio",
-    title: "THE VOYAGE STUDIO",
-    agency: "The Voyage Studio",
-    industry: "Design Studio",
-    service: "Brand Design",
+    id: "noire-coffee",
+    title: "NOIRÉ COFFEE",
+    agency: "Noiré Coffee",
+    industry: "Coffee Brand",
+    service: "Brand Identity",
     year: "2026",
-    description: desc,
-    heroImage: "/assets/ff5cb.webp",
-    heroLogo: "/assets/54511.svg",
-    thumbnail: "/assets/voyage-hero.webp",
+    description:
+      "Complete brand identity for Noiré Coffee — a bold, modern coffee brand with a dark, premium character. From the logo and typography to packaging, stationery, business cards, and a custom brand pattern, I built a full visual system designed to feel rich, confident, and unmistakable.",
+    heroImage: "/assets/noire-hero.webp",
+    heroLogo: undefined,
+    heroFit: "cover",
+    thumbnail: "/assets/noire-hero.webp",
     images: [
-      "/assets/voyage-01.webp",
-      "/assets/voyage-02.webp",
-      "/assets/voyage-03.webp",
-      "/assets/voyage-04.webp",
-      "/assets/voyage-05.webp",
-      "/assets/voyage-06.webp",
+      "/assets/noire-01.webp",
+      "/assets/noire-02.webp",
+      "/assets/noire-03.webp",
+      "/assets/noire-04.webp",
+      "/assets/noire-05.webp",
+      "/assets/noire-06.webp",
+      "/assets/noire-07.webp",
+      "/assets/noire-08.webp",
+      "/assets/noire-09.webp",
+      "/assets/noire-10.webp",
+      "/assets/noire-11.webp",
+      "/assets/noire-12.webp",
+      "/assets/noire-13.webp",
+      "/assets/noire-cards.webp",
     ],
-    liveLink: "https://thevoyage.studio/",
+    liveLink: undefined,
     nextProjectId: "nodaliq",
   },
   {
@@ -198,9 +208,23 @@ export const projects: ProjectData[] = [
       "/assets/campus-04.webp",
     ],
     liveLink: undefined,
-    nextProjectId: "voyage-studio",
+    nextProjectId: "noire-coffee",
   },
 ];
+
+// ── Base-path fix ──────────────────────────────────────────────────────────
+// Image paths above are absolute ("/assets/..."), which 404s when the site is
+// served from a sub-path (e.g. GitHub Pages /Portfolio-Website/). Prefix every
+// project asset with Vite's BASE_URL so detail pages + thumbnails resolve.
+const withBase = (p: string | null | undefined): string | null | undefined =>
+  p ? `${import.meta.env.BASE_URL}${p.replace(/^\//, "")}` : p;
+
+projects.forEach((p) => {
+  p.heroImage = withBase(p.heroImage) as string;
+  p.thumbnail = withBase(p.thumbnail) as string;
+  p.images = p.images.map((i) => withBase(i) as string | null);
+  if (p.heroLogo) p.heroLogo = withBase(p.heroLogo) as string;
+});
 
 export function getProjectById(id: string): ProjectData | undefined {
   return projects.find((p) => p.id === id);

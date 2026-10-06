@@ -42,10 +42,10 @@ export default function SharedFooterContent() {
           </p>
           <div className="flex flex-col gap-[8px]">
             <a
-              href="mailto:abdul@thevoyage.studio"
+              href="mailto:aawahid321@gmail.com"
               className="font-['Geist:Medium'] leading-[27.648px] text-[#f2f2f2] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap hover:opacity-70 transition-opacity"
             >
-              abdul@thevoyage.studio
+              aawahid321@gmail.com
             </a>
             <a
               href="tel:+923170510224"

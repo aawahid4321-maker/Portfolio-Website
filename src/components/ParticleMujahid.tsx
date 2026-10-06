@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-const TEXT = "Mujahid";
+const TEXT = "Wahid";
 const FONT_SIZE = 237;
 const LETTER_SPACING = -9.6861;
 const COLOR = "#1e1e1f";

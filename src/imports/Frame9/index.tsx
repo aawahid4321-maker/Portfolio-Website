@@ -2,7 +2,7 @@ import svgPaths from "./svg-6ykejc1m59";
 import imgContainer from "./9a49703d51cf2c0af9180805def3889aeb3ef9c6.webp";
 import imgChatGptImageSep132026012119Am2 from "./9c7fd0b5ce7362a6a763479384adfd65f38440cc.webp";
 import imgChatGptImageSep132026012119Am1 from "./a802e39c0a569dd08888c01370ae28cb47976544.webp";
-import imgContainer1 from "./voyage-hero.webp";
+import imgContainer1 from "@/assets/noire-hero.webp";
 import imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy2 from "./7c8da17f8b5902887b65a103f15f7aae9564a776.webp";
 import imgFreepikTheStyleIsCandidImagePhotographyWithNatural586812 from "./4ddbfcc7eb77e420684d6efe824f92a440486a1f.webp";
 import imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy4 from "./ea06e812aa65275c221aead57689d9e0e21304d3.webp";
@@ -372,7 +372,7 @@ function Container36() {
 function Container38() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-geist-medium-ss leading-[23.04px] relative shrink-0 text-[#f2f2f2] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap">abdul@thevoyage.studio</p>
+      <p className="[word-break:break-word] font-geist-medium-ss leading-[23.04px] relative shrink-0 text-[#f2f2f2] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap">aawahid321@gmail.com</p>
     </div>
   );
 }
@@ -688,7 +688,7 @@ function Group11() {
 
 function Container54() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[1514.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="voyage-studio">
+    <div className="group -translate-x-1/2 absolute h-[675px] left-[calc(50%+0.29px)] overflow-clip top-[1514.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="noire-coffee">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer1} loading="eager" decoding="async" />
       <Group11 />
     </div>
@@ -698,7 +698,7 @@ function Container54() {
 function Container56() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">THE VOYAGE STUDIO</p>
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">NOIRÉ COFFEE</p>
     </div>
   );
 }
@@ -947,9 +947,9 @@ function Group15() {
     <div className="[word-break:break-word] absolute contents left-[30.29px] top-[6692px]">
       <p className="absolute font-pt-mono-ss leading-[23.04px] left-[510.29px] not-italic text-[#29292b] text-[19.2px] top-[7103.12px] uppercase whitespace-nowrap">[Process]</p>
       <div className="absolute font-geist-medium-ss leading-[0] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[7103.12px] tracking-[-0.6912px] w-[786.817px] whitespace-pre-wrap">
-        <p className="leading-[29.952px] mb-0">I’m a Brand Developer and Creative Strategist who likes figuring out what makes a brand feel like itself. I work across branding, digital experiences, product design, and visual communication, bringing ideas together in a way that feels clear, considered, and easy to remember.</p>
+        <p className="leading-[29.952px] mb-0">I’m Abdul Wahid, a multidisciplinary designer working across branding, visual identity, logo design, social media creatives, and presentation design — with hands-on experience in video editing and motion graphics.</p>
         <p className="leading-[29.952px] mb-0">​</p>
-        <p className="leading-[29.952px]">{`For me, good design starts with asking the right questions. What are we trying to say? Who are we saying it to? And what should they feel when they see it? From a brand identity & pitch decks to a complete brand or digital experience, I enjoy finding that sweet spot where a good idea and good design meet.`}</p>
+        <p className="leading-[29.952px]">{`For me, good design starts with understanding the business, the audience, and the goal. I turn those insights into a clear creative direction — building strong brand identities and compelling visual experiences that communicate clearly, connect with people, and help businesses grow.`}</p>
       </div>
       <p className="absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[6692px] tracking-[-9.6861px] whitespace-nowrap">Introduction</p>
     </div>
@@ -975,10 +975,10 @@ export default function Frame() {
           <path d={svgPaths.pc20cf3e} fill="black" id="Vector" />
         </svg>
       </div>
-      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[312.07px] tracking-[-9.6861px] whitespace-nowrap animate-[fadeBlurIn_1s_cubic-bezier(0.22,1,0.36,1)_both]">Mujahid</p>
+      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[312.07px] tracking-[-9.6861px] whitespace-nowrap animate-[fadeBlurIn_1s_cubic-bezier(0.22,1,0.36,1)_both]">Wahid</p>
       <Container53 />
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[23.04px] left-[279.29px] not-italic text-[#29292b] text-[19.2px] top-[723.2px] uppercase whitespace-nowrap">[Intro]</p>
-      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[485.18px] text-[#1e1e1f] text-[23.04px] top-[723.2px] tracking-[-0.6912px] w-[392.105px] animate-[fadeUpIn_0.8s_0.55s_cubic-bezier(0.22,1,0.36,1)_both]">I build brands, digital experiences, and visual systems that help businesses communicate, connect, and grow.</p>
+      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[485.18px] text-[#1e1e1f] text-[23.04px] top-[723.2px] tracking-[-0.6912px] w-[392.105px] animate-[fadeUpIn_0.8s_0.55s_cubic-bezier(0.22,1,0.36,1)_both]">I build brands, visual identities, and social creatives that help businesses communicate, connect, and grow.</p>
       <Group1 />
       <Group6 />
       <Group2 />
