@@ -1,6 +1,6 @@
 import SharedFooterContent from "@/components/SharedFooterContent";
 import imgCampusApp from "@/imports/Frame9/6a88948097cfeb2e96bc34f6271242b4322f8bd5.webp";
-const imgGradia = `${assetPathPrefix}/gradia.webp`;
+const imgGradia = `${assetPathPrefix}/brand-hero.webp`;
 const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const imgNoireCoffee = `${assetPathPrefix}/noire-hero.webp`;
 const imgContainer = `${assetPathPrefix}/35bcf.webp`;
@@ -184,13 +184,14 @@ export default function Frame7() {
           </div>
 
           {/* 7 — GRADIA (left, below CAMPUS APP) */}
+          {/* 7 — BRAND (left, below CAMPUS APP) */}
           <div className="absolute left-0 top-[5230.15px] w-[900px] h-[706.031px] flex flex-col gap-[8px]" data-name="work-card">
             <div className="h-[675px] relative shrink-0 w-[900px] overflow-clip" data-name="work-card-img">
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgGradia} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">GRADIA</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
+              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">BRAND</p>
+              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
             </div>
           </div>
 
