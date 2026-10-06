@@ -1,6 +1,6 @@
 import SharedFooterContent from "@/components/SharedFooterContent";
 import imgCampusApp from "@/imports/Frame9/6a88948097cfeb2e96bc34f6271242b4322f8bd5.webp";
-import imgGradia from "@/imports/image_571.webp";
+const imgGradia = `${assetPathPrefix}/gradia.webp`;
 const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const imgNoireCoffee = `${assetPathPrefix}/noire-hero.webp`;
 const imgContainer = `${assetPathPrefix}/35bcf.webp`;
