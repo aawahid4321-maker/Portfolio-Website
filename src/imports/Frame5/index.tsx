@@ -512,7 +512,7 @@ function Container40() {
 function Container42() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-geist-medium-ss leading-[23.04px] relative shrink-0 text-[#f2f2f2] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap">abdul@thevoyage.studio</p>
+      <p className="[word-break:break-word] font-geist-medium-ss leading-[23.04px] relative shrink-0 text-[#f2f2f2] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap">aawahid321@gmail.com</p>
     </div>
   );
 }

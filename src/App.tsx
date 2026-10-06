@@ -32,7 +32,7 @@ export default function App() {
   );
   const [showPreloader, setShowPreloader] = useState(true);
   const [view, setView] = useState<View>("home");
-  const [currentProjectId, setCurrentProjectId] = useState<string>("voyage-studio");
+  const [currentProjectId, setCurrentProjectId] = useState<string>("noire-coffee");
   const canvasRef = useRef<HTMLDivElement>(null);
 
   const navigateToProject = (id: string) => {
@@ -377,7 +377,7 @@ export default function App() {
     });
 
     // ── HIRE buttons: navbar → scroll to footer; project-page buttons → mailto ──
-    const CONTACT = "mailto:abdul@thevoyage.studio";
+    const CONTACT = "mailto:aawahid321@gmail.com";
     Array.from(canvas.querySelectorAll<HTMLElement>("p"))
       .filter((p) => p.textContent?.trim() === "HIRE")
       .forEach((p) => {
