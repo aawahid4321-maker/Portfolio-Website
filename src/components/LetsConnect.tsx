@@ -274,8 +274,8 @@ export default function LetsConnect() {
           z-index: 1;
           left: 50%; bottom: 0;
           transform: translateX(-50%);
-          width: 1350px;
-          height: 780px;
+          width: 1800px;
+          height: 1040px;
           display: block;
         }
         #connect .lc-stage svg {
@@ -476,7 +476,7 @@ export default function LetsConnect() {
         <span className="mask"><span>Let&apos;s Connect</span></span>
       </h2>
       <p className="lc-para">
-        If you&apos;re looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I&apos;m here to listen and collaborate.
+        Have a project in mind? Let&apos;s create something amazing together.
       </p>
       {/* CONTACT link removed per user request */}
 
@@ -562,20 +562,6 @@ export default function LetsConnect() {
                     </g>
                   </g>
                 </g>
-                <g className="legs" stroke="#ff5a00" strokeWidth="12" strokeLinecap="round">
-                  <line x1="-20" y1="48" x2="-20" y2="80" />
-                  <line x1="20" y1="48" x2="20" y2="80" />
-                </g>
-                <g className="feet">
-                  <g transform="translate(-22,89)">
-                    <path d="M12,-9 L-6,-9 Q-16,-9 -16,0 Q-16,9 -7,9 L10,9 Q16,9 16,3 L16,-3 Q16,-9 12,-9 Z" fill="#ff5a00" />
-                    <path d="M-7,-6 Q-10,0 -7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  </g>
-                  <g transform="translate(22,89)">
-                    <path d="M-12,-9 L6,-9 Q16,-9 16,0 Q16,9 7,9 L-10,9 Q-16,9 -16,3 L-16,-3 Q-16,-9 -12,-9 Z" fill="#ff5a00" />
-                    <path d="M7,-6 Q10,0 7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  </g>
-                </g>
                 <g className="click-sparkles">
                   <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(-52,-52)" />
                   <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(52,-58)" />
@@ -630,20 +616,6 @@ export default function LetsConnect() {
                   <line x1="-50" y1="-2" x2="-62" y2="28" stroke="#ffd60a" strokeWidth="12" strokeLinecap="round" />
                   <circle cx="-62" cy="28" r="9" fill="#ffd60a" />
                 </g>
-                <g className="legs" stroke="#ffd60a" strokeWidth="12" strokeLinecap="round">
-                  <line x1="-20" y1="60" x2="-20" y2="90" />
-                  <line x1="20" y1="60" x2="20" y2="90" />
-                </g>
-                <g className="feet">
-                  <g transform="translate(-22,99)">
-                    <path d="M12,-9 L-6,-9 Q-16,-9 -16,0 Q-16,9 -7,9 L10,9 Q16,9 16,3 L16,-3 Q16,-9 12,-9 Z" fill="#ffd60a" />
-                    <path d="M-7,-6 Q-10,0 -7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  </g>
-                  <g transform="translate(22,99)">
-                    <path d="M-12,-9 L6,-9 Q16,-9 16,0 Q16,9 7,9 L-10,9 Q-16,9 -16,3 L-16,-3 Q-16,-9 -12,-9 Z" fill="#ffd60a" />
-                    <path d="M7,-6 Q10,0 7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  </g>
-                </g>
                 <g className="click-sparkles">
                   <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(-52,-52)" />
                   <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(52,-58)" />
@@ -688,20 +660,6 @@ export default function LetsConnect() {
                   <circle cx="-22" cy="36" r="9" fill="#A58CF4" />
                   <line x1="60" y1="6" x2="68" y2="36" stroke="#A58CF4" strokeWidth="12" strokeLinecap="round" />
                   <circle cx="68" cy="40" r="9" fill="#A58CF4" />
-                </g>
-                <g className="legs" stroke="#A58CF4" strokeWidth="12" strokeLinecap="round">
-                  <line x1="-20" y1="58" x2="-20" y2="88" />
-                  <line x1="20" y1="58" x2="20" y2="88" />
-                </g>
-                <g className="feet">
-                  <g transform="translate(-22,97)">
-                    <path d="M12,-9 L-6,-9 Q-16,-9 -16,0 Q-16,9 -7,9 L10,9 Q16,9 16,3 L16,-3 Q16,-9 12,-9 Z" fill="#A58CF4" />
-                    <path d="M-7,-6 Q-10,0 -7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  </g>
-                  <g transform="translate(22,97)">
-                    <path d="M-12,-9 L6,-9 Q16,-9 16,0 Q16,9 7,9 L-10,9 Q-16,9 -16,3 L-16,-3 Q-16,-9 -12,-9 Z" fill="#A58CF4" />
-                    <path d="M7,-6 Q10,0 7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  </g>
                 </g>
                 <g className="click-sparkles">
                   <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(-52,-52)" />
@@ -752,20 +710,6 @@ export default function LetsConnect() {
                     <line x1="24" y1="-3" x2="24" y2="-11" />
                   </g>
                 </g>
-                <g className="legs" stroke="#ff9f0a" strokeWidth="12" strokeLinecap="round">
-                  <line x1="-15" y1="42" x2="-15" y2="72" />
-                  <line x1="15" y1="42" x2="15" y2="72" />
-                </g>
-                <g className="feet">
-                  <g transform="translate(-17,81)">
-                    <path d="M12,-9 L-6,-9 Q-16,-9 -16,0 Q-16,9 -7,9 L10,9 Q16,9 16,3 L16,-3 Q16,-9 12,-9 Z" fill="#ff9f0a" />
-                    <path d="M-7,-6 Q-10,0 -7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  </g>
-                  <g transform="translate(17,81)">
-                    <path d="M-12,-9 L6,-9 Q16,-9 16,0 Q16,9 7,9 L-10,9 Q-16,9 -16,3 L-16,-3 Q-16,-9 -12,-9 Z" fill="#ff9f0a" />
-                    <path d="M7,-6 Q10,0 7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  </g>
-                </g>
                 <g className="click-sparkles">
                   <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(-40,-35)" />
                   <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(40,-40)" />
@@ -809,20 +753,6 @@ export default function LetsConnect() {
                     <line x1="-10" y1="36" x2="-10" y2="48" />
                     <line x1="-2" y1="36" x2="-2" y2="48" />
                     <line x1="6" y1="36" x2="6" y2="48" />
-                  </g>
-                </g>
-                <g className="legs" stroke="#ff0a8a" strokeWidth="12" strokeLinecap="round">
-                  <line x1="-20" y1="49" x2="-20" y2="79" />
-                  <line x1="20" y1="49" x2="20" y2="79" />
-                </g>
-                <g className="feet">
-                  <g transform="translate(-22,88)">
-                    <path d="M12,-9 L-6,-9 Q-16,-9 -16,0 Q-16,9 -7,9 L10,9 Q16,9 16,3 L16,-3 Q16,-9 12,-9 Z" fill="#ff0a8a" />
-                    <path d="M-7,-6 Q-10,0 -7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  </g>
-                  <g transform="translate(22,88)">
-                    <path d="M-12,-9 L6,-9 Q16,-9 16,0 Q16,9 7,9 L-10,9 Q-16,9 -16,3 L-16,-3 Q-16,-9 -12,-9 Z" fill="#ff0a8a" />
-                    <path d="M7,-6 Q10,0 7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
                   </g>
                 </g>
                 <g className="click-sparkles">
@@ -871,18 +801,6 @@ export default function LetsConnect() {
                   <g stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round">
                     <line x1="-8" y1="2" x2="-2" y2="12" />
                     <line x1="8" y1="2" x2="2" y2="12" />
-                  </g>
-                </g>
-                <g className="legs" stroke="#FAFAFA" strokeWidth="12" strokeLinecap="round">
-                  <line x1="-20" y1="75" x2="-20" y2="105" />
-                  <line x1="20" y1="75" x2="20" y2="105" />
-                </g>
-                <g className="feet">
-                  <g transform="translate(-24,116)">
-                    <ellipse cx="0" cy="8" rx="18" ry="10" fill="#FAFAFA" stroke="#0D0D0D" strokeWidth="2.5" />
-                  </g>
-                  <g className="rect-tap-foot" transform="translate(24,116)">
-                    <ellipse cx="0" cy="8" rx="18" ry="10" fill="#FAFAFA" stroke="#0D0D0D" strokeWidth="2.5" />
                   </g>
                 </g>
                 <g className="click-sparkles">
