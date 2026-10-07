@@ -316,18 +316,18 @@ export default function ProjectHero({
     { label: client, cls: "tag-pink", emoji: tagEmojis[2] },
   ];
 
-  // 8 floating emoji stickers: pick by project type
+  // 4 floating emoji stickers (2 per side): pick by project type
   const lowerType = (type || "").toLowerCase();
   const lowerTitle = (title || "").toLowerCase();
-  let emojiChars = ["🎨", "✨", "🚀", "💡", "🔥", "💜", "👋", "🎯"]; // default
+  let emojiChars = ["🎨", "✨", "🚀", "💡"]; // default
   if (lowerTitle.includes("coffee") || lowerTitle.includes("noir")) {
-    emojiChars = ["☕", "🫘", "✨", "💜", "🔥", "🎨", "💡", "👋"];
+    emojiChars = ["☕", "✨", "🔥", "💜"];
   } else if (lowerType.includes("print") || lowerTitle.includes("brochure")) {
-    emojiChars = ["🖨️", "📐", "✏️", "🎨", "✨", "💡", "🔥", "👋"];
+    emojiChars = ["🖨️", "✏️", "🎨", "✨"];
   } else if (lowerType.includes("brand") || lowerType.includes("logo") || lowerType.includes("identity")) {
-    emojiChars = ["🎨", "✨", "🎯", "💡", "🔥", "💜", "🚀", "👋"];
+    emojiChars = ["🎨", "🎯", "💡", "🚀"];
   }
-  const emojiBgs = ["#A58CF4", "#FF0A8A", "#FFD60A", "#FF5A00", "#FAFAFA", "#A58CF4", "#FF0A8A", "#FFD60A"];
+  const emojiBgs = ["#A58CF4", "#FF0A8A", "#FFD60A", "#FF5A00"];
   const emojiStickers = emojiChars.map((char, i) => {
     const isLeft = i % 2 === 0;
     const offset = 16 + ((i * 11) % 44); // 16-60px outside card edge
@@ -677,7 +677,7 @@ export default function ProjectHero({
           font-size: 1.1em;
         }
 
-        /* ── 8 floating emoji stickers around the card ── */
+        /* ── 4 floating emoji stickers around the card ── */
         .ph-emoji-wrap {
           position: absolute;
           inset: 0;
