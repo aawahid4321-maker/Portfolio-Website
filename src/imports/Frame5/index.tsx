@@ -95,10 +95,18 @@ function Group1() {
   return (
     <div className="absolute contents left-[741.29px] top-[2542.46px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[2542.46px] tracking-[-0.6912px] w-[202.719px]">{`Years Experience `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[960.29px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">2+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[130px] left-[960.29px] text-[#0D0D0D] text-[130px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">2+</p>
       <div className="absolute left-[741.29px] size-[438px] top-[2592.39px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
-          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
+          <defs>
+            <clipPath id="metric-clip-1">
+              <circle cx="219" cy="219" r="218.5" />
+            </clipPath>
+          </defs>
+          <circle cx="219" cy="219" r="218.5" fill="#A58CF4" fillOpacity="0.22" />
+          <g clipPath="url(#metric-clip-1)">
+            <rect x="0" y="0" width="438" height="438" fill="#A58CF4" className="metric-fill" style={{ animationDelay: "0.25s" }} />
+          </g>
         </svg>
       </div>
     </div>
@@ -109,10 +117,18 @@ function Group2() {
   return (
     <div className="absolute contents left-[510.29px] top-[3143.01px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[510.29px] text-[#1e1e1f] text-[23.04px] top-[3143.01px] tracking-[-0.6912px] w-[410.156px]">{`Different Design Industries `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[729.29px] text-white text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">8+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[130px] left-[729.29px] text-[#0D0D0D] text-[130px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">8+</p>
       <div className="absolute left-[510.29px] size-[438px] top-[3192.94px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
-          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
+          <defs>
+            <clipPath id="metric-clip-3">
+              <circle cx="219" cy="219" r="218.5" />
+            </clipPath>
+          </defs>
+          <circle cx="219" cy="219" r="218.5" fill="#FFD60A" fillOpacity="0.22" />
+          <g clipPath="url(#metric-clip-3)">
+            <rect x="0" y="0" width="438" height="438" fill="#FFD60A" className="metric-fill" style={{ animationDelay: "0.55s" }} />
+          </g>
         </svg>
       </div>
     </div>
@@ -123,10 +139,18 @@ function Group3() {
   return (
     <div className="absolute contents left-[1203px] top-[3143.01px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[1203px] text-[#1e1e1f] text-[23.04px] top-[3143.01px] tracking-[-0.6912px] w-[264.3px]">{`Agencies Worked With `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1422px] text-white text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">5+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[130px] left-[1422px] text-[#0D0D0D] text-[130px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">5+</p>
       <div className="absolute left-[1203px] size-[438px] top-[3192.94px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
-          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
+          <defs>
+            <clipPath id="metric-clip-4">
+              <circle cx="219" cy="219" r="218.5" />
+            </clipPath>
+          </defs>
+          <circle cx="219" cy="219" r="218.5" fill="#FF5A00" fillOpacity="0.22" />
+          <g clipPath="url(#metric-clip-4)">
+            <rect x="0" y="0" width="438" height="438" fill="#FF5A00" className="metric-fill" style={{ animationDelay: "0.7s" }} />
+          </g>
         </svg>
       </div>
     </div>
@@ -339,10 +363,18 @@ function Group() {
   return (
     <div className="absolute contents left-[1434px] top-[2542.46px]">
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[1434px] text-[#1e1e1f] text-[23.04px] top-[2542.46px] tracking-[-0.6912px] w-[202.719px]">Projects Completed</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1652.5px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">50+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[130px] left-[1652.5px] text-[#0D0D0D] text-[130px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">50+</p>
       <div className="absolute left-[1434px] size-[438px] top-[2592.39px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
-          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
+          <defs>
+            <clipPath id="metric-clip-2">
+              <circle cx="219" cy="219" r="218.5" />
+            </clipPath>
+          </defs>
+          <circle cx="219" cy="219" r="218.5" fill="#FF0A8A" fillOpacity="0.22" />
+          <g clipPath="url(#metric-clip-2)">
+            <rect x="0" y="0" width="438" height="438" fill="#FF0A8A" className="metric-fill" style={{ animationDelay: "0.4s" }} />
+          </g>
         </svg>
       </div>
     </div>
@@ -582,6 +614,14 @@ export default function Frame() {
           from { scale: 0.7; opacity: 0; }
           to { scale: 1; opacity: 1; }
         }
+        /* Metric circles: liquid fill rising from bottom to top */
+        .metric-fill {
+          animation: metricFill 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+        @keyframes metricFill {
+          from { transform: translateY(438px); }
+          to { transform: translateY(0); }
+        }
         /* Metric circles: gentle continuous pulse */
         .metric-pulse {
           animation: metricPulse 3s ease-in-out 1s infinite;
@@ -592,7 +632,7 @@ export default function Frame() {
           50% { scale: 1.03; }
         }
         @media (prefers-reduced-motion: reduce) {
-          .metric-enter, .metric-pulse { animation: none; }
+          .metric-enter, .metric-pulse, .metric-fill { animation: none; }
         }
       `}</style>
       <Container />
