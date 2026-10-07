@@ -32,6 +32,7 @@ export default function ProjectHero({
   const logoEyesRef = useRef<SVGGElement>(null);
   const workLinkRef = useRef<HTMLAnchorElement>(null);
   const aboutLinkRef = useRef<HTMLAnchorElement>(null);
+  const linksWrapRef = useRef<HTMLDivElement>(null);
   const menuOpen = useRef(false);
 
   // close the mobile menu (used by dropdown links)
@@ -89,24 +90,30 @@ export default function ProjectHero({
       requestAnimationFrame(() => nav.classList.add("is-entering"));
     }
 
-    /* ── nav: sliding highlight ── */
+    /* ── nav: sliding highlight (offsetLeft/offsetWidth — adapts to size changes) ── */
     const highlight = highlightRef.current;
+    const linksWrap = linksWrapRef.current;
     const linkFor = (name: string | undefined) =>
       name === "work" ? workLinkRef.current : name === "about" ? aboutLinkRef.current : null;
     const moveHighlight = (el: HTMLElement | null) => {
-      if (!highlight || !nav || reduceMotion) return;
+      if (!highlight || !nav || !linksWrap || reduceMotion) return;
       if (!el) {
         highlight.classList.remove("is-visible");
         return;
       }
-      const navRect = nav.getBoundingClientRect();
-      const elRect = el.getBoundingClientRect();
-      highlight.style.width = `${elRect.width}px`;
-      highlight.style.transform = `translateX(${elRect.left - navRect.left}px)`;
+      // offsetLeft is relative to .pp-links; add its offset for nav-relative position
+      const x = linksWrap.offsetLeft + el.offsetLeft;
+      highlight.style.width = `${el.offsetWidth}px`;
+      highlight.style.transform = `translateX(${x}px)`;
       highlight.classList.add("is-visible");
     };
     const activeEl = linkFor(activeLink);
     const highlightInit = window.setTimeout(() => moveHighlight(activeEl), 100);
+    // recompute on font load and after entrance (layout may shift)
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => moveHighlight(activeEl)).catch(() => {});
+    }
+    const highlightAfterEnter = window.setTimeout(() => moveHighlight(activeEl), 900);
     const linkEls = [workLinkRef.current, aboutLinkRef.current].filter(Boolean) as HTMLAnchorElement[];
     const onLinkEnter = (e: Event) => moveHighlight(e.currentTarget as HTMLElement);
     const onLinkLeave = () => moveHighlight(activeEl);
@@ -198,6 +205,7 @@ export default function ProjectHero({
       document.removeEventListener("click", onDocClick);
       window.removeEventListener("resize", onLinkLeave);
       window.clearTimeout(highlightInit);
+      window.clearTimeout(highlightAfterEnter);
       window.clearTimeout(blinkTimer);
       window.clearTimeout(wiggleTimer);
       cancelAnimationFrame(raf);
@@ -220,7 +228,7 @@ export default function ProjectHero({
   return (
     <>
       <style>{`
-        html { scroll-padding-top: 96px; } /* anchors never hide under the floating pill nav */
+        html { scroll-padding-top: 112px; } /* anchors never hide under the floating pill nav */
         .ph-hero {
           --ph-purple-light: #A58CF4;
           --ph-pink: #ff0a8a;
@@ -298,26 +306,41 @@ export default function ProjectHero({
           --pp-yellow: #FFD60A;
           --pp-white: #FAFAFA;
           --pp-black: #0D0D0D;
+          /* size variables — tweak in one place */
+          --nav-h: 76px;
+          --nav-font: 18px;
+          --nav-logo: 56px;
+          --nav-pad: 10px;
+          --nav-gap: 8px;
           position: fixed;
-          top: 18px;
+          top: 22px;
           left: 50%;
           transform: translateX(-50%);
           z-index: 1000;
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: var(--nav-gap);
           width: fit-content;
-          max-width: calc(100% - 32px);
-          height: 60px;
-          padding: 8px;
+          max-width: min(900px, calc(100% - 32px));
+          height: var(--nav-h);
+          padding: var(--nav-pad);
           background: var(--pp-black); /* solid, no transparency */
-          border: 2px solid var(--pp-black);
+          border: 2.5px solid var(--pp-black);
           border-radius: 999px;
           box-shadow:
-            0 0 0 2px var(--pp-white), /* outer white ring */
-            4px 4px 0 var(--pp-purple); /* hard offset shadow, playful sticker */
+            0 0 0 2.5px var(--pp-white), /* outer white ring */
+            6px 6px 0 var(--pp-purple); /* hard offset shadow, playful sticker */
           white-space: nowrap;
           transition: transform 0.3s ease;
+        }
+        /* large screens: scale up a bit more */
+        @media (min-width: 1600px) {
+          .ph-nav { --nav-h: 84px; --nav-font: 20px; --nav-logo: 62px; }
+        }
+        /* tablet: slightly smaller */
+        @media (min-width: 768px) and (max-width: 1024px) {
+          .ph-nav { --nav-h: 68px; --nav-font: 16px; }
+          .pp-links a { padding: 12px 18px; }
         }
         /* scroll: shrink after 120px, hide on fast scroll down */
         .ph-nav.is-scrolled { transform: translateX(-50%) scale(0.94); }
@@ -344,9 +367,9 @@ export default function ProjectHero({
         /* sliding highlight behind hovered/active link */
         .pp-highlight {
           position: absolute;
-          top: 8px;
+          top: var(--nav-pad);
           left: 0;
-          height: calc(100% - 16px);
+          height: calc(var(--nav-h) - var(--nav-pad) * 2); /* 56px on desktop */
           width: 0;
           background: var(--pp-purple);
           border-radius: 999px;
@@ -358,51 +381,52 @@ export default function ProjectHero({
           opacity: 0;
         }
         .pp-highlight.is-visible { opacity: 1; }
-        /* logo: 44px round button with cartoon face */
+        /* logo: round button with cartoon face */
         .pp-logo {
           position: relative;
           z-index: 1;
-          width: 44px;
-          height: 44px;
-          min-width: 44px;
-          min-height: 44px;
+          width: var(--nav-logo);
+          height: var(--nav-logo);
+          min-width: var(--nav-logo);
+          min-height: var(--nav-logo);
           border-radius: 50%;
           background: var(--pp-purple);
-          border: none;
+          border: 2px solid var(--pp-black);
           cursor: pointer;
           padding: 0;
           display: flex;
           align-items: center;
           justify-content: center;
           transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+          flex-shrink: 0;
         }
         .pp-logo:hover { transform: translateY(-4px) rotate(-8deg); }
-        .pp-logo svg { width: 32px; height: 32px; display: block; }
+        .pp-logo svg { width: 72%; height: 72%; display: block; }
         .pp-logo .pp-eyes { transition: transform 0.12s ease-out; }
         .pp-logo .pp-eyes.is-blinking { transform: scaleY(0.1); }
         .pp-logo .pp-eyes { transform-box: fill-box; transform-origin: center; }
-        /* links: Geist 500, 15px, normal case */
+        /* links: Geist 500, normal case */
         .pp-links {
           position: relative;
           z-index: 1;
           display: flex;
           align-items: center;
-          gap: 2px;
+          gap: 6px;
         }
         .pp-links a {
           position: relative;
           z-index: 1;
           font-family: "Geist", system-ui, sans-serif;
           font-weight: 500;
-          font-size: 15px;
+          font-size: var(--nav-font);
           color: var(--pp-white);
           cursor: pointer;
-          padding: 10px 16px;
+          padding: 14px 24px;
           border-radius: 999px;
           white-space: nowrap;
           text-decoration: none;
           transition: color 0.2s ease;
-          min-height: 44px;
+          min-height: 48px;
           display: inline-flex;
           align-items: center;
         }
@@ -414,20 +438,23 @@ export default function ProjectHero({
           z-index: 1;
           font-family: "Geist", system-ui, sans-serif;
           font-weight: 600;
-          font-size: 15px;
+          font-size: var(--nav-font);
           color: var(--pp-black);
           background: var(--pp-white);
           border: none;
           border-radius: 999px;
-          padding: 12px 22px;
+          padding: 16px 30px;
+          height: 56px;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
           gap: 6px;
           white-space: nowrap;
-          min-height: 44px;
+          min-height: 48px;
+          flex-shrink: 0;
           transition: background 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
         }
+        .pp-hire .pp-arrow { font-size: 18px; }
         .pp-hire:hover {
           background: var(--pp-yellow);
           transform: scale(1.05);
@@ -534,8 +561,16 @@ export default function ProjectHero({
 
         /* responsive */
         @media (max-width: 768px) {
-          /* mobile: compact pill — logo, menu button, hire */
-          .ph-nav { top: 12px; height: 56px; padding: 6px; gap: 4px; }
+          /* mobile: compact pill — logo, menu button, hire (48px tap targets) */
+          .ph-nav {
+            --nav-h: 64px;
+            --nav-logo: 48px;
+            --nav-font: 16px;
+            top: 12px;
+            width: calc(100% - 24px);
+            padding: 8px;
+            gap: 6px;
+          }
           .pp-links { display: none; }
           .pp-menu-btn {
             display: inline-flex;
@@ -553,7 +588,8 @@ export default function ProjectHero({
             border-radius: 999px;
             padding: 10px 18px;
             cursor: pointer;
-            min-height: 44px;
+            min-height: 48px;
+            height: 48px;
             white-space: nowrap;
           }
           /* hamburger morphs to X */
@@ -581,7 +617,7 @@ export default function ProjectHero({
           .pp-menu-btn[aria-expanded="true"] .pp-burger { background: transparent; }
           .pp-menu-btn[aria-expanded="true"] .pp-burger::before { transform: translateY(5px) rotate(45deg); }
           .pp-menu-btn[aria-expanded="true"] .pp-burger::after { transform: translateY(-5px) rotate(-45deg); }
-          .pp-hire { padding: 10px 16px; font-size: 14px; }
+          .pp-hire { padding: 12px 20px; font-size: 16px; height: 48px; min-height: 48px; }
           /* dropdown under the pill */
           .pp-mobile-menu {
             display: block;
@@ -615,13 +651,13 @@ export default function ProjectHero({
             z-index: 1;
             font-family: "Geist", system-ui, sans-serif;
             font-weight: 600;
-            font-size: 22px;
+            font-size: 24px;
             color: var(--pp-white);
             padding: 14px 20px;
             border-radius: 18px;
             cursor: pointer;
             text-decoration: none;
-            min-height: 44px;
+            min-height: 56px;
             transition: background 0.2s ease, color 0.2s ease;
           }
           .pp-mobile-menu a:hover, .pp-mobile-menu a:focus-visible {
@@ -679,8 +715,8 @@ export default function ProjectHero({
             <svg viewBox="0 0 44 44" aria-hidden="true">
               <circle cx="22" cy="22" r="20" fill="#A58CF4" />
               <g ref={logoEyesRef} className="pp-eyes" fill="#0D0D0D">
-                <circle cx="16" cy="19" r="2.5" />
-                <circle cx="28" cy="19" r="2.5" />
+                <circle cx="16" cy="19" r="3" />
+                <circle cx="28" cy="19" r="3" />
               </g>
               <path
                 d="M16,27 Q22,31 28,27"
@@ -692,7 +728,7 @@ export default function ProjectHero({
             </svg>
           </a>
           {/* middle links */}
-          <div className="pp-links">
+          <div ref={linksWrapRef} className="pp-links">
             <a
               ref={workLinkRef}
               onClick={onNavigateWork}
