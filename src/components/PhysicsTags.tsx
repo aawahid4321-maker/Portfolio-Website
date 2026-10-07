@@ -68,31 +68,69 @@ const buildPalette = (count: number): PillDef[] => {
 const GEIST_WORDS = ["LOGO", "BRANDING", "IDENTITY", "PACKAGING", "PRINT", "DESIGN", "TYPOGRAPHY", "SOCIAL MEDIA", "GUIDELINES", "STRATEGY"];
 const ZILLA_WORDS = ["LOGO", "IDEAS", "hello!", "cool stuff", "made with love", "brand story", "let's talk", "say hi"];
 
+/* ── PART B: emoji stickers ── */
+const EMOJI_LIST = ["🎨", "✏️", "✨", "🚀", "💡", "🔥", "💜", "👋", "🎯", "📐", "🖌️", "⭐", "😎", "🤩", "🥳", "😍", "🤯", "🫶", "🍕", "☕", "🎧", "📸", "🧠", "🌈"];
+const EMOJI_FILL = [COLORS.purpleLight, COLORS.pink, COLORS.yellow, COLORS.orange, COLORS.softWhite] as const;
+
 const TAG_COUNT_DESKTOP = 26;
 const TAG_COUNT_MOBILE = 14;
-const SHAPE_COUNT_DESKTOP = 16;
-const SHAPE_COUNT_MOBILE = 8;
+const SHAPE_COUNT_DESKTOP = 8;   // reduced to make room for emoji
+const SHAPE_COUNT_MOBILE = 4;
+const EMOJI_COUNT_DESKTOP = 24;
+const EMOJI_COUNT_MOBILE = 12;
+const FACE_COUNT = 8;            // cartoon faces (both desktop + mobile)
 const FLOOR_PADDING = 96; // floor sits 96px above section bottom (clear of CONTACT pill)
-/* (push radius is defined inline in the loop as PUSH_R = 150) */
 
 interface PTag {
   word: string;
-  zilla: boolean; // true = Zilla Slab, false = Geist
-  font: string;   // cached canvas font string
+  zilla: boolean;
+  font: string;
   w: number; h: number;
   color: PillDef;
   body: Matter.Body | null;
-  // interpolated draw state (smooth on 120Hz screens)
   dx: number; dy: number; da: number;
-  hoverT: number; // 0..1 hover scale lerp
+  hoverT: number;
 }
 interface PShape {
-  kind: "circle" | "face" | "ring" | "star" | "square" | "dome" | "triangle" | "plus" | "squiggle";
+  kind: "circle" | "ring" | "star" | "square" | "dome" | "triangle" | "plus" | "squiggle";
   size: number;
   color: string;
   body: Matter.Body | null;
   dx: number; dy: number; da: number;
   hoverT: number;
+}
+/* PART B: plain system-emoji sticker */
+interface PEmoji {
+  char: string;
+  size: number; // 52–72px diameter
+  color: string;
+  baked: HTMLCanvasElement | null; // pre-rendered emoji glyph
+  body: Matter.Body | null;
+  dx: number; dy: number; da: number;
+  hoverT: number;
+  squashMs: number; // landing squash remaining
+  boingMs: number;  // click boing remaining
+  sparkles: Array<{ x: number; y: number; vx: number; vy: number; life: number; color: string }>;
+}
+/* PART C: cartoon face sticker */
+type FaceMood = "happy" | "laughing" | "surprised" | "cool" | "love" | "sleepy" | "wink" | "silly";
+interface PFace {
+  mood: FaceMood;      // base mood (permanent)
+  cur: FaceMood;       // current displayed mood (temp overrides)
+  curUntil: number;     // timestamp when temp mood expires
+  size: number;        // 60–84px
+  color: string;
+  body: Matter.Body | null;
+  dx: number; dy: number; da: number;
+  hoverT: number;
+  blinkAt: number;     // next blink timestamp
+  blinkMs: number;     // blink in progress remaining
+  squashMs: number;    // landing squash remaining
+  boingMs: number;     // click boing remaining
+  wiggleAt: number;    // next idle wiggle timestamp
+  grabbed: boolean;
+  laughUntil: number;  // post-release laugh timestamp
+  sparkles: Array<{ x: number; y: number; vx: number; vy: number; life: number; color: string }>;
 }
 
 export default function PhysicsTags() {
@@ -104,14 +142,15 @@ export default function PhysicsTags() {
     const section = sectionRef.current;
     const canvas = canvasRef.current;
     if (!section || !canvas || startedRef.current) return;
-    startedRef.current = true; // init once; guards Strict Mode double-mount
+    startedRef.current = true;
 
     const ctx = canvas.getContext("2d")!;
     const isMobile = window.innerWidth < 768;
     const tagCount = isMobile ? TAG_COUNT_MOBILE : TAG_COUNT_DESKTOP;
     const shapeCount = isMobile ? SHAPE_COUNT_MOBILE : SHAPE_COUNT_DESKTOP;
+    const emojiCount = isMobile ? EMOJI_COUNT_MOBILE : EMOJI_COUNT_DESKTOP;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const DPR = Math.min(window.devicePixelRatio || 1, 2); // cap DPR at 2
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
     let W = 0, H = 0;
     const resizeCanvas = () => {
@@ -121,13 +160,12 @@ export default function PhysicsTags() {
       canvas.height = Math.round(H * DPR);
       canvas.style.width = `${W}px`;
       canvas.style.height = `${H}px`;
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0); // draw in CSS px
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     };
     resizeCanvas();
 
-    /* ── Tag defs: ~65% Geist / ~35% Zilla, exact color split via shuffled list ── */
-    const palette = buildPalette(tagCount); // 24/20/17/17/14/8, no adjacent dupes
-    // ~35% Zilla spread evenly through the list
+    /* ── Tags ── */
+    const palette = buildPalette(tagCount);
     const zillaCount = Math.round(tagCount * 0.35);
     const zillaAt = new Set<number>();
     const zStep = tagCount / zillaCount;
@@ -136,118 +174,150 @@ export default function PhysicsTags() {
       if (zillaAt.has(idx - 1) || zillaAt.has(idx + 1)) idx = Math.min(tagCount - 1, idx + 2);
       zillaAt.add(Math.max(0, Math.min(tagCount - 1, idx)));
     }
-
     const tags: PTag[] = [];
     for (let i = 0; i < tagCount; i++) {
       const zilla = zillaAt.has(i);
-      const word = zilla
-        ? ZILLA_WORDS[i % ZILLA_WORDS.length]
-        : GEIST_WORDS[i % GEIST_WORDS.length];
-      // Geist 600 20px uppercase + 0.02em spacing; Zilla Slab 700 22px
-      const font = zilla
-        ? `700 22px "Zilla Slab", Rockwell, Georgia, serif`
-        : `600 20px "Geist", system-ui, sans-serif`;
-      tags.push({
-        word, zilla, font, w: 0, h: 0,
-        color: palette[i],
-        body: null, dx: 0, dy: 0, da: 0, hoverT: 0,
-      });
+      const word = zilla ? ZILLA_WORDS[i % ZILLA_WORDS.length] : GEIST_WORDS[i % GEIST_WORDS.length];
+      const font = zilla ? `700 22px "Zilla Slab", Rockwell, Georgia, serif` : `600 20px "Geist", system-ui, sans-serif`;
+      tags.push({ word, zilla, font, w: 0, h: 0, color: palette[i], body: null, dx: 0, dy: 0, da: 0, hoverT: 0 });
     }
 
-    /* ── Shapes: no text, same palette (no plain black shapes) ──────────── */
-    const SHAPE_KINDS: PShape["kind"][] = [
-      "circle", "circle", "circle", "face", "face", "ring",
-      "star", "star", "star", "square", "square", "dome", "dome",
-      "triangle", "plus", "squiggle",
-    ];
-    /* shapes: same palette as pills; 3-4 orange shapes; stars in yellow/orange/pink */
+    /* ── Plain shapes (reduced counts) ── */
+    const SHAPE_KINDS: PShape["kind"][] = ["circle", "circle", "ring", "star", "square", "dome", "triangle", "plus"];
     const shapePalette = buildPalette(shapeCount);
     const STAR_COLORS = [COLORS.yellow, COLORS.orange, COLORS.pink];
     const shapes: PShape[] = [];
-    let orangeShapes = 0;
     for (let i = 0; i < shapeCount; i++) {
       const kind = SHAPE_KINDS[i % SHAPE_KINDS.length];
-      const size = Math.min(28 + Math.random() * 28, 64); // 28–56px
-      let color: string;
-      if (kind === "star") {
-        color = STAR_COLORS[i % STAR_COLORS.length];
-      } else if (orangeShapes < 4 && shapePalette[i].bg !== COLORS.orange && i % 4 === 1) {
-        color = COLORS.orange; orangeShapes++; // ensure 3-4 orange shapes
-      } else {
-        color = shapePalette[i].bg;
-        if (color === COLORS.jetBlack) color = COLORS.purpleLight; // no plain black shapes
-      }
+      const size = 28 + Math.random() * 28;
+      let color = kind === "star" ? STAR_COLORS[i % STAR_COLORS.length] : shapePalette[i].bg;
+      if (color === COLORS.jetBlack) color = COLORS.purpleLight;
       shapes.push({ kind, size, color, body: null, dx: 0, dy: 0, da: 0, hoverT: 0 });
+    }
+
+    /* ── PART B: emoji stickers ── */
+    const emojis: PEmoji[] = [];
+    {
+      const fills = [...EMOJI_FILL];
+      // shuffle emoji order
+      const order = EMOJI_LIST.map((_, i) => i);
+      for (let i = order.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [order[i], order[j]] = [order[j], order[i]];
+      }
+      let lastFill = "";
+      for (let i = 0; i < emojiCount; i++) {
+        const char = EMOJI_LIST[order[i % order.length]];
+        const size = 52 + Math.random() * 20; // 52–72px
+        // never two same fills touching in spawn order
+        let fill = fills[i % fills.length];
+        if (fill === lastFill) fill = fills[(i + 2) % fills.length];
+        lastFill = fill;
+        emojis.push({ char, size, color: fill, baked: null, body: null, dx: 0, dy: 0, da: 0, hoverT: 0, squashMs: 0, boingMs: 0, sparkles: [] });
+      }
+    }
+    /* pre-render each emoji glyph once (after fonts ready) */
+    const EMOJI_FONT = `"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
+    const bakeEmojis = () => {
+      emojis.forEach((e) => {
+        if (e.baked) return;
+        const px = Math.round(e.size * 0.55); // glyph ~55% of diameter
+        const c = document.createElement("canvas");
+        c.width = Math.ceil(px * DPR * 1.4);
+        c.height = Math.ceil(px * DPR * 1.4);
+        const g = c.getContext("2d")!;
+        g.scale(DPR, DPR);
+        g.font = `${px}px ${EMOJI_FONT}`;
+        g.textAlign = "center";
+        g.textBaseline = "middle";
+        g.fillText(e.char, c.width / DPR / 2, c.height / DPR / 2 + px * 0.05);
+        e.baked = c;
+      });
+    };
+
+    /* ── PART C: cartoon faces ── */
+    const FACE_MOODS: FaceMood[] = ["happy", "laughing", "surprised", "cool", "love", "sleepy", "wink", "silly"];
+    const faces: PFace[] = [];
+    {
+      const fills = [COLORS.yellow, COLORS.pink, COLORS.orange, COLORS.purpleLight, COLORS.softWhite, COLORS.yellow, COLORS.pink, COLORS.orange];
+      for (let i = 0; i < FACE_COUNT; i++) {
+        const size = 60 + Math.random() * 24; // 60–84px
+        faces.push({
+          mood: FACE_MOODS[i], cur: FACE_MOODS[i], curUntil: 0,
+          size, color: fills[i],
+          body: null, dx: 0, dy: 0, da: 0, hoverT: 0,
+          blinkAt: performance.now() + 3000 + Math.random() * 3000,
+          blinkMs: 0, squashMs: 0, boingMs: 0,
+          wiggleAt: performance.now() + 4000 + Math.random() * 4000,
+          grabbed: false, laughUntil: 0, sparkles: [],
+        });
+      }
     }
 
     const floorY = () => H - FLOOR_PADDING;
 
-    /* ── Engine: physics only, fixed timestep ───────────────────────────── */
+    /* ── Engine ── */
     const engine = Matter.Engine.create({ enableSleeping: false });
     engine.gravity.y = 1.2;
     engine.positionIterations = 6;
     engine.velocityIterations = 4;
 
-    const wallOpts: Matter.IBodyDefinition = {
-      isStatic: true, restitution: 0.5, friction: 0.2, render: { visible: false },
-    };
-    const THICK = 200; // thick invisible walls
+    const wallOpts: Matter.IBodyDefinition = { isStatic: true, restitution: 0.5, friction: 0.2, render: { visible: false } };
+    const THICK = 200;
     let walls: Matter.Body[] = [];
     const buildWalls = () => {
       walls = [
-        Matter.Bodies.rectangle(W / 2, floorY() + THICK / 2, W + THICK * 2, THICK, wallOpts), // floor
-        Matter.Bodies.rectangle(W / 2, -THICK * 3, W + THICK * 2, THICK, wallOpts),          // high ceiling
-        Matter.Bodies.rectangle(-THICK / 2, H / 2, THICK, H * 5, wallOpts),                  // left
-        Matter.Bodies.rectangle(W + THICK / 2, H / 2, THICK, H * 5, wallOpts),                // right
+        Matter.Bodies.rectangle(W / 2, floorY() + THICK / 2, W + THICK * 2, THICK, wallOpts),
+        Matter.Bodies.rectangle(W / 2, -THICK * 3, W + THICK * 2, THICK, wallOpts),
+        Matter.Bodies.rectangle(-THICK / 2, H / 2, THICK, H * 5, wallOpts),
+        Matter.Bodies.rectangle(W + THICK / 2, H / 2, THICK, H * 5, wallOpts),
       ];
       Matter.Composite.add(engine.world, walls);
     };
 
-    /* ── Measure text after BOTH fonts load, then build ─────────────────── */
     const GEIST_FONT = `600 20px "Geist", system-ui, sans-serif`;
     const ZILLA_FONT = `700 22px "Zilla Slab", Rockwell, Georgia, serif`;
     let ready = false;
-    let hasDropped = false; // drop ONCE, never again
+    let hasDropped = false;
 
     const measureAndBuild = () => {
       if (ready) return;
       tags.forEach((t) => {
         ctx.font = t.zilla ? ZILLA_FONT : GEIST_FONT;
         const raw = ctx.measureText(t.word).width;
-        t.h = 56; // 52–60px pill height
-        // width = text + 56px; Geist gets manual ~0.02em letter-spacing
+        t.h = 56;
         t.w = raw + 56 + (t.zilla ? 0 : t.word.length * 0.4);
       });
       buildWalls();
       ready = true;
-      // drop + loop are driven by the observers (fired on observe);
-      // nothing to do here — boot() wires them up once ready
     };
 
     const timeouts: number[] = [];
-    /* drop body options: matches the specified drop feel */
     const DROP_OPTS = { restitution: 0.5, friction: 0.2, frictionAir: 0.012, density: 0.0009 };
+
+    const spawnBody = (x: number, y: number, w: number, h: number, circleR: number | null) => {
+      const body = circleR !== null
+        ? Matter.Bodies.circle(x, y, circleR, DROP_OPTS)
+        : Matter.Bodies.rectangle(x, y, w, h, { chamfer: { radius: h / 2 }, ...DROP_OPTS });
+      Matter.Body.setAngle(body, (Math.random() - 0.5) * 0.6);
+      Matter.Body.setVelocity(body, { x: (Math.random() - 0.5) * 3, y: 8 + Math.random() * 6 });
+      Matter.Sleeping.set(body, false);
+      Matter.Composite.add(engine.world, body);
+      return body;
+    };
+
     const spawnTag = (i: number, x: number, y: number) => {
       const t = tags[i];
-      const body = Matter.Bodies.rectangle(x, y, t.w, t.h, {
-        chamfer: { radius: t.h / 2 }, // collider matches the full-round pill
-        ...DROP_OPTS,
-      });
-      Matter.Body.setAngle(body, (Math.random() - 0.5) * 0.6);
-      // start already moving downward so the drop reads as instant
-      Matter.Body.setVelocity(body, { x: (Math.random() - 0.5) * 3, y: 8 + Math.random() * 6 });
-      Matter.Sleeping.set(body, false); // FIX: never let bodies sleep
-      t.body = body;
-      t.dx = x; t.dy = y; t.da = body.angle;
-      Matter.Composite.add(engine.world, body);
+      const body = spawnBody(x, y, t.w, t.h, null);
+      t.body = body; t.dx = x; t.dy = y; t.da = body.angle;
     };
     const spawnShape = (i: number, x: number, y: number) => {
       const s = shapes[i];
-      const o = { ...DROP_OPTS };
       const r = s.size / 2;
       let body: Matter.Body;
+      const o = { ...DROP_OPTS };
       switch (s.kind) {
-        case "circle": case "face": case "ring": case "dome":
+        case "circle": case "ring": case "dome":
           body = Matter.Bodies.circle(x, y, r, o); break;
         case "star":
           body = Matter.Bodies.polygon(x, y, 4, r, o); break;
@@ -257,28 +327,41 @@ export default function PhysicsTags() {
           body = Matter.Bodies.rectangle(x, y, s.size, s.size, { ...o, chamfer: { radius: 10 } }); break;
         case "plus":
           body = Matter.Bodies.rectangle(x, y, s.size, s.size * 0.36, o); break;
-        default: // squiggle
+        default:
           body = Matter.Bodies.rectangle(x, y, s.size * 1.6, 14, { ...o, chamfer: { radius: 7 } }); break;
       }
-      Matter.Body.setAngle(body!, Math.random() * Math.PI);
-      Matter.Body.setVelocity(body!, { x: (Math.random() - 0.5) * 3, y: 8 + Math.random() * 6 });
-      Matter.Sleeping.set(body!, false); // FIX: never let bodies sleep
-      s.body = body!;
-      s.dx = x; s.dy = y; s.da = body!.angle;
-      Matter.Composite.add(engine.world, body!);
+      Matter.Body.setAngle(body, Math.random() * Math.PI);
+      Matter.Body.setVelocity(body, { x: (Math.random() - 0.5) * 3, y: 8 + Math.random() * 6 });
+      Matter.Sleeping.set(body, false);
+      s.body = body; s.dx = x; s.dy = y; s.da = body.angle;
+      Matter.Composite.add(engine.world, body);
+    };
+    /* PART B: emoji sticker spawn (circle collider) */
+    const spawnEmoji = (i: number, x: number, y: number) => {
+      const e = emojis[i];
+      const body = spawnBody(x, y, 0, 0, e.size / 2);
+      e.body = body; e.dx = x; e.dy = y; e.da = body.angle;
+    };
+    /* PART C: cartoon face spawn (circle collider) */
+    const spawnFace = (i: number, x: number, y: number) => {
+      const f = faces[i];
+      const body = spawnBody(x, y, 0, 0, f.size / 2);
+      f.body = body; f.dx = x; f.dy = y; f.da = body.angle;
     };
 
-    /* ── Drop state ───────────────────────────────────────────────────── */
-    let hasSettled = false; // pile fully calm (used to gate fast-forward)
-    const TOTAL_BODIES = tagCount + shapeCount;
+    /* ── Drop state ── */
+    let hasSettled = false;
+    const TOTAL_BODIES = tagCount + shapeCount + emojiCount + FACE_COUNT;
 
-    /* loose grid across full width, 40–400px above section top, 3 rows */
+    /* wave release: from CENTER outward over ~0.6s */
     const buildSpawnList = () => {
-      const list: Array<{ isTag: boolean; i: number }> = [];
-      const maxLen = Math.max(tags.length, shapes.length);
+      const list: Array<{ kind: "tag" | "shape" | "emoji" | "face"; i: number }> = [];
+      const maxLen = Math.max(tags.length, shapes.length, emojis.length, faces.length);
       for (let k = 0; k < maxLen; k++) {
-        if (k < tags.length) list.push({ isTag: true, i: k });
-        if (k < shapes.length) list.push({ isTag: false, i: k });
+        if (k < tags.length) list.push({ kind: "tag", i: k });
+        if (k < shapes.length) list.push({ kind: "shape", i: k });
+        if (k < emojis.length) list.push({ kind: "emoji", i: k });
+        if (k < faces.length) list.push({ kind: "face", i: k });
       }
       const rows = 3;
       const cols = Math.ceil(list.length / rows);
@@ -286,12 +369,57 @@ export default function PhysicsTags() {
         const row = Math.floor(idx / cols);
         const col = idx % cols;
         const x = W * 0.06 + (W * 0.88 * (col + 0.15 + Math.random() * 0.7)) / cols;
-        const y = -50 - row * 130 - Math.random() * 100; // rows ≈ 50–150 / 180–280 / 310–410
+        const y = -50 - row * 130 - Math.random() * 100;
         return { ...item, x, y };
       });
     };
 
-    /* one fixed physics step, split into 2 sub-steps for stability */
+    /* ── PART A: scroll lock ── */
+    let locked = false;
+    let lockStart = 0;
+    let lockTimeout = 0;
+    const SCROLL_KEYS = new Set([" ", "Spacebar", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "End", "Home"]);
+    const blockScrollEvent = (e: Event) => e.preventDefault();
+    const blockScrollKeys = (e: KeyboardEvent) => { if (SCROLL_KEYS.has(e.key)) e.preventDefault(); };
+    // Lenis / smooth-scroll library detection (fallback to native)
+    const getLenis = (): { scrollTo: (t: number, o?: object) => void; stop: () => void; start: () => void } | null => {
+      const w = window as unknown as { lenis?: { scrollTo: (t: number, o?: object) => void; stop: () => void; start: () => void } };
+      return w.lenis || null;
+    };
+
+    const lockScroll = () => {
+      if (locked || reduceMotion) return;
+      locked = true;
+      lockStart = performance.now();
+      const lenis = getLenis();
+      if (lenis) { try { lenis.stop(); } catch { /* noop */ } }
+      const html = document.documentElement;
+      const scrollbarW = window.innerWidth - html.clientWidth;
+      html.classList.add("is-locked");
+      if (scrollbarW > 0) document.body.style.paddingRight = `${scrollbarW}px`;
+      window.addEventListener("wheel", blockScrollEvent, { passive: false });
+      window.addEventListener("touchmove", blockScrollEvent, { passive: false });
+      window.addEventListener("keydown", blockScrollKeys, { passive: false });
+      console.log("lock start"); // DEBUG (temporary)
+      const failsafe = isMobile ? 2500 : 3500;
+      lockTimeout = window.setTimeout(() => unlockScroll("timeout"), failsafe);
+    };
+    type UnlockReason = "settled" | "timeout" | "hidden" | "error";
+    const unlockScroll = (reason: UnlockReason) => {
+      if (!locked) return;
+      locked = false;
+      window.clearTimeout(lockTimeout);
+      const lenis = getLenis();
+      if (lenis) { try { lenis.start(); } catch { /* noop */ } }
+      document.documentElement.classList.remove("is-locked");
+      document.body.style.paddingRight = "";
+      window.removeEventListener("wheel", blockScrollEvent);
+      window.removeEventListener("touchmove", blockScrollEvent);
+      window.removeEventListener("keydown", blockScrollKeys);
+      console.log("unlock after", Math.round(performance.now() - lockStart), "ms", "reason:", reason); // DEBUG (temporary)
+    };
+
+    /* one fixed physics step, 2 sub-steps */
     const STEP = 1000 / 60;
     const stepPhysics = (dt: number) => {
       Matter.Engine.update(engine, dt / 2);
@@ -299,51 +427,56 @@ export default function PhysicsTags() {
       checkUnlock();
     };
 
-    /* unlock when the pile is calm: avg speed < 0.5 AND every body is inside
-       the section (none still falling in from above), sustained for 400ms */
+    /* settle: avg speed < 0.5 AND no body above floor line, sustained 400ms */
     let calmSince = 0;
+    const allItems = () => [...tags, ...shapes, ...emojis, ...faces];
     const checkUnlock = () => {
       if (!locked || !hasDropped) return;
       let count = 0, speedSum = 0, aboveTop = false;
-      for (const t of tags) if (t.body) { count++; speedSum += t.body.speed; if (t.body.position.y < 0) aboveTop = true; }
-      for (const s of shapes) if (s.body) { count++; speedSum += s.body.speed; if (s.body.position.y < 0) aboveTop = true; }
-      if (count < TOTAL_BODIES) { calmSince = 0; return; } // not all spawned yet
+      for (const it of allItems()) {
+        const b = (it as { body: Matter.Body | null }).body;
+        if (!b) continue;
+        count++; speedSum += b.speed;
+        if (b.position.y < 0) aboveTop = true;
+      }
+      if (count < TOTAL_BODIES) { calmSince = 0; return; }
       const now = performance.now();
       if (speedSum / count < 0.5 && !aboveTop) {
         if (!calmSince) calmSince = now;
-        if (now - calmSince >= 400) {
-          hasSettled = true;
-          unlockScroll("settled");
-        }
-      } else {
-        calmSince = 0;
-      }
+        if (now - calmSince >= 400) { hasSettled = true; unlockScroll("settled"); }
+      } else calmSince = 0;
     };
 
-    /* snap interpolated draw state to physics state (after fast-forward) */
     const syncDrawState = () => {
-      [...tags, ...shapes].forEach((it) => {
-        if (!it.body) return;
-        it.dx = it.body.position.x;
-        it.dy = it.body.position.y;
-        it.da = it.body.angle;
+      allItems().forEach((it) => {
+        const b = (it as { body: Matter.Body | null }).body;
+        if (!b) return;
+        (it as { dx: number }).dx = b.position.x;
+        (it as { dy: number }).dy = b.position.y;
+        (it as { da: number }).da = b.angle;
       });
     };
 
-    /* wave release: bodies drop in a left-to-right wave over ~0.6s */
+    /* wave release from CENTER outward over ~0.6s */
     const triggerDrop = () => {
-      if (!ready || hasDropped) return; // drop ONCE, never re-drop
+      if (!ready || hasDropped) return;
       try {
         hasDropped = true;
-        startLoop(); // draw from the first frame
-        buildSpawnList().forEach(({ isTag, i, x, y }) => {
-          const delay = (x / Math.max(W, 1)) * 550 + Math.random() * 50; // wave: 0 → ~0.6s
+        console.log("bodies", TOTAL_BODIES); // DEBUG (temporary)
+        startLoop();
+        const spawns = buildSpawnList();
+        spawns.forEach(({ kind, i, x, y }) => {
+          // wave from center outward: delay by |x - W/2|
+          const delay = (Math.abs(x - W / 2) / Math.max(W / 2, 1)) * 550 + Math.random() * 50;
           timeouts.push(window.setTimeout(() => {
-            if (isTag) spawnTag(i, x, y); else spawnShape(i, x, y);
+            if (kind === "tag") spawnTag(i, x, y);
+            else if (kind === "shape") spawnShape(i, x, y);
+            else if (kind === "emoji") spawnEmoji(i, x, y);
+            else spawnFace(i, x, y);
           }, delay));
         });
       } catch (err) {
-        unlockScroll("error"); // never leave the page locked
+        unlockScroll("error");
       }
     };
 
@@ -352,26 +485,27 @@ export default function PhysicsTags() {
         document.fonts.load('600 20px "Geist"'),
         document.fonts.load('700 22px "Zilla Slab"'),
       ];
+      // PART B: wait for fonts before baking emoji glyphs
+      document.fonts.ready.then(() => bakeEmojis()).catch(() => {});
       Promise.all(loads).catch(() => {}).finally(() => {
         if (reduceMotion) { drawSettled(); return; }
         measureAndBuild();
+        bakeEmojis();
       });
-      window.setTimeout(() => { if (!ready && !reduceMotion) measureAndBuild(); }, 2500); // safety
+      window.setTimeout(() => { if (!ready && !reduceMotion) { measureAndBuild(); bakeEmojis(); } }, 2500);
     };
 
-    /* ── Mouse: drag/throw via MouseConstraint, cursor push done manually ── */
+    /* ── Mouse: drag/throw via MouseConstraint, cursor push manual ── */
     const mouse = Matter.Mouse.create(section);
     const syncMouse = () => {
       const r = section.getBoundingClientRect();
-      // FIX: negative offset per Matter.Mouse convention for section-relative coords
       Matter.Mouse.setOffset(mouse, { x: -r.left, y: -r.top });
       Matter.Mouse.setScale(mouse, { x: 1, y: 1 });
       mouse.pixelRatio = DPR;
     };
     const mouseConstraint = Matter.MouseConstraint.create({
-      mouse, constraint: { stiffness: 0.2, render: { visible: false } }, // no visible line
+      mouse, constraint: { stiffness: 0.2, render: { visible: false } },
     });
-    // strip scroll listeners so page scroll keeps working
     const mEl = mouse.element as HTMLElement & { mousewheel?: EventListener };
     const stripWheel = () => {
       if (mEl.mousewheel) {
@@ -380,71 +514,70 @@ export default function PhysicsTags() {
       }
     };
 
-    // DEBUG (temporary): log mouse constraint creation with offset + pixelRatio
-    console.log("[PhysicsTags] mouse constraint created", {
-      offset: { x: -section.getBoundingClientRect().left, y: -section.getBoundingClientRect().top },
-      pixelRatio: DPR,
-    });
-
-    // cursor state: pointermove stores target; loop lerps position (0.25) toward it
-    // velocity = actual position delta per frame (clean signal for push force)
     const cursor = { x: -9999, y: -9999, vx: 0, vy: 0, tx: -9999, ty: -9999, px: -9999, py: -9999, active: false };
-    let lastMove = 0, rectCache = section.getBoundingClientRect(), loggedPointer = false;
+    let lastMove = 0, rectCache = section.getBoundingClientRect();
     const onMove = (e: PointerEvent) => {
-      // DEBUG (temporary): first pointermove over section + sleeping count
-      if (!loggedPointer) {
-        loggedPointer = true;
-        console.log("pointer works"); // temporary: confirms mouse reaches the section
-        const sleeping = Matter.Composite.allBodies(engine.world).filter((b) => b.isSleeping).length;
-        console.log("[PhysicsTags] sleeping bodies:", sleeping, "(should be 0)");
-      }
       const now = performance.now();
-      if (now - lastMove < 16) return; // throttle to ~60Hz
+      if (now - lastMove < 16) return;
       lastMove = now;
-      // FIX: scale cursor to canvas internal pixels (bodies live in DPR-scaled coords)
       cursor.tx = (e.clientX - rectCache.left) * DPR;
       cursor.ty = (e.clientY - rectCache.top) * DPR;
       cursor.active = true;
     };
     const onLeave = () => { cursor.active = false; cursor.x = -9999; cursor.y = -9999; };
     const onDown = (e: PointerEvent) => {
-      // FIX: scale to canvas internal pixels (bodies live in DPR-scaled coords)
       const cx = (e.clientX - rectCache.left) * DPR, cy = (e.clientY - rectCache.top) * DPR;
-      const all = [...tags.map((t) => t.body), ...shapes.map((s) => s.body)].filter(Boolean) as Matter.Body[];
-      const found = Matter.Query.point(all, { x: cx, y: cy })[0];
+      const bodies = allItems().map((it) => (it as { body: Matter.Body | null }).body).filter(Boolean) as Matter.Body[];
+      const found = Matter.Query.point(bodies, { x: cx, y: cy })[0];
       if (found) {
-        Matter.Body.applyForce(found, found.position, { x: 0, y: -0.004 }); // click tag = jump
+        Matter.Body.applyForce(found, found.position, { x: 0, y: -0.004 });
+        // PART C: face click → boing + sparkles; emoji → boing
+        const fi = faces.findIndex((f) => f.body === found);
+        if (fi >= 0) { faces[fi].boingMs = 600; spawnSparkles(faces[fi]); }
+        const ei = emojis.findIndex((em) => em.body === found);
+        if (ei >= 0) { emojis[ei].boingMs = 600; spawnSparkles(emojis[ei]); }
       } else {
-        // click empty space = shockwave
-        all.forEach((b) => {
+        bodies.forEach((b) => {
           const dx = b.position.x - cx, dy = b.position.y - cy;
           const dist = Math.max(Math.hypot(dx, dy), 1);
-          const SHOCK_R = 220 * DPR; // 220px in CSS pixels
+          const SHOCK_R = 220 * DPR;
           if (dist > SHOCK_R) return;
           const f = Math.min(0.005 * (1 - dist / SHOCK_R), 0.004);
           Matter.Body.applyForce(b, b.position, { x: (dx / dist) * f, y: (dy / dist) * f - f * 0.35 });
         });
       }
     };
+    /* click sparkles for faces + emoji */
+    const spawnSparkles = (it: PFace | PEmoji) => {
+      const b = it.body!;
+      for (let k = 0; k < 3; k++) {
+        it.sparkles.push({
+          x: b.position.x + (Math.random() - 0.5) * 20,
+          y: b.position.y - 20 - Math.random() * 20,
+          vx: (Math.random() - 0.5) * 2, vy: -1 - Math.random() * 2,
+          life: 600, color: Math.random() < 0.5 ? COLORS.yellow : COLORS.pink,
+        });
+      }
+    };
 
-    /* ── Draw helpers (no shadows/blur/filters) ─────────────────────────── */
+    /* ── Draw helpers ── */
     const drawPill = (t: PTag) => {
       const b = t.body!;
       ctx.save();
-      ctx.translate(t.dx, t.dy); // interpolated position
-      ctx.rotate(t.da);          // interpolated angle
+      ctx.translate(t.dx, t.dy);
+      ctx.rotate(t.da);
       if (t.hoverT > 0.01) { const s = 1 + 0.06 * t.hoverT; ctx.scale(s, s); }
       const hw = t.w / 2, hh = t.h / 2;
       ctx.beginPath();
-      ctx.roundRect(-hw, -hh, t.w, t.h, t.h / 2); // perfect pill: radius = h/2
+      ctx.roundRect(-hw, -hh, t.w, t.h, t.h / 2);
       ctx.fillStyle = t.color.bg;
       ctx.fill();
-      if (t.color.outline) { // jet-black pills get a light outline
+      if (t.color.outline) {
         ctx.strokeStyle = t.color.outline;
         ctx.lineWidth = 1.5;
         ctx.stroke();
       }
-      ctx.font = t.font; // cached per tag
+      ctx.font = t.font;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = t.color.fg;
@@ -462,16 +595,10 @@ export default function PhysicsTags() {
       switch (s.kind) {
         case "circle":
           ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill(); break;
-        case "face":
-          ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = s.color === COLORS.pink ? "#FAFAFA" : "#0D0D0D"; // eyes
-          ctx.beginPath(); ctx.arc(-r * 0.3, -r * 0.15, r * 0.12, 0, Math.PI * 2); ctx.fill();
-          ctx.beginPath(); ctx.arc(r * 0.3, -r * 0.15, r * 0.12, 0, Math.PI * 2); ctx.fill();
-          break;
         case "ring":
           ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
           ctx.strokeStyle = s.color; ctx.lineWidth = 5; ctx.stroke(); break;
-        case "star": { // 4-point sparkle
+        case "star": {
           ctx.beginPath();
           for (let i = 0; i < 8; i++) {
             const rr = i % 2 === 0 ? r : r * 0.38;
@@ -496,7 +623,7 @@ export default function PhysicsTags() {
         case "plus":
           ctx.fillRect(-r, -r * 0.18, s.size, s.size * 0.36);
           ctx.fillRect(-r * 0.18, -r, s.size * 0.36, s.size); break;
-        default: // squiggle
+        default:
           ctx.strokeStyle = s.color; ctx.lineWidth = 13; ctx.lineCap = "round";
           ctx.beginPath();
           ctx.moveTo(-r * 1.2, 0);
@@ -507,7 +634,154 @@ export default function PhysicsTags() {
       ctx.restore();
     };
 
-    /* reduced motion: draw the final settled layout once, no loop */
+    /* PART B: draw emoji sticker (baked glyph on round sticker) */
+    const drawEmoji = (e: PEmoji) => {
+      const b = e.body!;
+      ctx.save();
+      ctx.translate(e.dx, e.dy);
+      ctx.rotate(e.da);
+      // squash + boing scale (draw-time only, collider unchanged)
+      let sx = 1, sy = 1;
+      if (e.squashMs > 0) { sx = 1.15; sy = 0.85; }
+      if (e.boingMs > 0) { const k = e.boingMs / 600; const s = 1 + 0.2 * Math.sin(k * Math.PI); sx *= s; sy *= s; }
+      ctx.scale(sx, sy);
+      if (e.hoverT > 0.01) { const s = 1 + 0.06 * e.hoverT; ctx.scale(s, s); }
+      const r = e.size / 2;
+      ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
+      ctx.fillStyle = e.color; ctx.fill();
+      if (e.baked) {
+        const bw = e.baked.width / DPR, bh = e.baked.height / DPR;
+        ctx.drawImage(e.baked, -bw / 2, -bh / 2, bw, bh);
+      }
+      ctx.restore();
+      drawSparkles(e);
+    };
+
+    /* PART C: draw cartoon face — ink-line style, spins with body */
+    const drawFace = (f: PFace, now: number) => {
+      const b = f.body!;
+      ctx.save();
+      ctx.translate(f.dx, f.dy);
+      ctx.rotate(f.da);
+      let sx = 1, sy = 1;
+      if (f.squashMs > 0) { sx = 1.15; sy = 0.85; }
+      if (f.boingMs > 0) { const k = f.boingMs / 600; const s = 1 + 0.2 * Math.sin(k * Math.PI); sx *= s; sy *= s; }
+      ctx.scale(sx, sy);
+      if (f.hoverT > 0.01) { const s = 1 + 0.06 * f.hoverT; ctx.scale(s, s); }
+      const r = f.size / 2;
+      // body
+      ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
+      ctx.fillStyle = f.color; ctx.fill();
+      ctx.lineWidth = 3; ctx.strokeStyle = "#0D0D0D"; ctx.stroke();
+
+      const mood = f.cur;
+      const laughing = f.laughUntil > now;
+      const eyeY = -r * 0.12, ex = r * 0.30;
+      const blinking = f.blinkMs > 0;
+      const INK = "#0D0D0D";
+      ctx.fillStyle = INK; ctx.strokeStyle = INK;
+      ctx.lineWidth = 2.5; ctx.lineCap = "round";
+
+      // cursor look offset (≤3px)
+      let lx = 0, ly = 0;
+      if (cursor.active) {
+        const dx = cursor.x / DPR - f.dx, dy = cursor.y / DPR - f.dy;
+        const d = Math.hypot(dx, dy);
+        if (d < 220 && d > 1) { lx = (dx / d) * 3; ly = (dy / d) * 3; }
+      }
+
+      const dotEye = (x: number, y: number, rr: number) => {
+        if (blinking) { ctx.beginPath(); ctx.moveTo(x - rr, y); ctx.lineTo(x + rr, y); ctx.stroke(); }
+        else { ctx.beginPath(); ctx.arc(x + lx * 0.5, y + ly * 0.5, rr, 0, Math.PI * 2); ctx.fill(); }
+      };
+      const arcEye = (x: number, y: number, rr: number) => { // ^ ^ happy arc
+        ctx.beginPath(); ctx.arc(x, y + rr * 0.4, rr, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();
+      };
+      const smile = (w: number, h: number, y: number) => {
+        ctx.beginPath(); ctx.arc(0, y - h * 0.6, w, Math.PI * 0.15, Math.PI * 0.85); ctx.stroke();
+      };
+
+      if (laughing) {
+        arcEye(-ex, eyeY, r * 0.16); arcEye(ex, eyeY, r * 0.16);
+        ctx.beginPath(); ctx.ellipse(0, r * 0.32, r * 0.20, r * 0.26, 0, 0, Math.PI * 2);
+        ctx.fillStyle = INK; ctx.fill();
+      } else switch (mood) {
+        case "happy":
+          dotEye(-ex, eyeY, r * 0.10); dotEye(ex, eyeY, r * 0.10);
+          smile(r * 0.42, r * 0.30, r * 0.42); break;
+        case "laughing":
+          arcEye(-ex, eyeY, r * 0.16); arcEye(ex, eyeY, r * 0.16);
+          ctx.beginPath(); ctx.ellipse(0, r * 0.30, r * 0.20, r * 0.26, 0, 0, Math.PI * 2);
+          ctx.fillStyle = INK; ctx.fill(); break;
+        case "surprised":
+          ctx.beginPath(); ctx.arc(-ex + lx * 0.5, eyeY + ly * 0.5, r * 0.14, 0, Math.PI * 2); ctx.stroke();
+          ctx.beginPath(); ctx.arc(ex + lx * 0.5, eyeY + ly * 0.5, r * 0.14, 0, Math.PI * 2); ctx.stroke();
+          ctx.beginPath(); ctx.arc(0, r * 0.34, r * 0.13, 0, Math.PI * 2); ctx.stroke(); break;
+        case "cool":
+          ctx.fillStyle = INK;
+          ctx.beginPath(); ctx.roundRect(-ex - r * 0.16, eyeY - r * 0.13, r * 0.32, r * 0.24, r * 0.06); ctx.fill();
+          ctx.beginPath(); ctx.roundRect(ex - r * 0.16, eyeY - r * 0.13, r * 0.32, r * 0.24, r * 0.06); ctx.fill();
+          ctx.fillRect(-r * 0.08, eyeY - r * 0.03, r * 0.16, r * 0.05); // bridge
+          ctx.beginPath(); ctx.arc(r * 0.10, r * 0.36, r * 0.22, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); // smirk
+          break;
+        case "love":
+          drawHeart(-ex, eyeY, r * 0.16, COLORS.pink);
+          drawHeart(ex, eyeY, r * 0.16, COLORS.pink);
+          smile(r * 0.36, r * 0.26, r * 0.42); break;
+        case "sleepy":
+          ctx.beginPath(); ctx.moveTo(-ex - r * 0.12, eyeY); ctx.lineTo(-ex + r * 0.12, eyeY); ctx.stroke();
+          ctx.beginPath(); ctx.moveTo(ex - r * 0.12, eyeY); ctx.lineTo(ex + r * 0.12, eyeY); ctx.stroke();
+          ctx.font = `${Math.round(r * 0.34)}px "Geist", sans-serif`;
+          ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
+          ctx.fillStyle = INK; ctx.fillText("z", r * 0.42, -r * 0.34);
+          ctx.beginPath(); ctx.arc(0, r * 0.38, r * 0.10, 0, Math.PI); ctx.stroke(); break;
+        case "wink":
+          dotEye(-ex, eyeY, r * 0.10);
+          ctx.beginPath(); ctx.arc(ex, eyeY + r * 0.06, r * 0.12, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();
+          ctx.fillStyle = COLORS.pink;
+          ctx.beginPath(); ctx.roundRect(-r * 0.07, r * 0.30, r * 0.14, r * 0.20, r * 0.07); ctx.fill(); // tongue
+          break;
+        case "silly":
+          ctx.beginPath();
+          ctx.moveTo(-ex - r * 0.08, eyeY - r * 0.08); ctx.lineTo(-ex + r * 0.08, eyeY + r * 0.08);
+          ctx.moveTo(-ex + r * 0.08, eyeY - r * 0.08); ctx.lineTo(-ex - r * 0.08, eyeY + r * 0.08);
+          ctx.moveTo(ex - r * 0.08, eyeY - r * 0.08); ctx.lineTo(ex + r * 0.08, eyeY + r * 0.08);
+          ctx.moveTo(ex + r * 0.08, eyeY - r * 0.08); ctx.lineTo(ex - r * 0.08, eyeY + r * 0.08);
+          ctx.stroke();
+          ctx.fillStyle = COLORS.pink;
+          ctx.beginPath(); ctx.roundRect(r * 0.02, r * 0.28, r * 0.16, r * 0.24, r * 0.08); ctx.fill(); // tongue out
+          break;
+      }
+      ctx.restore();
+      drawSparkles(f);
+    };
+    const drawHeart = (x: number, y: number, s: number, color: string) => {
+      ctx.save();
+      ctx.translate(x, y); ctx.scale(s / 10, s / 10);
+      ctx.beginPath();
+      ctx.moveTo(0, 4);
+      ctx.bezierCurveTo(-8, -4, -4, -10, 0, -4);
+      ctx.bezierCurveTo(4, -10, 8, -4, 0, 4);
+      ctx.fillStyle = color; ctx.fill();
+      ctx.restore();
+    };
+    const drawSparkles = (it: PFace | PEmoji) => {
+      it.sparkles.forEach((p) => {
+        const a = Math.max(p.life / 600, 0);
+        ctx.save();
+        ctx.globalAlpha = a;
+        ctx.translate(p.x, p.y);
+        const s = 5 * a + 3;
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.moveTo(0, -s); ctx.quadraticCurveTo(0, 0, s, 0); ctx.quadraticCurveTo(0, 0, 0, s);
+        ctx.quadraticCurveTo(0, 0, -s, 0); ctx.quadraticCurveTo(0, 0, 0, -s);
+        ctx.fill();
+        ctx.restore();
+      });
+    };
+
+    /* reduced motion: static settled layout */
     const drawSettled = () => {
       resizeCanvas();
       ctx.fillStyle = COLORS.bg;
@@ -528,6 +802,7 @@ export default function PhysicsTags() {
         placed.push({ x, y, w, h });
         return { x, y, r: (Math.random() - 0.5) * 0.6 };
       };
+      bakeEmojis();
       tags.forEach((t) => {
         const p = place(t.w, t.h);
         t.dx = p.x; t.dy = p.y; t.da = p.r;
@@ -540,24 +815,34 @@ export default function PhysicsTags() {
         s.body = { position: { x: p.x, y: p.y }, angle: p.r } as Matter.Body;
         drawShape(s); s.body = null;
       });
+      emojis.forEach((e) => {
+        const p = place(e.size, e.size);
+        e.dx = p.x; e.dy = p.y; e.da = p.r;
+        e.body = { position: { x: p.x, y: p.y }, angle: p.r } as Matter.Body;
+        drawEmoji(e); e.body = null;
+      });
+      faces.forEach((f) => {
+        const p = place(f.size, f.size);
+        f.dx = p.x; f.dy = p.y; f.da = p.r;
+        f.body = { position: { x: p.x, y: p.y }, angle: p.r } as Matter.Body;
+        drawFace(f, performance.now()); f.body = null;
+      });
     };
 
-    /* ── THE single rAF loop ────────────────────────────────────────────── */
+    /* ── THE single rAF loop ── */
     let raf = 0, loopOn = false, lastT = 0;
     let hoverBody: Matter.Body | null = null;
     let frameTimes: number[] = [];
     let degraded = false;
     let accumulator = 0;
-    let fastForwardSteps = 0; // set when user jumps straight to the section mid-drop
+    let fastForwardSteps = 0;
 
     const loop = (now: number) => {
       if (!loopOn) return;
       raf = requestAnimationFrame(loop);
-      // real frame delta, clamped to 1000/30 max: slow frames never cause slow motion
       let delta = now - lastT;
       lastT = now;
       delta = Math.min(delta, 1000 / 30);
-      // fixed-timestep accumulator: up to 3 steps/frame keeps speed consistent
       accumulator += delta;
       let steps = 0;
       while (accumulator >= STEP && steps < 3) {
@@ -565,10 +850,8 @@ export default function PhysicsTags() {
         accumulator -= STEP;
         steps++;
       }
-      if (steps === 3) accumulator = 0; // shed excess: no spiral of death
+      if (steps === 3) accumulator = 0;
 
-      // fast-forward: user jumped here before the drop settled — up to 90 extra
-      // steps split across 3 frames so the pile is settled right away
       if (fastForwardSteps > 0) {
         const extra = Math.min(30, fastForwardSteps);
         for (let i = 0; i < extra; i++) stepPhysics(STEP);
@@ -576,85 +859,130 @@ export default function PhysicsTags() {
         syncDrawState();
       }
 
-      // quality guard: if first 60 frames avg > 24ms, shed 30% of bodies (shapes first)
       frameTimes.push(delta);
       if (!degraded && frameTimes.length === 60) {
         const avg = frameTimes.reduce((a, b) => a + b, 0) / 60;
         if (avg > 24) {
           degraded = true;
-          const victims: Matter.Body[] = [];
-          const shapeBodies = shapes.map((s) => s.body).filter(Boolean) as Matter.Body[];
-          victims.push(...shapeBodies.slice(0, Math.floor((tags.length + shapes.length) * 0.3)));
-          victims.forEach((b) => {
-            Matter.Composite.remove(engine.world, b);
-            const ti = tags.findIndex((t) => t.body === b); if (ti >= 0) tags[ti].body = null;
-            const si = shapes.findIndex((s) => s.body === b); if (si >= 0) shapes[si].body = null;
-          });
+          // lower pixel ratio instead of deleting bodies
           engine.positionIterations = 4;
           engine.velocityIterations = 3;
         }
         frameTimes = [];
       }
 
-      // smooth visuals: lerp drawn state toward physics state (0.5)
-      const items = [...tags, ...shapes] as Array<PTag | PShape>;
+      /* PART C: per-frame face + emoji animation state (no allocations) */
+      for (const f of faces) {
+        if (!f.body) continue;
+        // blink
+        if (f.blinkMs > 0) f.blinkMs -= delta;
+        else if (now >= f.blinkAt && (f.mood === "happy" || f.mood === "surprised")) {
+          f.blinkMs = 120; f.blinkAt = now + 3000 + Math.random() * 3000;
+        }
+        // temp mood expiry
+        if (f.curUntil && now > f.curUntil) { f.cur = f.mood; f.curUntil = 0; }
+        // squash / boing decay
+        if (f.squashMs > 0) f.squashMs -= delta;
+        if (f.boingMs > 0) f.boingMs -= delta;
+        // idle wiggle: tiny angular impulse + blink-smile
+        if (now >= f.wiggleAt) {
+          f.wiggleAt = now + 4000 + Math.random() * 4000;
+          Matter.Body.setAngularVelocity(f.body, f.body.angularVelocity + (Math.random() - 0.5) * 0.15);
+          if (f.mood === "happy") f.blinkMs = 120;
+        }
+        // landing squash: hard floor/body hit
+        if (f.body.speed > 6 && f.squashMs <= 0) f.squashMs = 140;
+        // sparkles
+        for (let i = f.sparkles.length - 1; i >= 0; i--) {
+          const p = f.sparkles[i];
+          p.life -= delta;
+          p.x += p.vx; p.y += p.vy; p.vy += 0.05;
+          if (p.life <= 0) f.sparkles.splice(i, 1);
+        }
+      }
+      for (const e of emojis) {
+        if (e.squashMs > 0) e.squashMs -= delta;
+        if (e.boingMs > 0) e.boingMs -= delta;
+        if (e.body && e.body.speed > 6 && e.squashMs <= 0) e.squashMs = 140;
+        for (let i = e.sparkles.length - 1; i >= 0; i--) {
+          const p = e.sparkles[i];
+          p.life -= delta;
+          p.x += p.vx; p.y += p.vy; p.vy += 0.05;
+          if (p.life <= 0) e.sparkles.splice(i, 1);
+        }
+      }
+
+      // smooth visuals: lerp drawn state toward physics state
+      const items = allItems() as Array<{ body: Matter.Body | null; dx: number; dy: number; da: number; hoverT: number }>;
       items.forEach((it) => {
         if (!it.body) return;
         it.dx += (it.body.position.x - it.dx) * 0.5;
         it.dy += (it.body.position.y - it.dy) * 0.5;
         let diff = it.body.angle - it.da;
-        diff = Math.atan2(Math.sin(diff), Math.cos(diff)); // shortest path
+        diff = Math.atan2(Math.sin(diff), Math.cos(diff));
         it.da += diff * 0.5;
       });
 
-      // cursor hover-push: soft invisible ball (radius 150), force ∝ speed, ∝ 1/distance
-      // FIX: stronger force (60% of gravity) so tags visibly move; capped to avoid explosions
+      // cursor hover-push
       if (cursor.active) {
-        if (cursor.x < -9000) { cursor.x = cursor.tx; cursor.y = cursor.ty; } // snap on first entry
+        if (cursor.x < -9000) { cursor.x = cursor.tx; cursor.y = cursor.ty; }
         cursor.px = cursor.x; cursor.py = cursor.y;
         cursor.x += (cursor.tx - cursor.x) * 0.25;
         cursor.y += (cursor.ty - cursor.y) * 0.25;
         cursor.vx = cursor.x - cursor.px;
         cursor.vy = cursor.y - cursor.py;
         const speed = Math.hypot(cursor.vx, cursor.vy);
-        const PUSH_R = 150 * DPR; // 150px cursor ball in CSS pixels
-        // minimum 25% push even when cursor moves slowly; scales up with speed
+        const PUSH_R = 150 * DPR;
         const speedFactor = 0.25 + (Math.min(speed, 28) / 28) * 0.75;
         items.forEach((it) => {
           const b = it.body; if (!b) return;
           const dx = b.position.x - cursor.x, dy = b.position.y - cursor.y;
           const dist = Math.hypot(dx, dy);
           if (dist > PUSH_R || dist < 1) return;
-          // wake the body (in case it fell asleep despite enableSleeping: false)
           if (b.isSleeping) Matter.Sleeping.set(b, false);
           const falloff = 1 - dist / PUSH_R;
-          // force ∝ mass (60% of gravity at full strength); capped
           const f = Math.min(0.0006 * b.mass * falloff * speedFactor, 0.012);
           Matter.Body.applyForce(b, b.position, {
             x: (dx / dist) * f + (cursor.vx / Math.max(speed, 1)) * f * 0.7,
             y: (dy / dist) * f + (cursor.vy / Math.max(speed, 1)) * f * 0.7 - f * 0.2,
           });
-          b.torque += (Math.random() - 0.5) * 0.0004 * falloff; // gentle spin
+          b.torque += (Math.random() - 0.5) * 0.0004 * falloff;
+          // PART C: face near cursor → surprised mouth 400ms
+          if (dist < 140 * DPR) {
+            const fi = faces.findIndex((fc) => fc.body === b);
+            if (fi >= 0 && faces[fi].cur === faces[fi].mood) {
+              faces[fi].cur = "surprised"; faces[fi].curUntil = now + 400;
+            }
+          }
         });
       }
 
-      // hover detection: scale lerp + grab cursor
+      // hover detection
       if (cursor.active) {
         const all = items.map((it) => it.body).filter(Boolean) as Matter.Body[];
         const found = Matter.Query.point(all, { x: cursor.x, y: cursor.y })[0] || null;
         hoverBody = found;
         const dragging = (mouseConstraint as unknown as { constraint: { bodyB: Matter.Body | null } }).constraint.bodyB;
+        // PART C: grab state
+        faces.forEach((f) => { f.grabbed = dragging === f.body; });
         section.style.cursor = dragging ? "grabbing" : found ? "grab" : "";
+        if (dragging) {
+          const fi = faces.findIndex((f) => f.body === dragging);
+          if (fi >= 0 && !faces[fi].grabbed) { /* grabbed set above */ }
+        }
       } else {
         hoverBody = null;
         section.style.cursor = "";
+        faces.forEach((f) => {
+          if (f.grabbed) { f.grabbed = false; f.laughUntil = now + 600; } // release → laugh
+        });
       }
       items.forEach((it) => {
         const target = it.body === hoverBody ? 1 : 0;
-        it.hoverT += (target - it.hoverT) * 0.25; // smooth scale lerp
+        it.hoverT += (target - it.hoverT) * 0.25;
       });
 
-      // angular damping + gently rotate nearly-still tags upright
+      // angular damping + upright settle
       items.forEach((it) => {
         const b = it.body; if (!b) return;
         if (Math.abs(b.angularVelocity) > 0.25) {
@@ -667,78 +995,66 @@ export default function PhysicsTags() {
         }
       });
 
-      // draw: shapes first, then pills
+      // draw: shapes, emoji, faces, then pills
       ctx.clearRect(0, 0, W, H);
       ctx.fillStyle = COLORS.bg;
       ctx.fillRect(0, 0, W, H);
       shapes.forEach((s) => { if (s.body) drawShape(s); });
+      emojis.forEach((e) => { if (e.body) drawEmoji(e); });
+      faces.forEach((f) => { if (f.body) drawFace(f, now); });
       tags.forEach((t) => { if (t.body) drawPill(t); });
+
+      // PART C: grab → wide mouth + wide eyes handled in drawFace via f.grabbed
+      // (grabbed faces draw with open mouth — applied below via temp mood)
+      for (const f of faces) {
+        if (f.grabbed && f.cur === f.mood) { f.cur = "laughing"; f.curUntil = now + 200; }
+      }
     };
 
     const startLoop = () => {
       if (loopOn || !ready) return;
       loopOn = true;
-      lastT = performance.now(); // reset timestamp: no jump on resume
+      lastT = performance.now();
       raf = requestAnimationFrame(loop);
     };
     const stopLoop = () => { loopOn = false; cancelAnimationFrame(raf); };
 
-    /* idle life: tiny nudge every 3s, only while on-screen */
+    /* idle life: tiny nudge every 3s */
     const idleTimer = window.setInterval(() => {
       if (document.hidden || !loopOn) return;
-      const all = [...tags.map((t) => t.body), ...shapes.map((s) => s.body)].filter(Boolean) as Matter.Body[];
+      const all = allItems().map((it) => (it as { body: Matter.Body | null }).body).filter(Boolean) as Matter.Body[];
       if (!all.length) return;
       const b = all[Math.floor(Math.random() * all.length)];
       Matter.Body.applyForce(b, b.position, { x: (Math.random() - 0.5) * 0.0006, y: -Math.random() * 0.0007 });
     }, 3000);
 
-    /* ── Scroll lock: the page stays put while the tags fall (once only) ──
-       Lock: html.is-locked (overflow hidden) + body padding-right = scrollbar
-       width (no layout jump) + preventDefault on wheel/touchmove/scroll-keys.
-       Clicks, hover, tag dragging and the nav keep working. */
-    let locked = false;
-    let lockStart = 0;
-    let lockTimeout = 0;
-    const SCROLL_KEYS = new Set([" ", "Spacebar", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "End", "Home"]);
-    const blockScrollEvent = (e: Event) => e.preventDefault();
-    const blockScrollKeys = (e: KeyboardEvent) => { if (SCROLL_KEYS.has(e.key)) e.preventDefault(); };
-
-    const lockScroll = () => {
-      if (locked || reduceMotion) return;
-      locked = true;
-      lockStart = performance.now();
-      const html = document.documentElement;
-      const scrollbarW = window.innerWidth - html.clientWidth;
-      html.classList.add("is-locked");
-      if (scrollbarW > 0) document.body.style.paddingRight = `${scrollbarW}px`;
-      window.addEventListener("wheel", blockScrollEvent, { passive: false });
-      window.addEventListener("touchmove", blockScrollEvent, { passive: false });
-      window.addEventListener("keydown", blockScrollKeys, { passive: false });
-      console.log("locked"); // DEBUG (temporary)
-      lockTimeout = window.setTimeout(() => unlockScroll("timeout"), 3500); // failsafe: never stuck
-    };
-    const unlockScroll = (reason: "settled" | "timeout" | "hidden" | "error") => {
-      if (!locked) return;
-      locked = false;
-      window.clearTimeout(lockTimeout);
-      document.documentElement.classList.remove("is-locked");
-      document.body.style.paddingRight = "";
-      window.removeEventListener("wheel", blockScrollEvent);
-      window.removeEventListener("touchmove", blockScrollEvent);
-      window.removeEventListener("keydown", blockScrollKeys);
-      console.log("unlocked after", Math.round(performance.now() - lockStart), "ms", "reason:", reason); // DEBUG (temporary)
+    /* ── PART A: scroll direction tracking ── */
+    let lastScrollY = window.scrollY;
+    let scrollDir: "up" | "down" = "down";
+    const trackScrollDir = () => {
+      const y = window.scrollY;
+      scrollDir = y >= lastScrollY ? "down" : "up";
+      lastScrollY = y;
     };
 
-    /* 500ms ease-out scroll that brings the section to fill the screen, then runs fn */
-    const NAV_OFFSET = 108; // 92px floating nav + 16px margin
+    /* 500ms ease-out tween (native fallback); Lenis if present */
+    const NAV_OFFSET = 108;
     const smoothScrollTo = (targetY: number, done: () => void) => {
+      const lenis = getLenis();
+      if (lenis) {
+        try {
+          lenis.scrollTo(targetY, { duration: 0.5 });
+          window.setTimeout(done, 550);
+          return;
+        } catch { /* fall through to native */ }
+      }
       const startY = window.scrollY;
       const dist = targetY - startY;
       if (Math.abs(dist) < 2) { done(); return; }
       const t0 = performance.now();
       const tick = (now: number) => {
         const t = Math.min((now - t0) / 500, 1);
-        const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+        const eased = 1 - Math.pow(1 - t, 3);
         window.scrollTo(0, startY + dist * eased);
         if (t < 1) requestAnimationFrame(tick);
         else done();
@@ -749,23 +1065,28 @@ export default function PhysicsTags() {
       const r = section.getBoundingClientRect();
       const vh = window.innerHeight;
       const target = r.height >= vh
-        ? window.scrollY + r.top - NAV_OFFSET // taller than screen: top just below nav
-        : window.scrollY + r.top - (vh - r.height) / 2; // shorter: vertically centered
-      smoothScrollTo(target, done);
+        ? window.scrollY + r.top - NAV_OFFSET
+        : window.scrollY + r.top - (vh - r.height) / 2;
+      // ignore wheel while tween runs so the page doesn't fight
+      window.addEventListener("wheel", blockScrollEvent, { passive: false });
+      smoothScrollTo(target, () => {
+        window.removeEventListener("wheel", blockScrollEvent);
+        done();
+      });
     };
 
-    /* the once-only sequence: at 35% visibility → scroll into place → lock → drop */
-    const isSection35Visible = () => {
+    const isSection40Visible = () => {
       const r = section.getBoundingClientRect();
       const vh = window.innerHeight;
       const visibleH = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-      return visibleH >= r.height * 0.35;
+      return visibleH >= r.height * 0.4;
     };
     const maybeStartDropSequence = () => {
-      if (hasDropped || !ready || reduceMotion) return;
-      if (!isSection35Visible()) return;
-      hasDropped = true; // set now so the observer can never re-trigger
-      sequenceObserver.disconnect(); // never lock again, even on re-entry
+      if (hasDropped || !ready || reduceMotion || locked) return;
+      if (scrollDir !== "down") return; // only while scrolling DOWN
+      if (!isSection40Visible()) return;
+      hasDropped = true;
+      sequenceObserver.disconnect();
       try {
         scrollIntoPlace(() => {
           lockScroll();
@@ -776,29 +1097,26 @@ export default function PhysicsTags() {
       }
     };
 
-    /* sequence trigger: 35% visibility → scroll-into-place → lock → drop (once) */
+    /* sequence trigger: thresholds [0, 0.25, 0.4], only scrolling down */
     const sequenceObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) maybeStartDropSequence();
         });
       },
-      { threshold: 0.35 }
+      { threshold: [0, 0.25, 0.4] }
     );
 
-    /* loop perf: pause the rAF loop when the section is well off-screen */
     const loopObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) startLoop();
-          else stopLoop(); // rAF fully cancelled off-screen (timestamp reset on resume)
+          else stopLoop();
         });
       },
-      { rootMargin: "0px 0px 60% 0px", threshold: 0 }
+      { threshold: 0 }
     );
 
-    /* actual on-screen visibility: mouse sync + fast-forward when the user
-       jumps straight to the section (fast scroll / anchor) mid-drop */
     let isVisible = false;
     const visibleObserver = new IntersectionObserver(
       (entries) => {
@@ -809,7 +1127,7 @@ export default function PhysicsTags() {
             syncMouse();
             rectCache = section.getBoundingClientRect();
             if (!was && hasDropped && !hasSettled && fastForwardSteps === 0) {
-              fastForwardSteps = 90; // settle the pile right away
+              fastForwardSteps = 90;
             }
           }
         });
@@ -817,7 +1135,6 @@ export default function PhysicsTags() {
       { threshold: 0 }
     );
 
-    /* resize: debounced 200ms; ignore height changes < 120px (mobile bar) */
     let lastW = W, lastH = H, resizeT = 0;
     const onResize = () => {
       window.clearTimeout(resizeT);
@@ -828,14 +1145,13 @@ export default function PhysicsTags() {
         resizeCanvas();
         Matter.Composite.remove(engine.world, walls);
         buildWalls();
-        // clamp any body outside the new walls
-        [...tags, ...shapes].forEach((it) => {
-          const b = it.body; if (!b) return;
+        allItems().forEach((it) => {
+          const b = (it as { body: Matter.Body | null }).body; if (!b) return;
           const x = Math.min(Math.max(b.position.x, 20), W - 20);
           const y = Math.min(b.position.y, floorY() - 10);
           if (x !== b.position.x || y !== b.position.y) {
             Matter.Body.setPosition(b, { x, y });
-            it.dx = x; it.dy = y;
+            (it as { dx: number }).dx = x; (it as { dy: number }).dy = y;
           }
         });
         syncMouse();
@@ -844,28 +1160,27 @@ export default function PhysicsTags() {
     };
     const onScrollSync = () => { syncMouse(); rectCache = section.getBoundingClientRect(); };
     const onVis = () => {
-      if (document.hidden) { stopLoop(); unlockScroll("hidden"); } // guaranteed unlock
+      if (document.hidden) { stopLoop(); unlockScroll("hidden"); }
       else startLoop();
     };
     const onPageHideUnlock = () => unlockScroll("hidden");
     const onPageShow = () => startLoop();
 
-    /* wire up once fonts are measured */
     const boot = () => {
       Matter.Composite.add(engine.world, mouseConstraint);
       stripWheel();
       syncMouse();
-      section.addEventListener("pointermove", onMove); // FIX: pointermove (not just mousemove)
+      section.addEventListener("pointermove", onMove);
       section.addEventListener("pointerleave", onLeave);
       section.addEventListener("pointerdown", onDown);
       window.addEventListener("resize", onResize);
       window.addEventListener("scroll", onScrollSync, { passive: true });
+      window.addEventListener("scroll", trackScrollDir, { passive: true });
       document.addEventListener("visibilitychange", onVis);
       window.addEventListener("pagehide", onPageHideUnlock);
       window.addEventListener("pageshow", onPageShow);
-      // already in view on load (reload at position / anchor link): drop now,
-      // no scroll-into-place and no lock — the user is already looking at it
-      if (isSection35Visible()) {
+      // already in view on load: drop with NO lock, NO scroll-into-place
+      if (isSection40Visible()) {
         triggerDrop();
       } else {
         sequenceObserver.observe(section);
@@ -880,18 +1195,19 @@ export default function PhysicsTags() {
     start();
 
     return () => {
-      unlockScroll("hidden"); // never leave the page locked on unmount
+      unlockScroll("hidden");
       window.clearInterval(bootCheck);
       window.clearInterval(idleTimer);
       window.clearTimeout(resizeT);
       sequenceObserver.disconnect();
       loopObserver.disconnect();
       visibleObserver.disconnect();
-      section.removeEventListener("mousemove", onMove);
-      section.removeEventListener("mouseleave", onLeave);
+      section.removeEventListener("pointermove", onMove);
+      section.removeEventListener("pointerleave", onLeave);
       section.removeEventListener("pointerdown", onDown);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onScrollSync);
+      window.removeEventListener("scroll", trackScrollDir);
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("pagehide", onPageHideUnlock);
       window.removeEventListener("pageshow", onPageShow);
@@ -904,6 +1220,7 @@ export default function PhysicsTags() {
   return (
     <>
       <style>{`
+        html { scrollbar-gutter: stable; }
         .physics-tags-section {
           position: relative;
           width: 100%;
@@ -912,7 +1229,7 @@ export default function PhysicsTags() {
           background: ${COLORS.bg};
           border-radius: 24px;
           overflow: hidden;
-          touch-action: pan-y; /* vertical scroll works; drag starts on deliberate tag touch */
+          touch-action: pan-y;
           contain: layout paint;
         }
         .physics-tags-section canvas {
@@ -920,7 +1237,6 @@ export default function PhysicsTags() {
           inset: 0;
           display: block;
         }
-        /* scroll lock: no layout jump, no iOS rubber-banding while locked */
         html.is-locked { overflow: hidden; overscroll-behavior: none; }
         html.is-locked body { overscroll-behavior: none; }
         @media (max-width: 768px) {
