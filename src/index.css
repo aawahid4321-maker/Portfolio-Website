@@ -11,7 +11,7 @@
   font-family: 'Geist:SemiBold', sans-serif;
 }
 @utility font-pt-mono-ss {
-  font-family: 'PT Mono:Regular', sans-serif;
+  font-family: 'Zilla Slab', serif;
 }
 
 /* ---- Imported Figma faces (resolved via `figma fonts resolve`) ---- */
@@ -29,13 +29,7 @@
   font-weight: 400;
   font-display: swap;
 }
-@font-face {
-  font-family: "PT Mono:Regular";
-  src: url("https://static.figma.com/font/PTM55FT_1") format("woff2");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-}
+/* Zilla Slab loaded via Google Fonts <link> in index.html (replaces PT Mono) */
 @font-face {
   font-family: "Geist:Regular";
   src: url("https://static.figma.com/font/Geist_wght__1") format("woff2");
@@ -197,7 +191,7 @@ body {
   -webkit-backdrop-filter: blur(10px);
   border-radius: 5px;
   padding: 9px 20px;
-  font-family: "PT Mono:Regular", monospace;
+  font-family: "Zilla Slab", serif;
   font-size: 13px;
   letter-spacing: 0.08em;
   color: rgba(255, 255, 255, 0.92);

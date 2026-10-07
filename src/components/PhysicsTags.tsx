@@ -153,7 +153,7 @@ export default function PhysicsTags() {
 
     /* Measure text AFTER fonts load, then create bodies */
     const GEIST_FONT = '600 20px "Geist:SemiBold", "Geist", sans-serif';
-    const SCRIPT_FONT = '28px "Caveat Brush", "Comic Sans MS", cursive';
+    const SCRIPT_FONT = '600 26px "Zilla Slab", serif';
     let ready = false;
 
     const measureAndBuild = () => {
@@ -238,7 +238,7 @@ export default function PhysicsTags() {
     const start = () => {
       const loads = [
         document.fonts.load('600 20px "Geist:SemiBold"'),
-        document.fonts.load('28px "Caveat Brush"'),
+        document.fonts.load('600 26px "Zilla Slab"'),
       ];
       Promise.all(loads).catch(() => {}).finally(() => {
         if (reduceMotion) { drawSettled(); return; }
@@ -619,8 +619,6 @@ export default function PhysicsTags() {
 
   return (
     <>
-      <link rel="preload" href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" as="style" />
-      <link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&display=swap" rel="stylesheet" />
       <style>{`
         .physics-tags-section {
           position: relative;
