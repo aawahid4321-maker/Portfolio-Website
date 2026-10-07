@@ -1,6 +1,5 @@
 import svgPaths from "./svg-8jh5l27o5h";
 import imgChatGptImageSep132026012119Am1 from "./b389fd9fe37e840e82ef570bd3a6044d75d431d7.webp";
-import imgChatGptImageSep132026012119Am2 from "./b00c7dcd55b1d1b4b718473567e5997ef5794af3.webp";
 import imgChatGptImageSep132026012119Am3 from "./9c7fd0b5ce7362a6a763479384adfd65f38440cc.webp";
 import SharedFooterContent from "@/components/SharedFooterContent";
 
@@ -36,25 +35,19 @@ function Container3() {
 
 function Container4() {
   return (
-    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[7272px] left-[972.29px] top-[-0.05px] w-[207px]" data-name="Container">
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[-1px] not-italic text-[#0f0f0f] text-[24px] top-[4264.25px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[05]</p>
-    </div>
+    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[7272px] left-[972.29px] top-[-0.05px] w-[207px]" data-name="Container" />
   );
 }
 
 function Container5() {
   return (
-    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[7272px] left-[1203.29px] top-[-0.05px] w-[207px]" data-name="Container">
-      <p className="[word-break:break-word] absolute leading-[66.269px] left-[-1px] text-[#0f0f0f] text-[32px] top-[4327.14px] whitespace-nowrap" style={{ letterSpacing: "-2px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Campus App</p>
-    </div>
+    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[7272px] left-[1203.29px] top-[-0.05px] w-[207px]" data-name="Container" />
   );
 }
 
 function Container6() {
   return (
-    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[7272px] left-[1434.29px] top-[-0.05px] w-[207px]" data-name="Container">
-      <p className="[word-break:break-word] absolute leading-[66.269px] left-[-1px] text-[#0f0f0f] text-[32px] top-[4327.14px] whitespace-nowrap" style={{ letterSpacing: "-2px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Veloce</p>
-    </div>
+    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[7272px] left-[1434.29px] top-[-0.05px] w-[207px]" data-name="Container" />
   );
 }
 
@@ -90,12 +83,7 @@ function Download1() {
 
 function Container7() {
   return (
-    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[6128px] left-[1665.29px] top-[-0.05px] w-[207px]" data-name="Container">
-      <p className="[word-break:break-word] absolute leading-[0] left-[-1px] lowercase text-[#0f0f0f] text-[32px] top-[4327.14px] whitespace-nowrap" style={{ letterSpacing: "-2px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>
-        <span className="capitalize leading-[66.269px]">D</span>
-        <span className="leading-[66.269px]">odi homes</span>
-      </p>
-    </div>
+    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[6128px] left-[1665.29px] top-[-0.05px] w-[207px]" data-name="Container" />
   );
 }
 
@@ -148,14 +136,31 @@ function Group3() {
 function Group4() {
   return (
     <div className="[word-break:break-word] absolute contents left-[972.29px] text-[#0f0f0f] top-[4020.87px]">
-      <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[24px] top-[4020.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[01]</p>
-      <p className="absolute leading-[66.269px] left-[1203.29px] text-[32px] top-[4083.72px] whitespace-nowrap" style={{ letterSpacing: "-2px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Airbnb</p>
-      <p className="absolute leading-[66.269px] left-[1434.29px] text-[32px] top-[4083.72px] whitespace-nowrap" style={{ letterSpacing: "-2px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>NODALiQ</p>
-      <p className="absolute leading-[66.269px] left-[1665.29px] text-[32px] top-[4083.72px] whitespace-nowrap" style={{ letterSpacing: "-2px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Axorix</p>
-      <p className="absolute leading-[66.269px] left-[972.29px] text-[32px] top-[4083.72px] whitespace-nowrap" style={{ letterSpacing: "-2px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Microsoft</p>
-      <p className="absolute font-pt-mono-ss leading-[41.009px] left-[1203.29px] not-italic text-[24px] top-[4020.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[02]</p>
-      <p className="absolute font-pt-mono-ss leading-[41.009px] left-[1434.29px] not-italic text-[24px] top-[4020.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[03]</p>
-      <p className="absolute font-pt-mono-ss leading-[41.009px] left-[1665.29px] not-italic text-[24px] top-[4020.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[04]</p>
+      {/* [01] Graphic & Visual Designer / Social Media Manager — Snap Sol & Alverm */}
+      <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[22px] top-[4020.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[01]</p>
+      <p className="absolute leading-[38px] left-[1075px] text-[27px] top-[4014px] w-[790px]" style={{ letterSpacing: "-1px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Graphic &amp; Visual Designer / Social Media Manager</p>
+      <p className="absolute leading-[32px] left-[1075px] text-[21px] top-[4056px] text-[#444444]" style={{ fontFamily: "'Geist:Regular'" }}>Snap Sol &amp; Alverm</p>
+      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4056px] uppercase">2026 – Present</p>
+      {/* [02] Graphic Designer — The Voyage Studio */}
+      <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[22px] top-[4125.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[02]</p>
+      <p className="absolute leading-[38px] left-[1075px] text-[27px] top-[4119px] w-[790px]" style={{ letterSpacing: "-1px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Graphic Designer</p>
+      <p className="absolute leading-[32px] left-[1075px] text-[21px] top-[4161px] text-[#444444]" style={{ fontFamily: "'Geist:Regular'" }}>The Voyage Studio</p>
+      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4161px] uppercase">2025 – Present</p>
+      {/* [03] Social Media Manager — Suzuki Islamabad Motors */}
+      <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[22px] top-[4230.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[03]</p>
+      <p className="absolute leading-[38px] left-[1075px] text-[27px] top-[4224px] w-[790px]" style={{ letterSpacing: "-1px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Social Media Manager</p>
+      <p className="absolute leading-[32px] left-[1075px] text-[21px] top-[4266px] text-[#444444]" style={{ fontFamily: "'Geist:Regular'" }}>Suzuki Islamabad Motors</p>
+      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4266px] uppercase">2025 – 2026</p>
+      {/* [04] Brand & Logo Designer — Local Pro */}
+      <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[22px] top-[4335.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[04]</p>
+      <p className="absolute leading-[38px] left-[1075px] text-[27px] top-[4329px] w-[790px]" style={{ letterSpacing: "-1px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Brand &amp; Logo Designer</p>
+      <p className="absolute leading-[32px] left-[1075px] text-[21px] top-[4371px] text-[#444444]" style={{ fontFamily: "'Geist:Regular'" }}>Local Pro</p>
+      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4371px] uppercase">2024 – 2025</p>
+      {/* [05] Graphic Design Intern — E-Tech Marketing */}
+      <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[22px] top-[4440.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[05]</p>
+      <p className="absolute leading-[38px] left-[1075px] text-[27px] top-[4434px] w-[790px]" style={{ letterSpacing: "-1px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Graphic Design Intern</p>
+      <p className="absolute leading-[32px] left-[1075px] text-[21px] top-[4476px] text-[#444444]" style={{ fontFamily: "'Geist:Regular'" }}>E-Tech Marketing</p>
+      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4476px] uppercase">2024 – 2025</p>
     </div>
   );
 }
@@ -305,7 +310,7 @@ function Container17() {
 
 function Link4() {
   return (
-    <div className="bg-[#1e1e1f] content-stretch flex gap-[8px] h-[47px] items-center justify-center overflow-clip p-[12px] relative rounded-[5px] shrink-0 w-[115px]" data-name="Link">
+    <div className="bg-[#1e1e1f] content-stretch flex gap-[8px] h-[47px] items-center justify-center overflow-clip p-[12px] relative rounded-[5px] shrink-0 w-[115px]" data-name="Link" style={{ display: "none" }} aria-hidden="true">
       <Container16 />
       <Container17 />
     </div>
@@ -327,7 +332,7 @@ function Container20() {
     <div className="absolute content-stretch flex h-[669px] items-center justify-center left-[510px] overflow-clip top-[593.07px] w-[1362px]" data-name="Container">
       <div className="relative shrink-0 size-[1582.984px]" data-name="ChatGPT Image Sep 13, 2026, 01_21_19 AM 1">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <img alt="" className="absolute h-[65.44%] left-0 max-w-none top-[24%] w-full" src={imgChatGptImageSep132026012119Am2} loading="eager" decoding="async" />
+          <img alt="" className="absolute h-[65.44%] left-0 max-w-none top-[24%] w-full" src="/Portfolio-Website/assets/about-portrait-purple.png" loading="eager" decoding="async" />
         </div>
       </div>
     </div>
@@ -616,20 +621,16 @@ export default function Frame() {
         <p className="leading-[29.952px]">I like working where creativity meets strategy — finding the idea that gives a brand its character and making sure it carries through every touchpoint, from logo and typography to social media and motion.</p>
       </div>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[71.674px] left-[48px] text-[#0f0f0f] text-[71.674px] top-[2076.42px] tracking-[-2.8669px] w-[1133.111px] whitespace-pre-wrap">{`        Results: A Snapshot of My Professional Achievements and Key Performance Metrics.`}</p>
-      <p className="[word-break:break-word] absolute leading-[66.269px] left-[972.29px] text-[#0f0f0f] text-[32px] top-[4327.09px] whitespace-nowrap" style={{ letterSpacing: "-2px", fontFamily: "’Geist:Regular’,sans-serif", fontWeight: 700 }}>Stint</p>
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[24.96px] left-[510px] not-italic text-[#0f0f0f] text-[19.2px] top-[545.07px] uppercase w-[523.479px]">Multidisciplinary Designer</p>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[108.446px] left-[44.52px] text-[83.42px] text-black top-[1788.58px] tracking-[-2.5026px] w-[1827.479px]">STRATEGY → BRAND → PRODUCT → EXPERIENCE</p>
       <Group1 />
       <Group2 />
       <Group3 />
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[1203.29px] not-italic text-[#0f0f0f] text-[24px] top-[4264.25px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[06]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[1434.29px] not-italic text-[#0f0f0f] text-[24px] top-[4264.25px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[07]</p>
       <Group4 />
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[1665.29px] not-italic text-[#0f0f0f] text-[24px] top-[4264.25px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[08]</p>
       <p className="-translate-x-full [word-break:break-word] absolute font-pt-mono-ss leading-[24.96px] left-[1874.29px] not-italic text-[#0f0f0f] text-[19.2px] text-right top-[545.07px] uppercase w-[523.479px]">[EST 2005]</p>
       <Banner />
       <p className="[word-break:break-word] absolute font-['Geist:SemiBold','Noto_Sans:SemiBold','Noto_Sans_Math:Regular','Noto_Sans_Symbols:SemiBold','Noto_Sans_Symbols2:Regular',sans-serif] leading-[normal] left-[30.29px] ml-[17px] mr-[17px] text-[#1e1e1f] text-[178.941px] top-[312.07px] tracking-[-7.3133px] whitespace-nowrap">{`About `}</p>
-      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] ml-[14px] mr-[14px] mt-0 mb-0 text-[#1e1e1f] text-[178.941px] top-[3802.09px] tracking-[-7.3133px] whitespace-nowrap">Clients</p>
+      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] ml-[14px] mr-[14px] mt-0 mb-0 text-[#1e1e1f] text-[178.941px] top-[3802.09px] tracking-[-7.3133px] whitespace-nowrap">Experience</p>
       <Container20 />
       <Group />
       <Group6 />
