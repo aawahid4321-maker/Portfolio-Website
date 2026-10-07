@@ -38,16 +38,16 @@ const WORK_CARDS = [
 
 export default function Frame7() {
   return (
-    <div className="bg-[#e6e6e6] relative" style={{ width: 1920, height: 8240 }} data-node-id="48:133">
-      {/* Grid columns */}
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[48.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[279.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[510.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[741.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[972.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[1203.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[1434.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[1665.29px] top-0 w-[207px]" />
+    <div className="bg-[#e6e6e6] relative" style={{ width: 1920, paddingTop: 908.31 }} data-node-id="48:133">
+      {/* Grid columns — stretch the full (dynamic) page height */}
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid top-0 bottom-0 left-[48.29px] w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid top-0 bottom-0 left-[279.29px] w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid top-0 bottom-0 left-[510.29px] w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid top-0 bottom-0 left-[741.29px] w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid top-0 bottom-0 left-[972.29px] w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid top-0 bottom-0 left-[1203.29px] w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid top-0 bottom-0 left-[1434.29px] w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid top-0 bottom-0 left-[1665.29px] w-[207px]" />
 
       {/* Navbar */}
       <div className="absolute content-stretch flex items-center justify-between left-[0.29px] px-[16px] py-[32px] top-0 w-[1920px]" data-name="Banner">
@@ -131,13 +131,15 @@ export default function Frame7() {
         Selected Works
       </p>
 
-      {/* Project cards — zig-zag layout.
+      {/* Project cards — zig-zag layout, in normal flow so the section
+          grows automatically with every added card.
           Every card is 1024x576 (16:9, object-fit: cover). Odd cards align
           left, even cards align right, with equal small vertical gaps, so the
           cards stagger down the page. New entries in WORK_CARDS automatically
-          take the next zig-zag position. On mobile (<=767px) all cards stack
-          in one centered column at the same size. */}
-      <div className="absolute left-[-0.08px] top-[908.31px] w-[1920px] px-[48px] pt-[160px] pb-[80px]">
+          take the next zig-zag position and push Let's Connect + footer down.
+          On mobile (<=767px) all cards stack in one centered column at the
+          same size. */}
+      <div className="relative w-[1920px] px-[48px] pt-[160px] pb-[253px]">
         <style>{`
           .work-zigzag { display: flex; flex-direction: column; gap: 72px; }
           .work-zigzag .work-card { width: 1024px; max-width: 100%; }
@@ -165,13 +167,13 @@ export default function Frame7() {
         </div>
       </div>
 
-      {/* Let's Connect section — interactive component */}
-      <div className="absolute left-[-4.02px] top-[6681px] w-[1920px] h-[763px] overflow-hidden">
+      {/* Let's Connect section — interactive component, follows the cards in flow */}
+      <div className="relative left-[-4.02px] w-[1920px] h-[763px] overflow-hidden mb-[72px]">
         <LetsConnect />
       </div>
 
-      {/* Footer — identical to homepage */}
-      <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[7516px] w-[1920px]" data-name="Container">
+      {/* Footer — identical to homepage, follows in flow */}
+      <div className="relative bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start pb-[32px] pt-[100px] w-[1920px]" data-name="Container">
         <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
           <SharedFooterContent />
         </div>
