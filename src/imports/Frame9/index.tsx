@@ -940,7 +940,7 @@ export default function Frame() {
       <Group14 />
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[71.674px] left-[46px] text-[#0f0f0f] text-[71.674px] top-[1144px] tracking-[-2.8669px] w-[912px] animate-[fadeUpIn_0.9s_0.35s_cubic-bezier(0.22,1,0.36,1)_both]">Selected Works</p>
       {/* Project section background: purple mountain landscape */}
-      <div className="absolute left-0 w-full pointer-events-none" style={{ top: '1100px', height: '4800px', background: 'url("/assets/purple-mountain-bg.webp") center top / cover no-repeat' }} aria-hidden="true" />
+      <div className="absolute left-0 w-full pointer-events-none" style={{ top: '1100px', height: '4800px', background: 'url("/Portfolio-Website/assets/purple-mountain-bg.webp") center top / cover no-repeat' }} aria-hidden="true" />
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8018.03px] uppercase w-[85.255px]">[01]</p>
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8274.42px] uppercase w-[85.255px]">[01]</p>
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8530.81px] uppercase w-[85.255px]">[01]</p>
