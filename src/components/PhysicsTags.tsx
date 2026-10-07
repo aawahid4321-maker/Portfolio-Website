@@ -1,10 +1,12 @@
 import { useEffect, useRef } from "react";
 import Matter from "matter-js";
 
-/* ── Palette: purple-light dominant, NO dark purple anywhere ───────────── */
+/* ── Palette: purple-light reduced, orange added ────────────────────────────
+   Split: Purple Light 24% / Orange 20% / Pink 17% / Yellow 17% / White 14% / Black 8% */
 const COLORS = {
   bg: "#0D0D0D",
   purpleLight: "#A58CF4",
+  orange: "#ff5a00",
   pink: "#ff0a8a",
   yellow: "#ffd60a",
   softWhite: "#FAFAFA",
@@ -12,19 +14,55 @@ const COLORS = {
 } as const;
 
 type PillDef = { bg: string; fg: string; outline?: string };
-/* 40 / 20 / 20 / 12 / 8 split across 25 slots */
-const PALETTE: PillDef[] = [
-  // Purple Light 40% — text #0D0D0D
-  ...Array.from({ length: 10 }, () => ({ bg: COLORS.purpleLight, fg: "#0D0D0D" })),
-  // Pink 20% — text #FAFAFA
-  ...Array.from({ length: 5 }, () => ({ bg: COLORS.pink, fg: "#FAFAFA" })),
-  // Yellow 20% — text #0D0D0D
-  ...Array.from({ length: 5 }, () => ({ bg: COLORS.yellow, fg: "#0D0D0D" })),
-  // Soft White 12% — text #0D0D0D
-  ...Array.from({ length: 3 }, () => ({ bg: COLORS.softWhite, fg: "#0D0D0D" })),
-  // Jet Black 8% — text #FAFAFA + light outline so it reads on dark bg
-  ...Array.from({ length: 2 }, () => ({ bg: COLORS.jetBlack, fg: "#FAFAFA", outline: "rgba(250,250,250,0.7)" })),
-];
+const PILL_DEFS = {
+  purple: { bg: COLORS.purpleLight, fg: "#0D0D0D" },
+  orange: { bg: COLORS.orange, fg: "#0D0D0D" },
+  pink: { bg: COLORS.pink, fg: "#FAFAFA" },
+  yellow: { bg: COLORS.yellow, fg: "#0D0D0D" },
+  white: { bg: COLORS.softWhite, fg: "#0D0D0D" },
+  black: { bg: COLORS.jetBlack, fg: "#FAFAFA", outline: "rgba(250,250,250,0.7)" },
+} as const;
+
+/* Build exact-count color list (round-robin), then shuffle for even spread */
+const buildPalette = (count: number): PillDef[] => {
+  const parts: Array<[PillDef, number]> = [
+    [PILL_DEFS.purple, 0.24],
+    [PILL_DEFS.orange, 0.20],
+    [PILL_DEFS.pink, 0.17],
+    [PILL_DEFS.yellow, 0.17],
+    [PILL_DEFS.white, 0.14],
+    [PILL_DEFS.black, 0.08],
+  ];
+  const list: PillDef[] = [];
+  let assigned = 0;
+  parts.forEach(([def, frac], idx) => {
+    // last part takes the remainder to hit exact count
+    const n = idx === parts.length - 1
+      ? count - assigned
+      : Math.round(count * frac);
+    for (let i = 0; i < n; i++) list.push({ ...def });
+    assigned += n;
+  });
+  // shuffle
+  for (let i = list.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+  // fix-up: never two adjacent same color; keep orange away from pink/yellow
+  const isWarm = (bg: string) => bg === COLORS.orange || bg === COLORS.pink || bg === COLORS.yellow;
+  for (let i = 1; i < list.length; i++) {
+    const prev = list[i - 1].bg, cur = list[i].bg;
+    const clash = cur === prev || (cur === COLORS.orange && isWarm(prev) && prev !== COLORS.orange);
+    if (clash) {
+      for (let k = i + 1; k < list.length; k++) {
+        const cand = list[k].bg;
+        const candClash = cand === prev || (cand === COLORS.orange && isWarm(prev) && prev !== COLORS.orange);
+        if (!candClash) { [list[i], list[k]] = [list[k], list[i]]; break; }
+      }
+    }
+  }
+  return list;
+};
 
 /* Words: Geist = uppercase words; Zilla = uppercase singles + normal-case phrases */
 const GEIST_WORDS = ["LOGO", "BRANDING", "IDENTITY", "PACKAGING", "PRINT", "DESIGN", "TYPOGRAPHY", "SOCIAL MEDIA", "GUIDELINES", "STRATEGY"];
@@ -35,7 +73,7 @@ const TAG_COUNT_MOBILE = 14;
 const SHAPE_COUNT_DESKTOP = 16;
 const SHAPE_COUNT_MOBILE = 8;
 const FLOOR_PADDING = 96; // floor sits 96px above section bottom (clear of CONTACT pill)
-const PUSH_RADIUS = 140;  // cursor hover-push radius
+/* (push radius is defined inline in the loop as PUSH_R = 150) */
 
 interface PTag {
   word: string;
@@ -87,24 +125,8 @@ export default function PhysicsTags() {
     };
     resizeCanvas();
 
-    /* ── Tag defs: ~65% Geist / ~35% Zilla, colors spread evenly ────────── */
-    const colorIdx: number[] = [];
-    for (let i = 0; i < tagCount; i++) colorIdx.push(i % PALETTE.length);
-    for (let i = colorIdx.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [colorIdx[i], colorIdx[j]] = [colorIdx[j], colorIdx[i]];
-    }
-    // fix-up: never two adjacent pills of the same color
-    for (let i = 1; i < colorIdx.length; i++) {
-      if (PALETTE[colorIdx[i]].bg === PALETTE[colorIdx[i - 1]].bg) {
-        for (let k = i + 1; k < colorIdx.length; k++) {
-          if (PALETTE[colorIdx[k]].bg !== PALETTE[colorIdx[i - 1]].bg) {
-            [colorIdx[i], colorIdx[k]] = [colorIdx[k], colorIdx[i]];
-            break;
-          }
-        }
-      }
-    }
+    /* ── Tag defs: ~65% Geist / ~35% Zilla, exact color split via shuffled list ── */
+    const palette = buildPalette(tagCount); // 24/20/17/17/14/8, no adjacent dupes
     // ~35% Zilla spread evenly through the list
     const zillaCount = Math.round(tagCount * 0.35);
     const zillaAt = new Set<number>();
@@ -127,7 +149,7 @@ export default function PhysicsTags() {
         : `600 20px "Geist", system-ui, sans-serif`;
       tags.push({
         word, zilla, font, w: 0, h: 0,
-        color: PALETTE[colorIdx[i]],
+        color: palette[i],
         body: null, dx: 0, dy: 0, da: 0, hoverT: 0,
       });
     }
@@ -138,15 +160,23 @@ export default function PhysicsTags() {
       "star", "star", "star", "square", "square", "dome", "dome",
       "triangle", "plus", "squiggle",
     ];
-    const SHAPE_COLORS = [COLORS.purpleLight, COLORS.pink, COLORS.yellow, COLORS.softWhite];
-    const STAR_COLORS = [COLORS.yellow, COLORS.purpleLight, COLORS.pink];
+    /* shapes: same palette as pills; 3-4 orange shapes; stars in yellow/orange/pink */
+    const shapePalette = buildPalette(shapeCount);
+    const STAR_COLORS = [COLORS.yellow, COLORS.orange, COLORS.pink];
     const shapes: PShape[] = [];
+    let orangeShapes = 0;
     for (let i = 0; i < shapeCount; i++) {
       const kind = SHAPE_KINDS[i % SHAPE_KINDS.length];
       const size = Math.min(28 + Math.random() * 28, 64); // 28–56px
-      const color = kind === "star"
-        ? STAR_COLORS[i % STAR_COLORS.length]
-        : SHAPE_COLORS[Math.floor(Math.random() * SHAPE_COLORS.length)];
+      let color: string;
+      if (kind === "star") {
+        color = STAR_COLORS[i % STAR_COLORS.length];
+      } else if (orangeShapes < 4 && shapePalette[i].bg !== COLORS.orange && i % 4 === 1) {
+        color = COLORS.orange; orangeShapes++; // ensure 3-4 orange shapes
+      } else {
+        color = shapePalette[i].bg;
+        if (color === COLORS.jetBlack) color = COLORS.purpleLight; // no plain black shapes
+      }
       shapes.push({ kind, size, color, body: null, dx: 0, dy: 0, da: 0, hoverT: 0 });
     }
 
@@ -190,6 +220,10 @@ export default function PhysicsTags() {
       });
       buildWalls();
       ready = true;
+      // FIX: ensure loop is running now that we're ready (observer may have fired early)
+      const r = section.getBoundingClientRect();
+      const inView = r.top < window.innerHeight * 0.7 && r.bottom > window.innerHeight * 0.3;
+      if (inView) startLoop();
       maybeDrop();
     };
 
@@ -203,6 +237,7 @@ export default function PhysicsTags() {
         restitution: 0.5, friction: 0.15, frictionAir: 0.018, density: 0.0009,
       });
       Matter.Body.setAngle(body, (Math.random() - 0.5) * 0.6);
+      Matter.Sleeping.set(body, false); // FIX: never let bodies sleep
       t.body = body;
       t.dx = x; t.dy = y; t.da = body.angle;
       Matter.Composite.add(engine.world, body);
@@ -229,6 +264,7 @@ export default function PhysicsTags() {
           body = Matter.Bodies.rectangle(x, y, s.size * 1.6, 14, { ...o, chamfer: { radius: 7 } }); break;
       }
       Matter.Body.setAngle(body!, Math.random() * Math.PI);
+      Matter.Sleeping.set(body!, false); // FIX: never let bodies sleep
       s.body = body!;
       s.dx = x; s.dy = y; s.da = body!.angle;
       Matter.Composite.add(engine.world, body!);
@@ -262,7 +298,8 @@ export default function PhysicsTags() {
     const mouse = Matter.Mouse.create(section);
     const syncMouse = () => {
       const r = section.getBoundingClientRect();
-      Matter.Mouse.setOffset(mouse, { x: r.left, y: r.top });
+      // FIX: negative offset per Matter.Mouse convention for section-relative coords
+      Matter.Mouse.setOffset(mouse, { x: -r.left, y: -r.top });
       Matter.Mouse.setScale(mouse, { x: 1, y: 1 });
       mouse.pixelRatio = DPR;
     };
@@ -278,11 +315,24 @@ export default function PhysicsTags() {
       }
     };
 
-    // cursor state: mousemove stores target; loop lerps position (0.2) toward it
+    // DEBUG (temporary): log mouse constraint creation with offset + pixelRatio
+    console.log("[PhysicsTags] mouse constraint created", {
+      offset: { x: -section.getBoundingClientRect().left, y: -section.getBoundingClientRect().top },
+      pixelRatio: DPR,
+    });
+
+    // cursor state: pointermove stores target; loop lerps position (0.25) toward it
     // velocity = actual position delta per frame (clean signal for push force)
     const cursor = { x: -9999, y: -9999, vx: 0, vy: 0, tx: -9999, ty: -9999, px: -9999, py: -9999, active: false };
-    let lastMove = 0, rectCache = section.getBoundingClientRect();
-    const onMove = (e: MouseEvent) => {
+    let lastMove = 0, rectCache = section.getBoundingClientRect(), loggedPointer = false;
+    const onMove = (e: PointerEvent) => {
+      // DEBUG (temporary): first pointermove over section + sleeping count
+      if (!loggedPointer) {
+        loggedPointer = true;
+        console.log("pointer over section");
+        const sleeping = Matter.Composite.allBodies(engine.world).filter((b) => b.isSleeping).length;
+        console.log("[PhysicsTags] sleeping bodies:", sleeping, "(should be 0)");
+      }
       const now = performance.now();
       if (now - lastMove < 16) return; // throttle to ~60Hz
       lastMove = now;
@@ -469,31 +519,33 @@ export default function PhysicsTags() {
         it.da += diff * 0.5;
       });
 
-      // cursor hover-push: soft invisible ball, force ∝ speed, ∝ 1/distance, capped
-      // FIX: lerp position directly toward target; velocity = per-frame delta
+      // cursor hover-push: soft invisible ball (radius 150), force ∝ speed, ∝ 1/distance
+      // FIX: lerp 0.25; force scaled by body.mass; gentle minimum push even when slow; capped
       if (cursor.active) {
         if (cursor.x < -9000) { cursor.x = cursor.tx; cursor.y = cursor.ty; } // snap on first entry
         cursor.px = cursor.x; cursor.py = cursor.y;
-        cursor.x += (cursor.tx - cursor.x) * 0.2;
-        cursor.y += (cursor.ty - cursor.y) * 0.2;
+        cursor.x += (cursor.tx - cursor.x) * 0.25;
+        cursor.y += (cursor.ty - cursor.y) * 0.25;
         cursor.vx = cursor.x - cursor.px;
         cursor.vy = cursor.y - cursor.py;
         const speed = Math.hypot(cursor.vx, cursor.vy);
-        if (speed > 0.05) {
-          items.forEach((it) => {
-            const b = it.body; if (!b) return;
-            const dx = b.position.x - cursor.x, dy = b.position.y - cursor.y;
-            const dist = Math.hypot(dx, dy);
-            if (dist > PUSH_RADIUS || dist < 1) return;
-            const falloff = 1 - dist / PUSH_RADIUS;
-            const f = Math.min(0.00045 * falloff * Math.min(speed, 32), 0.0012); // capped
-            Matter.Body.applyForce(b, b.position, {
-              x: (dx / dist) * f + (cursor.vx / Math.max(speed, 1)) * f * 0.7,
-              y: (dy / dist) * f + (cursor.vy / Math.max(speed, 1)) * f * 0.7 - f * 0.2,
-            });
-            b.torque += (Math.random() - 0.5) * 0.0004 * falloff; // gentle spin
+        const PUSH_R = 150; // cursor ball radius
+        // minimum 25% push even when cursor moves slowly; scales up with speed
+        const speedFactor = 0.25 + (Math.min(speed, 28) / 28) * 0.75;
+        items.forEach((it) => {
+          const b = it.body; if (!b) return;
+          const dx = b.position.x - cursor.x, dy = b.position.y - cursor.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist > PUSH_R || dist < 1) return;
+          const falloff = 1 - dist / PUSH_R;
+          // force ∝ mass so heavy and light tags move together; capped to avoid explosions
+          const f = Math.min(0.00008 * b.mass * falloff * speedFactor, 0.0025);
+          Matter.Body.applyForce(b, b.position, {
+            x: (dx / dist) * f + (cursor.vx / Math.max(speed, 1)) * f * 0.7,
+            y: (dy / dist) * f + (cursor.vy / Math.max(speed, 1)) * f * 0.7 - f * 0.2,
           });
-        }
+          b.torque += (Math.random() - 0.5) * 0.0004 * falloff; // gentle spin
+        });
       }
 
       // hover detection: scale lerp + grab cursor
@@ -601,8 +653,8 @@ export default function PhysicsTags() {
       Matter.Composite.add(engine.world, mouseConstraint);
       stripWheel();
       syncMouse();
-      section.addEventListener("mousemove", onMove);
-      section.addEventListener("mouseleave", onLeave);
+      section.addEventListener("pointermove", onMove); // FIX: pointermove (not just mousemove)
+      section.addEventListener("pointerleave", onLeave);
       section.addEventListener("pointerdown", onDown);
       window.addEventListener("resize", onResize);
       window.addEventListener("scroll", onScrollSync, { passive: true });
