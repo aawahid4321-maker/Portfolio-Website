@@ -36,8 +36,8 @@ export default function ProjectPage({
 
   // Offsets from IB — derived from the original 6-image layout
   const NEXT_TOP      = IB + 332;
-  const LC_BG_TOP     = IB + 1308;
-  const FOOTER_TOP    = IB + 2071;
+  const LC_BG_TOP     = IB + 1209;
+  const FOOTER_TOP    = IB + 1972;
 
   return (
     <div
@@ -249,13 +249,13 @@ export default function ProjectPage({
       {nextProject && (
         <div
           className="absolute content-stretch flex flex-col gap-[8px] items-start cursor-pointer"
-          style={{ left: 968.51, top: NEXT_TOP, width: 900, height: 706.031 }}
+          style={{ left: 844.51, top: NEXT_TOP, width: 1024, height: 607 }}
           data-name="next-project-card"
           onClick={() => onNavigateProject(nextProject.id)}
         >
           <div
             className="relative shrink-0 overflow-clip"
-            style={{ width: 900, height: 675 }}
+            style={{ width: 1024, height: 576 }}
             data-name="work-card-img"
           >
             <img
@@ -264,7 +264,7 @@ export default function ProjectPage({
               src={nextProject.thumbnail} loading="lazy" decoding="async"
             />
           </div>
-          <div className="content-stretch flex items-start justify-between relative shrink-0 w-[900px]">
+          <div className="content-stretch flex items-start justify-between relative shrink-0 w-[1024px]">
             <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">
               {nextProject.title}
             </p>
