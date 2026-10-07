@@ -213,7 +213,7 @@ export default function LetsConnect() {
           z-index: 1;
           width: 1920px; height: 763px;
           /* night landscape bg image (purple/dark, matches site) */
-          background: var(--connect-bg) url("/assets/lets-connect-bg.webp") center / cover no-repeat;
+          background: var(--connect-bg) url("/Portfolio-Website/assets/lets-connect-bg.webp") center / cover no-repeat;
           overflow: hidden;
         }
         body.connect-in-view [class*="h-[11035px]"][class*="border-l"] {
