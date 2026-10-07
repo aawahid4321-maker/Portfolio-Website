@@ -92,11 +92,91 @@ export default function ProjectHero({
       requestAnimationFrame(() => nav.classList.add("is-entering"));
     }
 
-    /* ── card: start floating after entrance (1.4s delay in CSS) ── */
+    /* ── card: start floating after entrance ── */
     if (cardRef.current && !reduceMotion && !isTouch) {
       const cardWrap = cardRef.current;
       window.setTimeout(() => cardWrap.classList.add("is-floating"), 1400);
     }
+
+    /* ── card: cursor parallax (2D only, max 8px + 1.5deg), emoji at depths ── */
+    const heroEl = document.querySelector(".ph-hero") as HTMLElement | null;
+    const cardWrapEl = cardRef.current;
+    let px = 0, py = 0, tx = 0, ty = 0, rafPar = 0;
+    const onHeroMouse = (e: MouseEvent) => {
+      if (!heroEl || !cardWrapEl || reduceMotion || isTouch) return;
+      const r = heroEl.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width - 0.5) * 16; // ±8px
+      ty = ((e.clientY - r.top) / r.height - 0.5) * 16;
+    };
+    const parTick = () => {
+      px += (tx - px) * 0.1; py += (ty - py) * 0.1; // lerp 0.1
+      if (cardWrapEl && !cardWrapEl.classList.contains("is-floating")) {
+        // only apply when not floating (avoid transform conflict)
+        cardWrapEl.style.translate = `${px}px ${py}px`;
+        cardWrapEl.style.rotate = `${px * 0.09}deg`; // up to ~1.5deg
+      }
+      // emoji shift at different depths (12-24px)
+      document.querySelectorAll(".ph-emoji").forEach((el, i) => {
+        const depth = 12 + (i % 3) * 6;
+        (el as HTMLElement).style.translate = `${px * depth / 16}px ${py * depth / 16}px`;
+      });
+      rafPar = requestAnimationFrame(parTick);
+    };
+    if (heroEl && !reduceMotion && !isTouch) {
+      heroEl.addEventListener("mousemove", onHeroMouse);
+      rafPar = requestAnimationFrame(parTick);
+    }
+
+    /* ── card: click confetti (6 pieces, 700ms) ── */
+    const onCardClick = (e: MouseEvent) => {
+      if (!cardWrapEl || reduceMotion) return;
+      // squish: 0.97 → 1.03 → 1
+      cardWrapEl.animate(
+        [{ transform: "scale(0.97)" }, { transform: "scale(1.03)" }, { transform: "scale(1)" }],
+        { duration: 300, easing: "ease-out" }
+      );
+      const colors = ["#A58CF4", "#FF0A8A", "#FFD60A", "#FF5A00"];
+      const shapes = ["✦", "●", "✦", "●", "✦", "●"];
+      for (let i = 0; i < 6; i++) {
+        const s = document.createElement("span");
+        s.textContent = shapes[i];
+        s.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;color:${colors[i % 4]};font-size:20px;pointer-events:none;z-index:9999;`;
+        document.body.appendChild(s);
+        const ang = (i / 6) * Math.PI * 2;
+        s.animate(
+          [
+            { transform: "translate(0,0) scale(1)", opacity: 1 },
+            { transform: `translate(${Math.cos(ang) * 80}px,${Math.sin(ang) * 80 - 30}px) scale(0.5)`, opacity: 0 },
+          ],
+          { duration: 700, easing: "cubic-bezier(0.22,1,0.36,1)" }
+        ).onfinish = () => s.remove();
+      }
+    };
+    cardWrapEl?.addEventListener("click", onCardClick as EventListener);
+
+    /* ── card: scroll parallax (scale 1→0.96, move up 30px) ── */
+    let scrollRaf = 0;
+    const onCardScroll = () => {
+      if (scrollRaf) return;
+      scrollRaf = requestAnimationFrame(() => {
+        scrollRaf = 0;
+        if (!cardWrapEl || reduceMotion) return;
+        const y = window.scrollY;
+        const p = Math.min(y / 600, 1); // 0→1 over 600px
+        cardWrapEl.style.scale = `${1 - p * 0.04}`;
+      });
+    };
+    window.addEventListener("scroll", onCardScroll, { passive: true });
+
+    /* ── pause idle animations when hero off-screen ── */
+    const heroObs = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        document.querySelectorAll(".ph-emoji, .ph-card-wrap.is-floating").forEach((el) => {
+          (el as HTMLElement).style.animationPlayState = en.isIntersecting ? "running" : "paused";
+        });
+      });
+    }, { threshold: 0.1 });
+    if (heroEl) heroObs.observe(heroEl);
 
     /* ── nav: sliding highlight (offsetLeft/offsetWidth — adapts to size changes) ── */
     const highlight = highlightRef.current;
@@ -210,6 +290,12 @@ export default function ProjectHero({
       hero.removeEventListener("mousemove", onMouse);
       window.removeEventListener("mousemove", onLogoMouse);
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", onCardScroll);
+      heroEl?.removeEventListener("mousemove", onHeroMouse);
+      cardWrapEl?.removeEventListener("click", onCardClick as EventListener);
+      cancelAnimationFrame(rafPar);
+      cancelAnimationFrame(scrollRaf);
+      heroObs.disconnect();
       document.removeEventListener("click", onDocClick);
       window.removeEventListener("resize", onLinkLeave);
       window.clearTimeout(highlightInit);
@@ -226,12 +312,44 @@ export default function ProjectHero({
     };
   }, [activeLink]);
 
-  // (hero title removed per user request — pills + card only)
+  // (hero title restored per user request)
+  // emoji per tag: type, year, client
+  const tagEmojis = ["🎨", "📅", "💜"];
   const tags = [
-    { label: type, cls: "tag-purple" },
-    { label: year, cls: "tag-yellow" },
-    { label: client, cls: "tag-pink" },
+    { label: type, cls: "tag-purple", emoji: tagEmojis[0] },
+    { label: year, cls: "tag-yellow", emoji: tagEmojis[1] },
+    { label: client, cls: "tag-pink", emoji: tagEmojis[2] },
   ];
+
+  // 8 floating emoji stickers: pick by project type
+  const lowerType = (type || "").toLowerCase();
+  const lowerTitle = (title || "").toLowerCase();
+  let emojiChars = ["🎨", "✨", "🚀", "💡", "🔥", "💜", "👋", "🎯"]; // default
+  if (lowerTitle.includes("coffee") || lowerTitle.includes("noir")) {
+    emojiChars = ["☕", "🫘", "✨", "💜", "🔥", "🎨", "💡", "👋"];
+  } else if (lowerType.includes("print") || lowerTitle.includes("brochure")) {
+    emojiChars = ["🖨️", "📐", "✏️", "🎨", "✨", "💡", "🔥", "👋"];
+  } else if (lowerType.includes("brand") || lowerType.includes("logo") || lowerType.includes("identity")) {
+    emojiChars = ["🎨", "✨", "🎯", "💡", "🔥", "💜", "🚀", "👋"];
+  }
+  const emojiBgs = ["#A58CF4", "#FF0A8A", "#FFD60A", "#FF5A00", "#FAFAFA", "#A58CF4", "#FF0A8A", "#FFD60A"];
+  const emojiStickers = emojiChars.map((char, i) => {
+    const isLeft = i % 2 === 0;
+    const offset = 16 + ((i * 11) % 44); // 16-60px outside card edge
+    return {
+      char,
+      bg: emojiBgs[i],
+      size: `${56 + (i % 3) * 8}px`, // 56-72px
+      // position outside card: card half-width = min(450px, 42vw)
+      left: isLeft ? `calc(50% - min(450px, 42vw) - ${offset}px - 64px)` : undefined,
+      right: !isLeft ? `calc(50% - min(450px, 42vw) - ${offset}px - 64px)` : undefined,
+      top: `${20 + ((i * 17) % 60)}%`, // spread vertically, never under nav
+      rot: -14 + ((i * 7) % 28), // -14 to 14deg
+      popDelay: `${0.6 + i * 0.08}s`, // stagger 80ms
+      delay: `${(i * 0.4) % 3}s`,
+      dur: `${3 + (i % 4)}s`, // 3-6s
+    };
+  });
 
   return (
     <>
@@ -551,50 +669,137 @@ export default function ProjectHero({
           to { transform: translateY(0); opacity: 1; }
         }
 
-        /* ── card: wrap (tilt/float target) > card (radius+ring+shadow) > img ── */
+        .ph-tag-emoji {
+          font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+          margin-right: 8px;
+          font-size: 1.1em;
+        }
+
+        /* ── 8 floating emoji stickers around the card ── */
+        .ph-emoji-wrap {
+          position: absolute;
+          inset: 0;
+          z-index: 5; /* below card (z-10), above bg */
+          pointer-events: none;
+        }
+        .ph-emoji {
+          position: absolute;
+          border-radius: 50%;
+          border: 2.5px solid #0D0D0D;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+          cursor: pointer;
+          pointer-events: auto;
+          transform: rotate(var(--rot, 0deg));
+          /* entrance pop, staggered */
+          animation:
+            ph-emoji-pop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) backwards,
+            ph-emoji-float var(--dur, 4s) ease-in-out infinite;
+          animation-delay: var(--pop-delay, 0s), var(--delay, 0s);
+        }
+        @keyframes ph-emoji-pop {
+          0% { transform: scale(0) rotate(var(--rot, 0deg)); opacity: 0; }
+          60% { transform: scale(1.15) rotate(var(--rot, 0deg)); opacity: 1; }
+          100% { transform: scale(1) rotate(var(--rot, 0deg)); opacity: 1; }
+        }
+        @keyframes ph-emoji-float {
+          0%, 100% { translate: 0 0; }
+          50% { translate: 0 -10px; }
+        }
+        .ph-emoji:hover {
+          animation: ph-emoji-wiggle 0.4s ease;
+          scale: 1.15;
+        }
+        @keyframes ph-emoji-wiggle {
+          0%, 100% { transform: rotate(var(--rot, 0deg)); }
+          25% { transform: rotate(calc(var(--rot, 0deg) - 10deg)); }
+          75% { transform: rotate(calc(var(--rot, 0deg) + 10deg)); }
+        }
+        .ph-emoji:active {
+          animation: ph-emoji-jump 0.5s ease;
+        }
+        @keyframes ph-emoji-jump {
+          0% { transform: translateY(0) rotate(0); }
+          50% { transform: translateY(-20px) rotate(180deg); }
+          100% { transform: translateY(0) rotate(360deg); }
+        }
+
+        /* ── card: wrap > shadow (separate layer) + card > img ──
+           Square-corner fix: box-shadow on the same element renders square
+           corners under transforms. The purple shadow is now its own div
+           with the same border-radius, so every corner stays perfectly round. */
         .ph-card-wrap {
           position: relative;
           z-index: 10;
           width: min(900px, 84vw);
           aspect-ratio: 16 / 9;
-          margin-bottom: 0; /* no negative margins — card stays fully inside hero */
-          transform-style: flat;
+          margin-bottom: 0;
+          /* room for the 10px offset shadow */
+          padding-right: 14px;
+          padding-bottom: 14px;
+          overflow: visible;
+          backface-visibility: hidden;
           will-change: transform;
-          perspective: 1200px; /* tilt perspective on parent */
-          animation: ph-card-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s backwards;
         }
-        @keyframes ph-card-in {
-          from { transform: translateY(60px); opacity: 0; }
-          to { transform: translateY(0); opacity: 1; }
-        }
-        /* float idle on the wrap only (never the card — corners stay perfect) */
-        .ph-card-wrap.is-floating { animation: ph-float 5s ease-in-out 1.4s infinite; }
-        @keyframes ph-float {
-          0%, 100% { translate: 0 0; }
-          50% { translate: 0 -8px; }
+        /* purple hard shadow: separate layer, same radius */
+        .ph-card-shadow {
+          position: absolute;
+          inset: 0 14px 14px 0; /* inset accounts for wrap padding */
+          border-radius: 28px;
+          background: #A58CF4;
+          z-index: 0;
+          transform: translate(0, 0); /* entrance: slides out to 10px,10px */
         }
         .ph-card {
           position: absolute;
-          inset: 0;
+          inset: 0 14px 14px 0;
+          z-index: 1;
           border-radius: 28px;
           overflow: hidden;
-          isolation: isolate; /* ring+shadow follow the same radius */
-          border: 3px solid var(--ph-jet-black);
-          background: var(--ph-jet-black);
-          /* ring + hard shadow on the SAME element as the radius */
-          box-shadow:
-            0 0 0 3px var(--ph-soft-white),
-            10px 10px 0 3px var(--ph-purple-light);
+          isolation: isolate;
+          background: #0D0D0D;
+          border: 3px solid #FAFAFA; /* white ring via border (follows radius) */
+          clip-path: inset(0 round 28px); /* forces perfect corners */
         }
         .ph-card img {
-          display: block; /* kills inline baseline gap (the thin white line) */
+          display: block;
           width: 100%;
           height: 100%;
           object-fit: cover;
           border-radius: inherit;
-          clip-path: inset(0 round 25px); /* image follows rounded corners */
-          backface-visibility: hidden;
-          transform: translateZ(0);
+        }
+        /* entrance: card rises 70px, rotate -3deg→0, scale 0.94→1 */
+        .ph-card-wrap.ph-enter {
+          animation: ph-card-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+        }
+        @keyframes ph-card-in {
+          from { transform: translateY(70px) rotate(-3deg) scale(0.94); opacity: 0; }
+          to { transform: translateY(0) rotate(0) scale(1); opacity: 1; }
+        }
+        /* shadow pops out after the card (spring) */
+        .ph-card-wrap.ph-enter .ph-card-shadow {
+          animation: ph-shadow-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.35s backwards;
+        }
+        @keyframes ph-shadow-in {
+          from { transform: translate(0, 0); }
+          to { transform: translate(10px, 10px); }
+        }
+        .ph-card-wrap.ph-enter .ph-card-shadow { transform: translate(10px, 10px); }
+        /* idle float on wrap only */
+        .ph-card-wrap.is-floating {
+          animation: ph-float 5s ease-in-out infinite;
+        }
+        @keyframes ph-float {
+          0%, 100% { transform: translateY(0) rotate(0deg); }
+          50% { transform: translateY(-8px) rotate(0.6deg); }
+        }
+        /* hover: card scales, shadow grows */
+        .ph-card-wrap:hover { transform: scale(1.02); }
+        .ph-card-wrap:hover .ph-card-shadow { transform: translate(16px, 16px); }
+        .ph-card-wrap, .ph-card-wrap .ph-card-shadow {
+          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         /* floating decorations (close to card, never far corners) */
@@ -725,7 +930,11 @@ export default function ProjectHero({
           .ph-title { font-size: clamp(34px, 11vw, 56px); }
           .ph-tags { flex-wrap: wrap; } /* tags wrap in 2 rows on mobile */
           .ph-card-wrap { width: 92vw; aspect-ratio: 4 / 3; }
-          .ph-card { border-radius: 22px; box-shadow: 0 0 0 3px var(--ph-soft-white), 6px 6px 0 3px var(--ph-purple-light); }
+          .ph-card { border-radius: 22px; clip-path: inset(0 round 22px); }
+          .ph-card-shadow { border-radius: 22px; }
+          /* mobile: 4 emoji only, 44-52px, at card corners */
+          .ph-emoji-wrap .ph-emoji:nth-child(n+5) { display: none; }
+          .ph-emoji { width: 48px !important; height: 48px !important; font-size: 26px !important; }
           .ph-card {
             aspect-ratio: 4 / 3;
             box-shadow:
@@ -832,6 +1041,7 @@ export default function ProjectHero({
         <div className="ph-tags">
           {tags.map((t, i) => (
             <span key={t.label} className={`ph-tag ${t.cls}`} style={{ animationDelay: `${400 + i * 90}ms` }}>
+              <span className="ph-tag-emoji" aria-hidden="true">{t.emoji}</span>
               {t.label}
             </span>
           ))}
@@ -840,11 +1050,37 @@ export default function ProjectHero({
         {/* big title */}
         <h1 className="ph-title">{title}</h1>
 
-        {/* sticker card: wrap (tilt/float) > card (radius+ring) > img */}
-        <div ref={cardRef} className="ph-card-wrap" style={{ marginTop: 8 }}>
+        {/* sticker card: wrap > shadow + card > img (shadow is separate layer for perfect corners) */}
+        <div ref={cardRef} className="ph-card-wrap ph-enter">
+          <div className="ph-card-shadow" aria-hidden="true" />
           <div className="ph-card">
             <img src={image} alt={alt} loading="eager" decoding="async" />
           </div>
+        </div>
+
+        {/* 8 floating emoji stickers around the card */}
+        <div className="ph-emoji-wrap" aria-hidden="true">
+          {emojiStickers.map((e, i) => (
+            <div
+              key={i}
+              className="ph-emoji"
+              style={{
+                background: e.bg,
+                width: e.size,
+                height: e.size,
+                fontSize: `calc(${e.size} * 0.55)`,
+                left: e.left,
+                right: e.right,
+                top: e.top,
+                ["--rot" as string]: `${e.rot}deg`,
+                ["--pop-delay" as string]: e.popDelay,
+                ["--delay" as string]: e.delay,
+                ["--dur" as string]: e.dur,
+              }}
+            >
+              {e.char}
+            </div>
+          ))}
         </div>
 
         {/* floating decorations: 20-60px outside card edge, small, aria-hidden */}
