@@ -236,25 +236,28 @@ export default function ProjectHero({
   return (
     <>
       <style>{`
-        html { scroll-padding-top: 112px; } /* anchors never hide under the floating pill nav */
+        html { scroll-padding-top: calc(20px + 92px + 16px); } /* anchors clear the floating nav */
         .ph-hero {
           --ph-purple-light: #A58CF4;
           --ph-pink: #ff0a8a;
           --ph-yellow: #ffd60a;
           --ph-soft-white: #FAFAFA;
           --ph-jet-black: #0D0D0D;
-          /* vertical stack, centered both ways — only as tall as content */
+          --hero-gap: 24px;
+          /* clean vertical stack — content always starts BELOW the nav */
           position: relative;
           width: 100%;
           display: flex;
           flex-direction: column;
           align-items: center;
-          justify-content: center;
-          gap: 20px;
-          padding: 120px 24px 56px; /* top clears floating nav, bottom small */
+          justify-content: flex-start;
+          gap: var(--hero-gap);
+          /* top clears nav (20 + 92 + 40 = 152px); bottom 72px so card+shadow fit */
+          padding-top: calc(var(--nav-top, 20px) + var(--nav-h, 92px) + 40px);
+          padding-bottom: 72px;
+          padding-inline: 24px;
           background: var(--ph-jet-black);
-          overflow: visible;
-          max-height: 78vh;
+          overflow: visible; /* never clip the card's hard shadow */
         }
         .ph-hero-bg {
           position: absolute;
@@ -321,21 +324,21 @@ export default function ProjectHero({
           --pp-white: #FAFAFA;
           --pp-black: #0D0D0D;
           /* size variables — tweak in one place */
-          --nav-h: 76px;
-          --nav-font: 18px;
-          --nav-logo: 56px;
-          --nav-pad: 10px;
-          --nav-gap: 8px;
+          --nav-top: 20px;
+          --nav-h: 92px;
+          --nav-font: 22px;
+          --nav-logo: 68px;
+          --nav-pad: 12px;
+          --nav-gap: 10px;
           position: fixed;
-          top: 22px;
+          top: var(--nav-top);
           left: 50%;
           transform: translateX(-50%);
           z-index: 1000;
           display: flex;
           align-items: center;
           gap: var(--nav-gap);
-          width: fit-content;
-          max-width: min(900px, calc(100% - 32px));
+          width: min(1040px, calc(100% - 48px));
           height: var(--nav-h);
           padding: var(--nav-pad);
           background: var(--pp-black); /* solid, no transparency */
@@ -349,11 +352,11 @@ export default function ProjectHero({
         }
         /* large screens: scale up a bit more */
         @media (min-width: 1600px) {
-          .ph-nav { --nav-h: 84px; --nav-font: 20px; --nav-logo: 62px; }
+          .ph-nav { --nav-h: 100px; --nav-font: 24px; --nav-logo: 74px; }
         }
         /* tablet: slightly smaller */
         @media (min-width: 768px) and (max-width: 1024px) {
-          .ph-nav { --nav-h: 68px; --nav-font: 16px; }
+          .ph-nav { --nav-h: 80px; --nav-font: 18px; --nav-logo: 58px; }
           .pp-links a { padding: 12px 18px; }
         }
         /* scroll: shrink after 120px, hide on fast scroll down */
@@ -528,12 +531,33 @@ export default function ProjectHero({
         .tag-yellow { background: var(--ph-yellow); color: var(--ph-jet-black); }
         .tag-pink { background: var(--ph-pink); color: var(--ph-soft-white); }
 
+        /* big title: always below nav (nav z-index 1000) */
+        .ph-title {
+          position: relative;
+          z-index: 2;
+          font-family: "Geist", system-ui, sans-serif;
+          font-weight: 700;
+          text-transform: uppercase;
+          font-size: clamp(40px, 7vw, 104px);
+          line-height: 0.95;
+          text-align: center;
+          color: var(--ph-soft-white);
+          margin: 0;
+          letter-spacing: -0.02em;
+          animation: ph-title-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.15s backwards;
+        }
+        @keyframes ph-title-in {
+          from { transform: translateY(40px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
+        }
+
         /* ── card: wrap (tilt/float target) > card (radius+ring+shadow) > img ── */
         .ph-card-wrap {
           position: relative;
           z-index: 10;
-          width: min(860px, 84vw);
+          width: min(900px, 84vw);
           aspect-ratio: 16 / 9;
+          margin-bottom: 0; /* no negative margins — card stays fully inside hero */
           transform-style: flat;
           will-change: transform;
           perspective: 1200px; /* tilt perspective on parent */
@@ -591,10 +615,11 @@ export default function ProjectHero({
         @media (max-width: 768px) {
           /* mobile: compact pill — logo, menu button, hire (48px tap targets) */
           .ph-nav {
-            --nav-h: 64px;
+            --nav-top: 12px;
+            --nav-h: 68px;
             --nav-logo: 48px;
             --nav-font: 16px;
-            top: 12px;
+            top: var(--nav-top);
             width: calc(100% - 24px);
             padding: 8px;
             gap: 6px;
@@ -692,7 +717,12 @@ export default function ProjectHero({
             background: var(--pp-purple);
             color: var(--pp-black);
           }
-          .ph-hero { padding: 104px 16px 40px; max-height: none; }
+          .ph-hero {
+            padding-top: calc(12px + 68px + 28px); /* nav-top + nav-h + breathing room */
+            padding-bottom: 56px;
+            padding-inline: 16px;
+          }
+          .ph-title { font-size: clamp(34px, 11vw, 56px); }
           .ph-tags { flex-wrap: wrap; } /* tags wrap in 2 rows on mobile */
           .ph-card-wrap { width: 92vw; aspect-ratio: 4 / 3; }
           .ph-card { border-radius: 22px; box-shadow: 0 0 0 3px var(--ph-soft-white), 6px 6px 0 3px var(--ph-purple-light); }
@@ -807,8 +837,11 @@ export default function ProjectHero({
           ))}
         </div>
 
+        {/* big title */}
+        <h1 className="ph-title">{title}</h1>
+
         {/* sticker card: wrap (tilt/float) > card (radius+ring) > img */}
-        <div ref={cardRef} className="ph-card-wrap">
+        <div ref={cardRef} className="ph-card-wrap" style={{ marginTop: 8 }}>
           <div className="ph-card">
             <img src={image} alt={alt} loading="eager" decoding="async" />
           </div>
