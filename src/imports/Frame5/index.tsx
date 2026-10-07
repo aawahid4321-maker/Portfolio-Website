@@ -1,3 +1,4 @@
+import React from "react";
 import svgPaths from "./svg-8jh5l27o5h";
 import imgChatGptImageSep132026012119Am1 from "./b389fd9fe37e840e82ef570bd3a6044d75d431d7.webp";
 import SharedFooterContent from "@/components/SharedFooterContent";
@@ -600,8 +601,25 @@ function Group6() {
 }
 
 export default function Frame() {
+  React.useEffect(() => {
+    const els = document.querySelectorAll(".metric-fill");
+    if (!els.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            e.target.closest("[data-metrics]")?.classList.add("in-view");
+            io.disconnect();
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
   return (
-    <div className="bg-[#e6e6e6] relative size-full">
+    <div className="bg-[#e6e6e6] relative size-full" data-metrics>
       <style>{`
         /* Metric circles: entrance pop on load, then gentle continuous pulse.
            No scroll-timeline — plain CSS animations that always work and
@@ -614,8 +632,11 @@ export default function Frame() {
           from { scale: 0.7; opacity: 0; }
           to { scale: 1; opacity: 1; }
         }
-        /* Metric circles: liquid fill rising from bottom to top */
+        /* Metric circles: liquid fill rising from bottom to top — triggered by .in-view */
         .metric-fill {
+          transform: translateY(438px);
+        }
+        .in-view .metric-fill {
           animation: metricFill 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
         }
         @keyframes metricFill {
@@ -645,7 +666,7 @@ export default function Frame() {
       <Container7 />
       <Container8 />
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[23.04px] left-[510px] not-italic text-[#29292b] text-[19.2px] top-[1369.75px] uppercase whitespace-nowrap">[about me]</p>
-      <div className="[word-break:break-word] absolute font-geist-medium-ss leading-[0] left-[716.01px] text-[#1e1e1f] text-[23.04px] top-[1369.75px] tracking-[-0.6912px] w-[926.565px] whitespace-pre-wrap">
+      <div className="[word-break:break-word] absolute font-geist-medium-ss leading-[0] left-[716px] text-[#1e1e1f] text-[23.04px] top-[1369.75px] tracking-[-0.6912px] w-[900px] max-w-[900px]" style={{ overflowWrap: "break-word", wordWrap: "break-word" }}>
         <p className="leading-[29.952px] mb-0">I’m Abdul Wahid, a multidisciplinary designer with hands-on experience in branding, visual identity, logo design, and social media creatives. Skilled at transforming concepts into compelling visual experiences that build strong brand identities and effectively engage target audiences.</p>
         <p className="leading-[29.952px] mb-0">​</p>
         <p className="leading-[29.952px]">I like working where creativity meets strategy — finding the idea that gives a brand its character and making sure it carries through every touchpoint, from logo and typography to social media and motion.</p>
