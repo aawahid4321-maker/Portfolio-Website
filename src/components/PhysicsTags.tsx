@@ -184,12 +184,12 @@ export default function PhysicsTags() {
 
     /* ── Engine: physics only, fixed timestep ───────────────────────────── */
     const engine = Matter.Engine.create({ enableSleeping: false });
-    engine.gravity.y = 1;
+    engine.gravity.y = 2.2; // fast drop (was 1)
     engine.positionIterations = 6;
     engine.velocityIterations = 4;
 
     const wallOpts: Matter.IBodyDefinition = {
-      isStatic: true, restitution: 0.5, friction: 0.15, render: { visible: false },
+      isStatic: true, restitution: 0.4, friction: 0.2, render: { visible: false },
     };
     const THICK = 200; // thick invisible walls
     let walls: Matter.Body[] = [];
@@ -220,33 +220,30 @@ export default function PhysicsTags() {
       });
       buildWalls();
       ready = true;
-      // FIX: ensure loop is running now that we're ready (observer may have fired early)
-      const r = section.getBoundingClientRect();
-      const inView = r.top < window.innerHeight * 0.7 && r.bottom > window.innerHeight * 0.3;
-      if (inView) startLoop();
-      maybeDrop();
+      // drop + loop are driven by the observers (fired on observe);
+      // nothing to do here — boot() wires them up once ready
     };
 
     const timeouts: number[] = [];
-    const spawnTag = (i: number) => {
+    /* fast-drop body options: low air drag, quick settle */
+    const DROP_OPTS = { restitution: 0.4, friction: 0.2, frictionAir: 0.006, density: 0.0009 };
+    const spawnTag = (i: number, x: number, y: number) => {
       const t = tags[i];
-      const x = W * (0.1 + Math.random() * 0.8);
-      const y = -60 - Math.random() * 200; // spawned above, falls naturally
       const body = Matter.Bodies.rectangle(x, y, t.w, t.h, {
         chamfer: { radius: t.h / 2 }, // collider matches the full-round pill
-        restitution: 0.5, friction: 0.15, frictionAir: 0.018, density: 0.0009,
+        ...DROP_OPTS,
       });
       Matter.Body.setAngle(body, (Math.random() - 0.5) * 0.6);
+      // start already moving downward so the drop reads as instant
+      Matter.Body.setVelocity(body, { x: (Math.random() - 0.5) * 3, y: 8 + Math.random() * 6 });
       Matter.Sleeping.set(body, false); // FIX: never let bodies sleep
       t.body = body;
       t.dx = x; t.dy = y; t.da = body.angle;
       Matter.Composite.add(engine.world, body);
     };
-    const spawnShape = (i: number) => {
+    const spawnShape = (i: number, x: number, y: number) => {
       const s = shapes[i];
-      const x = W * (0.1 + Math.random() * 0.8);
-      const y = -60 - Math.random() * 200;
-      const o = { restitution: 0.5, friction: 0.15, frictionAir: 0.018, density: 0.0009 };
+      const o = { ...DROP_OPTS };
       const r = s.size / 2;
       let body: Matter.Body;
       switch (s.kind) {
@@ -264,22 +261,110 @@ export default function PhysicsTags() {
           body = Matter.Bodies.rectangle(x, y, s.size * 1.6, 14, { ...o, chamfer: { radius: 7 } }); break;
       }
       Matter.Body.setAngle(body!, Math.random() * Math.PI);
+      Matter.Body.setVelocity(body!, { x: (Math.random() - 0.5) * 3, y: 8 + Math.random() * 6 });
       Matter.Sleeping.set(body!, false); // FIX: never let bodies sleep
       s.body = body!;
       s.dx = x; s.dy = y; s.da = body!.angle;
       Matter.Composite.add(engine.world, body!);
     };
-    // staggered drop, 70–100ms apart
-    const dropAll = () => {
-      tags.forEach((_, i) => {
-        timeouts.push(window.setTimeout(() => spawnTag(i), i * (70 + Math.random() * 30)));
-      });
-      shapes.forEach((_, i) => {
-        timeouts.push(window.setTimeout(() => spawnShape(i), (tags.length + i) * (70 + Math.random() * 30)));
+
+    /* ── Drop: ALL bodies at once (no stagger) ──────────────────────────── */
+    let dropTime = 0;
+    let settledLogged = false; // DEBUG: "settled after" logged once
+    let easingTimeScale = false;
+    let easeT0 = 0;
+    const TOTAL_BODIES = tagCount + shapeCount;
+
+    /* loose grid across full width, 40–400px above section top, 3 rows */
+    const buildSpawnList = () => {
+      const list: Array<{ isTag: boolean; i: number }> = [];
+      const maxLen = Math.max(tags.length, shapes.length);
+      for (let k = 0; k < maxLen; k++) {
+        if (k < tags.length) list.push({ isTag: true, i: k });
+        if (k < shapes.length) list.push({ isTag: false, i: k });
+      }
+      const rows = 3;
+      const cols = Math.ceil(list.length / rows);
+      return list.map((item, idx) => {
+        const row = Math.floor(idx / cols);
+        const col = idx % cols;
+        const x = W * 0.06 + (W * 0.88 * (col + 0.15 + Math.random() * 0.7)) / cols;
+        const y = -50 - row * 130 - Math.random() * 100; // rows ≈ 50–150 / 180–280 / 310–410
+        return { ...item, x, y };
       });
     };
-    const maybeDrop = () => {
-      if (ready && !hasDropped) { hasDropped = true; dropAll(); }
+
+    /* one fixed physics step, split into 2 sub-steps for high-gravity stability */
+    const STEP = 1000 / 60;
+    const stepPhysics = (dt: number) => {
+      Matter.Engine.update(engine, dt / 2);
+      Matter.Engine.update(engine, dt / 2);
+      checkSettled();
+    };
+
+    /* when average body speed stays low, ease timeScale 1.25 → 1 over 1.2s */
+    const checkSettled = () => {
+      if (!hasDropped || settledLogged) return;
+      if (performance.now() - dropTime < 800) return; // let them fall first
+      let count = 0, speedSum = 0;
+      for (const t of tags) if (t.body) { count++; speedSum += t.body.speed; }
+      for (const s of shapes) if (s.body) { count++; speedSum += s.body.speed; }
+      if (count < TOTAL_BODIES) return; // not all spawned yet
+      const avg = speedSum / count;
+      if (avg < 0.5 && !easingTimeScale) { easingTimeScale = true; easeT0 = performance.now(); }
+      if (easingTimeScale) {
+        const t = Math.min((performance.now() - easeT0) / 1200, 1);
+        engine.timing.timeScale = 1.25 - 0.25 * t;
+        if (t >= 1) {
+          settledLogged = true;
+          console.log("settled after", Math.round(performance.now() - dropTime), "ms"); // DEBUG (temporary)
+        }
+      }
+    };
+
+    /* snap interpolated draw state to physics state (after pre-warm / fast-forward) */
+    const syncDrawState = () => {
+      [...tags, ...shapes].forEach((it) => {
+        if (!it.body) return;
+        it.dx = it.body.position.x;
+        it.dy = it.body.position.y;
+        it.da = it.body.angle;
+      });
+    };
+
+    /* run physics steps without drawing, chunked to stay under ~8ms/frame */
+    const preWarm = (steps: number) => {
+      let remaining = steps;
+      const chunk = () => {
+        const t0 = performance.now();
+        while (remaining > 0 && performance.now() - t0 < 6) {
+          stepPhysics(STEP);
+          remaining--;
+        }
+        if (remaining > 0) {
+          requestAnimationFrame(chunk);
+        } else {
+          syncDrawState(); // snap visuals to pre-warmed positions
+        }
+      };
+      chunk();
+    };
+
+    const triggerDrop = () => {
+      if (!ready || hasDropped) return; // drop ONCE, never re-drop
+      hasDropped = true;
+      dropTime = performance.now();
+      console.log("drop started at", dropTime); // DEBUG (temporary)
+      engine.timing.timeScale = 1.25; // fast drop; eased back to 1 when settled
+      startLoop(); // draw from the first frame
+      // tiny 0–150ms jitter only: reads as "everything falls together"
+      buildSpawnList().forEach(({ isTag, i, x, y }) => {
+        timeouts.push(window.setTimeout(() => {
+          if (isTag) spawnTag(i, x, y); else spawnShape(i, x, y);
+        }, Math.random() * 150));
+      });
+      // pre-warm: 60 physics steps (no draw) once all bodies exist
+      timeouts.push(window.setTimeout(() => preWarm(60), 220));
     };
 
     const start = () => {
@@ -482,12 +567,34 @@ export default function PhysicsTags() {
     let hoverBody: Matter.Body | null = null;
     let frameTimes: number[] = [];
     let degraded = false;
+    let accumulator = 0;
+    let fastForwardSteps = 0; // set when user jumps straight to the section mid-drop
 
     const loop = (now: number) => {
       if (!loopOn) return;
       raf = requestAnimationFrame(loop);
-      const delta = Math.min(now - lastT, 33); // clamp: no time jumps
+      // real frame delta, clamped to 1000/30 max: slow frames never cause slow motion
+      let delta = now - lastT;
       lastT = now;
+      delta = Math.min(delta, 1000 / 30);
+      // fixed-timestep accumulator: up to 3 steps/frame keeps speed consistent
+      accumulator += delta;
+      let steps = 0;
+      while (accumulator >= STEP && steps < 3) {
+        stepPhysics(STEP);
+        accumulator -= STEP;
+        steps++;
+      }
+      if (steps === 3) accumulator = 0; // shed excess: no spiral of death
+
+      // fast-forward: user jumped here before the drop settled — up to 90 extra
+      // steps split across 3 frames so the pile is settled right away
+      if (fastForwardSteps > 0) {
+        const extra = Math.min(30, fastForwardSteps);
+        for (let i = 0; i < extra; i++) stepPhysics(STEP);
+        fastForwardSteps -= extra;
+        syncDrawState();
+      }
 
       // quality guard: if first 60 frames avg > 24ms, shed 30% of bodies (shapes first)
       frameTimes.push(delta);
@@ -508,8 +615,6 @@ export default function PhysicsTags() {
         }
         frameTimes = [];
       }
-
-      Matter.Engine.update(engine, 1000 / 60); // fixed timestep
 
       // smooth visuals: lerp drawn state toward physics state (0.5)
       const items = [...tags, ...shapes] as Array<PTag | PShape>;
@@ -607,21 +712,41 @@ export default function PhysicsTags() {
       Matter.Body.applyForce(b, b.position, { x: (Math.random() - 0.5) * 0.0006, y: -Math.random() * 0.0007 });
     }, 3000);
 
-    /* scroll: drop ONCE at 30% visibility; pause/resume loop only after */
-    const observer = new IntersectionObserver(
+    /* drop trigger: fires when the section is ~60% viewport BELOW the visible
+       area, so the pile has fallen and settled before the user scrolls to it.
+       Loop is also driven here (paused when fully outside the margin). */
+    const dropObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
-            syncMouse();
-            rectCache = section.getBoundingClientRect();
+          if (entry.isIntersecting) {
+            triggerDrop(); // hasDropped flag: never re-drops
             startLoop();
-            maybeDrop(); // hasDropped flag: never re-drops
-          } else if (!entry.isIntersecting) {
-            stopLoop(); // rAF fully cancelled off-screen
+          } else {
+            stopLoop(); // rAF fully cancelled off-screen (timestamp reset on resume)
           }
         });
       },
-      { threshold: [0, 0.3, 0.6, 1] }
+      { rootMargin: "0px 0px 60% 0px", threshold: 0 }
+    );
+
+    /* actual on-screen visibility: mouse sync + fast-forward when the user
+       jumps straight to the section (fast scroll / anchor) mid-drop */
+    let isVisible = false;
+    const visibleObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const was = isVisible;
+          isVisible = entry.isIntersecting;
+          if (isVisible) {
+            syncMouse();
+            rectCache = section.getBoundingClientRect();
+            if (!was && hasDropped && !settledLogged && fastForwardSteps === 0) {
+              fastForwardSteps = 90; // settle the pile right away
+            }
+          }
+        });
+      },
+      { threshold: 0 }
     );
 
     /* resize: debounced 200ms; ignore height changes < 120px (mobile bar) */
@@ -665,7 +790,8 @@ export default function PhysicsTags() {
       window.addEventListener("scroll", onScrollSync, { passive: true });
       document.addEventListener("visibilitychange", onVis);
       window.addEventListener("pageshow", onPageShow);
-      observer.observe(section);
+      dropObserver.observe(section);
+      visibleObserver.observe(section);
     };
     const bootCheck = window.setInterval(() => {
       if (ready) { window.clearInterval(bootCheck); boot(); }
@@ -677,7 +803,8 @@ export default function PhysicsTags() {
       window.clearInterval(bootCheck);
       window.clearInterval(idleTimer);
       window.clearTimeout(resizeT);
-      observer.disconnect();
+      dropObserver.disconnect();
+      visibleObserver.disconnect();
       section.removeEventListener("mousemove", onMove);
       section.removeEventListener("mouseleave", onLeave);
       section.removeEventListener("pointerdown", onDown);
