@@ -664,6 +664,16 @@ export default function LetsConnect() {
         #connect.is-fallback .lc-heading .mask > span,
         #connect.is-fallback .lc-para { transform: none; opacity: 1; transition: opacity 0.5s ease; }
 
+        /* ── transparent purple forest overlay (above night-sky bg, below characters/text) ── */
+        #connect .lc-forest-overlay {
+          position: absolute;
+          inset: 0;
+          z-index: 1;
+          background: url("/Portfolio-Website/assets/lc-forest-overlay.png") left top / auto 100% repeat-x;
+          opacity: 0.5;
+          pointer-events: none;
+        }
+
         /* ── character stage ── */
         #connect .lc-stage {
           position: absolute;
@@ -864,6 +874,7 @@ export default function LetsConnect() {
         }
       `}</style>
 
+      <div className="lc-forest-overlay" aria-hidden="true" />
       <h2 className="lc-heading" aria-label="Let's Connect">
         <span className="mask"><span>Let&apos;s Connect</span></span>
       </h2>
