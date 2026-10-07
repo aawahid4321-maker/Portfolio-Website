@@ -95,7 +95,7 @@ function Group1() {
   return (
     <div className="absolute contents left-[741.29px] top-[2542.46px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[2542.46px] tracking-[-0.6912px] w-[202.719px]">{`Years Experience `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[960.29px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap metric-enter">2+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[960.29px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">2+</p>
       <div className="absolute left-[741.29px] size-[438px] top-[2592.39px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
@@ -109,7 +109,7 @@ function Group2() {
   return (
     <div className="absolute contents left-[510.29px] top-[3143.01px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[510.29px] text-[#1e1e1f] text-[23.04px] top-[3143.01px] tracking-[-0.6912px] w-[410.156px]">{`Different Design Industries `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[729.29px] text-white text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap metric-enter">8+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[729.29px] text-white text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">8+</p>
       <div className="absolute left-[510.29px] size-[438px] top-[3192.94px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
@@ -123,7 +123,7 @@ function Group3() {
   return (
     <div className="absolute contents left-[1203px] top-[3143.01px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[1203px] text-[#1e1e1f] text-[23.04px] top-[3143.01px] tracking-[-0.6912px] w-[264.3px]">{`Agencies Worked With `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1422px] text-white text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap metric-enter">5+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1422px] text-white text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">5+</p>
       <div className="absolute left-[1203px] size-[438px] top-[3192.94px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
@@ -339,7 +339,7 @@ function Group() {
   return (
     <div className="absolute contents left-[1434px] top-[2542.46px]">
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[1434px] text-[#1e1e1f] text-[23.04px] top-[2542.46px] tracking-[-0.6912px] w-[202.719px]">Projects Completed</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1652.5px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap metric-enter">50+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1652.5px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">50+</p>
       <div className="absolute left-[1434px] size-[438px] top-[2592.39px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
