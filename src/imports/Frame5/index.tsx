@@ -546,18 +546,12 @@ function Container26() {
   );
 }
 
-function Container25() {
-  return (
-    <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
-      <Container26 />
-    </div>
-  );
-}
-
 function Container24() {
   return (
-    <div className="-translate-x-1/2 absolute left-1/2 top-[5363.12px] w-[1920px]" data-name="Container">
-      <Container25 />
+    <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[5363.12px] w-[1920px]" data-name="Container">
+      <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
+        <Container26 />
+      </div>
     </div>
   );
 }

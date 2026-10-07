@@ -283,12 +283,13 @@ export default function ProjectPage({
         <LetsConnect />
       </div>
 
-      {/* ── Dark footer ──────────────────────────────────────── */}
+      {/* ── Footer — identical to homepage ───────────────────── */}
       <div
-        className="absolute bg-[#e6e6e6] flex flex-col items-start pb-[16px] pt-[128px]"
-        style={{ left: -4.02, top: FOOTER_TOP, width: 1920, height: 530 }}
+        className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] w-[1920px]"
+        data-name="Container"
+        style={{ top: FOOTER_TOP }}
       >
-        <div className="flex flex-col items-start px-[48px] w-[1920px]">
+        <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
           <SharedFooterContent />
         </div>
       </div>

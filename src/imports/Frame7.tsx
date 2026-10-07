@@ -214,9 +214,11 @@ export default function Frame7() {
         <LetsConnect />
       </div>
 
-      {/* Footer — same as homepage */}
-      <div className="absolute left-[-4.02px] top-[8264.61px] w-[1920px]">
-        <SharedFooterContent />
+      {/* Footer — identical to homepage */}
+      <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[8264.61px] w-[1920px]" data-name="Container">
+        <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
+          <SharedFooterContent />
+        </div>
       </div>
     </div>
   );
