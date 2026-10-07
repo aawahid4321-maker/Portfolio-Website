@@ -350,7 +350,7 @@ export default function PhysicsTags() {
     };
 
     /* ── Drop state ── */
-    let hasSettled = false;
+    let dropStart = 0;
     const TOTAL_BODIES = tagCount + shapeCount + emojiCount + FACE_COUNT;
 
     /* wave release: from CENTER outward over ~0.6s */
@@ -374,78 +374,14 @@ export default function PhysicsTags() {
       });
     };
 
-    /* ── PART A: scroll lock ── */
-    let locked = false;
-    let lockStart = 0;
-    let lockTimeout = 0;
-    const SCROLL_KEYS = new Set([" ", "Spacebar", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "End", "Home"]);
-    const blockScrollEvent = (e: Event) => e.preventDefault();
-    const blockScrollKeys = (e: KeyboardEvent) => { if (SCROLL_KEYS.has(e.key)) e.preventDefault(); };
-    // Lenis / smooth-scroll library detection (fallback to native)
-    const getLenis = (): { scrollTo: (t: number, o?: object) => void; stop: () => void; start: () => void } | null => {
-      const w = window as unknown as { lenis?: { scrollTo: (t: number, o?: object) => void; stop: () => void; start: () => void } };
-      return w.lenis || null;
-    };
-
-    const lockScroll = () => {
-      if (locked || reduceMotion) return;
-      locked = true;
-      lockStart = performance.now();
-      const lenis = getLenis();
-      if (lenis) { try { lenis.stop(); } catch { /* noop */ } }
-      const html = document.documentElement;
-      const scrollbarW = window.innerWidth - html.clientWidth;
-      html.classList.add("is-locked");
-      if (scrollbarW > 0) document.body.style.paddingRight = `${scrollbarW}px`;
-      window.addEventListener("wheel", blockScrollEvent, { passive: false });
-      window.addEventListener("touchmove", blockScrollEvent, { passive: false });
-      window.addEventListener("keydown", blockScrollKeys, { passive: false });
-      console.log("lock start"); // DEBUG (temporary)
-      const failsafe = isMobile ? 2500 : 3500;
-      lockTimeout = window.setTimeout(() => unlockScroll("timeout"), failsafe);
-    };
-    type UnlockReason = "settled" | "timeout" | "hidden" | "error";
-    const unlockScroll = (reason: UnlockReason) => {
-      if (!locked) return;
-      locked = false;
-      window.clearTimeout(lockTimeout);
-      const lenis = getLenis();
-      if (lenis) { try { lenis.start(); } catch { /* noop */ } }
-      document.documentElement.classList.remove("is-locked");
-      document.body.style.paddingRight = "";
-      window.removeEventListener("wheel", blockScrollEvent);
-      window.removeEventListener("touchmove", blockScrollEvent);
-      window.removeEventListener("keydown", blockScrollKeys);
-      console.log("unlock after", Math.round(performance.now() - lockStart), "ms", "reason:", reason); // DEBUG (temporary)
-    };
-
     /* one fixed physics step, 2 sub-steps */
     const STEP = 1000 / 60;
     const stepPhysics = (dt: number) => {
       Matter.Engine.update(engine, dt / 2);
       Matter.Engine.update(engine, dt / 2);
-      checkUnlock();
     };
 
-    /* settle: avg speed < 0.5 AND no body above floor line, sustained 400ms */
-    let calmSince = 0;
     const allItems = () => [...tags, ...shapes, ...emojis, ...faces];
-    const checkUnlock = () => {
-      if (!locked || !hasDropped) return;
-      let count = 0, speedSum = 0, aboveTop = false;
-      for (const it of allItems()) {
-        const b = (it as { body: Matter.Body | null }).body;
-        if (!b) continue;
-        count++; speedSum += b.speed;
-        if (b.position.y < 0) aboveTop = true;
-      }
-      if (count < TOTAL_BODIES) { calmSince = 0; return; }
-      const now = performance.now();
-      if (speedSum / count < 0.5 && !aboveTop) {
-        if (!calmSince) calmSince = now;
-        if (now - calmSince >= 400) { hasSettled = true; unlockScroll("settled"); }
-      } else calmSince = 0;
-    };
 
     const syncDrawState = () => {
       allItems().forEach((it) => {
@@ -460,24 +396,21 @@ export default function PhysicsTags() {
     /* wave release from CENTER outward over ~0.6s */
     const triggerDrop = () => {
       if (!ready || hasDropped) return;
-      try {
-        hasDropped = true;
-        console.log("bodies", TOTAL_BODIES); // DEBUG (temporary)
-        startLoop();
-        const spawns = buildSpawnList();
-        spawns.forEach(({ kind, i, x, y }) => {
-          // wave from center outward: delay by |x - W/2|
-          const delay = (Math.abs(x - W / 2) / Math.max(W / 2, 1)) * 550 + Math.random() * 50;
-          timeouts.push(window.setTimeout(() => {
-            if (kind === "tag") spawnTag(i, x, y);
-            else if (kind === "shape") spawnShape(i, x, y);
-            else if (kind === "emoji") spawnEmoji(i, x, y);
-            else spawnFace(i, x, y);
-          }, delay));
-        });
-      } catch (err) {
-        unlockScroll("error");
-      }
+      hasDropped = true;
+      dropStart = performance.now();
+      console.log("bodies", TOTAL_BODIES); // DEBUG (temporary)
+      startLoop();
+      const spawns = buildSpawnList();
+      spawns.forEach(({ kind, i, x, y }) => {
+        // wave from center outward: delay by |x - W/2|
+        const delay = (Math.abs(x - W / 2) / Math.max(W / 2, 1)) * 550 + Math.random() * 50;
+        timeouts.push(window.setTimeout(() => {
+          if (kind === "tag") spawnTag(i, x, y);
+          else if (kind === "shape") spawnShape(i, x, y);
+          else if (kind === "emoji") spawnEmoji(i, x, y);
+          else spawnFace(i, x, y);
+        }, delay));
+      });
     };
 
     const start = () => {
@@ -1028,92 +961,25 @@ export default function PhysicsTags() {
       Matter.Body.applyForce(b, b.position, { x: (Math.random() - 0.5) * 0.0006, y: -Math.random() * 0.0007 });
     }, 3000);
 
-    /* ── PART A: scroll direction tracking ── */
-    let lastScrollY = window.scrollY;
-    let scrollDir: "up" | "down" = "down";
-    const trackScrollDir = () => {
-      const y = window.scrollY;
-      scrollDir = y >= lastScrollY ? "down" : "up";
-      lastScrollY = y;
-    };
-
-    /* 500ms ease-out tween (native fallback); Lenis if present */
-    const NAV_OFFSET = 108;
-    const smoothScrollTo = (targetY: number, done: () => void) => {
-      const lenis = getLenis();
-      if (lenis) {
-        try {
-          lenis.scrollTo(targetY, { duration: 0.5 });
-          window.setTimeout(done, 550);
-          return;
-        } catch { /* fall through to native */ }
-      }
-      const startY = window.scrollY;
-      const dist = targetY - startY;
-      if (Math.abs(dist) < 2) { done(); return; }
-      const t0 = performance.now();
-      const tick = (now: number) => {
-        const t = Math.min((now - t0) / 500, 1);
-        const eased = 1 - Math.pow(1 - t, 3);
-        window.scrollTo(0, startY + dist * eased);
-        if (t < 1) requestAnimationFrame(tick);
-        else done();
-      };
-      requestAnimationFrame(tick);
-    };
-    const scrollIntoPlace = (done: () => void) => {
-      const r = section.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const target = r.height >= vh
-        ? window.scrollY + r.top - NAV_OFFSET
-        : window.scrollY + r.top - (vh - r.height) / 2;
-      // ignore wheel while tween runs so the page doesn't fight
-      window.addEventListener("wheel", blockScrollEvent, { passive: false });
-      smoothScrollTo(target, () => {
-        window.removeEventListener("wheel", blockScrollEvent);
-        done();
-      });
-    };
-
-    const isSection40Visible = () => {
+    const is20Visible = () => {
       const r = section.getBoundingClientRect();
       const vh = window.innerHeight;
       const visibleH = Math.min(r.bottom, vh) - Math.max(r.top, 0);
-      return visibleH >= r.height * 0.4;
-    };
-    const maybeStartDropSequence = (fromBelow?: boolean) => {
-      if (hasDropped || !ready || reduceMotion || locked) return;
-      // Only trigger when entering from above (scrolling down). If fromBelow is true,
-      // the user is scrolling up from below — don't trigger per spec.
-      if (fromBelow === true) return;
-      // Fallback to scrollDir tracking if fromBelow not provided
-      if (fromBelow === undefined && scrollDir !== "down") return;
-      if (!isSection40Visible()) return;
-      hasDropped = true;
-      sequenceObserver.disconnect();
-      try {
-        scrollIntoPlace(() => {
-          lockScroll();
-          triggerDrop();
-        });
-      } catch (err) {
-        unlockScroll("error");
-      }
+      return visibleH >= r.height * 0.2;
     };
 
-    /* sequence trigger: thresholds [0, 0.25, 0.4], only scrolling down */
-    const sequenceObserver = new IntersectionObserver(
+    /* simple drop trigger: 20% visible → drop once, no lock, no scroll-into-place */
+    const dropObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Determine if entering from above (scrolling down) or below (scrolling up)
-            // boundingClientRect.top > 0 means section is below viewport top → scrolling down to it
-            const fromBelow = entry.boundingClientRect.top < 0;
-            maybeStartDropSequence(fromBelow);
+          if (entry.isIntersecting && !hasDropped && ready) {
+            hasDropped = true;
+            dropObserver.disconnect();
+            triggerDrop();
           }
         });
       },
-      { threshold: [0, 0.25, 0.4] }
+      { threshold: 0.2 }
     );
 
     const loopObserver = new IntersectionObserver(
@@ -1135,7 +1001,7 @@ export default function PhysicsTags() {
           if (isVisible) {
             syncMouse();
             rectCache = section.getBoundingClientRect();
-            if (!was && hasDropped && !hasSettled && fastForwardSteps === 0) {
+            if (!was && hasDropped && fastForwardSteps === 0 && performance.now() - dropStart < 4000) {
               fastForwardSteps = 90;
             }
           }
@@ -1169,10 +1035,9 @@ export default function PhysicsTags() {
     };
     const onScrollSync = () => { syncMouse(); rectCache = section.getBoundingClientRect(); };
     const onVis = () => {
-      if (document.hidden) { stopLoop(); unlockScroll("hidden"); }
+      if (document.hidden) { stopLoop(); }
       else startLoop();
     };
-    const onPageHideUnlock = () => unlockScroll("hidden");
     const onPageShow = () => startLoop();
 
     const boot = () => {
@@ -1184,16 +1049,14 @@ export default function PhysicsTags() {
       section.addEventListener("pointerdown", onDown);
       window.addEventListener("resize", onResize);
       window.addEventListener("scroll", onScrollSync, { passive: true });
-      window.addEventListener("scroll", trackScrollDir, { passive: true });
       document.addEventListener("visibilitychange", onVis);
-      window.addEventListener("pagehide", onPageHideUnlock);
       window.addEventListener("pageshow", onPageShow);
-      // already in view on load: drop with NO lock, NO scroll-into-place
-      if (isSection40Visible()) {
+      // already in view on load: drop immediately
+      if (is20Visible()) {
         hasDropped = true;
         triggerDrop();
       } else {
-        sequenceObserver.observe(section);
+        dropObserver.observe(section);
       }
       loopObserver.observe(section);
       visibleObserver.observe(section);
@@ -1205,11 +1068,10 @@ export default function PhysicsTags() {
     start();
 
     return () => {
-      unlockScroll("hidden");
       window.clearInterval(bootCheck);
       window.clearInterval(idleTimer);
       window.clearTimeout(resizeT);
-      sequenceObserver.disconnect();
+      dropObserver.disconnect();
       loopObserver.disconnect();
       visibleObserver.disconnect();
       section.removeEventListener("pointermove", onMove);
@@ -1217,9 +1079,7 @@ export default function PhysicsTags() {
       section.removeEventListener("pointerdown", onDown);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onScrollSync);
-      window.removeEventListener("scroll", trackScrollDir);
       document.removeEventListener("visibilitychange", onVis);
-      window.removeEventListener("pagehide", onPageHideUnlock);
       window.removeEventListener("pageshow", onPageShow);
       timeouts.forEach((t) => window.clearTimeout(t));
       stopLoop();
@@ -1230,7 +1090,6 @@ export default function PhysicsTags() {
   return (
     <>
       <style>{`
-        html { scrollbar-gutter: stable; }
         .physics-tags-section {
           position: relative;
           width: 100%;
@@ -1247,8 +1106,6 @@ export default function PhysicsTags() {
           inset: 0;
           display: block;
         }
-        html.is-locked { overflow: hidden; overscroll-behavior: none; }
-        html.is-locked body { overscroll-behavior: none; }
         @media (max-width: 768px) {
           .physics-tags-section { height: 70vh; }
         }
