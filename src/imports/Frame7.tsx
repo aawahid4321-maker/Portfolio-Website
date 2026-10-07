@@ -6,6 +6,7 @@ const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const imgGradia = `${assetPathPrefix}/brand-hero.webp`;
 const imgNodaliq = `${assetPathPrefix}/nodaliq-hero.webp`;
 const imgPypo = `${assetPathPrefix}/pypo-hero.webp`;
+const imgMini = `${assetPathPrefix}/mini-hero.webp`;
 const imgNoireCoffee = `${assetPathPrefix}/noire-hero.webp`;
 const imgContainer = `${assetPathPrefix}/35bcf.webp`;
 const imgFireflyGlass2 = `${assetPathPrefix}/67005.webp`;
@@ -34,6 +35,7 @@ const WORK_CARDS = [
   { name: "BROCHURE", year: "2026", img: imgCampusApp },
   { name: "BRAND", year: "2026", img: imgGradia },
   { name: "Pypo", year: "2025", img: imgPypo },
+  { name: "Mini", year: "2026", img: imgMini },
 ];
 
 export default function Frame7() {
