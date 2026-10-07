@@ -175,13 +175,16 @@ export default function FloatingNav({
         .pp-nav-right { display: contents; }
         .pp-nav-right .pp-hire { justify-self: end; }
         .pp-menu-btn { display: none; }
-        .pp-hire { position: relative; z-index: 1; font-family: "Geist", system-ui, sans-serif; font-weight: 600;
-          font-size: var(--nav-font); color: var(--pp-black); background: var(--pp-white); border: none;
-          border-radius: 999px; padding: 16px 30px; height: 56px; cursor: pointer; display: inline-flex;
-          align-items: center; gap: 6px; white-space: nowrap; min-height: 48px; flex-shrink: 0;
+        .pp-hire { position: relative; z-index: 1; font-family: "Zilla Slab", Rockwell, Georgia, serif; font-weight: 700;
+          font-size: var(--nav-font); text-transform: uppercase; letter-spacing: 0.03em;
+          color: var(--pp-white); background: var(--pp-black); border: 2px solid var(--pp-black);
+          border-radius: 8px; padding: 14px 26px; height: 56px; cursor: pointer; display: inline-flex;
+          align-items: center; gap: 8px; white-space: nowrap; min-height: 48px; flex-shrink: 0;
           transition: background 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease; }
         .pp-hire .pp-arrow { font-size: 18px; transition: transform 0.2s ease; display: inline-block; }
-        .pp-hire:hover { background: var(--pp-yellow); transform: scale(1.05); }
+        .pp-hire:hover { background: var(--pp-purple); border-color: var(--pp-purple); color: var(--pp-black); transform: scale(1.05); }
+        .pp-links a { font-family: "Zilla Slab", Rockwell, Georgia, serif; font-weight: 700;
+          text-transform: uppercase; letter-spacing: 0.03em; }
         .pp-hire:hover .pp-arrow { transform: translate(2px, -2px); }
         .pp-hire:active { transform: translateY(2px) scale(1.02); box-shadow: 2px 2px 0 var(--pp-purple); }
         @media (max-width: 768px) {
