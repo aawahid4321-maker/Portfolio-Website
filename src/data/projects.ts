@@ -115,8 +115,8 @@ export const projects: ProjectData[] = [
   },
   {
     id: "nodaliq",
-    title: "NODALIQ",
-    agency: "NodaliQ",
+    title: "Nodaliq",
+    agency: "Nodaliq",
     industry: "Technology",
     service: "Brand Identity",
     year: "2026",

@@ -27,7 +27,7 @@ const WORK_CARDS = [
   { name: "NOIRÉ COFFEE", year: "2026", img: imgNoireCoffee },
   { name: "FITFLOW", year: "2025", img: imgContainer1 },
   { name: "AXORIX", year: "2025", img: imgContainer2 },
-  { name: "NODALIQ", year: "2026", img: imgNodaliq },
+  { name: "Nodaliq", year: "2026", img: imgNodaliq },
   { name: "STINT", year: "2025", img: imgContainer4 },
   { name: "CHATBLAST", year: "2025", img: imgContainer5 },
   { name: "BROCHURE", year: "2026", img: imgCampusApp },
