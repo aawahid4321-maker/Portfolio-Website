@@ -4,6 +4,7 @@ import imgCampusApp from "@/assets/brochure-hero.webp";
 import imgWorkBg from "@/assets/work-bg.webp";
 const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const imgGradia = `${assetPathPrefix}/brand-hero.webp`;
+const imgNodaliq = `${assetPathPrefix}/nodaliq-hero.webp`;
 const imgNoireCoffee = `${assetPathPrefix}/noire-hero.webp`;
 const imgContainer = `${assetPathPrefix}/35bcf.webp`;
 const imgFireflyGlass2 = `${assetPathPrefix}/67005.webp`;
@@ -26,7 +27,7 @@ const WORK_CARDS = [
   { name: "NOIRÉ COFFEE", year: "2026", img: imgNoireCoffee },
   { name: "FITFLOW", year: "2025", img: imgContainer1 },
   { name: "AXORIX", year: "2025", img: imgContainer2 },
-  { name: "DODI HOMES", year: "2024", img: imgContainer3 },
+  { name: "NODALIQ", year: "2026", img: imgNodaliq },
   { name: "STINT", year: "2025", img: imgContainer4 },
   { name: "CHATBLAST", year: "2025", img: imgContainer5 },
   { name: "BROCHURE", year: "2026", img: imgCampusApp },
