@@ -1,1 +1,329 @@
-ZXhwb3J0IGludGVyZmFjZSBQcm9qZWN0RGF0YSB7CiAgaWQ6IHN0cmluZzsKICB0aXRsZTogc3RyaW5nOwogIGFnZW5jeTogc3RyaW5nOwogIGluZHVzdHJ5OiBzdHJpbmc7CiAgc2VydmljZTogc3RyaW5nOwogIHllYXI6IHN0cmluZzsKICBkZXNjcmlwdGlvbjogc3RyaW5nOwogIGhlcm9JbWFnZTogc3RyaW5nOwogIGhlcm9Mb2dvPzogc3RyaW5nOwogIC8vICJ6b29tIiAoZGVmYXVsdCkgPSBsYXJnZSBhcnRpc3RpYyB6b29tLWluOyAiY292ZXIiID0gbmF0dXJhbCBvYmplY3QtY292ZXIgZml0CiAgaGVyb0ZpdD86ICJ6b29tIiB8ICJjb3ZlciI7CiAgLy8gV2hlbiBzZXQsIHRoZSBMSVZFIExJTksgYnV0dG9uIG5hdmlnYXRlcyB0byB0aGlzIGludGVybmFsIHZpZXcgaW5zdGVhZCBvZiBvcGVuaW5nIGFuIGV4dGVybmFsIFVSTAogIHNpdGVWaWV3Pzogc3RyaW5nOwogIGltYWdlczogKHN0cmluZyB8IG51bGwpW107CiAgLy8gUGVyLXNsb3QgaGVpZ2h0IG92ZXJyaWRlOyBmYWxscyBiYWNrIHRvIElNR19TTE9UX0ggd2hlbiBudWxsL2Fic2VudAogIGltYWdlSGVpZ2h0cz86IChudW1iZXIgfCBudWxsKVtdOwogIGxpdmVMaW5rPzogc3RyaW5nOwogIG5leHRQcm9qZWN0SWQ6IHN0cmluZzsKICB0aHVtYm5haWw6IHN0cmluZzsKfQoKY29uc3QgZGVzYyA9CiAgIkkgc3RhcnQgYnkgdW5kZXJzdGFuZGluZyB0aGUgYnVzaW5lc3MsIGF1ZGllbmNlLCBhbmQgZ29hbHMsIHRoZW4gdHVybiB0aG9zZSBpbnNpZ2h0cyBpbnRvIGEgY2xlYXIgY3JlYXRpdmUgZGlyZWN0aW9uLiBGcm9tIHRoZXJlLCBJIGJ1aWxkIGJvbGQgYnJhbmRzLCBkaWdpdGFsIGV4cGVyaWVuY2VzLCBhbmQgdmlzdWFsIHN5c3RlbXMsIHJlZmluaW5nIGV2ZXJ5IGRldGFpbCB0byBjcmVhdGUgd29yayB0aGF0IGNvbW11bmljYXRlcyBjbGVhcmx5LCBjb25uZWN0cyB3aXRoIHBlb3BsZSwgYW5kIGhlbHBzIGJ1c2luZXNzZXMgZ3Jvdy4iOwoKZXhwb3J0IGNvbnN0IHByb2plY3RzOiBQcm9qZWN0RGF0YVtdID0gWwogIHsKICAgIGlkOiAibm9pcmUtY29mZmVlIiwKICAgIHRpdGxlOiAiTk9JUsOJIENPRkZFRSIsCiAgICBhZ2VuY3k6ICJOb2lyw6kgQ29mZmVlIiwKICAgIGluZHVzdHJ5OiAiQ29mZmVlIEJyYW5kIiwKICAgIHNlcnZpY2U6ICJCcmFuZCBJZGVudGl0eSIsCiAgICB5ZWFyOiAiMjAyNiIsCiAgICBkZXNjcmlwdGlvbjoKICAgICAgIkNvbXBsZXRlIGJyYW5kIGlkZW50aXR5IGZvciBOb2lyw6kgQ29mZmVlIOKAlCBhIGJvbGQsIG1vZGVybiBjb2ZmZWUgYnJhbmQgd2l0aCBhIGRhcmssIHByZW1pdW0gY2hhcmFjdGVyLiBGcm9tIHRoZSBsb2dvIGFuZCB0eXBvZ3JhcGh5IHRvIHBhY2thZ2luZywgc3RhdGlvbmVyeSwgYnVzaW5lc3MgY2FyZHMsIGFuZCBhIGN1c3RvbSBicmFuZCBwYXR0ZXJuLCBJIGJ1aWx0IGEgZnVsbCB2aXN1YWwgc3lzdGVtIGRlc2lnbmVkIHRvIGZlZWwgcmljaCwgY29uZmlkZW50LCBhbmQgdW5taXN0YWthYmxlLiIsCiAgICBoZXJvSW1hZ2U6ICIvYXNzZXRzL25vaXJlLWhlcm8ud2VicCIsCiAgICBoZXJvTG9nbzogdW5kZWZpbmVkLAogICAgaGVyb0ZpdDogImNvdmVyIiwKICAgIHRodW1ibmFpbDogIi9hc3NldHMvbm9pcmUtaGVyby53ZWJwIiwKICAgIGltYWdlczogWwogICAgICAiL2Fzc2V0cy9ub2lyZS0wMS53ZWJwIiwKICAgICAgIi9hc3NldHMvbm9pcmUtMDIud2VicCIsCiAgICAgICIvYXNzZXRzL25vaXJlLTAzLndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2lyZS0wNC53ZWJwIiwKICAgICAgIi9hc3NldHMvbm9pcmUtMDUud2VicCIsCiAgICAgICIvYXNzZXRzL25vaXJlLTA2LndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2lyZS0wNy53ZWJwIiwKICAgICAgIi9hc3NldHMvbm9pcmUtMDgud2VicCIsCiAgICAgICIvYXNzZXRzL25vaXJlLTA5LndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2lyZS0xMC53ZWJwIiwKICAgICAgIi9hc3NldHMvbm9pcmUtMTEud2VicCIsCiAgICAgICIvYXNzZXRzL25vaXJlLTEyLndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2lyZS0xMy53ZWJwIiwKICAgICAgIi9hc3NldHMvbm9pcmUtY2FyZHMud2VicCIsCiAgICBdLAogICAgbGl2ZUxpbms6IHVuZGVmaW5lZCwKICAgIG5leHRQcm9qZWN0SWQ6ICJmaXRmbG93IiwKICB9LAogIHsKICAgIGlkOiAiZml0ZmxvdyIsCiAgICB0aXRsZTogIkZJVEZMT1ciLAogICAgYWdlbmN5OiAiRml0RmxvdyIsCiAgICBpbmR1c3RyeTogIkZpdG5lc3MgQnJhbmQiLAogICAgc2VydmljZTogIkJyYW5kIElkZW50aXR5IiwKICAgIHllYXI6ICIyMDI1IiwKICAgIGRlc2NyaXB0aW9uOgogICAgICAiQ29tcGxldGUgYnJhbmQgZ3VpZGVsaW5lIGZvciBGaXRGbG93IOKAlCBhIGJvbGQgZml0bmVzcyBicmFuZCB3aXRoIGEgc3RyaWtpbmcgb3JhbmdlLW9uLWJsYWNrIGlkZW50aXR5LiBGcm9tIGxvZ28gY29uc3RydWN0aW9uLCB0eXBvZ3JhcGh5LCBhbmQgY29sb3Igc3lzdGVtcyB0byBtb2NrdXBzIGFuZCByZWFsLXdvcmxkIGFwcGxpY2F0aW9ucywgSSBidWlsdCBhIGNvbXByZWhlbnNpdmUgZ3VpZGVsaW5lIHRoYXQga2VlcHMgdGhlIGJyYW5kIHBvd2VyZnVsLCBjb25zaXN0ZW50LCBhbmQgdW5taXN0YWthYmxlIGV2ZXJ5d2hlcmUgaXQgYXBwZWFycy4iLAogICAgaGVyb0ltYWdlOiAiL2Fzc2V0cy9maXRmbG93LWhlcm8ud2VicCIsCiAgICBoZXJvTG9nbzogdW5kZWZpbmVkLAogICAgaGVyb0ZpdDogImNvdmVyIiwKICAgIHRodW1ibmFpbDogIi9hc3NldHMvZml0Zmxvdy1oZXJvLndlYnAiLAogICAgaW1hZ2VzOiBbCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMDEud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMDYud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMTEud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMTIud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMTQud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMTgud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMjAud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMjIud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMzUud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMzYud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMzcud2VicCIsCiAgICAgICIvYXNzZXRzL2ZpdGZsb3ctMzgud2VicCIsCiAgICBdLAogICAgbGl2ZUxpbms6IHVuZGVmaW5lZCwKICAgIG5leHRQcm9qZWN0SWQ6ICJheG9yaXgiLAogIH0sCiAgewogICAgaWQ6ICJheG9yaXgiLAogICAgdGl0bGU6ICJBWE9SSVgiLAogICAgYWdlbmN5OiAiQXhvcml4IiwKICAgIGluZHVzdHJ5OiAiRGVGaSBQbGF0Zm9ybSIsCiAgICBzZXJ2aWNlOiAiQnJhbmQgSWRlbnRpdHkiLAogICAgeWVhcjogIjIwMjUiLAogICAgZGVzY3JpcHRpb246CiAgICAgICJDb21wbGV0ZSBicmFuZCBpZGVudGl0eSBmb3IgQXhvcml4IOKAlCBhbiBBSS1wb3dlcmVkIERlRmkgcHJvdG9jb2wuIEZyb20gdGhlIGxvZ28gYW5kIFBvd2VyIEdyb3Rlc2sgdHlwb2dyYXBoeSB0byBhIHN0cmlraW5nIGJsYWNrLWFuZC15ZWxsb3cgdmlzdWFsIHN5c3RlbSwgYXBwIFVJLCBhbmQgbWFya2V0aW5nIGNvbGxhdGVyYWwsIEkgYnVpbHQgYSBib2xkIGlkZW50aXR5IG1hZGUgZm9yIHRoZSBmdXR1cmUgb2YgZGVjZW50cmFsaXplZCBmaW5hbmNlLiIsCiAgICBoZXJvSW1hZ2U6ICIvYXNzZXRzL2F4b3JpeC1oZXJvLndlYnAiLAogICAgaGVyb0ZpdDogImNvdmVyIiwKICAgIGhlcm9Mb2dvOiB1bmRlZmluZWQsCiAgICB0aHVtYm5haWw6ICIvYXNzZXRzL2Y5NWE3LndlYnAiLAogICAgaW1hZ2VzOiBbCiAgICAgICIvYXNzZXRzL2F4b3JpeC0wMS53ZWJwIiwKICAgICAgIi9hc3NldHMvYXhvcml4LTAyLndlYnAiLAogICAgICAiL2Fzc2V0cy9heG9yaXgtMDMud2VicCIsCiAgICAgICIvYXNzZXRzL2F4b3JpeC0wNC53ZWJwIiwKICAgICAgIi9hc3NldHMvYXhvcml4LTA1LndlYnAiLAogICAgICAiL2Fzc2V0cy9heG9yaXgtMDYud2VicCIsCiAgICAgICIvYXNzZXRzL2F4b3JpeC0wNy53ZWJwIiwKICAgICAgIi9hc3NldHMvYXhvcml4LTA4LndlYnAiLAogICAgXSwKICAgIGltYWdlSGVpZ2h0czogW251bGwsIG51bGwsIG51bGwsIG51bGwsIG51bGwsIG51bGwsIG51bGwsIDE5MjddLAogICAgbGl2ZUxpbms6IHVuZGVmaW5lZCwKICAgIG5leHRQcm9qZWN0SWQ6ICJub2RhbGlxIiwKICB9LAogIHsKICAgIGlkOiAibm9kYWxpcSIsCiAgICB0aXRsZTogIk5vZGFsaXEiLAogICAgYWdlbmN5OiAiTm9kYWxpcSIsCiAgICBpbmR1c3RyeTogIlRlY2hub2xvZ3kiLAogICAgc2VydmljZTogIkJyYW5kIElkZW50aXR5IiwKICAgIHllYXI6ICIyMDI2IiwKICAgIGRlc2NyaXB0aW9uOgogICAgICAiQnJhbmQgaWRlbnRpdHkgZm9yIE5vZGFsaVEg4oCUIHJlaW1hZ2luaW5nIHRoZSBtb2Rlcm4gbmV0d29yayBsYWIgd2l0aCBBSS4gQSBkYXJrLCB0ZWNobmljYWwgdmlzdWFsIHN5c3RlbSBidWlsdCBhcm91bmQgYSBnZW9tZXRyaWMgbG9nbyBtYXJrLCBlbGVjdHJpYyBwdXJwbGUgYWNjZW50cywgYW5kIGEgY2xlYW4gZ3JpZC1iYXNlZCBsYXlvdXQsIGNhcnJpZWQgYWNyb3NzIHN0YXRpb25lcnksIGRpZ2l0YWwgdG91Y2hwb2ludHMsIGFuZCBicmFuZCBjb2xsYXRlcmFsLiIsCiAgICBoZXJvSW1hZ2U6ICIvYXNzZXRzL25vZGFsaXEtaGVyby53ZWJwIiwKICAgIGhlcm9Mb2dvOiB1bmRlZmluZWQsCiAgICB0aHVtYm5haWw6ICIvYXNzZXRzL25vZGFsaXEtaGVyby53ZWJwIiwKICAgIGltYWdlczogWwogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTAxLndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTAyLndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTAzLndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTA0LndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTA1LndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTA2LndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTA3LndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTA4LndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTA5LndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTEwLndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTExLndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTEyLndlYnAiLAogICAgICAiL2Fzc2V0cy9ub2RhbGlxLTEzLndlYnAiLAogICAgXSwKICAgIGxpdmVMaW5rOiB1bmRlZmluZWQsCiAgICBuZXh0UHJvamVjdElkOiAic3RpbnQiLAogIH0sCiAgewogICAgaWQ6ICJzdGludCIsCiAgICB0aXRsZTogIlNUSU5UIiwKICAgIGFnZW5jeTogIlN0aW50IiwKICAgIGluZHVzdHJ5OiAiR2lnIFBsYXRmb3JtIiwKICAgIHNlcnZpY2U6ICJCcmFuZCBJZGVudGl0eSIsCiAgICB5ZWFyOiAiMjAyNSIsCiAgICBkZXNjcmlwdGlvbjoKICAgICAgIkJyYW5kIGlkZW50aXR5IGFuZCBtYXJrZXRpbmcgY29sbGF0ZXJhbCBmb3IgU3RpbnQg4oCUIGEgZ2lnLXdvcmsgcGxhdGZvcm0gY29ubmVjdGluZyBwZW9wbGUgd2l0aCBzaG9ydCB0YXNrcy4gRnJvbSB0aGUgU1Q6TlQgd29yZG1hcmsgdG8gYmlsbGJvYXJkcywgYXBwIFVJLCBhbmQgbm90aWZpY2F0aW9uIGRlc2lnbiwgSSBjcmVhdGVkIGEgYm9sZCwgeW91dGhmdWwgdmlzdWFsIGxhbmd1YWdlIGJ1aWx0IHRvIHN0YW5kIG91dCBvbiB0aGUgc3RyZWV0cyBhbmQgb24gc2NyZWVuLiIsCiAgICBoZXJvSW1hZ2U6ICIvYXNzZXRzL3N0aW50LWhlcm8ud2VicCIsCiAgICBoZXJvTG9nbzogdW5kZWZpbmVkLAogICAgaGVyb0ZpdDogImNvdmVyIiwKICAgIHRodW1ibmFpbDogIi9hc3NldHMvc3RpbnQtaGVyby53ZWJwIiwKICAgIGltYWdlczogWwogICAgICAiL2Fzc2V0cy9zdGludC0wMS53ZWJwIiwKICAgICAgIi9hc3NldHMvc3RpbnQtMDIud2VicCIsCiAgICAgICIvYXNzZXRzL3N0aW50LTAzLndlYnAiLAogICAgICAiL2Fzc2V0cy9zdGludC0wNC53ZWJwIiwKICAgICAgIi9hc3NldHMvc3RpbnQtMDUud2VicCIsCiAgICAgICIvYXNzZXRzL3N0aW50LTA2LndlYnAiLAogICAgICAiL2Fzc2V0cy9zdGludC0wNy53ZWJwIiwKICAgICAgIi9hc3NldHMvc3RpbnQtMDgud2VicCIsCiAgICAgICIvYXNzZXRzL3N0aW50LTA5LndlYnAiLAogICAgXSwKICAgIGxpdmVMaW5rOiB1bmRlZmluZWQsCiAgICBuZXh0UHJvamVjdElkOiAiY2hhdGJsYXN0IiwKICB9LAogIHsKICAgIGlkOiAiY2hhdGJsYXN0IiwKICAgIHRpdGxlOiAiQ0hBVEJMQVNUIiwKICAgIGFnZW5jeTogIkNoYXRCbGFzdCIsCiAgICBpbmR1c3RyeTogIlRlY2hub2xvZ3kiLAogICAgc2VydmljZTogIkJyYW5kIERlc2lnbiIsCiAgICB5ZWFyOiAiMjAyNSIsCiAgICBkZXNjcmlwdGlvbjogZGVzYywKICAgIGhlcm9JbWFnZTogIi9hc3NldHMvNDljYTUud2VicCIsCiAgICBoZXJvTG9nbzogdW5kZWZpbmVkLAogICAgdGh1bWJuYWlsOiAiL2Fzc2V0cy80OWNhNS53ZWJwIiwKICAgIGltYWdlczogW251bGwsIG51bGwsIG51bGwsIG51bGwsIG51bGwsIG51bGxdLAogICAgbGl2ZUxpbms6IHVuZGVmaW5lZCwKICAgIG5leHRQcm9qZWN0SWQ6ICJicmFuZCIsCiAgfSwKICB7CiAgICBpZDogImJyYW5kIiwKICAgIHRpdGxlOiAiQlJBTkQiLAogICAgYWdlbmN5OiAiQnJhbmQiLAogICAgaW5kdXN0cnk6ICJCcmFuZCBUZW1wbGF0ZSIsCiAgICBzZXJ2aWNlOiAiQnJhbmQgSWRlbnRpdHkiLAogICAgeWVhcjogIjIwMjYiLAogICAgZGVzY3JpcHRpb246CiAgICAgICJBIG1vZHVsYXIsIHByZW1pdW0gYnJhbmQgZ3VpZGVsaW5lcyBraXQgZm9yIG1vZGVybiBidXNpbmVzc2VzIOKAlCA2MCsgcGFnZXMgY292ZXJpbmcgYnJhbmQgZm91bmRhdGlvbnMsIGxvZ28gc3lzdGVtLCBjb2xvciwgdHlwb2dyYXBoeSwgYW5kIGFwcGxpY2F0aW9ucy4gQnVpbHQgdG8gYmUgY3VzdG9taXplZCwgbm90IGNvcGllZC4gQSBjb21wbGV0ZSBicmFuZCBib29rIHRlbXBsYXRlIGRlc2lnbmVkIGZvciBjbGFyaXR5IGFuZCBpbXBhY3QuIiwKICAgIGhlcm9JbWFnZTogIi9hc3NldHMvYnJhbmQtaGVyby53ZWJwIiwKICAgIGhlcm9Mb2dvOiB1bmRlZmluZWQsCiAgICBoZXJvRml0OiAiY292ZXIiLAogICAgdGh1bWJuYWlsOiAiL2Fzc2V0cy9icmFuZC1oZXJvLndlYnAiLAogICAgaW1hZ2VzOiBbCiAgICAgICIvYXNzZXRzL2JyYW5kLTAxLndlYnAiLAogICAgICAiL2Fzc2V0cy9icmFuZC0wMi53ZWJwIiwKICAgICAgIi9hc3NldHMvYnJhbmQtMDMud2VicCIsCiAgICAgICIvYXNzZXRzL2JyYW5kLTA0LndlYnAiLAogICAgICAiL2Fzc2V0cy9icmFuZC0wNS53ZWJwIiwKICAgICAgIi9hc3NldHMvYnJhbmQtMDYud2VicCIsCiAgICAgICIvYXNzZXRzL2JyYW5kLTA3LndlYnAiLAogICAgICAiL2Fzc2V0cy9icmFuZC0wOC53ZWJwIiwKICAgICAgIi9hc3NldHMvYnJhbmQtMDkud2VicCIsCiAgICAgICIvYXNzZXRzL2JyYW5kLTEwLndlYnAiLAogICAgICAiL2Fzc2V0cy9icmFuZC0xMS53ZWJwIiwKICAgICAgIi9hc3NldHMvYnJhbmQtMTIud2VicCIsCiAgICAgICIvYXNzZXRzL2JyYW5kLTEzLndlYnAiLAogICAgICAiL2Fzc2V0cy9icmFuZC0xNC53ZWJwIiwKICAgICAgIi9hc3NldHMvYnJhbmQtMTUud2VicCIsCiAgICAgICIvYXNzZXRzL2JyYW5kLTE2LndlYnAiLAogICAgICAiL2Fzc2V0cy9icmFuZC0xNy53ZWJwIiwKICAgICAgIi9hc3NldHMvYnJhbmQtMTgud2VicCIsCiAgICAgICIvYXNzZXRzL2JyYW5kLTE5LndlYnAiLAogICAgICAiL2Fzc2V0cy9icmFuZC0yMC53ZWJwIiwKICAgICAgIi9hc3NldHMvYnJhbmQtMjEud2VicCIsCiAgICAgICIvYXNzZXRzL2JyYW5kLTIyLndlYnAiLAogICAgXSwKICAgIGxpdmVMaW5rOiB1bmRlZmluZWQsCiAgICBuZXh0UHJvamVjdElkOiAicHlwbyIsCiAgfSwKICB7CiAgICBpZDogInB5cG8iLAogICAgdGl0bGU6ICJQeXBvIiwKICAgIGFnZW5jeTogIlB5cG8iLAogICAgaW5kdXN0cnk6ICJGaW50ZWNoIiwKICAgIHNlcnZpY2U6ICJCcmFuZCBJZGVudGl0eSIsCiAgICB5ZWFyOiAiMjAyNSIsCiAgICBkZXNjcmlwdGlvbjoKICAgICAgIkNvbXBsZXRlIGJyYW5kIGd1aWRlYm9vayBmb3IgUHlwbyDigJQgYSBmcmllbmRseSwgcGxheWZ1bCBpZGVudGl0eSBzeXN0ZW0uIExvZ28gY29uc3RydWN0aW9uIGFuZCB2YXJpYXRpb25zLCB1c2FnZSBydWxlcywgcHJpbWFyeSBhbmQgc2Vjb25kYXJ5IGNvbG9yIHBhbGV0dGVzLCB0eXBvZ3JhcGh5LCBpY29ub2dyYXBoeSwgZ3JhcGhpYyBlbGVtZW50cyBhbmQgcGF0dGVybnMsIHBsdXMgYXBwbGljYXRpb25zIGFjcm9zcyBzdGF0aW9uZXJ5LCBzb2NpYWwgbWVkaWEsIGFkdmVydGlzaW5nLCBwYWNrYWdpbmcsIGFuZCBtZXJjaGFuZGlzZS4iLAogICAgaGVyb0ltYWdlOiAiL2Fzc2V0cy9weXBvLWhlcm8ud2VicCIsCiAgICBoZXJvTG9nbzogdW5kZWZpbmVkLAogICAgdGh1bWJuYWlsOiAiL2Fzc2V0cy9weXBvLWhlcm8ud2VicCIsCiAgICBpbWFnZXM6IFsKICAgICAgIi9hc3NldHMvcHlwby0wMS53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0wMi53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0wMy53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0wNC53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0wNS53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0wNi53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0wNy53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0wOC53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0wOS53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0xMC53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0xMS53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0xMi53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0xMy53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0xNC53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0xNS53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0xNi53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0xNy53ZWJwIiwKICAgICAgIi9hc3NldHMvcHlwby0xOC53ZWJwIiwKICAgIF0sCiAgICBsaXZlTGluazogdW5kZWZpbmVkLAogICAgbmV4dFByb2plY3RJZDogImNhbXB1cy1hcHAiLAogIH0sCiAgewogICAgaWQ6ICJicm9jaHVyZSIsCiAgICB0aXRsZTogIkJST0NIVVJFIiwKICAgIGFnZW5jeTogIlFyb3ZleGEgQWdlbmN5IiwKICAgIGluZHVzdHJ5OiAiTWFya2V0aW5nIiwKICAgIHNlcnZpY2U6ICJQcmludCBEZXNpZ24iLAogICAgeWVhcjogIjIwMjYiLAogICAgZGVzY3JpcHRpb246CiAgICAgICJUcmktZm9sZCBhbmQgYmktZm9sZCBicm9jaHVyZSBkZXNpZ24gZm9yIFFyb3ZleGEgQWdlbmN5IOKAlCBhIGNsZWFuLCBtb2Rlcm4gcHJpbnQgbGF5b3V0IHdpdGggYm9sZCB0eXBvZ3JhcGh5LCBzdHJ1Y3R1cmVkIGNvbnRlbnQgc2VjdGlvbnMsIGFuZCBhIHByb2Zlc3Npb25hbCBncmVlbi1hbmQtYmxhY2sgY29sb3Igc3lzdGVtLiBEZXNpZ25lZCBmb3IgYm90aCBkaWdpdGFsIHNoYXJpbmcgYW5kIGhpZ2gtcXVhbGl0eSBwcmludC4iLAogICAgaGVyb0ltYWdlOiAiL2Fzc2V0cy9icm9jaHVyZS1oZXJvLndlYnAiLAogICAgaGVyb0xvZ286IHVuZGVmaW5lZCwKICAgIGhlcm9GaXQ6ICJjb3ZlciIsCiAgICB0aHVtYm5haWw6ICIvYXNzZXRzL2Jyb2NodXJlLWhlcm8ud2VicCIsCiAgICBpbWFnZXM6IFsKICAgICAgIi9hc3NldHMvYnJvY2h1cmUtMDEud2VicCIsCiAgICAgICIvYXNzZXRzL2Jyb2NodXJlLTAyLndlYnAiLAogICAgICAiL2Fzc2V0cy9icm9jaHVyZS0wMy53ZWJwIiwKICAgICAgIi9hc3NldHMvYnJvY2h1cmUtMDQud2VicCIsCiAgICAgICIvYXNzZXRzL2Jyb2NodXJlLTA1LndlYnAiLAogICAgICAiL2Fzc2V0cy9icm9jaHVyZS0wNi53ZWJwIiwKICAgICAgIi9hc3NldHMvYnJvY2h1cmUtMDcud2VicCIsCiAgICAgICIvYXNzZXRzL2Jyb2NodXJlLTA4LndlYnAiLAogICAgXSwKICAgIGxpdmVMaW5rOiB1bmRlZmluZWQsCiAgICBuZXh0UHJvamVjdElkOiAibm9pcmUtY29mZmVlIiwKICB9LApdOwoKLy8g4pSA4pSAIEJhc2UtcGF0aCBmaXgg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACi8vIEltYWdlIHBhdGhzIGFib3ZlIGFyZSBhYnNvbHV0ZSAoIi9hc3NldHMvLi4uIiksIHdoaWNoIDQwNHMgd2hlbiB0aGUgc2l0ZSBpcwovLyBzZXJ2ZWQgZnJvbSBhIHN1Yi1wYXRoIChlLmcuIEdpdEh1YiBQYWdlcyAvUG9ydGZvbGlvLVdlYnNpdGUvKS4gUHJlZml4IGV2ZXJ5Ci8vIHByb2plY3QgYXNzZXQgd2l0aCBWaXRlJ3MgQkFTRV9VUkwgc28gZGV0YWlsIHBhZ2VzICsgdGh1bWJuYWlscyByZXNvbHZlLgpjb25zdCB3aXRoQmFzZSA9IChwOiBzdHJpbmcgfCBudWxsIHwgdW5kZWZpbmVkKTogc3RyaW5nIHwgbnVsbCB8IHVuZGVmaW5lZCA9PgogIHAgPyBgJHtpbXBvcnQubWV0YS5lbnYuQkFTRV9VUkx9JHtwLnJlcGxhY2UoL15cLy8sICIiKX1gIDogcDsKCnByb2plY3RzLmZvckVhY2goKHApID0+IHsKICBwLmhlcm9JbWFnZSA9IHdpdGhCYXNlKHAuaGVyb0ltYWdlKSBhcyBzdHJpbmc7CiAgcC50aHVtYm5haWwgPSB3aXRoQmFzZShwLnRodW1ibmFpbCkgYXMgc3RyaW5nOwogIHAuaW1hZ2VzID0gcC5pbWFnZXMubWFwKChpKSA9PiB3aXRoQmFzZShpKSBhcyBzdHJpbmcgfCBudWxsKTsKICBpZiAocC5oZXJvTG9nbykgcC5oZXJvTG9nbyA9IHdpdGhCYXNlKHAuaGVyb0xvZ28pIGFzIHN0cmluZzsKfSk7CgpleHBvcnQgZnVuY3Rpb24gZ2V0UHJvamVjdEJ5SWQoaWQ6IHN0cmluZyk6IFByb2plY3REYXRhIHwgdW5kZWZpbmVkIHsKICByZXR1cm4gcHJvamVjdHMuZmluZCgocCkgPT4gcC5pZCA9PT0gaWQpOwp9CgpleHBvcnQgZnVuY3Rpb24gZ2V0TmV4dFByb2plY3QoY3VycmVudElkOiBzdHJpbmcpOiBQcm9qZWN0RGF0YSB8IHVuZGVmaW5lZCB7CiAgY29uc3QgY3VycmVudCA9IGdldFByb2plY3RCeUlkKGN1cnJlbnRJZCk7CiAgaWYgKCFjdXJyZW50KSByZXR1cm4gdW5kZWZpbmVkOwogIHJldHVybiBnZXRQcm9qZWN0QnlJZChjdXJyZW50Lm5leHRQcm9qZWN0SWQpOwp9CgovLyDilIDilIAgUHJvamVjdCBjYW52YXMgaGVpZ2h0IGhlbHBlcnMg4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSACi8vIEVhY2ggaW1hZ2Ugc2xvdCBpcyAxNjo5IGF0IHRoZSAxODIzLjVweCBzbG90IHdpZHRoLgpjb25zdCBJTUdfU0xPVF9IID0gTWF0aC5yb3VuZCgoMTgyMy41ICogOSkgLyAxNik7IC8vIDEwMjUKY29uc3QgSU1HX0dBUCA9IDQ0Owpjb25zdCBJTUFHRVNfVE9QID0gMTM5NjsKY29uc3QgVEFJTF9IID0gMjYwMTsgLy8gY29uc3RhbnQ6IE5leHQgUHJvamVjdCArIExldCdzIENvbm5lY3QgKyBGb290ZXIKCmV4cG9ydCBmdW5jdGlvbiBnZXRQcm9qZWN0Q2FudmFzSChpbWFnZUNvdW50OiBudW1iZXIpOiBudW1iZXIgewogIGNvbnN0IGltYWdlc0ggPSBpbWFnZUNvdW50ICogSU1HX1NMT1RfSCArIE1hdGgubWF4KDAsIGltYWdlQ291bnQgLSAxKSAqIElNR19HQVA7CiAgLy8gKzQwNHB4IGZvciB0aGUgdGFsbGVyIG5ldyBoZXJvICgxMDUwcHggdnMgb2xkIDY3OXB4KQogIHJldHVybiBJTUFHRVNfVE9QICsgNDA0ICsgaW1hZ2VzSCArIFRBSUxfSDsKfQoKLy8gQ29udmVuaWVuY2UgY29uc3RhbnRzIHJlLWV4cG9ydGVkIGZvciBQcm9qZWN0UGFnZSdzIGludGVybmFsIGxheW91dCBtYXRoCmV4cG9ydCB7IElNR19TTE9UX0gsIElNR19HQVAsIElNQUdFU19UT1AsIFRBSUxfSCB9Owo=
+export interface ProjectData {
+  id: string;
+  title: string;
+  agency: string;
+  industry: string;
+  service: string;
+  year: string;
+  description: string;
+  heroImage: string;
+  heroLogo?: string;
+  // "zoom" (default) = large artistic zoom-in; "cover" = natural object-cover fit
+  heroFit?: "zoom" | "cover";
+  // When set, the LIVE LINK button navigates to this internal view instead of opening an external URL
+  siteView?: string;
+  images: (string | null)[];
+  // Per-slot height override; falls back to IMG_SLOT_H when null/absent
+  imageHeights?: (number | null)[];
+  liveLink?: string;
+  nextProjectId: string;
+  thumbnail: string;
+}
+
+const desc =
+  "I start by understanding the business, audience, and goals, then turn those insights into a clear creative direction. From there, I build bold brands, digital experiences, and visual systems, refining every detail to create work that communicates clearly, connects with people, and helps businesses grow.";
+
+export const projects: ProjectData[] = [
+  {
+    id: "noire-coffee",
+    title: "NOIRÉ COFFEE",
+    agency: "Noiré Coffee",
+    industry: "Coffee Brand",
+    service: "Brand Identity",
+    year: "2026",
+    description:
+      "Complete brand identity for Noiré Coffee — a bold, modern coffee brand with a dark, premium character. From the logo and typography to packaging, stationery, business cards, and a custom brand pattern, I built a full visual system designed to feel rich, confident, and unmistakable.",
+    heroImage: "/assets/noire-hero.webp",
+    heroLogo: undefined,
+    heroFit: "cover",
+    thumbnail: "/assets/noire-hero.webp",
+    images: [
+      "/assets/noire-01.webp",
+      "/assets/noire-02.webp",
+      "/assets/noire-03.webp",
+      "/assets/noire-04.webp",
+      "/assets/noire-05.webp",
+      "/assets/noire-06.webp",
+      "/assets/noire-07.webp",
+      "/assets/noire-08.webp",
+      "/assets/noire-09.webp",
+      "/assets/noire-10.webp",
+      "/assets/noire-11.webp",
+      "/assets/noire-12.webp",
+      "/assets/noire-13.webp",
+      "/assets/noire-cards.webp",
+    ],
+    liveLink: undefined,
+    nextProjectId: "fitflow",
+  },
+  {
+    id: "fitflow",
+    title: "FITFLOW",
+    agency: "FitFlow",
+    industry: "Fitness Brand",
+    service: "Brand Identity",
+    year: "2025",
+    description:
+      "Complete brand guideline for FitFlow — a bold fitness brand with a striking orange-on-black identity. From logo construction, typography, and color systems to mockups and real-world applications, I built a comprehensive guideline that keeps the brand powerful, consistent, and unmistakable everywhere it appears.",
+    heroImage: "/assets/fitflow-hero.webp",
+    heroLogo: undefined,
+    heroFit: "cover",
+    thumbnail: "/assets/fitflow-hero.webp",
+    images: [
+      "/assets/fitflow-01.webp",
+      "/assets/fitflow-06.webp",
+      "/assets/fitflow-11.webp",
+      "/assets/fitflow-12.webp",
+      "/assets/fitflow-14.webp",
+      "/assets/fitflow-18.webp",
+      "/assets/fitflow-20.webp",
+      "/assets/fitflow-22.webp",
+      "/assets/fitflow-35.webp",
+      "/assets/fitflow-36.webp",
+      "/assets/fitflow-37.webp",
+      "/assets/fitflow-38.webp",
+    ],
+    liveLink: undefined,
+    nextProjectId: "axorix",
+  },
+  {
+    id: "axorix",
+    title: "AXORIX",
+    agency: "Axorix",
+    industry: "DeFi Platform",
+    service: "Brand Identity",
+    year: "2025",
+    description:
+      "Complete brand identity for Axorix — an AI-powered DeFi protocol. From the logo and Power Grotesk typography to a striking black-and-yellow visual system, app UI, and marketing collateral, I built a bold identity made for the future of decentralized finance.",
+    heroImage: "/assets/axorix-hero.webp",
+    heroFit: "cover",
+    heroLogo: undefined,
+    thumbnail: "/assets/f95a7.webp",
+    images: [
+      "/assets/axorix-01.webp",
+      "/assets/axorix-02.webp",
+      "/assets/axorix-03.webp",
+      "/assets/axorix-04.webp",
+      "/assets/axorix-05.webp",
+      "/assets/axorix-06.webp",
+      "/assets/axorix-07.webp",
+      "/assets/axorix-08.webp",
+    ],
+    imageHeights: [null, null, null, null, null, null, null, 1927],
+    liveLink: undefined,
+    nextProjectId: "nodaliq",
+  },
+  {
+    id: "nodaliq",
+    title: "Nodaliq",
+    agency: "Nodaliq",
+    industry: "Technology",
+    service: "Brand Identity",
+    year: "2026",
+    description:
+      "Brand identity for NodaliQ — reimagining the modern network lab with AI. A dark, technical visual system built around a geometric logo mark, electric purple accents, and a clean grid-based layout, carried across stationery, digital touchpoints, and brand collateral.",
+    heroImage: "/assets/nodaliq-hero.webp",
+    heroLogo: undefined,
+    thumbnail: "/assets/nodaliq-hero.webp",
+    images: [
+      "/assets/nodaliq-01.webp",
+      "/assets/nodaliq-02.webp",
+      "/assets/nodaliq-03.webp",
+      "/assets/nodaliq-04.webp",
+      "/assets/nodaliq-05.webp",
+      "/assets/nodaliq-06.webp",
+      "/assets/nodaliq-07.webp",
+      "/assets/nodaliq-08.webp",
+      "/assets/nodaliq-09.webp",
+      "/assets/nodaliq-10.webp",
+      "/assets/nodaliq-11.webp",
+      "/assets/nodaliq-12.webp",
+      "/assets/nodaliq-13.webp",
+    ],
+    liveLink: undefined,
+    nextProjectId: "stint",
+  },
+  {
+    id: "stint",
+    title: "STINT",
+    agency: "Stint",
+    industry: "Gig Platform",
+    service: "Brand Identity",
+    year: "2025",
+    description:
+      "Brand identity and marketing collateral for Stint — a gig-work platform connecting people with short tasks. From the ST:NT wordmark to billboards, app UI, and notification design, I created a bold, youthful visual language built to stand out on the streets and on screen.",
+    heroImage: "/assets/stint-hero.webp",
+    heroLogo: undefined,
+    heroFit: "cover",
+    thumbnail: "/assets/stint-hero.webp",
+    images: [
+      "/assets/stint-01.webp",
+      "/assets/stint-02.webp",
+      "/assets/stint-03.webp",
+      "/assets/stint-04.webp",
+      "/assets/stint-05.webp",
+      "/assets/stint-06.webp",
+      "/assets/stint-07.webp",
+      "/assets/stint-08.webp",
+      "/assets/stint-09.webp",
+    ],
+    liveLink: undefined,
+    nextProjectId: "chatblast",
+  },
+  {
+    id: "chatblast",
+    title: "CHATBLAST",
+    agency: "ChatBlast",
+    industry: "Technology",
+    service: "Brand Design",
+    year: "2025",
+    description: desc,
+    heroImage: "/assets/49ca5.webp",
+    heroLogo: undefined,
+    thumbnail: "/assets/49ca5.webp",
+    images: [null, null, null, null, null, null],
+    liveLink: undefined,
+    nextProjectId: "brand",
+  },
+  {
+    id: "brand",
+    title: "BRAND",
+    agency: "Brand",
+    industry: "Brand Template",
+    service: "Brand Identity",
+    year: "2026",
+    description:
+      "A modular, premium brand guidelines kit for modern businesses — 60+ pages covering brand foundations, logo system, color, typography, and applications. Built to be customized, not copied. A complete brand book template designed for clarity and impact.",
+    heroImage: "/assets/brand-hero.webp",
+    heroLogo: undefined,
+    heroFit: "cover",
+    thumbnail: "/assets/brand-hero.webp",
+    images: [
+      "/assets/brand-01.webp",
+      "/assets/brand-02.webp",
+      "/assets/brand-03.webp",
+      "/assets/brand-04.webp",
+      "/assets/brand-05.webp",
+      "/assets/brand-06.webp",
+      "/assets/brand-07.webp",
+      "/assets/brand-08.webp",
+      "/assets/brand-09.webp",
+      "/assets/brand-10.webp",
+      "/assets/brand-11.webp",
+      "/assets/brand-12.webp",
+      "/assets/brand-13.webp",
+      "/assets/brand-14.webp",
+      "/assets/brand-15.webp",
+      "/assets/brand-16.webp",
+      "/assets/brand-17.webp",
+      "/assets/brand-18.webp",
+      "/assets/brand-19.webp",
+      "/assets/brand-20.webp",
+      "/assets/brand-21.webp",
+      "/assets/brand-22.webp",
+    ],
+    liveLink: undefined,
+    nextProjectId: "pypo",
+  },
+  {
+    id: "pypo",
+    title: "Pypo",
+    agency: "Pypo",
+    industry: "Fintech",
+    service: "Brand Identity",
+    year: "2025",
+    description:
+      "Complete brand guidebook for Pypo — a friendly, playful identity system. Logo construction and variations, usage rules, primary and secondary color palettes, typography, iconography, graphic elements and patterns, plus applications across stationery, social media, advertising, packaging, and merchandise.",
+    heroImage: "/assets/pypo-hero.webp",
+    heroLogo: undefined,
+    thumbnail: "/assets/pypo-hero.webp",
+    images: [
+      "/assets/pypo-01.webp",
+      "/assets/pypo-02.webp",
+      "/assets/pypo-03.webp",
+      "/assets/pypo-04.webp",
+      "/assets/pypo-05.webp",
+      "/assets/pypo-06.webp",
+      "/assets/pypo-07.webp",
+      "/assets/pypo-08.webp",
+      "/assets/pypo-09.webp",
+      "/assets/pypo-10.webp",
+      "/assets/pypo-11.webp",
+      "/assets/pypo-12.webp",
+      "/assets/pypo-13.webp",
+      "/assets/pypo-14.webp",
+      "/assets/pypo-15.webp",
+      "/assets/pypo-16.webp",
+      "/assets/pypo-17.webp",
+      "/assets/pypo-18.webp",
+    ],
+    liveLink: undefined,
+    nextProjectId: "campus-app",
+  },
+  {
+    id: "brochure",
+    title: "BROCHURE",
+    agency: "Qrovexa Agency",
+    industry: "Marketing",
+    service: "Print Design",
+    year: "2026",
+    description:
+      "Tri-fold and bi-fold brochure design for Qrovexa Agency — a clean, modern print layout with bold typography, structured content sections, and a professional green-and-black color system. Designed for both digital sharing and high-quality print.",
+    heroImage: "/assets/brochure-hero.webp",
+    heroLogo: undefined,
+    heroFit: "cover",
+    thumbnail: "/assets/brochure-hero.webp",
+    images: [
+      "/assets/brochure-01.webp",
+      "/assets/brochure-02.webp",
+      "/assets/brochure-03.webp",
+      "/assets/brochure-04.webp",
+      "/assets/brochure-05.webp",
+      "/assets/brochure-06.webp",
+      "/assets/brochure-07.webp",
+      "/assets/brochure-08.webp",
+    ],
+    liveLink: undefined,
+    nextProjectId: "noire-coffee",
+  },
+];
+
+// ── Base-path fix ──────────────────────────────────────────────────────────
+// Image paths above are absolute ("/assets/..."), which 404s when the site is
+// served from a sub-path (e.g. GitHub Pages /Portfolio-Website/). Prefix every
+// project asset with Vite's BASE_URL so detail pages + thumbnails resolve.
+const withBase = (p: string | null | undefined): string | null | undefined =>
+  p ? `${import.meta.env.BASE_URL}${p.replace(/^\//, "")}` : p;
+
+projects.forEach((p) => {
+  p.heroImage = withBase(p.heroImage) as string;
+  p.thumbnail = withBase(p.thumbnail) as string;
+  p.images = p.images.map((i) => withBase(i) as string | null);
+  if (p.heroLogo) p.heroLogo = withBase(p.heroLogo) as string;
+});
+
+export function getProjectById(id: string): ProjectData | undefined {
+  return projects.find((p) => p.id === id);
+}
+
+export function getNextProject(currentId: string): ProjectData | undefined {
+  const current = getProjectById(currentId);
+  if (!current) return undefined;
+  return getProjectById(current.nextProjectId);
+}
+
+// ── Project canvas height helpers ────────────────────────────────────────────
+// Each image slot is 16:9 at the 1823.5px slot width.
+const IMG_SLOT_H = Math.round((1823.5 * 9) / 16); // 1025
+const IMG_GAP = 44;
+const IMAGES_TOP = 1396;
+const TAIL_H = 2601; // constant: Next Project + Let's Connect + Footer
+
+export function getProjectCanvasH(imageCount: number): number {
+  const imagesH = imageCount * IMG_SLOT_H + Math.max(0, imageCount - 1) * IMG_GAP;
+  // +404px for the taller new hero (1050px vs old 679px)
+  return IMAGES_TOP + 404 + imagesH + TAIL_H;
+}
+
+// Convenience constants re-exported for ProjectPage's internal layout math
+export { IMG_SLOT_H, IMG_GAP, IMAGES_TOP, TAIL_H };
