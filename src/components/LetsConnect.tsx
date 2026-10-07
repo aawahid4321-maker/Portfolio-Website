@@ -175,9 +175,17 @@ export default function LetsConnect() {
       const onLeave = () => ch.classList.remove("is-happy");
       const onClick = () => {
         if (reduceMotion) return;
-        // happy wiggle + sparkles pop
-        ch.classList.add("is-wiggle", "is-sparkling");
-        window.setTimeout(() => ch.classList.remove("is-wiggle"), 600);
+        // scatter: run to a random spot near the ground (stays there until clicked again)
+        const small = window.innerWidth < 640;
+        const rangeX = small ? 90 : 300;
+        const rangeY = small ? 40 : 100;
+        const rx = Math.round((Math.random() * 2 - 1) * rangeX);
+        const ry = Math.round(-Math.random() * rangeY);
+        ch.style.setProperty("--scatter-x", rx + "px");
+        ch.style.setProperty("--scatter-y", ry + "px");
+        // happy wiggle + sparkles pop + running wobble
+        ch.classList.add("is-wiggle", "is-sparkling", "is-running");
+        window.setTimeout(() => ch.classList.remove("is-wiggle", "is-running"), 600);
         window.setTimeout(() => ch.classList.remove("is-sparkling"), 750);
       };
       ch.addEventListener("mouseenter", onEnter);
@@ -266,8 +274,8 @@ export default function LetsConnect() {
           z-index: 1;
           left: 50%; bottom: 0;
           transform: translateX(-50%);
-          width: 1200px;
-          height: 693px;
+          width: 1800px;
+          height: 1040px;
           display: block;
         }
         #connect .lc-stage svg {
@@ -279,6 +287,9 @@ export default function LetsConnect() {
           transform-box: fill-box;
           transform-origin: bottom center;
           cursor: pointer;
+          /* click-to-scatter offset: the independent translate property composes with the transform animations */
+          translate: var(--scatter-x, 0px) var(--scatter-y, 0px);
+          transition: translate 0.6s cubic-bezier(0.34, 1.3, 0.64, 1);
         }
         #connect.is-ready .lc-char { transform: scaleY(0.5); opacity: 0; }
         #connect.is-ready.is-visible .lc-char {
@@ -386,6 +397,13 @@ export default function LetsConnect() {
           50% { transform: rotate(8deg); }
           75% { transform: rotate(-4deg); }
         }
+        /* click: running wobble while scattering (animates the rotate property so it composes with the wiggle transform) */
+        #connect .lc-char.is-running { animation: lc-run-wobble 0.18s ease-in-out infinite; }
+        #connect .lc-char.is-wiggle.is-running { animation: lc-wiggle 0.6s ease, lc-run-wobble 0.18s ease-in-out infinite; }
+        @keyframes lc-run-wobble {
+          0%, 100% { rotate: -7deg; }
+          50% { rotate: 7deg; }
+        }
         #connect .lc-char.is-nudged { animation: lc-nudge 0.4s ease; }
         @keyframes lc-nudge {
           0%, 100% { transform: translateX(0); }
@@ -446,6 +464,7 @@ export default function LetsConnect() {
 
         @media (prefers-reduced-motion: reduce) {
           #connect.is-ready .lc-char, #connect .lc-char { animation: none; transform: scaleY(1); opacity: 1; }
+          #connect .lc-char.is-running { animation: none; }
           #connect .lc-char .sun-arm-l, #connect .lc-char .sun-arm-r,
           #connect .lc-char .tri-cup-hand, #connect .lc-char .rect-tap-foot { animation: none; }
           #connect.is-ready .lc-heading .mask > span { transform: none; transition: none; }
