@@ -369,7 +369,8 @@ export default function ProjectHero({
           padding-top: calc(var(--nav-top, 20px) + var(--nav-h, 92px) + 40px);
           padding-bottom: 72px;
           padding-inline: 24px;
-          background: var(--ph-jet-black);
+          /* purple mountain landscape background */
+          background: var(--ph-jet-black) url("/assets/purple-mountain-bg.webp") center / cover no-repeat;
           overflow: visible; /* never clip the card's hard shadow */
         }
         .ph-hero-bg {
