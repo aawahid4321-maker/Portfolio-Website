@@ -247,16 +247,16 @@ export default function ProjectHero({
           position: relative;
           z-index: 10;
           text-align: center;
-          margin: 190px auto 0; /* clear of the nav row */
+          margin: 220px auto 0; /* well clear of the nav row */
           padding: 0 24px;
           font-family: "Geist", system-ui, sans-serif;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: -0.02em;
-          font-size: clamp(48px, 8vw, 120px); /* capped so it never hits the nav */
+          font-size: clamp(44px, 6vw, 96px); /* conservative: never near the nav */
           line-height: 0.95;
           color: var(--ph-soft-white);
-          max-width: 1400px;
+          max-width: 1200px;
         }
         .ph-title .mask {
           display: inline-block;

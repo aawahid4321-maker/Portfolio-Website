@@ -126,13 +126,13 @@ export default function ProjectPage({
       {/* [Agency] */}
       <p
         className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[182.664px]"
-        style={{ left: 978.79, top: 826.26 }}
+        style={{ left: 978.79, top: 826.26 + HERO_SHIFT }}
       >
         [CLIENT]
       </p>
       <p
         className="absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] text-[#0f0f0f] tracking-[0.5px] whitespace-nowrap"
-        style={{ left: 978.79, top: 889.11 }}
+        style={{ left: 978.79, top: 889.11 + HERO_SHIFT }}
       >
         {project.agency}
       </p>
@@ -140,13 +140,13 @@ export default function ProjectPage({
       {/* [Service] */}
       <p
         className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[212.91px]"
-        style={{ left: 978.79, top: 1045.88 }}
+        style={{ left: 978.79, top: 1045.88 + HERO_SHIFT }}
       >
         [Service]
       </p>
       <p
         className="absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] text-[#0f0f0f] tracking-[0.5px] w-[266.828px]"
-        style={{ left: 978.79, top: 1108.72 }}
+        style={{ left: 978.79, top: 1108.72 + HERO_SHIFT }}
       >
         {project.service}
       </p>
@@ -154,13 +154,13 @@ export default function ProjectPage({
       {/* [Industry] */}
       <p
         className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[210.311px]"
-        style={{ left: 1434.29, top: 826.26 }}
+        style={{ left: 1434.29, top: 826.26 + HERO_SHIFT }}
       >
         [Industry]
       </p>
       <p
         className="absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] text-[#0f0f0f] tracking-[0.5px] whitespace-nowrap"
-        style={{ left: 1434.29, top: 889.11 }}
+        style={{ left: 1434.29, top: 889.11 + HERO_SHIFT }}
       >
         {project.industry}
       </p>
@@ -168,13 +168,13 @@ export default function ProjectPage({
       {/* [Year] */}
       <p
         className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[210.311px]"
-        style={{ left: 1434.29, top: 1045.87 }}
+        style={{ left: 1434.29, top: 1045.87 + HERO_SHIFT }}
       >
         [Year]
       </p>
       <p
         className="absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] text-[#0f0f0f] tracking-[0.5px] whitespace-nowrap"
-        style={{ left: 1434.29, top: 1108.72 }}
+        style={{ left: 1434.29, top: 1108.72 + HERO_SHIFT }}
       >
         {project.year}
       </p>
