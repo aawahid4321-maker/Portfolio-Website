@@ -167,7 +167,7 @@ export default function FloatingNav({
           border-radius: 999px; z-index: 0; pointer-events: none; opacity: 0;
           transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease; }
         .pp-highlight.is-visible { opacity: 1; }
-        .pp-links a { position: relative; z-index: 1; font-family: "Geist", system-ui, sans-serif; font-weight: 500;
+        .pp-links a { position: relative; z-index: 1; font-family: "Zilla Slab", Georgia, serif; font-weight: 500;
           font-size: var(--nav-font); color: var(--pp-white); cursor: pointer; padding: 14px 24px; border-radius: 999px;
           white-space: nowrap; text-decoration: none; transition: color 0.2s ease; min-height: 48px;
           display: inline-flex; align-items: center; }
