@@ -729,9 +729,10 @@ export default function Frame() {
           0%, 92%, 100% { transform: scaleY(1); }
           95% { transform: scaleY(0.08); }
         }
-        /* Hover: cartoon blob squash-and-stretch on the circle, eyes widen */
+        /* Hover: cartoon blob squash-and-stretch on the circle, eyes widen.
+           Loops while hovered so the wobble is visible at any moment. */
         .metric-mascot:hover .metric-squash {
-          animation: metricSquash 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+          animation: metricSquash 0.9s ease-in-out infinite;
         }
         @keyframes metricSquash {
           0% { scale: 1 1; }
