@@ -109,9 +109,9 @@ export default function SharedFooterContent() {
 
       <div ref={rootRef} className="h-[500px] relative shrink-0 w-[1824px]">
 
-        {/* ── Grid lines (same as main page) ───────────────────────── */}
-        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-          {[48, 279, 510, 741, 972, 1203, 1434, 1665].map((left) => (
+        {/* ── Grid lines (same as main page, aligned to 1920px container) ── */}
+        <div className="absolute pointer-events-none" aria-hidden="true" style={{ top: '-100px', height: '600px', left: 0, right: 0 }}>
+          {[0, 231, 462, 693, 924, 1155, 1386, 1617].map((left) => (
             <div
               key={left}
               className="absolute top-0 h-full w-[207px] border-l border-r border-solid border-[#cfcfcf]"
@@ -139,7 +139,7 @@ export default function SharedFooterContent() {
         </div>
 
         {/* ── Middle: Wahid + designation + [CONTACT] ──────────────── */}
-        <div className="absolute left-[700px] top-0 flex flex-col" data-reveal="100">
+        <div className="absolute left-[693px] top-0 flex flex-col" data-reveal="100">
           <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#0D0D0D] text-[22px] uppercase whitespace-nowrap">
             Wahid
           </p>
@@ -186,7 +186,7 @@ export default function SharedFooterContent() {
         </div>
 
         {/* ── Right: [SOCIALS] ─────────────────────────────────────── */}
-        <div className="absolute left-[1300px] top-0 flex flex-col gap-[16px]" data-reveal="200">
+        <div className="absolute left-[1386px] top-0 flex flex-col gap-[16px]" data-reveal="200">
           <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(13,13,13,0.5)] text-[22px] uppercase whitespace-nowrap">
             [Socials]
           </p>
@@ -204,7 +204,7 @@ export default function SharedFooterContent() {
         </div>
 
         {/* ── Copyright ────────────────────────────────────────────── */}
-        <div className="absolute left-[1174.89px] bottom-0" data-reveal="300">
+        <div className="absolute left-[1155px] bottom-0" data-reveal="300">
           <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(13,13,13,0.5)] text-[22px] uppercase whitespace-nowrap">
             ©2026. All right reserved
           </p>
