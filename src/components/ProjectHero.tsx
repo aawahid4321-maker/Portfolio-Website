@@ -318,9 +318,10 @@ export default function ProjectHero({
           position: relative;
           border-radius: 28px;
           border: 3px solid var(--ph-jet-black);
-          outline: 2px solid var(--ph-soft-white);
-          outline-offset: -2px;
-          box-shadow: 10px 10px 0 var(--ph-purple-light);
+          /* white ring via box-shadow (follows border-radius cleanly, unlike outline) */
+          box-shadow:
+            0 0 0 2px var(--ph-soft-white),
+            10px 10px 0 var(--ph-purple-light);
           overflow: hidden;
           aspect-ratio: 16 / 9;
           background: var(--ph-jet-black);
@@ -370,7 +371,12 @@ export default function ProjectHero({
           }
           .ph-title { font-size: 44px; margin-top: 120px; }
           .ph-card-wrap { width: 92vw; }
-          .ph-card { aspect-ratio: 4 / 3; box-shadow: 6px 6px 0 var(--ph-purple-light); }
+          .ph-card {
+            aspect-ratio: 4 / 3;
+            box-shadow:
+              0 0 0 2px var(--ph-soft-white),
+              6px 6px 0 var(--ph-purple-light);
+          }
           .ph-deco .ph-deco-extra { display: none; } /* 2 decorations on mobile */
         }
 
