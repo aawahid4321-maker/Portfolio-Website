@@ -1,8 +1,63 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import svgPaths from "./svg-8jh5l27o5h";
 import imgChatGptImageSep132026012119Am1 from "./b389fd9fe37e840e82ef570bd3a6044d75d431d7.webp";
 import SharedFooterContent from "@/components/SharedFooterContent";
 import LetsConnect from "@/components/LetsConnect";
+
+/* Metric mascot eyes: two small white eyes with black pupils that blink
+   (per-circle timing via blinkDuration) and follow the mouse cursor. */
+function MetricEyes({ blinkDuration }: { blinkDuration: number }) {
+  const eyeRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const pupilRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    let raf = 0;
+    const onMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        eyeRefs.current.forEach((eye, i) => {
+          const pupil = pupilRefs.current[i];
+          if (!eye || !pupil) return;
+          const r = eye.getBoundingClientRect();
+          const cx = r.left + r.width / 2;
+          const cy = r.top + r.height / 2;
+          const dx = e.clientX - cx;
+          const dy = e.clientY - cy;
+          const dist = Math.hypot(dx, dy) || 1;
+          const max = 9;
+          const mag = Math.min(max, dist / 12);
+          const ox = (dx / dist) * mag;
+          const oy = (dy / dist) * mag;
+          pupil.style.transform = `translate(calc(-50% + ${ox.toFixed(1)}px), calc(-50% + ${oy.toFixed(1)}px))`;
+        });
+      });
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, []);
+
+  return (
+    <div className="absolute left-1/2 top-[62px] -translate-x-1/2 flex items-start gap-[18px] pointer-events-none" aria-hidden="true">
+      {[0, 1].map((i) => (
+        <div
+          key={i}
+          ref={(el) => { eyeRefs.current[i] = el; }}
+          className="metric-eye relative size-[68px] rounded-full bg-white shadow-[0_2px_0_rgba(0,0,0,0.08)]"
+          style={{ animationDuration: `${blinkDuration}s` }}
+        >
+          <div
+            ref={(el) => { pupilRefs.current[i] = el; }}
+            className="absolute left-1/2 top-1/2 size-[28px] rounded-full bg-[#0d0d0d]"
+            style={{ transform: "translate(-50%, -50%)" }}
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
 
 function Container() {
   return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[7272px] left-[48.29px] top-[-0.05px] w-[207px]" data-name="Container" />;
@@ -97,7 +152,8 @@ function Group1() {
     <div className="absolute contents left-[741.29px] top-[2542.46px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[2542.46px] tracking-[-0.6912px] w-[202.719px]">{`Years Experience `}</p>
       <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[130px] left-[960.29px] text-[#0D0D0D] text-[130px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">2+</p>
-      <div className="absolute left-[741.29px] size-[438px] top-[2592.39px] metric-enter">
+      <div className="absolute left-[741.29px] size-[438px] top-[2592.39px] metric-enter metric-mascot">
+        <div className="absolute inset-0 metric-squash">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <defs>
             <clipPath id="metric-clip-1">
@@ -109,6 +165,8 @@ function Group1() {
             <rect x="0" y="0" width="438" height="438" fill="#A58CF4" className="metric-fill" style={{ animationDelay: "0.25s" }} />
           </g>
         </svg>
+        </div>
+        <MetricEyes blinkDuration={2.5} />
       </div>
     </div>
   );
@@ -119,7 +177,8 @@ function Group2() {
     <div className="absolute contents left-[510.29px] top-[3143.01px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[510.29px] text-[#1e1e1f] text-[23.04px] top-[3143.01px] tracking-[-0.6912px] w-[410.156px]">{`Different Design Industries `}</p>
       <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[130px] left-[729.29px] text-[#0D0D0D] text-[130px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">8+</p>
-      <div className="absolute left-[510.29px] size-[438px] top-[3192.94px] metric-enter">
+      <div className="absolute left-[510.29px] size-[438px] top-[3192.94px] metric-enter metric-mascot">
+        <div className="absolute inset-0 metric-squash">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <defs>
             <clipPath id="metric-clip-3">
@@ -131,6 +190,8 @@ function Group2() {
             <rect x="0" y="0" width="438" height="438" fill="#FFD60A" className="metric-fill" style={{ animationDelay: "0.55s" }} />
           </g>
         </svg>
+        </div>
+        <MetricEyes blinkDuration={2.8} />
       </div>
     </div>
   );
@@ -141,7 +202,8 @@ function Group3() {
     <div className="absolute contents left-[1203px] top-[3143.01px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[1203px] text-[#1e1e1f] text-[23.04px] top-[3143.01px] tracking-[-0.6912px] w-[264.3px]">{`Agencies Worked With `}</p>
       <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[130px] left-[1422px] text-[#0D0D0D] text-[130px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">5+</p>
-      <div className="absolute left-[1203px] size-[438px] top-[3192.94px] metric-enter">
+      <div className="absolute left-[1203px] size-[438px] top-[3192.94px] metric-enter metric-mascot">
+        <div className="absolute inset-0 metric-squash">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <defs>
             <clipPath id="metric-clip-4">
@@ -153,6 +215,8 @@ function Group3() {
             <rect x="0" y="0" width="438" height="438" fill="#FF5A00" className="metric-fill" style={{ animationDelay: "0.7s" }} />
           </g>
         </svg>
+        </div>
+        <MetricEyes blinkDuration={3.7} />
       </div>
     </div>
   );
@@ -365,7 +429,8 @@ function Group() {
     <div className="absolute contents left-[1434px] top-[2542.46px]">
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[1434px] text-[#1e1e1f] text-[23.04px] top-[2542.46px] tracking-[-0.6912px] w-[202.719px]">Projects Completed</p>
       <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[130px] left-[1652.5px] text-[#0D0D0D] text-[130px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap z-10 metric-enter">50+</p>
-      <div className="absolute left-[1434px] size-[438px] top-[2592.39px] metric-enter">
+      <div className="absolute left-[1434px] size-[438px] top-[2592.39px] metric-enter metric-mascot">
+        <div className="absolute inset-0 metric-squash">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <defs>
             <clipPath id="metric-clip-2">
@@ -377,6 +442,8 @@ function Group() {
             <rect x="0" y="0" width="438" height="438" fill="#FF0A8A" className="metric-fill" style={{ animationDelay: "0.4s" }} />
           </g>
         </svg>
+        </div>
+        <MetricEyes blinkDuration={3.2} />
       </div>
     </div>
   );
@@ -652,8 +719,29 @@ export default function Frame() {
           0%, 100% { scale: 1; }
           50% { scale: 1.03; }
         }
+        /* Metric mascot eyes: blink (timing set inline per circle) */
+        .metric-eye {
+          animation: metricBlink 3s ease-in-out infinite;
+          transform-origin: center;
+          transition: scale 0.25s ease;
+        }
+        @keyframes metricBlink {
+          0%, 92%, 100% { transform: scaleY(1); }
+          95% { transform: scaleY(0.08); }
+        }
+        /* Hover: cartoon blob squash-and-stretch on the circle, eyes widen */
+        .metric-mascot:hover .metric-squash {
+          animation: metricSquash 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes metricSquash {
+          0% { scale: 1 1; }
+          35% { scale: 1.12 0.86; }
+          70% { scale: 0.94 1.07; }
+          100% { scale: 1 1; }
+        }
+        .metric-mascot:hover .metric-eye { scale: 1.28 1.12; }
         @media (prefers-reduced-motion: reduce) {
-          .metric-enter, .metric-pulse, .metric-fill { animation: none; }
+          .metric-enter, .metric-pulse, .metric-fill, .metric-eye, .metric-squash { animation: none; }
         }
       `}</style>
       <Container />
