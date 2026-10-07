@@ -329,12 +329,8 @@ function Banner() {
 
 function Container20() {
   return (
-    <div className="absolute content-stretch flex h-[768px] items-center justify-center left-[510px] overflow-clip top-[593.07px] w-[1366px]" data-name="Container">
-      <div className="relative shrink-0 w-[1366px] h-[768px]" data-name="About Portrait">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <img alt="" className="absolute inset-0 w-full h-full object-cover" src="/Portfolio-Website/assets/about-portrait-purple.png" loading="eager" decoding="async" />
-        </div>
-      </div>
+    <div className="absolute left-[510px] top-[593.07px] w-[1366px] h-[768px] overflow-hidden" data-name="Container">
+      <img alt="" className="block w-[1366px] h-[768px] object-cover" style={{ aspectRatio: "1366 / 768" }} src="/Portfolio-Website/assets/about-portrait-purple.png" loading="eager" decoding="async" />
     </div>
   );
 }
