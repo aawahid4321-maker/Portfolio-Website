@@ -878,13 +878,11 @@ export default function LetsConnect() {
                   <line x1="20" y1="75" x2="20" y2="105" />
                 </g>
                 <g className="feet">
-                  <g transform="translate(-22,114)">
-                    <path d="M12,-9 L-6,-9 Q-16,-9 -16,0 Q-16,9 -7,9 L10,9 Q16,9 16,3 L16,-3 Q16,-9 12,-9 Z" fill="#FAFAFA" />
-                    <path d="M-7,-6 Q-10,0 -7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
+                  <g transform="translate(-24,116)">
+                    <ellipse cx="0" cy="8" rx="18" ry="10" fill="#FAFAFA" stroke="#0D0D0D" strokeWidth="2.5" />
                   </g>
-                  <g className="rect-tap-foot" transform="translate(22,114)">
-                    <path d="M-12,-9 L6,-9 Q16,-9 16,0 Q16,9 7,9 L-10,9 Q-16,9 -16,3 L-16,-3 Q-16,-9 -12,-9 Z" fill="#FAFAFA" />
-                    <path d="M7,-6 Q10,0 7,6" stroke="#0D0D0D" strokeWidth="2" fill="none" strokeLinecap="round" />
+                  <g className="rect-tap-foot" transform="translate(24,116)">
+                    <ellipse cx="0" cy="8" rx="18" ry="10" fill="#FAFAFA" stroke="#0D0D0D" strokeWidth="2.5" />
                   </g>
                 </g>
                 <g className="click-sparkles">
