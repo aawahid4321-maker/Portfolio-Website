@@ -450,7 +450,7 @@ function Container44() {
 
 function Container43() {
   return (
-    <div className="content-stretch flex flex-col h-full items-start overflow-clip relative shrink-0 w-[46px]" data-name="Container">
+    <div className="content-stretch flex flex-col h-full items-start overflow-visible relative shrink-0 w-auto" data-name="Container">
       <Container44 />
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[24.96px] left-0 not-italic text-[#0f0f0f] text-[19.2px] top-[26.19px] uppercase whitespace-nowrap">Home</p>
     </div>
@@ -459,7 +459,7 @@ function Container43() {
 
 function Link9() {
   return (
-    <div className="content-stretch flex h-[41px] items-start overflow-clip py-[8px] relative shrink-0 w-[46px] cursor-pointer transition-opacity duration-200 hover:opacity-60" data-name="Link">
+    <div className="content-stretch flex h-[41px] items-start overflow-visible py-[8px] relative shrink-0 w-auto cursor-pointer transition-opacity duration-200 hover:opacity-60" data-name="Link">
       <Container43 />
     </div>
   );
@@ -475,8 +475,8 @@ function Container45() {
 
 function Link10() {
   return (
-    <div className="content-stretch flex h-[41px] items-center justify-center overflow-clip py-[8px] relative shrink-0 w-[58px] cursor-pointer transition-opacity duration-200 hover:opacity-60" data-name="Link">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-black uppercase w-[47px]">WORK</p>
+    <div className="content-stretch flex h-[41px] items-center justify-center overflow-visible py-[8px] relative shrink-0 w-auto cursor-pointer transition-opacity duration-200 hover:opacity-60" data-name="Link">
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-black uppercase w-auto whitespace-nowrap">WORK</p>
     </div>
   );
 }
@@ -499,7 +499,7 @@ function Container48() {
 
 function Container47() {
   return (
-    <div className="content-stretch flex flex-col h-full items-start overflow-clip relative shrink-0 w-[58px]" data-name="Container">
+    <div className="content-stretch flex flex-col h-full items-start overflow-visible relative shrink-0 w-auto" data-name="Container">
       <Container48 />
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[24.96px] left-0 not-italic text-[#0f0f0f] text-[19.2px] top-[26.19px] uppercase whitespace-nowrap">About</p>
     </div>
@@ -508,7 +508,7 @@ function Container47() {
 
 function Link11() {
   return (
-    <div className="content-stretch flex h-[41px] items-start overflow-clip py-[8px] relative shrink-0 w-[58px] cursor-pointer transition-opacity duration-200 hover:opacity-60" data-name="Link">
+    <div className="content-stretch flex h-[41px] items-start overflow-visible py-[8px] relative shrink-0 w-auto cursor-pointer transition-opacity duration-200 hover:opacity-60" data-name="Link">
       <Container47 />
     </div>
   );
