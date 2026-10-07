@@ -259,7 +259,8 @@ const TAIL_H = 2601; // constant: Next Project + Let's Connect + Footer
 
 export function getProjectCanvasH(imageCount: number): number {
   const imagesH = imageCount * IMG_SLOT_H + Math.max(0, imageCount - 1) * IMG_GAP;
-  return IMAGES_TOP + imagesH + TAIL_H;
+  // +404px for the taller new hero (1050px vs old 679px)
+  return IMAGES_TOP + 404 + imagesH + TAIL_H;
 }
 
 // Convenience constants re-exported for ProjectPage's internal layout math

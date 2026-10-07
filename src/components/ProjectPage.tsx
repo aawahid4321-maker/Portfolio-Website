@@ -1,5 +1,10 @@
 import { type ProjectData, getProjectCanvasH, IMG_SLOT_H, IMG_GAP, IMAGES_TOP, TAIL_H } from "@/data/projects";
 import SharedFooterContent from "@/components/SharedFooterContent";
+import ProjectHero from "@/components/ProjectHero";
+
+/* New hero is 1050px tall (old was 679px). Shift all content below by 404px
+   so the Overview starts at ~1200px, giving breathing room below the hero. */
+const HERO_SHIFT = 404;
 
 interface ProjectPageProps {
   project: ProjectData;
@@ -24,7 +29,8 @@ export default function ProjectPage({
   const imageCount = project.images.length;
   const slotH = (i: number) => project.imageHeights?.[i] ?? IMG_SLOT_H;
   const imagesH = project.images.reduce((sum, _, i) => sum + slotH(i), 0) + Math.max(0, imageCount - 1) * IMG_GAP;
-  const IB = IMAGES_TOP + imagesH; // images bottom — all sections below anchor here
+  const IMAGES_TOP_ADJ = IMAGES_TOP + HERO_SHIFT; // shift images below the new taller hero
+  const IB = IMAGES_TOP_ADJ + imagesH; // images bottom — all sections below anchor here
   const canvasH = IB + TAIL_H;
 
   // Offsets from IB — derived from the original 6-image layout
@@ -50,148 +56,25 @@ export default function ProjectPage({
         />
       ))}
 
-      {/* ── Hero (dark) ──────────────────────────────────────── */}
-      <div className="absolute left-0 top-0 w-[1920px] h-[679px] overflow-hidden relative">
-        <div className="absolute inset-0 bg-black" />
-        {project.heroFit === "cover" ? (
-          <img
-            alt=""
-            className="absolute inset-0 w-full h-full object-cover pointer-events-none"
-            style={{ opacity: 0.52 }}
-            src={project.heroImage} loading="eager" decoding="async"
-          />
-        ) : (
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              width: 6708,
-              height: 3744,
-              left: -2394,
-              top: -1142,
-              opacity: 0.52,
-            }}
-          >
-            <img
-              alt=""
-              className="fixed inset-0 max-w-none object-cover w-full"
-              src={project.heroImage} loading="eager" decoding="async"
-            />
-          </div>
-        )}
+      {/* ── Hero: playful purple gradient stage (reusable template) ── */}
+      <div className="absolute left-0 top-0 w-[1920px]" style={{ height: 1050 }}>
+        <ProjectHero
+          title={project.title}
+          type={project.service}
+          year={project.year}
+          client={project.agency}
+          image={project.heroImage}
+          alt={`${project.title} — ${project.service} project hero image`}
+          onNavigateHome={onNavigateHome}
+          onNavigateWork={onNavigateWork}
+          onNavigateAbout={onNavigateAbout}
+        />
       </div>
-
-      {/* ── Navbar ──────────────────────────────────────────── */}
-      <div
-        className="absolute content-stretch flex items-center justify-between px-[16px] py-[32px] top-0 w-[1920px]"
-        data-name="Banner"
-        style={{ left: 0.29 }}
-      >
-        {/* Abdul logo */}
-        <div
-          className="content-stretch flex flex-col items-start relative shrink-0 cursor-pointer"
-          data-name="Link"
-          onClick={onNavigateHome}
-        >
-          <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[23.04px] not-italic relative shrink-0 text-[19.2px] text-white uppercase whitespace-nowrap">
-            Abdul
-          </p>
-        </div>
-
-        {/* Nav links */}
-        <div className="content-stretch flex gap-[5px] items-center relative shrink-0">
-          <div
-            className="content-stretch flex h-[41px] items-start overflow-clip py-[8px] relative shrink-0 w-[46px] cursor-pointer"
-            data-name="Link"
-            onClick={onNavigateHome}
-          >
-            <div className="content-stretch flex flex-col h-full items-start overflow-clip relative shrink-0 w-[46px]">
-              <div className="content-stretch flex flex-col items-start relative shrink-0 w-full">
-                <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-white uppercase whitespace-nowrap">
-                  Home
-                </p>
-              </div>
-              <p className="[word-break:break-word] absolute font-['Zilla_Slab'] leading-[24.96px] left-0 not-italic text-[19.2px] text-white top-[26.19px] uppercase whitespace-nowrap">
-                Home
-              </p>
-            </div>
-          </div>
-          <div className="content-stretch flex flex-col items-start relative shrink-0">
-            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[27.648px] not-italic relative shrink-0 text-[23.04px] text-white tracking-[-0.6912px] whitespace-nowrap">
-              /
-            </p>
-          </div>
-          <div
-            className="content-stretch flex h-[41px] items-center justify-center overflow-clip py-[8px] relative shrink-0 w-[58px] cursor-pointer"
-            data-name="Link"
-            onClick={onNavigateWork}
-          >
-            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-white uppercase w-[47px]">
-              WORK
-            </p>
-          </div>
-          <div className="content-stretch flex flex-col items-start relative shrink-0">
-            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[27.648px] not-italic relative shrink-0 text-[23.04px] text-white tracking-[-0.6912px] whitespace-nowrap">
-              /
-            </p>
-          </div>
-          <div
-            className="content-stretch flex h-[41px] items-start overflow-clip py-[8px] relative shrink-0 w-[58px] cursor-pointer"
-            data-name="Link"
-            onClick={onNavigateAbout}
-          >
-            <div className="content-stretch flex flex-col h-full items-start overflow-clip relative shrink-0 w-[58px]">
-              <div className="content-stretch flex flex-col items-start relative shrink-0 w-full">
-                <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-white uppercase whitespace-nowrap">
-                  About
-                </p>
-              </div>
-              <p className="[word-break:break-word] absolute font-['Zilla_Slab'] leading-[24.96px] left-0 not-italic text-[19.2px] text-white top-[26.19px] uppercase whitespace-nowrap">
-                About
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* HIRE button */}
-        <div className="bg-white content-stretch flex gap-[8px] h-[47px] items-center justify-center overflow-clip p-[12px] relative rounded-[5px] shrink-0 w-[115px] cursor-pointer" data-hire-btn="white">
-          <div className="content-stretch flex flex-col items-start relative shrink-0">
-            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[19.2px] not-italic relative shrink-0 text-[19.2px] text-black uppercase whitespace-nowrap">
-              HIRE
-            </p>
-          </div>
-          <div className="content-stretch flex flex-col h-[23px] items-start overflow-clip relative shrink-0 w-[18px]">
-            <div className="content-stretch flex flex-col h-[23px] items-start relative shrink-0 w-full">
-              <div className="absolute flex items-center justify-center left-[-5.45px] size-[28.991px] top-[-2.85px]">
-                <div className="-rotate-45 flex-none">
-                  <p className="[word-break:break-word] font-['Geist:Medium'] leading-[23.04px] relative shrink-0 text-[#101010] text-[23.04px] whitespace-nowrap">
-                    →
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className="absolute flex items-center justify-center left-[-23.89px] size-[30.406px] top-[19.34px]">
-              <div className="-rotate-45 flex-none">
-                <p className="[word-break:break-word] font-['Geist:Medium'] leading-[23.04px] relative shrink-0 text-[#f2f2f2] text-[23.04px] whitespace-nowrap">
-                  →
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Project title ────────────────────────────────────── */}
-      <p
-        className="[word-break:break-word] absolute font-['Geist:SemiBold'] leading-[normal] text-[108.346px] text-center text-white tracking-[-4.4281px] w-[1130.73px]"
-        style={{ top: 269.26, left: 394.635 }}
-      >
-        {project.title}
-      </p>
 
       {/* ── Overview section ─────────────────────────────────── */}
       <p
         className="[word-break:break-word] absolute font-['Geist:SemiBold'] leading-[normal] text-[60px] text-black tracking-[-3.0771px] w-[551.48px]"
-        style={{ left: 48, top: 796.18 }}
+        style={{ left: 48, top: 796.18 + HERO_SHIFT }}
       >
         Overview
       </p>
@@ -199,7 +82,7 @@ export default function ProjectPage({
       {/* Description */}
       <p
         className="[word-break:break-word] absolute font-['Geist:Medium'] leading-[29.952px] text-[#1e1e1f] text-[23.04px] tracking-[-0.6912px] w-[790.748px]"
-        style={{ left: 48.29, top: 899.78 }}
+        style={{ left: 48.29, top: 899.78 + HERO_SHIFT }}
       >
         {project.description}
       </p>
@@ -207,7 +90,7 @@ export default function ProjectPage({
       {/* LIVE LINK button */}
       <div
         className="absolute bg-[#1e1e1f] content-stretch flex gap-[8px] h-[47px] items-center justify-center overflow-clip p-[12px] rounded-[5px] w-[157px] cursor-pointer"
-        style={{ left: 48, top: 1057 }}
+        style={{ left: 48, top: 1057 + HERO_SHIFT }}
         onClick={() => {
           if (project.siteView && onNavigateSite) { onNavigateSite(); window.scrollTo({ top: 0 }); }
           else if (project.liveLink) window.open(project.liveLink, "_blank");
@@ -302,7 +185,7 @@ export default function ProjectPage({
           fill edge-to-edge with no letterbox bars. */}
       <div
         className="absolute content-stretch flex flex-col items-start w-[1823.5px]"
-        style={{ left: 48, top: IMAGES_TOP, gap: IMG_GAP }}
+        style={{ left: 48, top: IMAGES_TOP_ADJ, gap: IMG_GAP }}
       >
         {project.images.map((src, i) => (
           <div

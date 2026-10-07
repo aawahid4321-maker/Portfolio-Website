@@ -278,8 +278,9 @@ export default function PhysicsTags() {
       }
     };
 
-    // cursor state: mousemove only stores target; loop lerps (0.2) toward it
-    const cursor = { x: -9999, y: -9999, vx: 0, vy: 0, tx: -9999, ty: -9999, active: false };
+    // cursor state: mousemove stores target; loop lerps position (0.2) toward it
+    // velocity = actual position delta per frame (clean signal for push force)
+    const cursor = { x: -9999, y: -9999, vx: 0, vy: 0, tx: -9999, ty: -9999, px: -9999, py: -9999, active: false };
     let lastMove = 0, rectCache = section.getBoundingClientRect();
     const onMove = (e: MouseEvent) => {
       const now = performance.now();
@@ -469,12 +470,16 @@ export default function PhysicsTags() {
       });
 
       // cursor hover-push: soft invisible ball, force ∝ speed, ∝ 1/distance, capped
+      // FIX: lerp position directly toward target; velocity = per-frame delta
       if (cursor.active) {
-        cursor.vx += (cursor.tx - cursor.x - cursor.vx) * 0.2;
-        cursor.vy += (cursor.ty - cursor.y - cursor.vy) * 0.2;
-        cursor.x += cursor.vx; cursor.y += cursor.vy;
+        if (cursor.x < -9000) { cursor.x = cursor.tx; cursor.y = cursor.ty; } // snap on first entry
+        cursor.px = cursor.x; cursor.py = cursor.y;
+        cursor.x += (cursor.tx - cursor.x) * 0.2;
+        cursor.y += (cursor.ty - cursor.y) * 0.2;
+        cursor.vx = cursor.x - cursor.px;
+        cursor.vy = cursor.y - cursor.py;
         const speed = Math.hypot(cursor.vx, cursor.vy);
-        if (speed > 0.5) {
+        if (speed > 0.05) {
           items.forEach((it) => {
             const b = it.body; if (!b) return;
             const dx = b.position.x - cursor.x, dy = b.position.y - cursor.y;
