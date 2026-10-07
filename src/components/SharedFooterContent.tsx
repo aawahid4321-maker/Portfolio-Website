@@ -112,52 +112,62 @@ export default function SharedFooterContent() {
         {/* ── Left: Availability + statement + CTA ─────────────────── */}
         <div className="absolute left-0 top-0 w-[560px] flex flex-col" data-reveal="0">
           <div className="flex items-center gap-[10px]">
-            <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.55)] text-[22px] uppercase tracking-[0.04em] whitespace-nowrap">
+            <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(13,13,13,0.55)] text-[22px] uppercase tracking-[0.04em] whitespace-nowrap">
               [Available for new projects]
             </p>
           </div>
 
-          <p className="font-['Geist:SemiBold'] leading-[1.02] text-[#f2f2f2] text-[72px] tracking-[-3px] mt-[28px]">
+          <p className="font-['Geist:SemiBold'] leading-[1.02] text-[#0D0D0D] text-[72px] tracking-[-3px] mt-[28px]">
             <span className="mask-line"><span>Let&apos;s Get</span></span>
             <span className="mask-line"><span>to Work</span></span>
           </p>
 
-          <p className="font-['Geist:Regular'] leading-[1.65] text-[rgba(242,242,242,0.5)] text-[17px] tracking-[-0.2px] mt-[24px] max-w-[440px]">
+          <p className="font-['Geist:Regular'] leading-[1.65] text-[rgba(13,13,13,0.6)] text-[17px] tracking-[-0.2px] mt-[24px] max-w-[440px]">
             {`If you're interested in learning more about my services, discussing a potential project, or just want to chat about design and creativity, I'm here to listen.`}
           </p>
         </div>
 
         {/* ── Middle: Wahid + designation + [CONTACT] ──────────────── */}
         <div className="absolute left-[700px] top-0 flex flex-col" data-reveal="100">
-          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#f2f2f2] text-[22px] uppercase whitespace-nowrap">
+          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#0D0D0D] text-[22px] uppercase whitespace-nowrap">
             Wahid
           </p>
-          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase mt-[8px] whitespace-nowrap">
+          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(13,13,13,0.5)] text-[22px] uppercase mt-[8px] whitespace-nowrap">
             Multidisciplinary Designer
           </p>
 
           <div className="flex flex-col gap-[16px] mt-[48px]">
-            <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase whitespace-nowrap">
+            <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(13,13,13,0.5)] text-[22px] uppercase whitespace-nowrap">
               [Contact]
             </p>
             <div className="flex flex-col gap-[8px] items-start">
               <a
                 ref={emailRef}
                 href="mailto:aawahid321@gmail.com"
-                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#f2f2f2] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap"
+                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#0D0D0D] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap flex items-center gap-[10px]"
               >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="m22 7-10 6L2 7" />
+                </svg>
                 aawahid321@gmail.com
               </a>
               <a
                 href="tel:+923295460848"
-                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#f2f2f2] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap"
+                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#0D0D0D] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap flex items-center gap-[10px]"
               >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
                 +92 329 5460848
               </a>
               <a
                 href="tel:+923365934828"
-                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#f2f2f2] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap"
+                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#0D0D0D] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap flex items-center gap-[10px]"
               >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
+                </svg>
                 +92 336 5934828
               </a>
             </div>
@@ -166,7 +176,7 @@ export default function SharedFooterContent() {
 
         {/* ── Right: [SOCIALS] ─────────────────────────────────────── */}
         <div className="absolute left-[1300px] top-0 flex flex-col gap-[16px]" data-reveal="200">
-          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase whitespace-nowrap">
+          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(13,13,13,0.5)] text-[22px] uppercase whitespace-nowrap">
             [Socials]
           </p>
           <div className="flex gap-[12px]">
@@ -174,7 +184,7 @@ export default function SharedFooterContent() {
               href="https://www.linkedin.com/in/abdul-wahid-7763b8377/"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-circle w-[52px] h-[52px] rounded-full border border-[rgba(242,242,242,0.22)] flex items-center justify-center text-[rgba(242,242,242,0.85)] hover:border-[rgba(242,242,242,0.55)] hover:bg-[rgba(242,242,242,0.07)]"
+              className="social-circle w-[52px] h-[52px] rounded-full border border-[rgba(13,13,13,0.25)] flex items-center justify-center text-[rgba(13,13,13,0.85)] hover:border-[rgba(13,13,13,0.6)] hover:bg-[rgba(13,13,13,0.07)]"
               aria-label="LinkedIn"
             >
               <LinkedInIcon />
@@ -184,7 +194,7 @@ export default function SharedFooterContent() {
 
         {/* ── Copyright ────────────────────────────────────────────── */}
         <div className="absolute left-[1174.89px] bottom-0" data-reveal="300">
-          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase whitespace-nowrap">
+          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(13,13,13,0.5)] text-[22px] uppercase whitespace-nowrap">
             ©2026. All right reserved
           </p>
         </div>

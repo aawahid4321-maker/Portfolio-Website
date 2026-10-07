@@ -320,7 +320,7 @@ export default function ProjectPage({
 
       {/* ── Dark footer ──────────────────────────────────────── */}
       <div
-        className="absolute bg-[#0f0f0f] flex flex-col items-start pb-[16px] pt-[128px]"
+        className="absolute bg-[#e6e6e6] flex flex-col items-start pb-[16px] pt-[128px]"
         style={{ left: -4.02, top: FOOTER_TOP, width: 1920, height: 530 }}
       >
         <div className="flex flex-col items-start px-[48px] w-[1920px]">
