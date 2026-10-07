@@ -7,7 +7,7 @@ import imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637C
 import imgContainer2 from "@/assets/fitflow-hero.webp";
 import imgContainer3 from "@/assets/stint-hero.webp";
 import imgContainer4 from "@/assets/axorix-hero.webp";
-import imgContainer5 from "@/assets/brand-hero.webp";
+const imgContainer5 = `${import.meta.env.BASE_URL}assets/pypo-hero.webp`;
 import imgContainer6 from "@/assets/brochure-hero.webp";
 import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy3 } from "./svg-8vx37";
 import SharedFooterContent from "@/components/SharedFooterContent";
