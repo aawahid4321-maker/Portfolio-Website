@@ -112,7 +112,7 @@ export default function SharedFooterContent() {
         {/* ── Left: Availability + statement + CTA ─────────────────── */}
         <div className="absolute left-0 top-0 w-[560px] flex flex-col" data-reveal="0">
           <div className="flex items-center gap-[10px]">
-            <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.55)] text-[22px] uppercase tracking-[0.04em] whitespace-nowrap">
+            <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.55)] text-[22px] uppercase tracking-[0.04em] whitespace-nowrap">
               [Available for new projects]
             </p>
           </div>
@@ -129,15 +129,15 @@ export default function SharedFooterContent() {
 
         {/* ── Middle: Wahid + designation + [CONTACT] ──────────────── */}
         <div className="absolute left-[700px] top-0 flex flex-col" data-reveal="100">
-          <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#f2f2f2] text-[22px] uppercase whitespace-nowrap">
+          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#f2f2f2] text-[22px] uppercase whitespace-nowrap">
             Wahid
           </p>
-          <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase mt-[8px] whitespace-nowrap">
+          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase mt-[8px] whitespace-nowrap">
             Multidisciplinary Designer
           </p>
 
           <div className="flex flex-col gap-[16px] mt-[48px]">
-            <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase whitespace-nowrap">
+            <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase whitespace-nowrap">
               [Contact]
             </p>
             <div className="flex flex-col gap-[8px] items-start">
@@ -166,7 +166,7 @@ export default function SharedFooterContent() {
 
         {/* ── Right: [SOCIALS] ─────────────────────────────────────── */}
         <div className="absolute left-[1300px] top-0 flex flex-col gap-[16px]" data-reveal="200">
-          <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase whitespace-nowrap">
+          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase whitespace-nowrap">
             [Socials]
           </p>
           <div className="flex gap-[12px]">
@@ -184,7 +184,7 @@ export default function SharedFooterContent() {
 
         {/* ── Copyright ────────────────────────────────────────────── */}
         <div className="absolute left-[1174.89px] bottom-0" data-reveal="300">
-          <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase whitespace-nowrap">
+          <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(242,242,242,0.4)] text-[22px] uppercase whitespace-nowrap">
             ©2026. All right reserved
           </p>
         </div>

@@ -92,7 +92,7 @@ export default function ProjectPage({
           data-name="Link"
           onClick={onNavigateHome}
         >
-          <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[23.04px] not-italic relative shrink-0 text-[19.2px] text-white uppercase whitespace-nowrap">
+          <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[23.04px] not-italic relative shrink-0 text-[19.2px] text-white uppercase whitespace-nowrap">
             Abdul
           </p>
         </div>
@@ -106,17 +106,17 @@ export default function ProjectPage({
           >
             <div className="content-stretch flex flex-col h-full items-start overflow-clip relative shrink-0 w-[46px]">
               <div className="content-stretch flex flex-col items-start relative shrink-0 w-full">
-                <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-white uppercase whitespace-nowrap">
+                <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-white uppercase whitespace-nowrap">
                   Home
                 </p>
               </div>
-              <p className="[word-break:break-word] absolute font-['PT_Mono:Regular'] leading-[24.96px] left-0 not-italic text-[19.2px] text-white top-[26.19px] uppercase whitespace-nowrap">
+              <p className="[word-break:break-word] absolute font-['Zilla_Slab'] leading-[24.96px] left-0 not-italic text-[19.2px] text-white top-[26.19px] uppercase whitespace-nowrap">
                 Home
               </p>
             </div>
           </div>
           <div className="content-stretch flex flex-col items-start relative shrink-0">
-            <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[27.648px] not-italic relative shrink-0 text-[23.04px] text-white tracking-[-0.6912px] whitespace-nowrap">
+            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[27.648px] not-italic relative shrink-0 text-[23.04px] text-white tracking-[-0.6912px] whitespace-nowrap">
               /
             </p>
           </div>
@@ -125,12 +125,12 @@ export default function ProjectPage({
             data-name="Link"
             onClick={onNavigateWork}
           >
-            <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-white uppercase w-[47px]">
+            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-white uppercase w-[47px]">
               WORK
             </p>
           </div>
           <div className="content-stretch flex flex-col items-start relative shrink-0">
-            <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[27.648px] not-italic relative shrink-0 text-[23.04px] text-white tracking-[-0.6912px] whitespace-nowrap">
+            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[27.648px] not-italic relative shrink-0 text-[23.04px] text-white tracking-[-0.6912px] whitespace-nowrap">
               /
             </p>
           </div>
@@ -141,11 +141,11 @@ export default function ProjectPage({
           >
             <div className="content-stretch flex flex-col h-full items-start overflow-clip relative shrink-0 w-[58px]">
               <div className="content-stretch flex flex-col items-start relative shrink-0 w-full">
-                <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-white uppercase whitespace-nowrap">
+                <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-white uppercase whitespace-nowrap">
                   About
                 </p>
               </div>
-              <p className="[word-break:break-word] absolute font-['PT_Mono:Regular'] leading-[24.96px] left-0 not-italic text-[19.2px] text-white top-[26.19px] uppercase whitespace-nowrap">
+              <p className="[word-break:break-word] absolute font-['Zilla_Slab'] leading-[24.96px] left-0 not-italic text-[19.2px] text-white top-[26.19px] uppercase whitespace-nowrap">
                 About
               </p>
             </div>
@@ -155,7 +155,7 @@ export default function ProjectPage({
         {/* HIRE button */}
         <div className="bg-white content-stretch flex gap-[8px] h-[47px] items-center justify-center overflow-clip p-[12px] relative rounded-[5px] shrink-0 w-[115px] cursor-pointer" data-hire-btn="white">
           <div className="content-stretch flex flex-col items-start relative shrink-0">
-            <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[19.2px] not-italic relative shrink-0 text-[19.2px] text-black uppercase whitespace-nowrap">
+            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[19.2px] not-italic relative shrink-0 text-[19.2px] text-black uppercase whitespace-nowrap">
               HIRE
             </p>
           </div>
@@ -215,7 +215,7 @@ export default function ProjectPage({
         data-name="live-link-btn"
       >
         <div className="content-stretch flex flex-col items-start relative shrink-0">
-          <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[19.2px] not-italic relative shrink-0 text-[#f2f2f2] text-[19.2px] uppercase whitespace-nowrap">
+          <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[19.2px] not-italic relative shrink-0 text-[#f2f2f2] text-[19.2px] uppercase whitespace-nowrap">
             LiVE link
           </p>
         </div>
@@ -242,7 +242,7 @@ export default function ProjectPage({
       {/* ── Metadata columns ─────────────────────────────────── */}
       {/* [Agency] */}
       <p
-        className="absolute font-['PT_Mono:Regular'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[182.664px]"
+        className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[182.664px]"
         style={{ left: 978.79, top: 826.26 }}
       >
         [CLIENT]
@@ -256,7 +256,7 @@ export default function ProjectPage({
 
       {/* [Service] */}
       <p
-        className="absolute font-['PT_Mono:Regular'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[212.91px]"
+        className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[212.91px]"
         style={{ left: 978.79, top: 1045.88 }}
       >
         [Service]
@@ -270,7 +270,7 @@ export default function ProjectPage({
 
       {/* [Industry] */}
       <p
-        className="absolute font-['PT_Mono:Regular'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[210.311px]"
+        className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[210.311px]"
         style={{ left: 1434.29, top: 826.26 }}
       >
         [Industry]
@@ -284,7 +284,7 @@ export default function ProjectPage({
 
       {/* [Year] */}
       <p
-        className="absolute font-['PT_Mono:Regular'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[210.311px]"
+        className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[210.311px]"
         style={{ left: 1434.29, top: 1045.87 }}
       >
         [Year]
@@ -377,10 +377,10 @@ export default function ProjectPage({
             />
           </div>
           <div className="content-stretch flex items-start justify-between relative shrink-0 w-[900px]">
-            <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">
+            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">
               {nextProject.title}
             </p>
-            <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">
+            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">
               {nextProject.year}
             </p>
           </div>
@@ -420,7 +420,7 @@ export default function ProjectPage({
         className="absolute flex items-center gap-[12px] cursor-pointer group/contact"
         style={{ left: 970.79, top: CONTACT_TOP }}
       >
-        <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[41.009px] not-italic text-[31.546px] text-white uppercase whitespace-nowrap transition-opacity duration-300 group-hover/contact:opacity-60">Contact</p>
+        <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-white uppercase whitespace-nowrap transition-opacity duration-300 group-hover/contact:opacity-60">Contact</p>
         <div className="relative flex items-center justify-center w-[42px] h-[42px] overflow-hidden">
           <span className="absolute block -rotate-45 font-['Geist:Medium'] text-[34px] text-[#f2f2f2] leading-none transition-transform duration-[450ms] group-hover/contact:translate-x-[120%] group-hover/contact:-translate-y-[120%]">→</span>
           <span className="absolute block -rotate-45 font-['Geist:Medium'] text-[34px] text-[#f2f2f2] leading-none -translate-x-[120%] translate-y-[120%] transition-transform duration-[450ms] group-hover/contact:translate-x-0 group-hover/contact:translate-y-0">→</span>

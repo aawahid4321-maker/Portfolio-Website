@@ -1,5 +1,6 @@
 import SharedFooterContent from "@/components/SharedFooterContent";
 import imgCampusApp from "@/assets/brochure-hero.webp";
+import imgWorkBg from "@/assets/work-bg.webp";
 const imgGradia = `${assetPathPrefix}/brand-hero.webp`;
 const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
 const imgNoireCoffee = `${assetPathPrefix}/noire-hero.webp`;
@@ -34,7 +35,7 @@ export default function Frame7() {
       {/* Navbar */}
       <div className="absolute content-stretch flex items-center justify-between left-[0.29px] px-[16px] py-[32px] top-0 w-[1920px]" data-name="Banner">
         <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Link">
-          <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[23.04px] not-italic relative shrink-0 text-[#0f0f0f] text-[19.2px] uppercase whitespace-nowrap">
+          <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[23.04px] not-italic relative shrink-0 text-[#0f0f0f] text-[19.2px] uppercase whitespace-nowrap">
             Abdul
           </p>
         </div>
@@ -42,45 +43,45 @@ export default function Frame7() {
           <div className="content-stretch flex h-[41px] items-start overflow-clip py-[8px] relative shrink-0 w-[46px]" data-name="Link">
             <div className="content-stretch flex flex-col h-full items-start overflow-clip relative shrink-0 w-[46px]">
               <div className="content-stretch flex flex-col items-start relative shrink-0 w-full">
-                <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[24.96px] not-italic relative shrink-0 text-[#0f0f0f] text-[19.2px] uppercase whitespace-nowrap">
+                <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[24.96px] not-italic relative shrink-0 text-[#0f0f0f] text-[19.2px] uppercase whitespace-nowrap">
                   Home
                 </p>
               </div>
-              <p className="[word-break:break-word] absolute font-['PT_Mono:Regular'] leading-[24.96px] left-0 not-italic text-[#0f0f0f] text-[19.2px] top-[26.19px] uppercase whitespace-nowrap">
+              <p className="[word-break:break-word] absolute font-['Zilla_Slab'] leading-[24.96px] left-0 not-italic text-[#0f0f0f] text-[19.2px] top-[26.19px] uppercase whitespace-nowrap">
                 Home
               </p>
             </div>
           </div>
           <div className="content-stretch flex flex-col items-start relative shrink-0">
-            <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[27.648px] not-italic relative shrink-0 text-[#1e1e1f] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap">
+            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[27.648px] not-italic relative shrink-0 text-[#1e1e1f] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap">
               /
             </p>
           </div>
           <div className="content-stretch flex h-[41px] items-center justify-center overflow-clip py-[8px] relative shrink-0 w-[58px]" data-name="Link">
-            <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-black uppercase w-[47px]">
+            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[24.96px] not-italic relative shrink-0 text-[19.2px] text-black uppercase w-[47px]">
               WORK
             </p>
           </div>
           <div className="content-stretch flex flex-col items-start relative shrink-0">
-            <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[27.648px] not-italic relative shrink-0 text-[#1e1e1f] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap">
+            <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[27.648px] not-italic relative shrink-0 text-[#1e1e1f] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap">
               /
             </p>
           </div>
           <div className="content-stretch flex h-[41px] items-start overflow-clip py-[8px] relative shrink-0 w-[58px]" data-name="Link">
             <div className="content-stretch flex flex-col h-full items-start overflow-clip relative shrink-0 w-[58px]">
               <div className="content-stretch flex flex-col items-start relative shrink-0 w-full">
-                <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[24.96px] not-italic relative shrink-0 text-[#0f0f0f] text-[19.2px] uppercase whitespace-nowrap">
+                <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[24.96px] not-italic relative shrink-0 text-[#0f0f0f] text-[19.2px] uppercase whitespace-nowrap">
                   About
                 </p>
               </div>
-              <p className="[word-break:break-word] absolute font-['PT_Mono:Regular'] leading-[24.96px] left-0 not-italic text-[#0f0f0f] text-[19.2px] top-[26.19px] uppercase whitespace-nowrap">
+              <p className="[word-break:break-word] absolute font-['Zilla_Slab'] leading-[24.96px] left-0 not-italic text-[#0f0f0f] text-[19.2px] top-[26.19px] uppercase whitespace-nowrap">
                 About
               </p>
             </div>
           </div>
         </div>
         <div className="bg-[#1e1e1f] content-stretch flex gap-[8px] h-[47px] items-center justify-center overflow-clip p-[12px] relative rounded-[5px] shrink-0 w-[115px]" data-name="Link">
-          <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[19.2px] not-italic relative shrink-0 text-[#f2f2f2] text-[19.2px] uppercase whitespace-nowrap">
+          <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[19.2px] not-italic relative shrink-0 text-[#f2f2f2] text-[19.2px] uppercase whitespace-nowrap">
             HIRE
           </p>
           <div className="content-stretch flex flex-col h-[23px] items-start overflow-clip relative shrink-0 w-[18px]">
@@ -101,7 +102,7 @@ export default function Frame7() {
       </div>
 
       {/* [Process] label + description */}
-      <p className="[word-break:break-word] absolute font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase left-[510.29px] top-[714.35px] w-[104px]">
+      <p className="[word-break:break-word] absolute font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase left-[510.29px] top-[714.35px] w-[104px]">
         [Process]
       </p>
       <p className="[word-break:break-word] absolute font-['Geist:Medium'] leading-[29.952px] text-[#1e1e1f] text-[23.04px] tracking-[-0.6912px] left-[744px] top-[714px] w-[763px]">
@@ -123,8 +124,8 @@ export default function Frame7() {
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgNoireCoffee} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">NOIRÉ COFFEE</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">NOIRÉ COFFEE</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
             </div>
           </div>
 
@@ -134,8 +135,8 @@ export default function Frame7() {
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer1} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[669px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">FITFLOW</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">FITFLOW</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
             </div>
           </div>
 
@@ -145,8 +146,8 @@ export default function Frame7() {
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer2} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">AXORIX</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">AXORIX</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
             </div>
           </div>
 
@@ -156,8 +157,8 @@ export default function Frame7() {
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer3} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">DODI HOMES</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2024</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">DODI HOMES</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2024</p>
             </div>
           </div>
 
@@ -167,8 +168,8 @@ export default function Frame7() {
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer4} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[669px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">STINT</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">STINT</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
             </div>
           </div>
 
@@ -178,8 +179,8 @@ export default function Frame7() {
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer5} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">CHATBLAST</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">CHATBLAST</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
             </div>
           </div>
 
@@ -190,8 +191,8 @@ export default function Frame7() {
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgGradia} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">BRAND</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">BRAND</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
             </div>
           </div>
 
@@ -201,8 +202,8 @@ export default function Frame7() {
               <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgCampusApp} loading="eager" decoding="async" />
             </div>
             <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">BROCHURE</p>
-              <p className="font-['PT_Mono:Regular'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">BROCHURE</p>
+              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
             </div>
           </div>
         </div>
@@ -225,7 +226,7 @@ export default function Frame7() {
         className="absolute flex items-center gap-[12px] cursor-pointer group/contact"
         style={{ left: "970.79px", top: "7971.76px" }}
       >
-        <p className="[word-break:break-word] font-['PT_Mono:Regular'] leading-[41.009px] not-italic text-[31.546px] text-white uppercase whitespace-nowrap transition-opacity duration-300 group-hover/contact:opacity-60">Contact</p>
+        <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-white uppercase whitespace-nowrap transition-opacity duration-300 group-hover/contact:opacity-60">Contact</p>
         <div className="relative flex items-center justify-center w-[42px] h-[42px] overflow-hidden">
           <span className="absolute block -rotate-45 font-['Geist:Medium'] text-[34px] text-[#f2f2f2] leading-none transition-transform duration-[450ms] group-hover/contact:translate-x-[120%] group-hover/contact:-translate-y-[120%]">→</span>
           <span className="absolute block -rotate-45 font-['Geist:Medium'] text-[34px] text-[#f2f2f2] leading-none -translate-x-[120%] translate-y-[120%] transition-transform duration-[450ms] group-hover/contact:translate-x-0 group-hover/contact:translate-y-0">→</span>
