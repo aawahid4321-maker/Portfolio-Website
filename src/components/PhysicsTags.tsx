@@ -336,13 +336,15 @@ export default function PhysicsTags() {
       const now = performance.now();
       if (now - lastMove < 16) return; // throttle to ~60Hz
       lastMove = now;
-      cursor.tx = e.clientX - rectCache.left;
-      cursor.ty = e.clientY - rectCache.top;
+      // FIX: scale cursor to canvas internal pixels (bodies live in DPR-scaled coords)
+      cursor.tx = (e.clientX - rectCache.left) * DPR;
+      cursor.ty = (e.clientY - rectCache.top) * DPR;
       cursor.active = true;
     };
     const onLeave = () => { cursor.active = false; cursor.x = -9999; cursor.y = -9999; };
     const onDown = (e: PointerEvent) => {
-      const cx = e.clientX - rectCache.left, cy = e.clientY - rectCache.top;
+      // FIX: scale to canvas internal pixels (bodies live in DPR-scaled coords)
+      const cx = (e.clientX - rectCache.left) * DPR, cy = (e.clientY - rectCache.top) * DPR;
       const all = [...tags.map((t) => t.body), ...shapes.map((s) => s.body)].filter(Boolean) as Matter.Body[];
       const found = Matter.Query.point(all, { x: cx, y: cy })[0];
       if (found) {
@@ -352,8 +354,9 @@ export default function PhysicsTags() {
         all.forEach((b) => {
           const dx = b.position.x - cx, dy = b.position.y - cy;
           const dist = Math.max(Math.hypot(dx, dy), 1);
-          if (dist > 280) return;
-          const f = Math.min(0.005 * (1 - dist / 280), 0.004);
+          const SHOCK_R = 220 * DPR; // 220px in CSS pixels
+          if (dist > SHOCK_R) return;
+          const f = Math.min(0.005 * (1 - dist / SHOCK_R), 0.004);
           Matter.Body.applyForce(b, b.position, { x: (dx / dist) * f, y: (dy / dist) * f - f * 0.35 });
         });
       }
@@ -529,7 +532,7 @@ export default function PhysicsTags() {
         cursor.vx = cursor.x - cursor.px;
         cursor.vy = cursor.y - cursor.py;
         const speed = Math.hypot(cursor.vx, cursor.vy);
-        const PUSH_R = 150; // cursor ball radius
+        const PUSH_R = 150 * DPR; // 150px cursor ball in CSS pixels
         // minimum 25% push even when cursor moves slowly; scales up with speed
         const speedFactor = 0.25 + (Math.min(speed, 28) / 28) * 0.75;
         items.forEach((it) => {
