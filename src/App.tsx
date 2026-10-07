@@ -1472,14 +1472,19 @@ export default function App() {
           overflow: view !== "home" ? "clip" : undefined,
         }}
       >
+        {/* Shared floating nav on every desktop view (home / about / work / project).
+            Stays mounted across view switches; highlight follows activeLink. */}
+        <FloatingNav
+          onNavigateHome={() => { setView("home"); window.scrollTo({ top: 0, behavior: "instant" }); }}
+          onNavigateWork={() => { setView("work"); window.scrollTo({ top: 0, behavior: "instant" }); }}
+          onNavigateAbout={() => { setView("about"); window.scrollTo({ top: 0, behavior: "instant" }); }}
+          activeLink={view === "about" ? "about" : view === "work" || view === "project" ? "work" : "home"}
+        />
+        {view === "work" && (
+          <style>{`.portfolio-canvas [data-name="Banner"] { display: none !important; }`}</style>
+        )}
         {view === "home" ? (
           <>
-            <FloatingNav
-              onNavigateHome={() => { setView("home"); window.scrollTo({ top: 0, behavior: "instant" }); }}
-              onNavigateWork={() => { setView("work"); window.scrollTo({ top: 0, behavior: "instant" }); }}
-              onNavigateAbout={() => { setView("about"); window.scrollTo({ top: 0, behavior: "instant" }); }}
-              activeLink="home"
-            />
             <Frame9 />
             <p className="absolute left-[1203.29px] top-[348px] w-[669px] leading-[29.952px] tracking-[-0.6912px] text-[#1e1e1f]" style={{ fontSize: "30px", marginTop: "-51px", marginBottom: "-51px", fontFamily: "'Geist:Medium',sans-serif", fontWeight: 500 }}>
               <span className="inline-bold">
