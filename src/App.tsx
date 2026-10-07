@@ -1523,7 +1523,7 @@ export default function App() {
       />
     </div>
     )}
-    {/* FixedContactPill removed per user request */}
+    {!showPreloader && <FixedContactPill />}
 
     </>
   );
