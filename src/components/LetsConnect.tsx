@@ -184,7 +184,7 @@ export default function LetsConnect() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="connect" className="lc-section" style={CSS_VARS} aria-label="Let's Connect">
+    <section ref={sectionRef} id="connect" className="lc-section" data-theme="dark" style={CSS_VARS} aria-label="Let's Connect">
       <style>{`
         /* ── FIX: default state is VISIBLE. Hidden start only via .is-ready ── */
         #connect.lc-section {

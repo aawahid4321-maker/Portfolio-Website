@@ -637,7 +637,7 @@ export default function PhysicsTags() {
           display: block;
         }
       `}</style>
-      <div ref={sectionRef} className="physics-tags-section" aria-label="Design services tags">
+      <div ref={sectionRef} className="physics-tags-section" data-theme="dark" aria-label="Design services tags">
         <canvas ref={canvasRef} />
       </div>
     </>
