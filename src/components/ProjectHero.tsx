@@ -188,7 +188,7 @@ export default function ProjectHero({
           align-items: center;
           justify-content: space-between;
           padding: 28px 48px;
-          z-index: 20;
+          z-index: 30; /* always above the title */
           transition: background 0.3s ease;
         }
         .ph-nav.is-scrolled { background: rgba(13,13,13,0.7); }
@@ -247,13 +247,13 @@ export default function ProjectHero({
           position: relative;
           z-index: 10;
           text-align: center;
-          margin: 150px auto 0;
+          margin: 190px auto 0; /* clear of the nav row */
           padding: 0 24px;
           font-family: "Geist", system-ui, sans-serif;
           font-weight: 700;
           text-transform: uppercase;
           letter-spacing: -0.02em;
-          font-size: clamp(56px, 11vw, 168px);
+          font-size: clamp(48px, 8vw, 120px); /* capped so it never hits the nav */
           line-height: 0.95;
           color: var(--ph-soft-white);
           max-width: 1400px;
