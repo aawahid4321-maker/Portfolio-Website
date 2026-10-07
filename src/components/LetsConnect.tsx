@@ -7,6 +7,8 @@ const CSS_VARS = {
   "--lc-heading": "#f4f4f2",
   "--lc-text": "rgba(244,244,242,0.78)",
   "--lc-pink": "#ff0a8a",
+  "--lc-purple-light": "#A58CF4", /* blob palette: purple light */
+  "--lc-soft-white": "#FAFAFA", /* blob palette: soft white */
   "--lc-blue": "#1a1aff",
   "--lc-black": "#26282b", /* visible on dark bg */
   "--lc-white": "#f4f4f2",
@@ -16,13 +18,13 @@ const CSS_VARS = {
 } as React.CSSProperties;
 
 const BLOBS = [
-  { x: 390, y: 60,  w: 120, h: 460, rx: 60, c: "var(--lc-pink)",   eyeY: 170, arm: null },
-  { x: 225, y: 165, w: 112, h: 355, rx: 56, c: "var(--lc-blue)",   eyeY: 270, arm: "right", eyes: "#f4f4f2" }, /* blue blob: off-white eyes for visibility */
-  { x: 563, y: 145, w: 112, h: 375, rx: 56, c: "var(--lc-black)",  eyeY: 255, arm: null, eyes: "#7dd8f0", stroke: "rgba(255,255,255,0.25)", strokeW: 2 }, /* black blob: visible on dark */
-  { x: 375, y: 255, w: 150, h: 265, rx: 70, c: "var(--lc-white)",  eyeY: 360, arm: null },
-  { x: 145, y: 325, w: 122, h: 195, rx: 60, c: "var(--lc-orange)", eyeY: 410, arm: "right" },
-  { x: 628, y: 335, w: 112, h: 185, rx: 56, c: "var(--lc-amber)",  eyeY: 415, arm: null },
-  { x: 475, y: 405, w: 135, h: 115, rx: 57, c: "var(--lc-yellow)", eyeY: 455, arm: null },
+  { x: 390, y: 60,  w: 120, h: 460, rx: 60, c: "var(--lc-pink)",         eyeY: 170, arm: null, eyes: "#FAFAFA" }, /* tall back blob: pink, white eyes */
+  { x: 225, y: 165, w: 112, h: 355, rx: 56, c: "var(--lc-purple-light)", eyeY: 270, arm: "right", eyes: "#0D0D0D" }, /* tall left blob: purple light */
+  { x: 563, y: 145, w: 112, h: 375, rx: 56, c: "var(--lc-purple-light)", eyeY: 255, arm: null, eyes: "#0D0D0D" }, /* tall right blob: purple light, stroke removed */
+  { x: 375, y: 255, w: 150, h: 265, rx: 70, c: "var(--lc-soft-white)",   eyeY: 360, arm: null, eyes: "#0D0D0D" }, /* center blob: soft white */
+  { x: 145, y: 325, w: 122, h: 195, rx: 60, c: "var(--lc-orange)",       eyeY: 410, arm: "right", eyes: "#0D0D0D" }, /* left front blob: orange */
+  { x: 628, y: 335, w: 112, h: 185, rx: 56, c: "var(--lc-yellow)",       eyeY: 415, arm: null, eyes: "#0D0D0D" }, /* right front blob: yellow */
+  { x: 475, y: 405, w: 135, h: 115, rx: 57, c: "var(--lc-pink)",         eyeY: 455, arm: null, eyes: "#FAFAFA" }, /* small front blob: pink, white eyes */
 ];
 
 export default function LetsConnect() {
