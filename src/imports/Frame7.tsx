@@ -2,8 +2,8 @@ import SharedFooterContent from "@/components/SharedFooterContent";
 import LetsConnect from "@/components/LetsConnect";
 import imgCampusApp from "@/assets/brochure-hero.webp";
 import imgWorkBg from "@/assets/work-bg.webp";
-const imgGradia = `${assetPathPrefix}/brand-hero.webp`;
 const assetPathPrefix = `${import.meta.env.BASE_URL}assets`;
+const imgGradia = `${assetPathPrefix}/brand-hero.webp`;
 const imgNoireCoffee = `${assetPathPrefix}/noire-hero.webp`;
 const imgContainer = `${assetPathPrefix}/35bcf.webp`;
 const imgFireflyGlass2 = `${assetPathPrefix}/67005.webp`;
@@ -19,18 +19,32 @@ const imgContainer3 = `${assetPathPrefix}/91219.webp`;
 const imgContainer4 = `${assetPathPrefix}/stint-hero.webp`;
 const imgContainer5 = `${assetPathPrefix}/49ca5.webp`;
 
+/* Work page project cards, top-to-bottom display order.
+   To add a project, append one entry here — the zig-zag CSS
+   (odd cards left, even cards right) positions it automatically. */
+const WORK_CARDS = [
+  { name: "NOIRÉ COFFEE", year: "2026", img: imgNoireCoffee },
+  { name: "FITFLOW", year: "2025", img: imgContainer1 },
+  { name: "AXORIX", year: "2025", img: imgContainer2 },
+  { name: "DODI HOMES", year: "2024", img: imgContainer3 },
+  { name: "STINT", year: "2025", img: imgContainer4 },
+  { name: "CHATBLAST", year: "2025", img: imgContainer5 },
+  { name: "BROCHURE", year: "2026", img: imgCampusApp },
+  { name: "BRAND", year: "2026", img: imgGradia },
+];
+
 export default function Frame7() {
   return (
-    <div className="bg-[#e6e6e6] relative" style={{ width: 1920, height: 8795 }} data-node-id="48:133">
+    <div className="bg-[#e6e6e6] relative" style={{ width: 1920, height: 8240 }} data-node-id="48:133">
       {/* Grid columns */}
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8795px] left-[48.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8795px] left-[279.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8795px] left-[510.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8795px] left-[741.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8795px] left-[972.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8795px] left-[1203.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8795px] left-[1434.29px] top-0 w-[207px]" />
-      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8795px] left-[1665.29px] top-0 w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[48.29px] top-0 w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[279.29px] top-0 w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[510.29px] top-0 w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[741.29px] top-0 w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[972.29px] top-0 w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[1203.29px] top-0 w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[1434.29px] top-0 w-[207px]" />
+      <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[8240px] left-[1665.29px] top-0 w-[207px]" />
 
       {/* Navbar */}
       <div className="absolute content-stretch flex items-center justify-between left-[0.29px] px-[16px] py-[32px] top-0 w-[1920px]" data-name="Banner">
@@ -114,108 +128,47 @@ export default function Frame7() {
         Selected Works
       </p>
 
-      {/* Project cards container */}
-      <div className="absolute left-[-0.08px] top-[908.31px] w-[1920px] px-[48px] py-[160px]">
-        <div className="relative w-[1824px] h-[5936.18px]">
-
-          {/* 1 — NOIRÉ COFFEE (left, tall) */}
-          <div className="absolute left-0 top-0 w-[900px] h-[1156.031px] flex flex-col gap-[8px]" data-name="work-card">
-            <div className="h-[1125px] overflow-clip relative shrink-0 w-[900px]" data-name="work-card-img">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgNoireCoffee} loading="eager" decoding="async" />
+      {/* Project cards — zig-zag layout.
+          Every card is 1024x576 (16:9, object-fit: cover). Odd cards align
+          left, even cards align right, with equal small vertical gaps, so the
+          cards stagger down the page. New entries in WORK_CARDS automatically
+          take the next zig-zag position. On mobile (<=767px) all cards stack
+          in one centered column at the same size. */}
+      <div className="absolute left-[-0.08px] top-[908.31px] w-[1920px] px-[48px] pt-[160px] pb-[80px]">
+        <style>{`
+          .work-zigzag { display: flex; flex-direction: column; gap: 72px; }
+          .work-zigzag .work-card { width: 1024px; max-width: 100%; }
+          .work-zigzag .work-card:nth-child(odd) { align-self: flex-start; }
+          .work-zigzag .work-card:nth-child(even) { align-self: flex-end; }
+          .work-zigzag .work-card-img { aspect-ratio: 16 / 9; overflow: hidden; }
+          .work-zigzag .work-card-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+          @media (max-width: 767px) {
+            .work-zigzag .work-card:nth-child(odd),
+            .work-zigzag .work-card:nth-child(even) { align-self: center; }
+          }
+        `}</style>
+        <div className="work-zigzag">
+          {WORK_CARDS.map((card) => (
+            <div className="work-card flex flex-col gap-[8px]" data-name="work-card" key={card.name}>
+              <div className="work-card-img relative shrink-0 w-full" data-name="work-card-img">
+                <img alt="" className="object-cover pointer-events-none" src={card.img} loading="eager" decoding="async" />
+              </div>
+              <div className="flex items-start justify-between w-full shrink-0">
+                <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">{card.name}</p>
+                <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">{card.year}</p>
+              </div>
             </div>
-            <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">NOIRÉ COFFEE</p>
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
-            </div>
-          </div>
-
-          {/* 2 — FITFLOW (right, short) */}
-          <div className="absolute left-[1155px] top-0 w-[669px] h-[532.781px] flex flex-col gap-[8px]" data-name="work-card">
-            <div className="h-[501.75px] relative shrink-0 w-[669px] overflow-clip" data-name="work-card-img">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer1} loading="eager" decoding="async" />
-            </div>
-            <div className="flex items-start justify-between w-[669px] shrink-0">
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">FITFLOW</p>
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
-            </div>
-          </div>
-
-          {/* 3 — AXORIX (center-right, medium) */}
-          <div className="absolute left-[462px] top-[1316.03px] w-[900px] h-[706.031px] flex flex-col gap-[8px]" data-name="work-card">
-            <div className="h-[675px] relative shrink-0 w-[900px] overflow-clip" data-name="work-card-img">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer2} loading="eager" decoding="async" />
-            </div>
-            <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">AXORIX</p>
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
-            </div>
-          </div>
-
-          {/* 4 — DODI HOMES (right, tall) */}
-          <div className="absolute left-[924px] top-[2182.06px] w-[900px] h-[1156.031px] flex flex-col gap-[8px]" data-name="work-card">
-            <div className="h-[1125px] relative shrink-0 w-[900px] overflow-clip" data-name="work-card-img">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer3} loading="eager" decoding="async" />
-            </div>
-            <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">DODI HOMES</p>
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2024</p>
-            </div>
-          </div>
-
-          {/* 5 — STINT (left, short) */}
-          <div className="absolute left-0 top-[2182.06px] w-[669px] h-[532.781px] flex flex-col gap-[8px]" data-name="work-card">
-            <div className="h-[501.75px] relative shrink-0 w-[669px] overflow-clip" data-name="work-card-img">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer4} loading="eager" decoding="async" />
-            </div>
-            <div className="flex items-start justify-between w-[669px] shrink-0">
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">STINT</p>
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
-            </div>
-          </div>
-
-          {/* 6 — CHATBLAST (left, medium) */}
-          <div className="absolute left-0 top-[3498.09px] w-[900px] h-[706.031px] flex flex-col gap-[8px]" data-name="work-card">
-            <div className="h-[675px] relative shrink-0 w-[900px] overflow-clip" data-name="work-card-img">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgContainer5} loading="eager" decoding="async" />
-            </div>
-            <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">CHATBLAST</p>
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
-            </div>
-          </div>
-
-          {/* 7 — GRADIA (left, below CAMPUS APP) */}
-          {/* 7 — BRAND (left, below CAMPUS APP) */}
-          <div className="absolute left-0 top-[5230.15px] w-[900px] h-[706.031px] flex flex-col gap-[8px]" data-name="work-card">
-            <div className="h-[675px] relative shrink-0 w-[900px] overflow-clip" data-name="work-card-img">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgGradia} loading="eager" decoding="async" />
-            </div>
-            <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">BRAND</p>
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
-            </div>
-          </div>
-
-          {/* 8 — BROCHURE (right, below CHATBLAST) */}
-          <div className="absolute left-[924px] top-[4364.12px] w-[900px] h-[706.031px] flex flex-col gap-[8px]" data-name="work-card">
-            <div className="h-[675px] relative shrink-0 w-[900px] overflow-clip bg-[#a4a4a4]" data-name="work-card-img">
-              <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full" src={imgCampusApp} loading="eager" decoding="async" />
-            </div>
-            <div className="flex items-start justify-between w-[900px] shrink-0">
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">BROCHURE</p>
-              <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
 
       {/* Let's Connect section — interactive component */}
-      <div className="absolute left-[-4.02px] top-[7501.49px] w-[1920px] h-[763px] overflow-hidden">
+      <div className="absolute left-[-4.02px] top-[6681px] w-[1920px] h-[763px] overflow-hidden">
         <LetsConnect />
       </div>
 
       {/* Footer — identical to homepage */}
-      <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[8264.61px] w-[1920px]" data-name="Container">
+      <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[7516px] w-[1920px]" data-name="Container">
         <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
           <SharedFooterContent />
         </div>
