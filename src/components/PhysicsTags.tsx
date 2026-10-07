@@ -329,7 +329,7 @@ export default function PhysicsTags() {
       // DEBUG (temporary): first pointermove over section + sleeping count
       if (!loggedPointer) {
         loggedPointer = true;
-        console.log("pointer over section");
+        console.log("pointer works"); // temporary: confirms mouse reaches the section
         const sleeping = Matter.Composite.allBodies(engine.world).filter((b) => b.isSleeping).length;
         console.log("[PhysicsTags] sleeping bodies:", sleeping, "(should be 0)");
       }
@@ -523,7 +523,7 @@ export default function PhysicsTags() {
       });
 
       // cursor hover-push: soft invisible ball (radius 150), force ∝ speed, ∝ 1/distance
-      // FIX: lerp 0.25; force scaled by body.mass; gentle minimum push even when slow; capped
+      // FIX: stronger force (60% of gravity) so tags visibly move; capped to avoid explosions
       if (cursor.active) {
         if (cursor.x < -9000) { cursor.x = cursor.tx; cursor.y = cursor.ty; } // snap on first entry
         cursor.px = cursor.x; cursor.py = cursor.y;
@@ -540,9 +540,11 @@ export default function PhysicsTags() {
           const dx = b.position.x - cursor.x, dy = b.position.y - cursor.y;
           const dist = Math.hypot(dx, dy);
           if (dist > PUSH_R || dist < 1) return;
+          // wake the body (in case it fell asleep despite enableSleeping: false)
+          if (b.isSleeping) Matter.Sleeping.set(b, false);
           const falloff = 1 - dist / PUSH_R;
-          // force ∝ mass so heavy and light tags move together; capped to avoid explosions
-          const f = Math.min(0.00008 * b.mass * falloff * speedFactor, 0.0025);
+          // force ∝ mass (60% of gravity at full strength); capped
+          const f = Math.min(0.0006 * b.mass * falloff * speedFactor, 0.012);
           Matter.Body.applyForce(b, b.position, {
             x: (dx / dist) * f + (cursor.vx / Math.max(speed, 1)) * f * 0.7,
             y: (dy / dist) * f + (cursor.vy / Math.max(speed, 1)) * f * 0.7 - f * 0.2,
