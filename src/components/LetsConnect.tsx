@@ -136,6 +136,29 @@ export default function LetsConnect() {
     };
     if (!isTouch) window.addEventListener("mousemove", onMouseMove);
 
+    // scroll parallax: characters drift at different depths (transform only, rAF-throttled)
+    const shifts = Array.from(section.querySelectorAll<SVGGElement>(".scroll-shift"));
+    let parallaxTicking = false;
+    const onScrollParallax = () => {
+      if (parallaxTicking || reduceMotion) return;
+      parallaxTicking = true;
+      requestAnimationFrame(() => {
+        parallaxTicking = false;
+        const r = section.getBoundingClientRect();
+        // progress: positive when section is below viewport center, negative above
+        const progress = (window.innerHeight / 2 - (r.top + r.height / 2)) / window.innerHeight;
+        shifts.forEach((el) => {
+          const depth = parseFloat(el.dataset.depth || "0.3");
+          // back characters (low depth) move less, front characters move more
+          el.style.transform = `translateY(${(progress * 70 * depth).toFixed(1)}px)`;
+        });
+      });
+    };
+    window.addEventListener("scroll", onScrollParallax, { passive: true });
+    // run once on init so characters start at the right offset
+    onScrollParallax();
+    cleanups.push(() => window.removeEventListener("scroll", onScrollParallax));
+
     // hover: jump + bigger expression, neighbors lean away 6px
     chars.forEach((ch) => {
       const onEnter = () => {
@@ -458,9 +481,12 @@ export default function LetsConnect() {
           </g>
 
           {/* ══ 1. SUN (Orange #ff5a00) — back left, cheerful waving ══ */}
-          <g id="char-sun" className="lc-char" data-cx="170" data-cy="395"
+                    {/* scale group: characters 15% bigger, from ground center */}
+          <g transform="translate(450, 495) scale(1.15) translate(-450, -495)">
+<g id="char-sun" className="lc-char" data-cx="170" data-cy="395"
              style={{ "--rise-delay": "0s", "--idle-anim": "lc-breathe", "--idle-d": "3.5s", "--idle-delay": "0.8s" } as React.CSSProperties}>
-            <g transform="translate(170, 395)">
+                        <g className="scroll-shift" data-depth="0.25">
+<g transform="translate(170, 395)">
               <g className="body">
                 <path d="M0,-62 L14,-34 L42,-48 L34,-18 L62,-14 L36,0 L62,14 L34,18 L42,48 L14,34 L0,62 L-14,34 L-42,48 L-34,18 L-62,14 L-36,0 L-62,-14 L-34,-18 L-42,-48 L-14,-34 Z"
                       fill="#ff5a00" stroke="#ff5a00" strokeWidth="10" strokeLinejoin="round" />
@@ -522,12 +548,14 @@ export default function LetsConnect() {
                 <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(-55,20)" />
               </g>
             </g>
-          </g>
+                    </g>
+</g>
 
           {/* ══ 2. TRIANGLE (Yellow #ffd60a) — front left, shouting with excitement ══ */}
           <g id="char-triangle" className="lc-char" data-cx="300" data-cy="415"
              style={{ "--rise-delay": "0.1s", "--idle-anim": "lc-breathe", "--idle-d": "4s", "--idle-delay": "0.9s" } as React.CSSProperties}>
-            <g transform="translate(300, 415)">
+                        <g className="scroll-shift" data-depth="0.5">
+<g transform="translate(300, 415)">
               <g className="body">
                 <path d="M0,-65 L58,45 L-58,45 Z"
                       fill="#ffd60a" stroke="#ffd60a" strokeWidth="16" strokeLinejoin="round" />
@@ -593,12 +621,14 @@ export default function LetsConnect() {
                 <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(-55,25)" />
               </g>
             </g>
-          </g>
+                    </g>
+</g>
 
           {/* ══ 3. CIRCLE (Purple Light #A58CF4) — center front, happy and content ══ */}
           <g id="char-circle" className="lc-char" data-cx="480" data-cy="403"
              style={{ "--rise-delay": "0.2s", "--idle-anim": "lc-breathe", "--idle-d": "3.8s", "--idle-delay": "1s" } as React.CSSProperties}>
-            <g transform="translate(480, 403)">
+                        <g className="scroll-shift" data-depth="0.6">
+<g transform="translate(480, 403)">
               <g className="body">
                 <circle cx="0" cy="0" r="68" fill="#A58CF4" />
               </g>
@@ -654,12 +684,14 @@ export default function LetsConnect() {
                 <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(-60,25)" />
               </g>
             </g>
-          </g>
+                    </g>
+</g>
 
           {/* ══ 4. STAR (Amber #ff9f0a) — on circle's head, giggling ══ */}
           <g id="char-star" className="lc-char" data-cx="480" data-cy="295"
              style={{ "--rise-delay": "0.3s", "--idle-anim": "lc-giggle", "--idle-d": "3.2s", "--idle-delay": "1.1s" } as React.CSSProperties}>
-            <g transform="translate(480, 295)">
+                        <g className="scroll-shift" data-depth="0.65">
+<g transform="translate(480, 295)">
               <g className="body">
                 <path d="M0,-42 L12,-14 L40,-14 L18,4 L26,32 L0,16 L-26,32 L-18,4 L-40,-14 L-12,-14 Z"
                       fill="#ff9f0a" stroke="#ff9f0a" strokeWidth="10" strokeLinejoin="round" />
@@ -706,12 +738,14 @@ export default function LetsConnect() {
                 <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(42,25)" />
               </g>
             </g>
-          </g>
+                    </g>
+</g>
 
           {/* ══ 5. SQUARE (Pink #ff0a8a) — front right, shy and sweet ══ */}
           <g id="char-square" className="lc-char" data-cx="660" data-cy="413"
              style={{ "--rise-delay": "0.4s", "--idle-anim": "lc-shy-sway", "--idle-d": "4.5s", "--idle-delay": "1.2s" } as React.CSSProperties}>
-            <g transform="translate(660, 413)">
+                        <g className="scroll-shift" data-depth="0.5">
+<g transform="translate(660, 413)">
               <g className="body">
                 <rect x="-57" y="-57" width="114" height="114" rx="28" fill="#ff0a8a" />
               </g>
@@ -764,12 +798,14 @@ export default function LetsConnect() {
                 <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(-55,25)" />
               </g>
             </g>
-          </g>
+                    </g>
+</g>
 
           {/* ══ 6. RECTANGLE (Soft White #FAFAFA) — back right, cool and thinking ══ */}
           <g id="char-rect" className="lc-char" data-cx="790" data-cy="393"
              style={{ "--rise-delay": "0.5s", "--idle-anim": "lc-think", "--idle-d": "4.8s", "--idle-delay": "1.3s" } as React.CSSProperties}>
-            <g transform="translate(790, 393)">
+                        <g className="scroll-shift" data-depth="0.25">
+<g transform="translate(790, 393)">
               <g className="body">
                 <rect x="-48" y="-80" width="96" height="160" rx="48" fill="#FAFAFA" />
               </g>
@@ -827,6 +863,9 @@ export default function LetsConnect() {
               </g>
             </g>
           </g>
+                    </g>
+</g>
+
         </svg>
       </div>
     </section>
