@@ -2,9 +2,9 @@ import { type ProjectData, getProjectCanvasH, IMG_SLOT_H, IMG_GAP, IMAGES_TOP, T
 import SharedFooterContent from "@/components/SharedFooterContent";
 import ProjectHero from "@/components/ProjectHero";
 
-/* New hero is 1050px tall (old was 679px). Shift all content below by 404px
-   so the Overview starts at ~1200px, giving breathing room below the hero. */
-const HERO_SHIFT = 404;
+/* Hero is now ~726px tall (flex layout, was 1050px). Shift content up so the
+   Overview starts ~56px below the hero. */
+const HERO_SHIFT = -14;
 
 interface ProjectPageProps {
   project: ProjectData;
@@ -44,9 +44,16 @@ export default function ProjectPage({
 
   return (
     <div
-      className="bg-[#e6e6e6] relative"
+      className="bg-[#e6e6e6] relative project-page"
       style={{ width: 1920, height: canvasH }}
     >
+      <style>{`
+        /* Overview: light text on dark (scoped to project page) */
+        .project-page .pp-overview-heading { color: #FAFAFA !important; }
+        .project-page .pp-overview-desc { color: rgba(250,250,250,0.78) !important; }
+        .project-page .pp-overview-label { color: rgba(250,250,250,0.6) !important; }
+        .project-page .pp-overview-value { color: #FAFAFA !important; }
+      `}</style>
       {/* ── Grid columns ────────────────────────────────────── */}
       {[48, 279, 510, 741, 972, 1203, 1434, 1665].map((left) => (
         <div
@@ -57,7 +64,7 @@ export default function ProjectPage({
       ))}
 
       {/* ── Hero: playful purple gradient stage (reusable template) ── */}
-      <div className="absolute left-0 top-0 w-[1920px]" style={{ height: 1050 }}>
+      <div className="absolute left-0 top-0 w-[1920px]">
         <ProjectHero
           title={project.title}
           type={project.service}
@@ -74,7 +81,7 @@ export default function ProjectPage({
 
       {/* ── Overview section ─────────────────────────────────── */}
       <p
-        className="[word-break:break-word] absolute font-['Geist:SemiBold'] leading-[normal] text-[60px] text-black tracking-[-3.0771px] w-[551.48px]"
+        className="pp-overview-heading [word-break:break-word] absolute font-['Geist:SemiBold'] leading-[normal] text-[60px] tracking-[-3.0771px] w-[551.48px]"
         style={{ left: 48, top: 796.18 + HERO_SHIFT }}
       >
         Overview
@@ -82,7 +89,7 @@ export default function ProjectPage({
 
       {/* Description */}
       <p
-        className="[word-break:break-word] absolute font-['Geist:Medium'] leading-[29.952px] text-[#1e1e1f] text-[23.04px] tracking-[-0.6912px] w-[790.748px]"
+        className="pp-overview-desc [word-break:break-word] absolute font-['Geist:Medium'] leading-[29.952px] text-[23.04px] tracking-[-0.6912px] w-[790.748px]"
         style={{ left: 48.29, top: 899.78 + HERO_SHIFT }}
       >
         {project.description}
@@ -126,13 +133,13 @@ export default function ProjectPage({
       {/* ── Metadata columns ─────────────────────────────────── */}
       {/* [Agency] */}
       <p
-        className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[182.664px]"
+        className="pp-overview-label absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] uppercase w-[182.664px]"
         style={{ left: 978.79, top: 826.26 + HERO_SHIFT }}
       >
         [CLIENT]
       </p>
       <p
-        className="absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] text-[#0f0f0f] tracking-[0.5px] whitespace-nowrap"
+        className="pp-overview-value absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] tracking-[0.5px] whitespace-nowrap"
         style={{ left: 978.79, top: 889.11 + HERO_SHIFT }}
       >
         {project.agency}
@@ -140,13 +147,13 @@ export default function ProjectPage({
 
       {/* [Service] */}
       <p
-        className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[212.91px]"
+        className="pp-overview-label absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] uppercase w-[212.91px]"
         style={{ left: 978.79, top: 1045.88 + HERO_SHIFT }}
       >
         [Service]
       </p>
       <p
-        className="absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] text-[#0f0f0f] tracking-[0.5px] w-[266.828px]"
+        className="pp-overview-value absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] tracking-[0.5px] w-[266.828px]"
         style={{ left: 978.79, top: 1108.72 + HERO_SHIFT }}
       >
         {project.service}
@@ -154,13 +161,13 @@ export default function ProjectPage({
 
       {/* [Industry] */}
       <p
-        className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[210.311px]"
+        className="pp-overview-label absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] uppercase w-[210.311px]"
         style={{ left: 1434.29, top: 826.26 + HERO_SHIFT }}
       >
         [Industry]
       </p>
       <p
-        className="absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] text-[#0f0f0f] tracking-[0.5px] whitespace-nowrap"
+        className="pp-overview-value absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] tracking-[0.5px] whitespace-nowrap"
         style={{ left: 1434.29, top: 889.11 + HERO_SHIFT }}
       >
         {project.industry}
@@ -168,13 +175,13 @@ export default function ProjectPage({
 
       {/* [Year] */}
       <p
-        className="absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-[#0f0f0f] uppercase w-[210.311px]"
+        className="pp-overview-label absolute font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] uppercase w-[210.311px]"
         style={{ left: 1434.29, top: 1045.87 + HERO_SHIFT }}
       >
         [Year]
       </p>
       <p
-        className="absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] text-[#0f0f0f] tracking-[0.5px] whitespace-nowrap"
+        className="pp-overview-value absolute font-['Geist:Regular'] leading-[66.269px] text-[36.984px] tracking-[0.5px] whitespace-nowrap"
         style={{ left: 1434.29, top: 1108.72 + HERO_SHIFT }}
       >
         {project.year}

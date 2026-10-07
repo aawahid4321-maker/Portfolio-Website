@@ -63,9 +63,11 @@ export default function ProjectHero({
     const tick = () => {
       cx += (mx - cx) * 0.1;
       cy += (my - cy) * 0.1;
+      // card tilts max 3deg toward the mouse (perspective 1200px on parent)
+      // applied to .ph-card-wrap only — .ph-card corners stay perfect
       if (cardRef.current) {
         cardRef.current.style.transform =
-          `perspective(1000px) rotateY(${cx * 8}deg) rotateX(${-cy * 8}deg)`;
+          `rotateY(${cx * 6}deg) rotateX(${-cy * 6}deg)`;
       }
       if (decoRef.current) {
         const kids = decoRef.current.children;
@@ -88,6 +90,12 @@ export default function ProjectHero({
     /* ── nav: entrance (drop in) ── */
     if (nav && !reduceMotion) {
       requestAnimationFrame(() => nav.classList.add("is-entering"));
+    }
+
+    /* ── card: start floating after entrance (1.4s delay in CSS) ── */
+    if (cardRef.current && !reduceMotion && !isTouch) {
+      const cardWrap = cardRef.current;
+      window.setTimeout(() => cardWrap.classList.add("is-floating"), 1400);
     }
 
     /* ── nav: sliding highlight (offsetLeft/offsetWidth — adapts to size changes) ── */
@@ -235,29 +243,35 @@ export default function ProjectHero({
           --ph-yellow: #ffd60a;
           --ph-soft-white: #FAFAFA;
           --ph-jet-black: #0D0D0D;
+          /* vertical stack, centered both ways — only as tall as content */
           position: relative;
           width: 100%;
-          height: 1050px;
-          min-height: 640px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 20px;
+          padding: 120px 24px 56px; /* top clears floating nav, bottom small */
           background: var(--ph-jet-black);
-          overflow: visible; /* card overlaps bottom edge by ~80px */
+          overflow: visible;
+          max-height: 78vh;
         }
         .ph-hero-bg {
           position: absolute;
           inset: 0;
-          height: 1050px;
-          overflow: hidden;
+          overflow: hidden; /* clips blobs only, never the card */
           background: var(--ph-jet-black);
+          border-radius: inherit;
         }
-        /* gradient mesh: 3 pre-softened radial blobs */
+        /* gradient mesh: smaller, softer blobs behind the card area */
         .ph-hero-bg::before {
           content: "";
           position: absolute;
           inset: 0;
           background:
-            radial-gradient(ellipse 700px 480px at 18% 18%, rgba(165,140,244,0.55), transparent 70%),
-            radial-gradient(ellipse 340px 280px at 82% 78%, rgba(255,10,138,0.30), transparent 70%),
-            radial-gradient(ellipse 220px 170px at 86% 14%, rgba(255,214,10,0.18), transparent 70%);
+            radial-gradient(ellipse 420px 300px at 22% 30%, rgba(165,140,244,0.45), transparent 70%),
+            radial-gradient(ellipse 280px 220px at 78% 72%, rgba(255,10,138,0.25), transparent 70%),
+            radial-gradient(ellipse 180px 140px at 80% 20%, rgba(255,214,10,0.15), transparent 70%);
           pointer-events: none;
         }
         /* grain at ~4% */
@@ -278,26 +292,26 @@ export default function ProjectHero({
           background-size: 120px 120px;
           pointer-events: none;
         }
-        .ph-blobs { position: absolute; inset: 0; pointer-events: none; }
+        .ph-blobs { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
         .ph-blob { position: absolute; border-radius: 50%; }
         .ph-blob-1 {
-          width: 560px; height: 560px; left: -120px; top: -140px;
-          background: radial-gradient(circle, rgba(165,140,244,0.5), transparent 70%);
+          width: 420px; height: 420px; left: -80px; top: -60px;
+          background: radial-gradient(circle, rgba(165,140,244,0.45), transparent 70%);
           animation: ph-drift 18s ease-in-out infinite alternate;
         }
         .ph-blob-2 {
-          width: 380px; height: 380px; right: -80px; bottom: 60px;
-          background: radial-gradient(circle, rgba(255,10,138,0.28), transparent 70%);
+          width: 300px; height: 300px; right: -40px; bottom: -20px;
+          background: radial-gradient(circle, rgba(255,10,138,0.25), transparent 70%);
           animation: ph-drift 14s ease-in-out infinite alternate-reverse;
         }
         .ph-blob-3 {
-          width: 240px; height: 240px; right: 12%; top: 8%;
-          background: radial-gradient(circle, rgba(255,214,10,0.16), transparent 70%);
+          width: 200px; height: 200px; right: 8%; top: 6%;
+          background: radial-gradient(circle, rgba(255,214,10,0.15), transparent 70%);
           animation: ph-drift 20s ease-in-out infinite alternate;
         }
         @keyframes ph-drift {
           from { transform: translate(0, 0); }
-          to { transform: translate(40px, -40px); }
+          to { transform: translate(30px, -30px); }
         }
 
         /* ── nav: compact floating pill (reference style) ── */
@@ -483,20 +497,27 @@ export default function ProjectHero({
           display: flex;
           justify-content: center;
           gap: 12px;
-          margin-top: 320px; /* title removed: pills sit where the title was */
+          margin: 0; /* flex gap handles spacing */
           flex-wrap: wrap;
           padding: 0 24px;
         }
         .ph-tag {
           font-family: "Zilla Slab", Rockwell, Georgia, serif;
           font-weight: 700;
-          font-size: 15px;
-          padding: 10px 22px;
+          font-size: 17px;
+          text-transform: uppercase;
+          letter-spacing: 0.03em;
+          padding: 12px 22px;
+          height: 46px;
+          display: inline-flex;
+          align-items: center;
           border-radius: 999px;
+          border: 2px solid var(--ph-jet-black);
           transform: scale(0.6);
           opacity: 0;
           animation: ph-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
           white-space: nowrap;
+          box-sizing: border-box;
         }
         @keyframes ph-pop {
           0% { transform: scale(0.6); opacity: 0; }
@@ -507,45 +528,52 @@ export default function ProjectHero({
         .tag-yellow { background: var(--ph-yellow); color: var(--ph-jet-black); }
         .tag-pink { background: var(--ph-pink); color: var(--ph-soft-white); }
 
-        /* sticker card */
+        /* ── card: wrap (tilt/float target) > card (radius+ring+shadow) > img ── */
         .ph-card-wrap {
           position: relative;
           z-index: 10;
-          width: min(1100px, 88vw);
-          margin: 48px auto 0;
+          width: min(860px, 84vw);
+          aspect-ratio: 16 / 9;
+          transform-style: flat;
+          will-change: transform;
+          perspective: 1200px; /* tilt perspective on parent */
           animation: ph-card-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s backwards;
         }
         @keyframes ph-card-in {
-          from { transform: translateY(60px) rotate(-3deg); opacity: 0; }
-          to { transform: translateY(0) rotate(0); opacity: 1; }
+          from { transform: translateY(60px); opacity: 0; }
+          to { transform: translateY(0); opacity: 1; }
         }
-        .ph-card {
-          position: relative;
-          border-radius: 28px;
-          border: 3px solid var(--ph-jet-black);
-          /* white ring via box-shadow (follows border-radius cleanly, unlike outline) */
-          box-shadow:
-            0 0 0 2px var(--ph-soft-white),
-            10px 10px 0 var(--ph-purple-light);
-          overflow: hidden;
-          aspect-ratio: 16 / 9;
-          background: var(--ph-jet-black);
-          animation: ph-float 5s ease-in-out 1.4s infinite;
-          transform-style: preserve-3d;
-          will-change: transform;
-        }
+        /* float idle on the wrap only (never the card — corners stay perfect) */
+        .ph-card-wrap.is-floating { animation: ph-float 5s ease-in-out 1.4s infinite; }
         @keyframes ph-float {
           0%, 100% { translate: 0 0; }
           50% { translate: 0 -8px; }
         }
+        .ph-card {
+          position: absolute;
+          inset: 0;
+          border-radius: 28px;
+          overflow: hidden;
+          isolation: isolate; /* ring+shadow follow the same radius */
+          border: 3px solid var(--ph-jet-black);
+          background: var(--ph-jet-black);
+          /* ring + hard shadow on the SAME element as the radius */
+          box-shadow:
+            0 0 0 3px var(--ph-soft-white),
+            10px 10px 0 3px var(--ph-purple-light);
+        }
         .ph-card img {
+          display: block; /* kills inline baseline gap (the thin white line) */
           width: 100%;
           height: 100%;
           object-fit: cover;
-          display: block;
+          border-radius: inherit;
+          clip-path: inset(0 round 25px); /* image follows rounded corners */
+          backface-visibility: hidden;
+          transform: translateZ(0);
         }
 
-        /* floating decorations (behind card) */
+        /* floating decorations (close to card, never far corners) */
         .ph-deco { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
         .ph-deco > * { position: absolute; }
         .ph-sparkle { animation: ph-twinkle 3s ease-in-out infinite; }
@@ -664,8 +692,10 @@ export default function ProjectHero({
             background: var(--pp-purple);
             color: var(--pp-black);
           }
-          .ph-tags { margin-top: 140px; } /* mobile: pills higher without title */
-          .ph-card-wrap { width: 92vw; }
+          .ph-hero { padding: 104px 16px 40px; max-height: none; }
+          .ph-tags { flex-wrap: wrap; } /* tags wrap in 2 rows on mobile */
+          .ph-card-wrap { width: 92vw; aspect-ratio: 4 / 3; }
+          .ph-card { border-radius: 22px; box-shadow: 0 0 0 3px var(--ph-soft-white), 6px 6px 0 3px var(--ph-purple-light); }
           .ph-card {
             aspect-ratio: 4 / 3;
             box-shadow:
@@ -777,31 +807,31 @@ export default function ProjectHero({
           ))}
         </div>
 
-        {/* sticker card */}
-        <div className="ph-card-wrap">
-          <div ref={cardRef} className="ph-card">
+        {/* sticker card: wrap (tilt/float) > card (radius+ring) > img */}
+        <div ref={cardRef} className="ph-card-wrap">
+          <div className="ph-card">
             <img src={image} alt={alt} loading="eager" decoding="async" />
           </div>
         </div>
 
-        {/* floating decorations */}
+        {/* floating decorations: 20-60px outside card edge, small, aria-hidden */}
         <div ref={decoRef} className="ph-deco" aria-hidden="true">
           {/* yellow sparkle, top-left of card */}
-          <svg className="ph-sparkle" width="44" height="44" viewBox="0 0 44 44" style={{ left: "12%", top: "42%" }}>
+          <svg className="ph-sparkle" width="32" height="32" viewBox="0 0 44 44" style={{ left: "calc(50% - 480px)", top: "120px" }}>
             <path d="M22 0 L26 18 L44 22 L26 26 L22 44 L18 26 L0 22 L18 18 Z" fill="#ffd60a" />
           </svg>
           {/* pink sparkle, right of card */}
-          <svg className="ph-sparkle ph-deco-extra" width="36" height="36" viewBox="0 0 44 44" style={{ right: "10%", top: "55%", animationDelay: "1.2s" }}>
+          <svg className="ph-sparkle ph-deco-extra" width="28" height="28" viewBox="0 0 44 44" style={{ right: "calc(50% - 480px)", top: "200px", animationDelay: "1.2s" }}>
             <path d="M22 0 L26 18 L44 22 L26 26 L22 44 L18 26 L0 22 L18 18 Z" fill="#ff0a8a" />
           </svg>
-          {/* cute-face circle, bottom-left */}
-          <svg className="ph-face" width="48" height="48" viewBox="0 0 48 48" style={{ left: "16%", bottom: "18%" }}>
+          {/* cute-face circle, bottom-left of card */}
+          <svg className="ph-face" width="40" height="40" viewBox="0 0 48 48" style={{ left: "calc(50% - 470px)", bottom: "80px" }}>
             <circle cx="24" cy="24" r="22" fill="#A58CF4" />
             <circle cx="17" cy="20" r="2.5" fill="#0D0D0D" />
             <circle cx="31" cy="20" r="2.5" fill="#0D0D0D" />
           </svg>
-          {/* plus sign, top-right */}
-          <svg className="ph-deco-extra" width="32" height="32" viewBox="0 0 32 32" style={{ right: "18%", top: "38%" }}>
+          {/* plus sign, top-right of card */}
+          <svg className="ph-deco-extra" width="28" height="28" viewBox="0 0 32 32" style={{ right: "calc(50% - 470px)", top: "140px" }}>
             <rect x="13" y="4" width="6" height="24" rx="3" fill="#FAFAFA" />
             <rect x="4" y="13" width="24" height="6" rx="3" fill="#FAFAFA" />
           </svg>
