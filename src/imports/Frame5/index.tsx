@@ -343,7 +343,7 @@ function Link4() {
 
 function Banner() {
   return (
-    <div className="absolute content-stretch flex items-center justify-between left-[0.29px] px-[16px] py-[32px] top-[-0.05px] w-[1920px]" data-name="Banner">
+    <div className="absolute content-stretch flex items-center justify-between left-[0.29px] px-[16px] py-[32px] top-[-0.05px] w-[1920px]" data-name="Banner" style={{ display: "none" }} aria-hidden="true">
       <Link />
       <Container9 />
       <Link4 />
