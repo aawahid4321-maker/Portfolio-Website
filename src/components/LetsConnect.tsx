@@ -274,8 +274,8 @@ export default function LetsConnect() {
           z-index: 1;
           left: 50%; bottom: 0;
           transform: translateX(-50%);
-          width: 1800px;
-          height: 1040px;
+          width: 1350px;
+          height: 780px;
           display: block;
         }
         #connect .lc-stage svg {
