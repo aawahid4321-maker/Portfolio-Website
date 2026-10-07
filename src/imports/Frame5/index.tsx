@@ -665,8 +665,8 @@ export default function Frame() {
       <Container6 />
       <Container7 />
       <Container8 />
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[23.04px] left-[510px] not-italic text-[#29292b] text-[19.2px] top-[1369.75px] uppercase whitespace-nowrap">[about me]</p>
-      <div className="[word-break:break-word] absolute font-geist-medium-ss leading-[0] left-[716px] text-[#1e1e1f] text-[23.04px] top-[1369.75px] tracking-[-0.6912px] w-[900px] max-w-[900px]" style={{ overflowWrap: "break-word", wordWrap: "break-word" }}>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[23.04px] left-[510px] not-italic text-[#29292b] text-[19.2px] top-[1450px] uppercase whitespace-nowrap">[about me]</p>
+      <div className="[word-break:break-word] absolute font-geist-medium-ss leading-[0] left-[716px] text-[#1e1e1f] text-[23.04px] top-[1450px] tracking-[-0.6912px] w-[900px] max-w-[900px]" style={{ overflowWrap: "break-word", wordWrap: "break-word" }}>
         <p className="leading-[29.952px] mb-0">I’m Abdul Wahid, a multidisciplinary designer with hands-on experience in branding, visual identity, logo design, and social media creatives. Skilled at transforming concepts into compelling visual experiences that build strong brand identities and effectively engage target audiences.</p>
         <p className="leading-[29.952px] mb-0">​</p>
         <p className="leading-[29.952px]">I like working where creativity meets strategy — finding the idea that gives a brand its character and making sure it carries through every touchpoint, from logo and typography to social media and motion.</p>
