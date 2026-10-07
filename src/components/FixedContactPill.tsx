@@ -13,6 +13,7 @@ export default function FixedContactPill() {
           gap: 10px;
           background: #111111;
           color: #ffffff;
+          border: 1px solid rgba(255,255,255,0.2); /* visible on dark sections */
           font-family: inherit;
           font-weight: 700;
           font-size: 14px;

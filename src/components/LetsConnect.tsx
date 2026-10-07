@@ -2,12 +2,13 @@ import { useEffect, useRef } from "react";
 
 /* ── Colors via CSS variables ───────────────────────────────────────────── */
 const CSS_VARS = {
-  "--lc-bg": "#ececec",
-  "--lc-heading": "#111111",
-  "--lc-text": "#111111",
+  "--connect-bg": "#111111", /* dark section bg, blends with footer */
+  "--lc-bg": "#111111",
+  "--lc-heading": "#f4f4f2",
+  "--lc-text": "rgba(244,244,242,0.78)",
   "--lc-pink": "#ff0a8a",
   "--lc-blue": "#1a1aff",
-  "--lc-black": "#16181a",
+  "--lc-black": "#26282b", /* visible on dark bg */
   "--lc-white": "#f4f4f2",
   "--lc-orange": "#ff5a00",
   "--lc-amber": "#ff9f0a",
@@ -16,8 +17,8 @@ const CSS_VARS = {
 
 const BLOBS = [
   { x: 390, y: 60,  w: 120, h: 460, rx: 60, c: "var(--lc-pink)",   eyeY: 170, arm: null },
-  { x: 225, y: 165, w: 112, h: 355, rx: 56, c: "var(--lc-blue)",   eyeY: 270, arm: "right" },
-  { x: 563, y: 145, w: 112, h: 375, rx: 56, c: "var(--lc-black)",  eyeY: 255, arm: null, eyes: "#7dd8f0" },
+  { x: 225, y: 165, w: 112, h: 355, rx: 56, c: "var(--lc-blue)",   eyeY: 270, arm: "right", eyes: "#f4f4f2" }, /* blue blob: off-white eyes for visibility */
+  { x: 563, y: 145, w: 112, h: 375, rx: 56, c: "var(--lc-black)",  eyeY: 255, arm: null, eyes: "#7dd8f0", stroke: "rgba(255,255,255,0.25)", strokeW: 2 }, /* black blob: visible on dark */
   { x: 375, y: 255, w: 150, h: 265, rx: 70, c: "var(--lc-white)",  eyeY: 360, arm: null },
   { x: 145, y: 325, w: 122, h: 195, rx: 60, c: "var(--lc-orange)", eyeY: 410, arm: "right" },
   { x: 628, y: 335, w: 112, h: 185, rx: 56, c: "var(--lc-amber)",  eyeY: 415, arm: null },
@@ -78,6 +79,17 @@ export default function LetsConnect() {
           }
         }, 2000)
       );
+
+      /* Toggle body class for grid-line styling when section is in view */
+      const gridIO = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            document.body.classList.toggle("connect-in-view", entry.isIntersecting);
+          });
+        },
+        { threshold: 0.1 }
+      );
+      gridIO.observe(section);
 
       /* Pause idle animations off-screen */
       pauseIO = new IntersectionObserver(
@@ -161,6 +173,8 @@ export default function LetsConnect() {
     return () => {
       io?.disconnect();
       pauseIO?.disconnect();
+      gridIO.disconnect();
+      document.body.classList.remove("connect-in-view");
       blinkTimers.forEach((t) => window.clearTimeout(t));
       safetyTimer.forEach((t) => window.clearTimeout(t));
       window.removeEventListener("pageshow", onPageShow);
@@ -177,8 +191,15 @@ export default function LetsConnect() {
           position: relative;
           z-index: 1; /* above the grid lines */
           width: 1920px; height: 763px;
-          background: var(--lc-bg);
+          background: var(--connect-bg); /* dark #111, blends with footer */
           overflow: hidden;
+        }
+        /* grid lines inside this section: subtle white, below text */
+        /* toggled via body.connect-in-view (JS below), scoped to section visibility */
+        body.connect-in-view [class*="h-[11035px]"][class*="border-l"] {
+          border-left-color: rgba(255,255,255,0.08) !important;
+          border-right-color: rgba(255,255,255,0.08) !important;
+          pointer-events: none;
         }
         /* FIX: text above grid lines */
         #connect .lc-heading, #connect .lc-para {
@@ -193,7 +214,7 @@ export default function LetsConnect() {
           font-size: 95px;
           line-height: 1;
           letter-spacing: -3.8px;
-          color: #111111 !important; /* FIX: force dark, override global white */
+          color: #f4f4f2 !important; /* off-white on dark bg */
           white-space: nowrap;
         }
         #connect .lc-heading .mask { display: block; overflow: hidden; }
@@ -210,7 +231,7 @@ export default function LetsConnect() {
           margin: 0;
           font-size: 30px;
           line-height: 1.55;
-          color: #111111 !important; /* FIX: force dark */
+          color: rgba(244,244,242,0.78) !important; /* softer than heading, WCAG AA */
         }
         #connect.is-ready .lc-para { opacity: 0; transform: translateY(40px); }
         #connect.is-ready.is-visible .lc-para {
@@ -292,6 +313,41 @@ export default function LetsConnect() {
         }
         #connect.is-paused .lc-sparkle { animation-play-state: paused; }
 
+        /* ── inline CONTACT link ── */
+        #connect .lc-contact {
+          position: absolute;
+          z-index: 2;
+          right: 120px; top: 480px;
+          font-family: inherit;
+          font-weight: 600;
+          font-size: 28px;
+          letter-spacing: 0.04em;
+          color: #f4f4f2 !important;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          transition: color 0.25s ease;
+        }
+        #connect .lc-contact .lc-arrow {
+          display: inline-block;
+          transition: transform 0.25s ease;
+        }
+        #connect .lc-contact:hover {
+          color: #ffd60a !important; /* yellow on hover */
+        }
+        #connect .lc-contact:hover .lc-arrow {
+          transform: translate(4px, -4px); /* arrow moves diagonally */
+        }
+        #connect.is-ready .lc-contact { opacity: 0; transform: translateY(40px); }
+        #connect.is-ready.is-visible .lc-contact {
+          opacity: 1; transform: translateY(0);
+          transition: opacity 0.8s cubic-bezier(0.22,1,0.36,1) 0.4s,
+                      transform 0.8s cubic-bezier(0.22,1,0.36,1) 0.4s,
+                      color 0.25s ease;
+        }
+        #connect.is-fallback .lc-contact { opacity: 1; transform: none; }
+
         @media (prefers-reduced-motion: reduce) {
           #connect.is-ready .lc-blob, #connect .lc-blob { animation: none; transform: scaleY(1); }
           #connect.is-ready .lc-heading .mask > span { transform: none; transition: none; }
@@ -305,10 +361,21 @@ export default function LetsConnect() {
       <p className="lc-para">
         If you&apos;re looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I&apos;m here to listen and collaborate.
       </p>
+      <a href="mailto:aawahid321@gmail.com" className="lc-contact" aria-label="Contact via email">
+        CONTACT <span className="lc-arrow">↗</span>
+      </a>
 
       <div className="lc-stage">
         <svg viewBox="0 0 900 520" role="img" aria-label="Playful blob characters">
-          <g fill="#111111" opacity="0.35">
+          {/* soft glow behind characters (static, not animated) */}
+          <ellipse cx="450" cy="470" rx="320" ry="60" fill="url(#lc-glow)" />
+          <defs>
+            <radialGradient id="lc-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="rgba(255,255,255,0.06)" />
+              <stop offset="100%" stopColor="rgba(255,255,255,0)" />
+            </radialGradient>
+          </defs>
+          <g fill="rgba(255,255,255,0.25)"> {/* sparkles: white on dark */}
             <circle className="lc-sparkle" cx="120" cy="120" r="4" style={{ animationDelay: "0s" }} />
             <circle className="lc-sparkle" cx="780" cy="90" r="5" style={{ animationDelay: "1.5s" }} />
             <circle className="lc-sparkle" cx="700" cy="200" r="3" style={{ animationDelay: "3s" }} />
@@ -333,7 +400,9 @@ export default function LetsConnect() {
                   "--nudge-x": i % 2 ? "6px" : "-6px",
                 }}
               >
-                <rect x={b.x} y={b.y} width={b.w} height={b.h} rx={b.rx} fill={b.c} />
+                <rect x={b.x} y={b.y} width={b.w} height={b.h} rx={b.rx} fill={b.c}
+                  stroke={(b as { stroke?: string }).stroke || "none"}
+                  strokeWidth={(b as { strokeW?: number }).strokeW || 0} />
                 {b.arm === "right" && (
                   <ellipse cx={b.x + b.w + 14} cy={b.y + b.h * 0.55} rx="26" ry="20" fill={b.c} />
                 )}
