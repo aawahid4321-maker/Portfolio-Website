@@ -1,12 +1,14 @@
 import { useEffect, useRef } from "react";
 
-/* ── Sticker button colors ──────────────────────────────────────────────── */
+/* ── Sticker button colors: purple theme ────────────────────────────────── */
 const CSS_VARS = {
-  "--pill-bg": "#ffd60a",        /* yellow fill */
-  "--pill-bg-alt": "#ff0a8a",    /* hot pink on light sections */
-  "--pill-ink": "#111111",
-  "--pill-paper": "#f4f4f2",
-  "--pill-face": "#ff0a8a",      /* pink face */
+  "--pill-bg": "#A58CF4",        /* purple light fill */
+  "--pill-bg-hover": "#ff0a8a",  /* pink on hover */
+  "--pill-bg-alt": "#433075",    /* purple dark on light sections */
+  "--pill-ink": "#0D0D0D",
+  "--pill-paper": "#FAFAFA",
+  "--pill-face": "#ffd60a",      /* yellow face */
+  "--pill-shadow": "#433075",    /* purple dark hard shadow */
   "--pill-blue": "#1a1aff",      /* focus ring */
 } as React.CSSProperties;
 
@@ -110,7 +112,7 @@ export default function FixedContactPill() {
           border-radius: 999px;
           border: 3px solid var(--pill-ink);           /* chunky cartoon outline */
           box-shadow: 0 0 0 2px var(--pill-paper),     /* outer ring: visible on dark bg */
-                      4px 4px 0 2px var(--pill-ink);   /* hard offset sticker shadow */
+                      4px 4px 0 2px var(--pill-shadow); /* hard offset sticker shadow */
           text-decoration: none;
           cursor: pointer;
           min-height: 48px;                            /* tap target */
@@ -136,22 +138,24 @@ export default function FixedContactPill() {
           0%, 100% { translate: 0 0; }
           50% { translate: 0 -4px; }
         }
-        /* theme: pink w/ white text on light sections */
+        /* theme: purple dark w/ purple light text on light sections */
         .fixed-contact-pill.is-on-light {
           --bg: var(--pill-bg-alt);
-          color: #ffffff;
+          color: #A58CF4;
         }
-        /* hover: tilt + grow + bigger shadow + happy face + arrow spin */
+        /* hover: pink fill, white text, bigger shadow */
         .fixed-contact-pill:hover {
+          --bg: var(--pill-bg-hover);
+          color: var(--pill-paper);
           transform: rotate(-4deg) scale(1.06);
           box-shadow: 0 0 0 2px var(--pill-paper),
-                      6px 6px 0 2px var(--pill-ink);
+                      6px 6px 0 2px var(--pill-shadow);
           animation-play-state: paused;
         }
         .fixed-contact-pill:active {
           transform: translate(3px, 3px) scale(1.02);
           box-shadow: 0 0 0 2px var(--pill-paper),
-                      1px 1px 0 2px var(--pill-ink);
+                      1px 1px 0 2px var(--pill-shadow);
         }
         .fixed-contact-pill.is-wiggle { animation: pill-wiggle 0.4s ease; }
         @keyframes pill-wiggle {
@@ -181,7 +185,7 @@ export default function FixedContactPill() {
           transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
         .fixed-contact-pill:hover .pill-arrow { transform: rotate(45deg); }
-        .fixed-contact-pill.is-on-light .pill-arrow { background: #ffffff; color: var(--pill-bg-alt); }
+        .fixed-contact-pill.is-on-light .pill-arrow { background: #A58CF4; color: var(--pill-bg-alt); }
         /* focus */
         .fixed-contact-pill:focus-visible {
           outline: 3px solid var(--pill-blue);

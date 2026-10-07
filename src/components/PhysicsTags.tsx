@@ -1,29 +1,44 @@
 import { useEffect, useRef } from "react";
 import Matter from "matter-js";
 
-/* ── Palette ────────────────────────────────────────────────────────────── */
+/* ── Palette: purple-dominant, no orange/amber/blue ─────────────────────── */
 const COLORS = {
-  bg: "#1a1a1a",
+  bg: "#0D0D0D",          // jet black section bg
+  purpleDark: "#433075",
+  purpleLight: "#A58CF4",
   pink: "#ff0a8a",
-  blue: "#1a1aff",
-  orange: "#ff5a00",
-  amber: "#ff9f0a",
   yellow: "#ffd60a",
-  offwhite: "#f4f4f2",
-  black: "#000000",
-  ink: "#111111",
-  white: "#ffffff",
+  softWhite: "#FAFAFA",
+  jetBlack: "#0D0D0D",
 } as const;
 
 type PillDef = { bg: string; fg: string; outline?: string };
+/* Weighted ~28/24/16/16/10/6 split across 18 slots */
 const PALETTE: PillDef[] = [
-  { bg: COLORS.pink, fg: COLORS.white },
-  { bg: COLORS.blue, fg: COLORS.white },
-  { bg: COLORS.orange, fg: COLORS.white },
-  { bg: COLORS.amber, fg: COLORS.ink },
-  { bg: COLORS.yellow, fg: COLORS.ink },
-  { bg: COLORS.offwhite, fg: COLORS.ink },
-  { bg: COLORS.black, fg: COLORS.white, outline: COLORS.white },
+  // Purple Light ~28% — text #0D0D0D
+  { bg: COLORS.purpleLight, fg: "#0D0D0D" },
+  { bg: COLORS.purpleLight, fg: "#0D0D0D" },
+  { bg: COLORS.purpleLight, fg: "#0D0D0D" },
+  { bg: COLORS.purpleLight, fg: "#0D0D0D" },
+  { bg: COLORS.purpleLight, fg: "#0D0D0D" },
+  // Purple Dark ~24% — text #A58CF4 + outline so it reads on dark bg
+  { bg: COLORS.purpleDark, fg: "#A58CF4", outline: "rgba(165,140,244,0.5)" },
+  { bg: COLORS.purpleDark, fg: "#A58CF4", outline: "rgba(165,140,244,0.5)" },
+  { bg: COLORS.purpleDark, fg: "#A58CF4", outline: "rgba(165,140,244,0.5)" },
+  { bg: COLORS.purpleDark, fg: "#A58CF4", outline: "rgba(165,140,244,0.5)" },
+  // Pink ~16% — text #FAFAFA
+  { bg: COLORS.pink, fg: "#FAFAFA" },
+  { bg: COLORS.pink, fg: "#FAFAFA" },
+  { bg: COLORS.pink, fg: "#FAFAFA" },
+  // Yellow ~16% — text #0D0D0D
+  { bg: COLORS.yellow, fg: "#0D0D0D" },
+  { bg: COLORS.yellow, fg: "#0D0D0D" },
+  { bg: COLORS.yellow, fg: "#0D0D0D" },
+  // Soft White ~10% — text #0D0D0D
+  { bg: COLORS.softWhite, fg: "#0D0D0D" },
+  { bg: COLORS.softWhite, fg: "#0D0D0D" },
+  // Jet Black ~6% — outline + text #FAFAFA
+  { bg: COLORS.jetBlack, fg: "#FAFAFA", outline: "rgba(250,250,250,0.7)" },
 ];
 
 const GEIST_WORDS = ["LOGO", "BRANDING", "IDENTITY", "PACKAGING", "PRINT", "DESIGN", "TYPOGRAPHY", "SOCIAL MEDIA", "GUIDELINES", "STRATEGY"];
@@ -87,6 +102,25 @@ export default function PhysicsTags() {
       const j = Math.floor(Math.random() * (i + 1));
       [colorIdx[i], colorIdx[j]] = [colorIdx[j], colorIdx[i]];
     }
+    /* fix-up: no two adjacent pills share a color; keep purple shades apart */
+    for (let i = 1; i < colorIdx.length; i++) {
+      const prev = PALETTE[colorIdx[i - 1]].bg, cur = PALETTE[colorIdx[i]].bg;
+      const bothPurple =
+        (prev === COLORS.purpleLight || prev === COLORS.purpleDark) &&
+        (cur === COLORS.purpleLight || cur === COLORS.purpleDark);
+      if (cur === prev || bothPurple) {
+        // swap with a later non-conflicting slot
+        for (let k = i + 1; k < colorIdx.length; k++) {
+          const cand = PALETTE[colorIdx[k]].bg;
+          const candPurple =
+            (cand === COLORS.purpleLight || cand === COLORS.purpleDark);
+          if (cand !== prev && !(bothPurple && candPurple)) {
+            [colorIdx[i], colorIdx[k]] = [colorIdx[k], colorIdx[i]];
+            break;
+          }
+        }
+      }
+    }
     const scriptCount = Math.round(tagCount * 0.3);
     const scriptAt = new Set<number>();
     const sStep = tagCount / scriptCount;
@@ -121,10 +155,19 @@ export default function PhysicsTags() {
       "squiggle",
     ];
     const shapes: PShape[] = [];
+    /* shape palette: no plain black; stars in yellow/purple-light/pink */
+    const SHAPE_PALETTE = PALETTE.filter((p) => p.bg !== COLORS.jetBlack);
+    const STAR_COLORS = [COLORS.yellow, COLORS.purpleLight, COLORS.pink];
     for (let i = 0; i < shapeCount; i++) {
       const kind = SHAPE_KINDS[i % SHAPE_KINDS.length];
       const size = 28 + Math.random() * 28; // 28–56px (max 64)
-      const pal = PALETTE[Math.floor(Math.random() * PALETTE.length)];
+      let pal: PillDef;
+      if (kind === "star") {
+        const c = STAR_COLORS[i % STAR_COLORS.length];
+        pal = { bg: c, fg: "#0D0D0D" };
+      } else {
+        pal = SHAPE_PALETTE[Math.floor(Math.random() * SHAPE_PALETTE.length)];
+      }
       shapes.push({ kind, size: Math.min(size, 64), color: pal.bg, outline: pal.outline, body: null });
     }
 
@@ -339,7 +382,9 @@ export default function PhysicsTags() {
           break;
         case "face":
           ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = COLORS.ink;
+          /* eyes: dark on light fills, light on dark fills */
+          const isDarkFill = s.color === COLORS.purpleDark || s.color === COLORS.pink;
+          ctx.fillStyle = isDarkFill ? "#FAFAFA" : "#0D0D0D";
           ctx.beginPath(); ctx.arc(-r * 0.3, -r * 0.15, r * 0.12, 0, Math.PI * 2); ctx.fill();
           ctx.beginPath(); ctx.arc(r * 0.3, -r * 0.15, r * 0.12, 0, Math.PI * 2); ctx.fill();
           break;
