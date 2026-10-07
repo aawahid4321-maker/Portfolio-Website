@@ -15,31 +15,44 @@ interface ProjectHeroProps {
   onNavigateHome: () => void;
   onNavigateWork: () => void;
   onNavigateAbout: () => void;
+  activeLink?: "home" | "work" | "about"; // which nav link gets the highlight
 }
 
 export default function ProjectHero({
   title, type, year, client, image, alt,
   onNavigateHome, onNavigateWork, onNavigateAbout,
+  activeLink,
 }: ProjectHeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
   const blobsRef = useRef<HTMLDivElement>(null);
   const decoRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
+  const highlightRef = useRef<HTMLSpanElement>(null);
+  const logoEyesRef = useRef<SVGGElement>(null);
+  const workLinkRef = useRef<HTMLAnchorElement>(null);
+  const aboutLinkRef = useRef<HTMLAnchorElement>(null);
   const menuOpen = useRef(false);
+
+  // close the mobile menu (used by dropdown links)
+  const closeMenu = () => {
+    menuOpen.current = false;
+    navRef.current?.classList.remove("is-open");
+    navRef.current?.querySelector(".pp-menu-btn")?.setAttribute("aria-expanded", "false");
+  };
 
   useEffect(() => {
     const hero = heroRef.current;
+    const nav = navRef.current;
     if (!hero) return;
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const isTouch = window.matchMedia("(pointer: coarse)").matches;
-    if (reduceMotion || isTouch) return; // static layout, no tilt/parallax
 
+    /* ── card tilt + decor parallax (skip on reduced-motion/touch) ── */
     let raf = 0;
-    let mx = 0, my = 0;       // mouse target (-0.5..0.5)
-    let cx = 0, cy = 0;       // lerped cursor
+    let mx = 0, my = 0;
+    let cx = 0, cy = 0;
     let ticking = false;
-
     const onMouse = (e: MouseEvent) => {
       const r = hero.getBoundingClientRect();
       mx = (e.clientX - r.left) / r.width - 0.5;
@@ -47,14 +60,12 @@ export default function ProjectHero({
       if (!ticking) { ticking = true; raf = requestAnimationFrame(tick); }
     };
     const tick = () => {
-      cx += (mx - cx) * 0.1; // lerp 0.1
+      cx += (mx - cx) * 0.1;
       cy += (my - cy) * 0.1;
-      // card tilts up to 4deg toward the mouse (perspective 1000px)
       if (cardRef.current) {
         cardRef.current.style.transform =
           `perspective(1000px) rotateY(${cx * 8}deg) rotateX(${-cy * 8}deg)`;
       }
-      // decorations parallax 10–20px
       if (decoRef.current) {
         const kids = decoRef.current.children;
         for (let i = 0; i < kids.length; i++) {
@@ -69,30 +80,135 @@ export default function ProjectHero({
         ticking = false;
       }
     };
+    if (!reduceMotion && !isTouch) {
+      hero.addEventListener("mousemove", onMouse);
+    }
 
-    // scroll: blobs shift — transform only, passive
+    /* ── nav: entrance (drop in) ── */
+    if (nav && !reduceMotion) {
+      requestAnimationFrame(() => nav.classList.add("is-entering"));
+    }
+
+    /* ── nav: sliding highlight ── */
+    const highlight = highlightRef.current;
+    const linkFor = (name: string | undefined) =>
+      name === "work" ? workLinkRef.current : name === "about" ? aboutLinkRef.current : null;
+    const moveHighlight = (el: HTMLElement | null) => {
+      if (!highlight || !nav || reduceMotion) return;
+      if (!el) {
+        highlight.classList.remove("is-visible");
+        return;
+      }
+      const navRect = nav.getBoundingClientRect();
+      const elRect = el.getBoundingClientRect();
+      highlight.style.width = `${elRect.width}px`;
+      highlight.style.transform = `translateX(${elRect.left - navRect.left}px)`;
+      highlight.classList.add("is-visible");
+    };
+    const activeEl = linkFor(activeLink);
+    const highlightInit = window.setTimeout(() => moveHighlight(activeEl), 100);
+    const linkEls = [workLinkRef.current, aboutLinkRef.current].filter(Boolean) as HTMLAnchorElement[];
+    const onLinkEnter = (e: Event) => moveHighlight(e.currentTarget as HTMLElement);
+    const onLinkLeave = () => moveHighlight(activeEl);
+    const onLinkFocus = (e: Event) => moveHighlight(e.currentTarget as HTMLElement);
+    const onLinkBlur = () => moveHighlight(activeEl);
+    linkEls.forEach((el) => {
+      el.addEventListener("mouseenter", onLinkEnter);
+      el.addEventListener("mouseleave", onLinkLeave);
+      el.addEventListener("focus", onLinkFocus);
+      el.addEventListener("blur", onLinkBlur);
+    });
+    window.addEventListener("resize", onLinkLeave);
+
+    /* ── nav: logo face — eyes follow cursor (2px), blink, wiggle ── */
+    const logoEyes = logoEyesRef.current;
+    const logoLink = nav?.querySelector(".pp-logo") as HTMLElement | null;
+    const onLogoMouse = (e: MouseEvent) => {
+      if (!logoEyes || !logoLink || reduceMotion || isTouch) return;
+      const r = logoLink.getBoundingClientRect();
+      const dx = Math.max(-2, Math.min(2, e.clientX - (r.left + r.width / 2)));
+      const dy = Math.max(-2, Math.min(2, e.clientY - (r.top + r.height / 2)));
+      logoEyes.style.transform = `translate(${dx}px, ${dy}px)`;
+    };
+    if (!isTouch) window.addEventListener("mousemove", onLogoMouse);
+    let blinkTimer = 0;
+    const scheduleBlink = () => {
+      blinkTimer = window.setTimeout(() => {
+        if (logoEyes && !reduceMotion) {
+          logoEyes.classList.add("is-blinking");
+          window.setTimeout(() => logoEyes.classList.remove("is-blinking"), 150);
+        }
+        scheduleBlink();
+      }, 4000 + Math.random() * 1000);
+    };
+    if (!reduceMotion) scheduleBlink();
+    let wiggleTimer = 0;
+    const scheduleWiggle = () => {
+      wiggleTimer = window.setTimeout(() => {
+        if (logoLink && !reduceMotion) {
+          logoLink.style.transform = "rotate(-8deg) translateY(-4px)";
+          window.setTimeout(() => { if (logoLink) logoLink.style.transform = ""; }, 400);
+        }
+        scheduleWiggle();
+      }, 10000 + Math.random() * 2000);
+    };
+    if (!reduceMotion) scheduleWiggle();
+
+    /* ── nav: scroll — shrink after 120px, hide on fast scroll down (rAF, no layout reads) ── */
     let lastY = window.scrollY;
+    let scrollTicking = false;
     const onScroll = () => {
-      const y = window.scrollY;
-      if (y === lastY) return;
-      lastY = y;
-      if (blobsRef.current) {
-        blobsRef.current.style.transform = `translateY(${y * 0.12}px)`;
-      }
-      // nav backdrop after 40px
-      if (navRef.current) {
-        navRef.current.classList.toggle("is-scrolled", y > 40);
-      }
+      if (scrollTicking) return;
+      scrollTicking = true;
+      requestAnimationFrame(() => {
+        scrollTicking = false;
+        const y = window.scrollY;
+        if (blobsRef.current) {
+          blobsRef.current.style.transform = `translateY(${y * 0.12}px)`;
+        }
+        if (!nav || reduceMotion) { lastY = y; return; }
+        const dy = y - lastY;
+        nav.classList.toggle("is-scrolled", y > 120);
+        if (y < 100) {
+          nav.classList.remove("is-hidden");
+        } else if (dy > 8) {
+          nav.classList.add("is-hidden");
+        } else if (dy < -4) {
+          nav.classList.remove("is-hidden");
+        }
+        lastY = y;
+      });
     };
 
-    hero.addEventListener("mousemove", onMouse);
+    /* ── nav: close mobile menu on outside tap ── */
+    const onDocClick = (e: MouseEvent) => {
+      if (menuOpen.current && nav && !nav.contains(e.target as Node)) {
+        menuOpen.current = false;
+        nav.classList.remove("is-open");
+        nav.querySelector(".pp-menu-btn")?.setAttribute("aria-expanded", "false");
+      }
+    };
+    document.addEventListener("click", onDocClick);
+
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       hero.removeEventListener("mousemove", onMouse);
+      window.removeEventListener("mousemove", onLogoMouse);
       window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("click", onDocClick);
+      window.removeEventListener("resize", onLinkLeave);
+      window.clearTimeout(highlightInit);
+      window.clearTimeout(blinkTimer);
+      window.clearTimeout(wiggleTimer);
       cancelAnimationFrame(raf);
+      linkEls.forEach((el) => {
+        el.removeEventListener("mouseenter", onLinkEnter);
+        el.removeEventListener("mouseleave", onLinkLeave);
+        el.removeEventListener("focus", onLinkFocus);
+        el.removeEventListener("blur", onLinkBlur);
+      });
     };
-  }, []);
+  }, [activeLink]);
 
   // (hero title removed per user request — pills + card only)
   const tags = [
@@ -104,7 +220,7 @@ export default function ProjectHero({
   return (
     <>
       <style>{`
-        html { scroll-padding-top: 80px; } /* anchors never hide under the fixed nav */
+        html { scroll-padding-top: 96px; } /* anchors never hide under the floating pill nav */
         .ph-hero {
           --ph-purple-light: #A58CF4;
           --ph-pink: #ff0a8a;
@@ -176,88 +292,161 @@ export default function ProjectHero({
           to { transform: translate(40px, -40px); }
         }
 
-        /* nav — FIXED: always on top, solid bar after scroll */
+        /* ── nav: compact floating pill (reference style) ── */
         .ph-nav {
-          position: fixed; /* was absolute: stayed in hero, title overlapped it on scroll */
-          top: 0; left: 0; right: 0;
-          height: 72px;
+          --pp-purple: #A58CF4;
+          --pp-yellow: #FFD60A;
+          --pp-white: #FAFAFA;
+          --pp-black: #0D0D0D;
+          position: fixed;
+          top: 18px;
+          left: 50%;
+          transform: translateX(-50%);
+          z-index: 1000;
           display: flex;
           align-items: center;
-          justify-content: space-between;
-          padding: 0 24px;
-          z-index: 1000; /* above hero, title, blobs, card, decorations */
+          gap: 6px;
+          width: fit-content;
+          max-width: calc(100% - 32px);
+          height: 60px;
+          padding: 8px;
+          background: var(--pp-black); /* solid, no transparency */
+          border: 2px solid var(--pp-black);
+          border-radius: 999px;
+          box-shadow:
+            0 0 0 2px var(--pp-white), /* outer white ring */
+            4px 4px 0 var(--pp-purple); /* hard offset shadow, playful sticker */
           white-space: nowrap;
-          border-bottom: 1px solid transparent;
-          transition: background 0.3s ease, border-color 0.3s ease;
+          transition: transform 0.3s ease;
         }
-        .ph-nav.is-scrolled {
-          background: rgba(13,13,13,0.92); /* solid bar, no backdrop blur (perf) */
-          border-bottom-color: rgba(255,255,255,0.08);
+        /* scroll: shrink after 120px, hide on fast scroll down */
+        .ph-nav.is-scrolled { transform: translateX(-50%) scale(0.94); }
+        .ph-nav.is-hidden { transform: translateX(-50%) translateY(-140%); }
+        /* entrance: drop in with overshoot */
+        .ph-nav.is-entering { animation: pp-drop-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes pp-drop-in {
+          0% { transform: translateX(-50%) translateY(-50px); opacity: 0; }
+          60% { transform: translateX(-50%) translateY(8px); opacity: 1; }
+          100% { transform: translateX(-50%) translateY(0); opacity: 1; }
         }
-        .ph-logo {
-          font-family: "Zilla Slab", Rockwell, Georgia, serif;
-          font-weight: 700;
-          font-size: 19px;
-          color: var(--ph-soft-white);
-          text-transform: uppercase;
+        .ph-nav.is-entering .pp-logo,
+        .ph-nav.is-entering .pp-links a,
+        .ph-nav.is-entering .pp-hire {
+          animation: pp-pop-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+        }
+        .ph-nav.is-entering .pp-links a:nth-child(1) { animation-delay: 0.07s; }
+        .ph-nav.is-entering .pp-links a:nth-child(2) { animation-delay: 0.14s; }
+        .ph-nav.is-entering .pp-hire { animation-delay: 0.21s; }
+        @keyframes pp-pop-in {
+          0% { transform: scale(0.8); opacity: 0; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        /* sliding highlight behind hovered/active link */
+        .pp-highlight {
+          position: absolute;
+          top: 8px;
+          left: 0;
+          height: calc(100% - 16px);
+          width: 0;
+          background: var(--pp-purple);
+          border-radius: 999px;
+          z-index: 0;
+          pointer-events: none;
+          transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                      width 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                      opacity 0.2s ease;
+          opacity: 0;
+        }
+        .pp-highlight.is-visible { opacity: 1; }
+        /* logo: 44px round button with cartoon face */
+        .pp-logo {
+          position: relative;
+          z-index: 1;
+          width: 44px;
+          height: 44px;
+          min-width: 44px;
+          min-height: 44px;
+          border-radius: 50%;
+          background: var(--pp-purple);
+          border: none;
           cursor: pointer;
-          letter-spacing: 0.04em;
-          flex-shrink: 0;
-          white-space: nowrap;
-        }
-        .ph-links {
+          padding: 0;
           display: flex;
           align-items: center;
-          gap: 12px;
-          width: max-content; /* fix: never clip */
-          max-width: none;
-          overflow: visible;
-          white-space: nowrap;
-          flex-shrink: 0; /* don't let flexbox squeeze the links */
+          justify-content: center;
+          transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .ph-links a {
-          font-family: "Zilla Slab", Rockwell, Georgia, serif;
-          font-weight: 700;
+        .pp-logo:hover { transform: translateY(-4px) rotate(-8deg); }
+        .pp-logo svg { width: 32px; height: 32px; display: block; }
+        .pp-logo .pp-eyes { transition: transform 0.12s ease-out; }
+        .pp-logo .pp-eyes.is-blinking { transform: scaleY(0.1); }
+        .pp-logo .pp-eyes { transform-box: fill-box; transform-origin: center; }
+        /* links: Geist 500, 15px, normal case */
+        .pp-links {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          align-items: center;
+          gap: 2px;
+        }
+        .pp-links a {
+          position: relative;
+          z-index: 1;
+          font-family: "Geist", system-ui, sans-serif;
+          font-weight: 500;
           font-size: 15px;
-          text-transform: uppercase;
-          color: var(--ph-soft-white);
+          color: var(--pp-white);
           cursor: pointer;
-          letter-spacing: 0.03em;
-          flex-shrink: 0;
+          padding: 10px 16px;
+          border-radius: 999px;
           white-space: nowrap;
-          text-shadow: 0 1px 0 rgba(13,13,13,0.5); /* readable while nav is transparent */
+          text-decoration: none;
+          transition: color 0.2s ease;
+          min-height: 44px;
+          display: inline-flex;
+          align-items: center;
         }
-        .ph-nav.is-scrolled .ph-links a { text-shadow: none; } /* solid bg: no shadow needed */
-        .ph-links a:hover { color: var(--ph-purple-light); }
-        .ph-sep { color: rgba(250,250,250,0.4); font-size: 15px; }
-        /* visible focus ring */
-        .ph-nav a:focus-visible,
-        .ph-nav button:focus-visible {
-          outline: 3px solid var(--ph-soft-white);
-          outline-offset: 3px;
-        }
-        .ph-hire {
-          font-family: "Zilla Slab", Rockwell, Georgia, serif;
-          font-weight: 700;
+        .pp-links a:hover, .pp-links a:focus-visible { color: var(--pp-black); }
+        .pp-links a.is-active { color: var(--pp-black); }
+        /* hire: white pill button */
+        .pp-hire {
+          position: relative;
+          z-index: 1;
+          font-family: "Geist", system-ui, sans-serif;
+          font-weight: 600;
           font-size: 15px;
-          text-transform: uppercase;
-          color: var(--ph-jet-black);
-          background: var(--ph-purple-light);
-          border: 2px solid var(--ph-jet-black);
+          color: var(--pp-black);
+          background: var(--pp-white);
+          border: none;
           border-radius: 999px;
           padding: 12px 22px;
           cursor: pointer;
-          box-shadow: 3px 3px 0 var(--ph-soft-white);
-          transition: background 0.2s ease, transform 0.2s ease;
-          display: flex;
+          display: inline-flex;
           align-items: center;
-          gap: 8px;
-          flex-shrink: 0;
+          gap: 6px;
           white-space: nowrap;
+          min-height: 44px;
+          transition: background 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
         }
-        .ph-hire:hover { background: var(--ph-soft-white); }
-        .ph-hire .ph-arrow { transition: transform 0.2s ease; display: inline-block; }
-        .ph-hire:hover .ph-arrow { transform: translate(3px, -3px); }
+        .pp-hire:hover {
+          background: var(--pp-yellow);
+          transform: scale(1.05);
+        }
+        .pp-hire:hover .pp-arrow { transform: translate(2px, -2px); }
+        .pp-hire .pp-arrow { transition: transform 0.2s ease; display: inline-block; }
+        .pp-hire:active {
+          transform: translateY(2px) scale(1.02);
+          box-shadow: 2px 2px 0 var(--pp-purple);
+        }
+        /* visible focus ring */
+        .ph-nav a:focus-visible,
+        .ph-nav button:focus-visible {
+          outline: 3px solid var(--pp-yellow);
+          outline-offset: 3px;
+        }
+        /* mobile menu button (hidden on desktop) */
+        .pp-menu-btn { display: none; }
+        .pp-mobile-menu { display: none; }
         .ph-menu-btn { display: none; }
 
         /* tag pills */
@@ -345,33 +534,99 @@ export default function ProjectHero({
 
         /* responsive */
         @media (max-width: 768px) {
-          .ph-links { display: none; }
-          /* open menu: full-width solid panel below the nav */
-          .ph-nav.is-open .ph-links {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 16px;
-            position: fixed;
-            top: 72px; left: 0; right: 0;
-            background: #0D0D0D;
-            z-index: 999;
-            padding: 24px;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-          }
-          .ph-nav.is-open .ph-links a { font-size: 22px; } /* Zilla Slab 700, stacked */
-          .ph-nav.is-open .ph-sep { display: none; }
-          .ph-menu-btn {
-            display: block;
-            background: none;
-            border: 2px solid var(--ph-soft-white);
-            border-radius: 999px;
-            color: var(--ph-soft-white);
-            font-family: "Zilla Slab", serif;
-            font-weight: 700;
+          /* mobile: compact pill — logo, menu button, hire */
+          .ph-nav { top: 12px; height: 56px; padding: 6px; gap: 4px; }
+          .pp-links { display: none; }
+          .pp-menu-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+            font-family: "Geist", system-ui, sans-serif;
+            font-weight: 600;
             font-size: 14px;
+            color: var(--pp-black);
+            background: var(--pp-purple);
+            border: none;
+            border-radius: 999px;
             padding: 10px 18px;
             cursor: pointer;
+            min-height: 44px;
+            white-space: nowrap;
+          }
+          /* hamburger morphs to X */
+          .pp-menu-btn .pp-burger {
+            position: relative;
+            width: 18px;
+            height: 2px;
+            background: var(--pp-black);
+            border-radius: 2px;
+            transition: background 0.2s ease;
+          }
+          .pp-menu-btn .pp-burger::before,
+          .pp-menu-btn .pp-burger::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 18px;
+            height: 2px;
+            background: var(--pp-black);
+            border-radius: 2px;
+            transition: transform 0.25s ease;
+          }
+          .pp-menu-btn .pp-burger::before { top: -5px; }
+          .pp-menu-btn .pp-burger::after { top: 5px; }
+          .pp-menu-btn[aria-expanded="true"] .pp-burger { background: transparent; }
+          .pp-menu-btn[aria-expanded="true"] .pp-burger::before { transform: translateY(5px) rotate(45deg); }
+          .pp-menu-btn[aria-expanded="true"] .pp-burger::after { transform: translateY(-5px) rotate(-45deg); }
+          .pp-hire { padding: 10px 16px; font-size: 14px; }
+          /* dropdown under the pill */
+          .pp-mobile-menu {
+            display: block;
+            position: fixed;
+            top: 84px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.95);
+            transform-origin: top center;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 999;
+            background: var(--pp-black);
+            border-radius: 28px;
+            border: 2px solid var(--pp-black);
+            box-shadow:
+              0 0 0 2px var(--pp-white),
+              4px 4px 0 var(--pp-purple);
+            padding: 12px;
+            min-width: 240px;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+          }
+          .ph-nav.is-open .pp-mobile-menu {
+            transform: translateX(-50%) scale(1);
+            opacity: 1;
+            pointer-events: auto;
+          }
+          .pp-mobile-menu a {
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            font-family: "Geist", system-ui, sans-serif;
+            font-weight: 600;
+            font-size: 22px;
+            color: var(--pp-white);
+            padding: 14px 20px;
+            border-radius: 18px;
+            cursor: pointer;
+            text-decoration: none;
+            min-height: 44px;
+            transition: background 0.2s ease, color 0.2s ease;
+          }
+          .pp-mobile-menu a:hover, .pp-mobile-menu a:focus-visible {
+            background: var(--pp-purple);
+            color: var(--pp-black);
           }
           .ph-tags { margin-top: 140px; } /* mobile: pills higher without title */
           .ph-card-wrap { width: 92vw; }
@@ -386,7 +641,13 @@ export default function ProjectHero({
 
         /* reduced motion: final static layout */
         @media (prefers-reduced-motion: reduce) {
-          .ph-nav { transition: none; } /* solid bar, no animation */
+          .ph-nav { transition: none; animation: none; }
+          .ph-nav.is-entering,
+          .ph-nav.is-entering .pp-logo,
+          .ph-nav.is-entering .pp-links a,
+          .ph-nav.is-entering .pp-hire { animation: none; }
+          .pp-highlight { transition: none; } /* instant highlight, no spring */
+          .pp-logo .pp-eyes { animation: none; }
           .ph-tag { animation: none; transform: none; opacity: 1; }
           .ph-card-wrap { animation: none; }
           .ph-card { animation: none; }
@@ -406,21 +667,69 @@ export default function ProjectHero({
 
         {/* nav */}
         <nav ref={navRef} className="ph-nav" aria-label="Main">
-          <div className="ph-logo" onClick={onNavigateHome}>ABDUL</div>
-          <div className="ph-links">
-            <a onClick={onNavigateHome}>Home</a>
-            <span className="ph-sep">/</span>
-            <a onClick={onNavigateWork}>Work</a>
-            <span className="ph-sep">/</span>
-            <a onClick={onNavigateAbout}>About</a>
+          {/* sliding highlight behind the hovered/active link */}
+          <span ref={highlightRef} className="pp-highlight" aria-hidden="true" />
+          {/* logo: round button with cartoon face → HOME */}
+          <a
+            className="pp-logo"
+            onClick={onNavigateHome}
+            aria-label="Home"
+            aria-current={activeLink === "home" ? "page" : undefined}
+          >
+            <svg viewBox="0 0 44 44" aria-hidden="true">
+              <circle cx="22" cy="22" r="20" fill="#A58CF4" />
+              <g ref={logoEyesRef} className="pp-eyes" fill="#0D0D0D">
+                <circle cx="16" cy="19" r="2.5" />
+                <circle cx="28" cy="19" r="2.5" />
+              </g>
+              <path
+                d="M16,27 Q22,31 28,27"
+                stroke="#0D0D0D"
+                strokeWidth="2.5"
+                fill="none"
+                strokeLinecap="round"
+              />
+            </svg>
+          </a>
+          {/* middle links */}
+          <div className="pp-links">
+            <a
+              ref={workLinkRef}
+              onClick={onNavigateWork}
+              aria-current={activeLink === "work" ? "page" : undefined}
+              className={activeLink === "work" ? "is-active" : ""}
+            >Work</a>
+            <a
+              ref={aboutLinkRef}
+              onClick={onNavigateAbout}
+              aria-current={activeLink === "about" ? "page" : undefined}
+              className={activeLink === "about" ? "is-active" : ""}
+            >About</a>
           </div>
-          <button className="ph-menu-btn" onClick={() => {
-            menuOpen.current = !menuOpen.current;
-            navRef.current?.classList.toggle("is-open", menuOpen.current);
-          }}>Menu</button>
-          <button className="ph-hire" onClick={onNavigateHome}>
-            Hire <span className="ph-arrow">↗</span>
+          {/* mobile menu button */}
+          <button
+            className="pp-menu-btn"
+            aria-expanded="false"
+            aria-controls="pp-mobile-menu"
+            onClick={() => {
+              menuOpen.current = !menuOpen.current;
+              const isOpen = menuOpen.current;
+              navRef.current?.classList.toggle("is-open", isOpen);
+              navRef.current?.querySelector(".pp-menu-btn")?.setAttribute("aria-expanded", isOpen ? "true" : "false");
+            }}
+          >
+            <span className="pp-burger" aria-hidden="true" />
+            Menu
           </button>
+          {/* hire: white pill → same link as before */}
+          <button className="pp-hire" onClick={onNavigateHome}>
+            Hire me <span className="pp-arrow">↗</span>
+          </button>
+          {/* mobile dropdown */}
+          <div id="pp-mobile-menu" className="pp-mobile-menu" role="menu">
+            <a onClick={() => { closeMenu(); onNavigateWork(); }} role="menuitem">Work</a>
+            <a onClick={() => { closeMenu(); onNavigateAbout(); }} role="menuitem">About</a>
+          </div>
         </nav>
 
         {/* tag pills: pop, stagger 90ms */}

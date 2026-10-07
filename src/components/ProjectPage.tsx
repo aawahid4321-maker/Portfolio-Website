@@ -68,6 +68,7 @@ export default function ProjectPage({
           onNavigateHome={onNavigateHome}
           onNavigateWork={onNavigateWork}
           onNavigateAbout={onNavigateAbout}
+          activeLink="work"
         />
       </div>
 
