@@ -23,7 +23,6 @@ export default function ProjectHero({
 }: ProjectHeroProps) {
   const heroRef = useRef<HTMLDivElement>(null);
   const cardRef = useRef<HTMLDivElement>(null);
-  const titleRef = useRef<HTMLHeadingElement>(null);
   const blobsRef = useRef<HTMLDivElement>(null);
   const decoRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLElement>(null);
@@ -71,20 +70,12 @@ export default function ProjectHero({
       }
     };
 
-    // scroll: title parallax 0.25x + fade out before reaching nav, blobs shift
-    // transform + opacity only, no layout reads
+    // scroll: blobs shift — transform only, passive
     let lastY = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
       if (y === lastY) return;
       lastY = y;
-      if (titleRef.current) {
-        titleRef.current.style.transform = `translateY(${y * 0.25}px)`;
-        // title fades 1→0 over the last ~120px before it reaches the 72px nav
-        // title top ≈ 220 - y*0.75 in viewport; fade between y=37 and y=197
-        const t = Math.min(1, Math.max(0, (y - 37) / 160));
-        titleRef.current.style.opacity = String(1 - t);
-      }
       if (blobsRef.current) {
         blobsRef.current.style.transform = `translateY(${y * 0.12}px)`;
       }
@@ -103,8 +94,7 @@ export default function ProjectHero({
     };
   }, []);
 
-  // title words for mask reveal
-  const words = title.split(" ");
+  // (hero title removed per user request — pills + card only)
   const tags = [
     { label: type, cls: "tag-purple" },
     { label: year, cls: "tag-yellow" },
@@ -270,35 +260,6 @@ export default function ProjectHero({
         .ph-hire:hover .ph-arrow { transform: translate(3px, -3px); }
         .ph-menu-btn { display: none; }
 
-        /* title */
-        .ph-title {
-          position: relative;
-          z-index: 10;
-          text-align: center;
-          margin: 220px auto 0; /* well clear of the nav row */
-          padding: 0 24px;
-          font-family: "Geist", system-ui, sans-serif;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: -0.02em;
-          font-size: clamp(44px, 6vw, 96px); /* conservative: never near the nav */
-          line-height: 0.95;
-          color: var(--ph-soft-white);
-          max-width: 1200px;
-        }
-        .ph-title .mask {
-          display: inline-block;
-          overflow: hidden;
-          vertical-align: top;
-          padding-bottom: 0.08em; /* descender room */
-        }
-        .ph-title .mask > span {
-          display: inline-block;
-          transform: translateY(110%);
-          animation: ph-reveal 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-        @keyframes ph-reveal { to { transform: translateY(0); } }
-
         /* tag pills */
         .ph-tags {
           position: relative;
@@ -306,7 +267,7 @@ export default function ProjectHero({
           display: flex;
           justify-content: center;
           gap: 12px;
-          margin-top: 28px;
+          margin-top: 320px; /* title removed: pills sit where the title was */
           flex-wrap: wrap;
           padding: 0 24px;
         }
@@ -412,7 +373,7 @@ export default function ProjectHero({
             padding: 10px 18px;
             cursor: pointer;
           }
-          .ph-title { font-size: 44px; margin-top: 120px; }
+          .ph-tags { margin-top: 140px; } /* mobile: pills higher without title */
           .ph-card-wrap { width: 92vw; }
           .ph-card {
             aspect-ratio: 4 / 3;
@@ -426,7 +387,6 @@ export default function ProjectHero({
         /* reduced motion: final static layout */
         @media (prefers-reduced-motion: reduce) {
           .ph-nav { transition: none; } /* solid bar, no animation */
-          .ph-title .mask > span { animation: none; transform: none; }
           .ph-tag { animation: none; transform: none; opacity: 1; }
           .ph-card-wrap { animation: none; }
           .ph-card { animation: none; }
@@ -462,16 +422,6 @@ export default function ProjectHero({
             Hire <span className="ph-arrow">↗</span>
           </button>
         </nav>
-
-        {/* title: mask reveal, stagger 80ms per word */}
-        <h1 ref={titleRef} className="ph-title">
-          {words.map((w, i) => (
-            <span key={i} className="mask">
-              <span style={{ animationDelay: `${i * 80}ms` }}>{w}</span>
-              {i < words.length - 1 ? "\u00A0" : ""}
-            </span>
-          ))}
-        </h1>
 
         {/* tag pills: pop, stagger 90ms */}
         <div className="ph-tags">
