@@ -329,10 +329,10 @@ function Banner() {
 
 function Container20() {
   return (
-    <div className="absolute content-stretch flex h-[669px] items-center justify-center left-[510px] overflow-clip top-[593.07px] w-[1362px]" data-name="Container">
-      <div className="relative shrink-0 size-[1582.984px]" data-name="ChatGPT Image Sep 13, 2026, 01_21_19 AM 1">
+    <div className="absolute content-stretch flex h-[768px] items-center justify-center left-[510px] overflow-clip top-[593.07px] w-[1366px]" data-name="Container">
+      <div className="relative shrink-0 w-[1366px] h-[768px]" data-name="About Portrait">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <img alt="" className="absolute h-[65.44%] left-0 max-w-none top-[24%] w-full" src="/Portfolio-Website/assets/about-portrait-purple.png" loading="eager" decoding="async" />
+          <img alt="" className="absolute inset-0 w-full h-full object-cover" src="/Portfolio-Website/assets/about-portrait-purple.png" loading="eager" decoding="async" />
         </div>
       </div>
     </div>
