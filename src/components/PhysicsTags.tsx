@@ -184,12 +184,12 @@ export default function PhysicsTags() {
 
     /* ── Engine: physics only, fixed timestep ───────────────────────────── */
     const engine = Matter.Engine.create({ enableSleeping: false });
-    engine.gravity.y = 2.2; // fast drop (was 1)
+    engine.gravity.y = 1.2;
     engine.positionIterations = 6;
     engine.velocityIterations = 4;
 
     const wallOpts: Matter.IBodyDefinition = {
-      isStatic: true, restitution: 0.4, friction: 0.2, render: { visible: false },
+      isStatic: true, restitution: 0.5, friction: 0.2, render: { visible: false },
     };
     const THICK = 200; // thick invisible walls
     let walls: Matter.Body[] = [];
@@ -225,8 +225,8 @@ export default function PhysicsTags() {
     };
 
     const timeouts: number[] = [];
-    /* fast-drop body options: low air drag, quick settle */
-    const DROP_OPTS = { restitution: 0.4, friction: 0.2, frictionAir: 0.006, density: 0.0009 };
+    /* drop body options: matches the specified drop feel */
+    const DROP_OPTS = { restitution: 0.5, friction: 0.2, frictionAir: 0.012, density: 0.0009 };
     const spawnTag = (i: number, x: number, y: number) => {
       const t = tags[i];
       const body = Matter.Bodies.rectangle(x, y, t.w, t.h, {
@@ -268,11 +268,8 @@ export default function PhysicsTags() {
       Matter.Composite.add(engine.world, body!);
     };
 
-    /* ── Drop: ALL bodies at once (no stagger) ──────────────────────────── */
-    let dropTime = 0;
-    let settledLogged = false; // DEBUG: "settled after" logged once
-    let easingTimeScale = false;
-    let easeT0 = 0;
+    /* ── Drop state ───────────────────────────────────────────────────── */
+    let hasSettled = false; // pile fully calm (used to gate fast-forward)
     const TOTAL_BODIES = tagCount + shapeCount;
 
     /* loose grid across full width, 40–400px above section top, 3 rows */
@@ -294,35 +291,36 @@ export default function PhysicsTags() {
       });
     };
 
-    /* one fixed physics step, split into 2 sub-steps for high-gravity stability */
+    /* one fixed physics step, split into 2 sub-steps for stability */
     const STEP = 1000 / 60;
     const stepPhysics = (dt: number) => {
       Matter.Engine.update(engine, dt / 2);
       Matter.Engine.update(engine, dt / 2);
-      checkSettled();
+      checkUnlock();
     };
 
-    /* when average body speed stays low, ease timeScale 1.25 → 1 over 1.2s */
-    const checkSettled = () => {
-      if (!hasDropped || settledLogged) return;
-      if (performance.now() - dropTime < 800) return; // let them fall first
-      let count = 0, speedSum = 0;
-      for (const t of tags) if (t.body) { count++; speedSum += t.body.speed; }
-      for (const s of shapes) if (s.body) { count++; speedSum += s.body.speed; }
-      if (count < TOTAL_BODIES) return; // not all spawned yet
-      const avg = speedSum / count;
-      if (avg < 0.5 && !easingTimeScale) { easingTimeScale = true; easeT0 = performance.now(); }
-      if (easingTimeScale) {
-        const t = Math.min((performance.now() - easeT0) / 1200, 1);
-        engine.timing.timeScale = 1.25 - 0.25 * t;
-        if (t >= 1) {
-          settledLogged = true;
-          console.log("settled after", Math.round(performance.now() - dropTime), "ms"); // DEBUG (temporary)
+    /* unlock when the pile is calm: avg speed < 0.5 AND every body is inside
+       the section (none still falling in from above), sustained for 400ms */
+    let calmSince = 0;
+    const checkUnlock = () => {
+      if (!locked || !hasDropped) return;
+      let count = 0, speedSum = 0, aboveTop = false;
+      for (const t of tags) if (t.body) { count++; speedSum += t.body.speed; if (t.body.position.y < 0) aboveTop = true; }
+      for (const s of shapes) if (s.body) { count++; speedSum += s.body.speed; if (s.body.position.y < 0) aboveTop = true; }
+      if (count < TOTAL_BODIES) { calmSince = 0; return; } // not all spawned yet
+      const now = performance.now();
+      if (speedSum / count < 0.5 && !aboveTop) {
+        if (!calmSince) calmSince = now;
+        if (now - calmSince >= 400) {
+          hasSettled = true;
+          unlockScroll("settled");
         }
+      } else {
+        calmSince = 0;
       }
     };
 
-    /* snap interpolated draw state to physics state (after pre-warm / fast-forward) */
+    /* snap interpolated draw state to physics state (after fast-forward) */
     const syncDrawState = () => {
       [...tags, ...shapes].forEach((it) => {
         if (!it.body) return;
@@ -332,39 +330,21 @@ export default function PhysicsTags() {
       });
     };
 
-    /* run physics steps without drawing, chunked to stay under ~8ms/frame */
-    const preWarm = (steps: number) => {
-      let remaining = steps;
-      const chunk = () => {
-        const t0 = performance.now();
-        while (remaining > 0 && performance.now() - t0 < 6) {
-          stepPhysics(STEP);
-          remaining--;
-        }
-        if (remaining > 0) {
-          requestAnimationFrame(chunk);
-        } else {
-          syncDrawState(); // snap visuals to pre-warmed positions
-        }
-      };
-      chunk();
-    };
-
+    /* wave release: bodies drop in a left-to-right wave over ~0.6s */
     const triggerDrop = () => {
       if (!ready || hasDropped) return; // drop ONCE, never re-drop
-      hasDropped = true;
-      dropTime = performance.now();
-      console.log("drop started at", dropTime); // DEBUG (temporary)
-      engine.timing.timeScale = 1.25; // fast drop; eased back to 1 when settled
-      startLoop(); // draw from the first frame
-      // tiny 0–150ms jitter only: reads as "everything falls together"
-      buildSpawnList().forEach(({ isTag, i, x, y }) => {
-        timeouts.push(window.setTimeout(() => {
-          if (isTag) spawnTag(i, x, y); else spawnShape(i, x, y);
-        }, Math.random() * 150));
-      });
-      // pre-warm: 60 physics steps (no draw) once all bodies exist
-      timeouts.push(window.setTimeout(() => preWarm(60), 220));
+      try {
+        hasDropped = true;
+        startLoop(); // draw from the first frame
+        buildSpawnList().forEach(({ isTag, i, x, y }) => {
+          const delay = (x / Math.max(W, 1)) * 550 + Math.random() * 50; // wave: 0 → ~0.6s
+          timeouts.push(window.setTimeout(() => {
+            if (isTag) spawnTag(i, x, y); else spawnShape(i, x, y);
+          }, delay));
+        });
+      } catch (err) {
+        unlockScroll("error"); // never leave the page locked
+      }
     };
 
     const start = () => {
@@ -712,18 +692,106 @@ export default function PhysicsTags() {
       Matter.Body.applyForce(b, b.position, { x: (Math.random() - 0.5) * 0.0006, y: -Math.random() * 0.0007 });
     }, 3000);
 
-    /* drop trigger: fires when the section is ~60% viewport BELOW the visible
-       area, so the pile has fallen and settled before the user scrolls to it.
-       Loop is also driven here (paused when fully outside the margin). */
-    const dropObserver = new IntersectionObserver(
+    /* ── Scroll lock: the page stays put while the tags fall (once only) ──
+       Lock: html.is-locked (overflow hidden) + body padding-right = scrollbar
+       width (no layout jump) + preventDefault on wheel/touchmove/scroll-keys.
+       Clicks, hover, tag dragging and the nav keep working. */
+    let locked = false;
+    let lockStart = 0;
+    let lockTimeout = 0;
+    const SCROLL_KEYS = new Set([" ", "Spacebar", "PageDown", "PageUp", "ArrowDown", "ArrowUp", "End", "Home"]);
+    const blockScrollEvent = (e: Event) => e.preventDefault();
+    const blockScrollKeys = (e: KeyboardEvent) => { if (SCROLL_KEYS.has(e.key)) e.preventDefault(); };
+
+    const lockScroll = () => {
+      if (locked || reduceMotion) return;
+      locked = true;
+      lockStart = performance.now();
+      const html = document.documentElement;
+      const scrollbarW = window.innerWidth - html.clientWidth;
+      html.classList.add("is-locked");
+      if (scrollbarW > 0) document.body.style.paddingRight = `${scrollbarW}px`;
+      window.addEventListener("wheel", blockScrollEvent, { passive: false });
+      window.addEventListener("touchmove", blockScrollEvent, { passive: false });
+      window.addEventListener("keydown", blockScrollKeys, { passive: false });
+      console.log("locked"); // DEBUG (temporary)
+      lockTimeout = window.setTimeout(() => unlockScroll("timeout"), 3500); // failsafe: never stuck
+    };
+    const unlockScroll = (reason: "settled" | "timeout" | "hidden" | "error") => {
+      if (!locked) return;
+      locked = false;
+      window.clearTimeout(lockTimeout);
+      document.documentElement.classList.remove("is-locked");
+      document.body.style.paddingRight = "";
+      window.removeEventListener("wheel", blockScrollEvent);
+      window.removeEventListener("touchmove", blockScrollEvent);
+      window.removeEventListener("keydown", blockScrollKeys);
+      console.log("unlocked after", Math.round(performance.now() - lockStart), "ms", "reason:", reason); // DEBUG (temporary)
+    };
+
+    /* 500ms ease-out scroll that brings the section to fill the screen, then runs fn */
+    const NAV_OFFSET = 108; // 92px floating nav + 16px margin
+    const smoothScrollTo = (targetY: number, done: () => void) => {
+      const startY = window.scrollY;
+      const dist = targetY - startY;
+      if (Math.abs(dist) < 2) { done(); return; }
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const t = Math.min((now - t0) / 500, 1);
+        const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+        window.scrollTo(0, startY + dist * eased);
+        if (t < 1) requestAnimationFrame(tick);
+        else done();
+      };
+      requestAnimationFrame(tick);
+    };
+    const scrollIntoPlace = (done: () => void) => {
+      const r = section.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const target = r.height >= vh
+        ? window.scrollY + r.top - NAV_OFFSET // taller than screen: top just below nav
+        : window.scrollY + r.top - (vh - r.height) / 2; // shorter: vertically centered
+      smoothScrollTo(target, done);
+    };
+
+    /* the once-only sequence: at 35% visibility → scroll into place → lock → drop */
+    const isSection35Visible = () => {
+      const r = section.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const visibleH = Math.min(r.bottom, vh) - Math.max(r.top, 0);
+      return visibleH >= r.height * 0.35;
+    };
+    const maybeStartDropSequence = () => {
+      if (hasDropped || !ready || reduceMotion) return;
+      if (!isSection35Visible()) return;
+      hasDropped = true; // set now so the observer can never re-trigger
+      sequenceObserver.disconnect(); // never lock again, even on re-entry
+      try {
+        scrollIntoPlace(() => {
+          lockScroll();
+          triggerDrop();
+        });
+      } catch (err) {
+        unlockScroll("error");
+      }
+    };
+
+    /* sequence trigger: 35% visibility → scroll-into-place → lock → drop (once) */
+    const sequenceObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            triggerDrop(); // hasDropped flag: never re-drops
-            startLoop();
-          } else {
-            stopLoop(); // rAF fully cancelled off-screen (timestamp reset on resume)
-          }
+          if (entry.isIntersecting) maybeStartDropSequence();
+        });
+      },
+      { threshold: 0.35 }
+    );
+
+    /* loop perf: pause the rAF loop when the section is well off-screen */
+    const loopObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) startLoop();
+          else stopLoop(); // rAF fully cancelled off-screen (timestamp reset on resume)
         });
       },
       { rootMargin: "0px 0px 60% 0px", threshold: 0 }
@@ -740,7 +808,7 @@ export default function PhysicsTags() {
           if (isVisible) {
             syncMouse();
             rectCache = section.getBoundingClientRect();
-            if (!was && hasDropped && !settledLogged && fastForwardSteps === 0) {
+            if (!was && hasDropped && !hasSettled && fastForwardSteps === 0) {
               fastForwardSteps = 90; // settle the pile right away
             }
           }
@@ -775,7 +843,11 @@ export default function PhysicsTags() {
       }, 200);
     };
     const onScrollSync = () => { syncMouse(); rectCache = section.getBoundingClientRect(); };
-    const onVis = () => { if (document.hidden) stopLoop(); else startLoop(); };
+    const onVis = () => {
+      if (document.hidden) { stopLoop(); unlockScroll("hidden"); } // guaranteed unlock
+      else startLoop();
+    };
+    const onPageHideUnlock = () => unlockScroll("hidden");
     const onPageShow = () => startLoop();
 
     /* wire up once fonts are measured */
@@ -789,8 +861,16 @@ export default function PhysicsTags() {
       window.addEventListener("resize", onResize);
       window.addEventListener("scroll", onScrollSync, { passive: true });
       document.addEventListener("visibilitychange", onVis);
+      window.addEventListener("pagehide", onPageHideUnlock);
       window.addEventListener("pageshow", onPageShow);
-      dropObserver.observe(section);
+      // already in view on load (reload at position / anchor link): drop now,
+      // no scroll-into-place and no lock — the user is already looking at it
+      if (isSection35Visible()) {
+        triggerDrop();
+      } else {
+        sequenceObserver.observe(section);
+      }
+      loopObserver.observe(section);
       visibleObserver.observe(section);
     };
     const bootCheck = window.setInterval(() => {
@@ -800,10 +880,12 @@ export default function PhysicsTags() {
     start();
 
     return () => {
+      unlockScroll("hidden"); // never leave the page locked on unmount
       window.clearInterval(bootCheck);
       window.clearInterval(idleTimer);
       window.clearTimeout(resizeT);
-      dropObserver.disconnect();
+      sequenceObserver.disconnect();
+      loopObserver.disconnect();
       visibleObserver.disconnect();
       section.removeEventListener("mousemove", onMove);
       section.removeEventListener("mouseleave", onLeave);
@@ -811,6 +893,7 @@ export default function PhysicsTags() {
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onScrollSync);
       document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("pagehide", onPageHideUnlock);
       window.removeEventListener("pageshow", onPageShow);
       timeouts.forEach((t) => window.clearTimeout(t));
       stopLoop();
@@ -836,6 +919,12 @@ export default function PhysicsTags() {
           position: absolute;
           inset: 0;
           display: block;
+        }
+        /* scroll lock: no layout jump, no iOS rubber-banding while locked */
+        html.is-locked { overflow: hidden; overscroll-behavior: none; }
+        html.is-locked body { overscroll-behavior: none; }
+        @media (max-width: 768px) {
+          .physics-tags-section { height: 70vh; }
         }
       `}</style>
       <div
