@@ -973,7 +973,6 @@ export default function PhysicsTags() {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting && !hasDropped && ready) {
-            hasDropped = true;
             dropObserver.disconnect();
             triggerDrop();
           }
@@ -1053,7 +1052,6 @@ export default function PhysicsTags() {
       window.addEventListener("pageshow", onPageShow);
       // already in view on load: drop immediately
       if (is20Visible()) {
-        hasDropped = true;
         triggerDrop();
       } else {
         dropObserver.observe(section);
