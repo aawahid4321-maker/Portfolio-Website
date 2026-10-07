@@ -377,7 +377,7 @@ export default function ProjectHero({
           position: absolute;
           inset: 0;
           overflow: hidden; /* clips blobs only, never the card */
-          background: var(--ph-jet-black);
+          background: transparent;
           border-radius: inherit;
         }
         /* gradient mesh: smaller, softer blobs behind the card area */
