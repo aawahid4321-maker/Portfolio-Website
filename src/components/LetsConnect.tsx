@@ -482,7 +482,7 @@ export default function LetsConnect() {
 
           {/* ══ 1. SUN (Orange #ff5a00) — back left, cheerful waving ══ */}
                     {/* scale group: characters 15% bigger, from ground center */}
-          <g transform="translate(450, 495) scale(1.15) translate(-450, -495)">
+          <g transform="translate(450, 495) scale(1.4) translate(-450, -495)">
 <g id="char-sun" className="lc-char" data-cx="170" data-cy="395"
              style={{ "--rise-delay": "0s", "--idle-anim": "lc-breathe", "--idle-d": "3.5s", "--idle-delay": "0.8s" } as React.CSSProperties}>
                         <g className="scroll-shift" data-depth="0.25">
