@@ -487,64 +487,61 @@ export default function LetsConnect() {
                         <g className="scroll-shift" data-depth="0.25">
 <g transform="translate(170, 395)">
               <g className="body">
-                <path d="M0,-62 L14,-34 L42,-48 L34,-18 L62,-14 L36,0 L62,14 L34,18 L42,48 L14,34 L0,62 L-14,34 L-42,48 L-34,18 L-62,14 L-36,0 L-62,-14 L-34,-18 L-42,-48 L-14,-34 Z"
-                      fill="#ff5a00" stroke="#ff5a00" strokeWidth="10" strokeLinejoin="round" />
+                <rect x="-42" y="-80" width="84" height="142" rx="42" fill="#ffd60a" />
               </g>
               <g className="face">
-                <g className="eyes">
-                  <g className="dots" fill="#0D0D0D">
-                    <circle cx="-16" cy="-10" r="3.5" />
-                    <circle cx="16" cy="-10" r="3.5" />
+                <g className="lc-eyes">
+                  <g className="dots">
+                    <circle cx="-20" cy="-32" r="11" fill="#ffffff" />
+                    <circle cx="20" cy="-32" r="11" fill="#ffffff" />
+                    <circle cx="-20" cy="-32" r="4.5" fill="#0D0D0D" />
+                    <circle cx="20" cy="-32" r="4.5" fill="#0D0D0D" />
                   </g>
-                  <g className="happy" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" fill="none">
-                    <path d="M-21,-10 Q-16,-16 -11,-10" />
-                    <path d="M11,-10 Q16,-16 21,-10" />
+                  <g className="happy" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" fill="none">
+                    <path d="M-31,-32 Q-20,-41 -9,-32" />
+                    <path d="M9,-32 Q20,-41 31,-32" />
                   </g>
                 </g>
                 <g className="mouth">
-                  <path className="mouth-normal" d="M-20,12 Q0,28 20,12" stroke="#0D0D0D" strokeWidth="3" fill="none" strokeLinecap="round" />
-                  <path className="mouth-happy" d="M-24,10 Q0,34 24,10" stroke="#0D0D0D" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+                  <g className="mouth-normal">
+                    <ellipse cx="0" cy="8" rx="15" ry="12" fill="#0D0D0D" />
+                    <ellipse cx="0" cy="13" rx="8" ry="5" fill="#ff6b9d" />
+                  </g>
+                  <g className="mouth-happy">
+                    <ellipse cx="0" cy="8" rx="20" ry="16" fill="#0D0D0D" />
+                    <ellipse cx="0" cy="15" rx="10" ry="6" fill="#ff6b9d" />
+                  </g>
                 </g>
+                <ellipse cx="-30" cy="-8" rx="7" ry="5" fill="rgba(255,90,0,0.35)" />
+                <ellipse cx="30" cy="-8" rx="7" ry="5" fill="rgba(255,90,0,0.35)" />
               </g>
               <g className="arms">
-                {/* left arm raised high waving */}
                 <g className="sun-arm-l">
-                  <line x1="-42" y1="-18" x2="-66" y2="-62" stroke="#ff5a00" strokeWidth="11" strokeLinecap="round" />
-                  <circle cx="-66" cy="-62" r="8" fill="#ff5a00" />
-                  <g stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round">
-                    <line x1="-70" y1="-68" x2="-74" y2="-74" />
-                    <line x1="-64" y1="-70" x2="-66" y2="-77" />
-                  </g>
+                  <line x1="-40" y1="-12" x2="-58" y2="-34" stroke="#ffd60a" strokeWidth="12" strokeLinecap="round" />
+                  <circle cx="-58" cy="-34" r="9" fill="#ffd60a" />
                 </g>
-                {/* right arm waving to the side */}
                 <g className="sun-arm-r">
-                  <line x1="42" y1="0" x2="72" y2="-14" stroke="#ff5a00" strokeWidth="11" strokeLinecap="round" />
-                  <circle cx="72" cy="-14" r="8" fill="#ff5a00" />
-                  <g stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round">
-                    <line x1="76" y1="-20" x2="82" y2="-24" />
-                    <line x1="78" y1="-14" x2="85" y2="-16" />
-                  </g>
+                  <line x1="40" y1="-12" x2="58" y2="-34" stroke="#ffd60a" strokeWidth="12" strokeLinecap="round" />
+                  <circle cx="58" cy="-34" r="9" fill="#ffd60a" />
                 </g>
               </g>
-              <g className="legs" stroke="#ff5a00" strokeWidth="12" strokeLinecap="round">
-                <line x1="-18" y1="55" x2="-18" y2="80" />
-                <line x1="18" y1="55" x2="18" y2="80" />
+              <g className="legs" stroke="#ffd60a" strokeWidth="13" strokeLinecap="round">
+                <line x1="-18" y1="58" x2="-18" y2="78" />
+                <line x1="18" y1="58" x2="18" y2="78" />
               </g>
               <g className="feet">
-                <g transform="translate(-18, 86) rotate(-8)">
-                  <path d="M-16,-14 L8,-14 Q16,-14 16,-6 L16,0 L-16,0 Z" fill="#ff5a00" />
-                  <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#0D0D0D" strokeWidth="2" />
+                <g transform="translate(-18, 84)">
+                  <ellipse cx="0" cy="0" rx="16" ry="9" fill="#ffd60a" />
                 </g>
-                <g transform="translate(18, 86) rotate(8)">
-                  <path d="M-8,-14 L16,-14 Q16,-14 16,-6 L16,0 L-16,0 L-16,-6 Q-16,-14 -8,-14 Z" fill="#ff5a00" />
-                  <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#0D0D0D" strokeWidth="2" />
+                <g transform="translate(18, 84)">
+                  <ellipse cx="0" cy="0" rx="16" ry="9" fill="#ffd60a" />
                 </g>
               </g>
               <g className="click-sparkles">
-                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(-50,-50)" />
+                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(-50,-50)" />
                 <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(50,-60)" />
                 <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(55,25)" />
-                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(-55,20)" />
+                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(-55,20)" />
               </g>
             </g>
                     </g>
@@ -555,69 +552,57 @@ export default function LetsConnect() {
              style={{ "--rise-delay": "0.1s", "--idle-anim": "lc-breathe", "--idle-d": "4s", "--idle-delay": "0.9s" } as React.CSSProperties}>
                         <g className="scroll-shift" data-depth="0.5">
 <g transform="translate(300, 415)">
-              <g className="body">
-                <path d="M0,-65 L58,45 L-58,45 Z"
-                      fill="#ffd60a" stroke="#ffd60a" strokeWidth="16" strokeLinejoin="round" />
+              <g className="body" fill="#ff0a8a">
+                <circle cx="0" cy="0" r="46" />
+                <circle cx="0" cy="-50" r="23" />
+                <circle cx="48" cy="-16" r="23" />
+                <circle cx="30" cy="40" r="23" />
+                <circle cx="-30" cy="40" r="23" />
+                <circle cx="-48" cy="-16" r="23" />
               </g>
               <g className="face">
-                <g className="brows" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" fill="none">
-                  <path d="M-22,-30 Q-14,-34 -6,-30" />
-                  <path d="M6,-30 Q14,-34 22,-30" />
-                </g>
-                <g className="eyes">
-                  <g className="dots" fill="#0D0D0D">
-                    <circle cx="-14" cy="-14" r="3.5" />
-                    <circle cx="14" cy="-14" r="3.5" />
+                <g className="lc-eyes">
+                  <g className="dots">
+                    <circle cx="-18" cy="-12" r="12" fill="#ffffff" />
+                    <circle cx="18" cy="-12" r="12" fill="#ffffff" />
+                    <circle cx="-18" cy="-12" r="5" fill="#0D0D0D" />
+                    <circle cx="18" cy="-12" r="5" fill="#0D0D0D" />
                   </g>
-                  <g className="happy" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" fill="none">
-                    <path d="M-19,-14 Q-14,-20 -9,-14" />
-                    <path d="M9,-14 Q14,-20 19,-14" />
+                  <g className="happy" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" fill="none">
+                    <path d="M-30,-12 Q-18,-22 -6,-12" />
+                    <path d="M6,-12 Q18,-22 30,-12" />
                   </g>
                 </g>
                 <g className="mouth">
-                  <ellipse className="mouth-normal" cx="0" cy="16" rx="9" ry="11" fill="none" stroke="#0D0D0D" strokeWidth="3" />
-                  <ellipse className="mouth-happy" cx="0" cy="16" rx="13" ry="15" fill="none" stroke="#0D0D0D" strokeWidth="3.5" />
-                  {/* sound lines */}
-                  <g stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round" opacity="0.7">
-                    <line x1="28" y1="6" x2="36" y2="2" />
-                    <line x1="32" y1="16" x2="41" y2="16" />
-                    <line x1="28" y1="26" x2="36" y2="30" />
-                  </g>
+                  <ellipse className="mouth-normal" cx="0" cy="18" rx="9" ry="11" fill="none" stroke="#0D0D0D" strokeWidth="3" />
+                  <ellipse className="mouth-happy" cx="0" cy="18" rx="13" ry="15" fill="none" stroke="#0D0D0D" strokeWidth="3.5" />
                 </g>
               </g>
               <g className="arms">
-                {/* right hand cupped next to mouth (calling out) */}
                 <g className="tri-cup-hand">
-                  <line x1="38" y1="8" x2="26" y2="-2" stroke="#ffd60a" strokeWidth="11" strokeLinecap="round" />
-                  <circle cx="24" cy="-4" r="8" fill="#ffd60a" />
-                  <g stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round">
-                    <line x1="20" y1="-10" x2="18" y2="-16" />
-                    <line x1="26" y1="-11" x2="26" y2="-17" />
-                  </g>
+                  <line x1="40" y1="6" x2="56" y2="-6" stroke="#ff0a8a" strokeWidth="12" strokeLinecap="round" />
+                  <circle cx="56" cy="-6" r="9" fill="#ff0a8a" />
                 </g>
-                {/* left arm down */}
-                <line x1="-38" y1="12" x2="-52" y2="32" stroke="#ffd60a" strokeWidth="11" strokeLinecap="round" />
-                <circle cx="-52" cy="32" r="8" fill="#ffd60a" />
+                <line x1="-40" y1="10" x2="-54" y2="28" stroke="#ff0a8a" strokeWidth="12" strokeLinecap="round" />
+                <circle cx="-54" cy="28" r="9" fill="#ff0a8a" />
               </g>
-              <g className="legs" stroke="#ffd60a" strokeWidth="12" strokeLinecap="round">
-                <line x1="-20" y1="40" x2="-20" y2="62" />
-                <line x1="20" y1="40" x2="20" y2="62" />
+              <g className="legs" stroke="#ff0a8a" strokeWidth="13" strokeLinecap="round">
+                <line x1="-20" y1="52" x2="-20" y2="70" />
+                <line x1="20" y1="52" x2="20" y2="70" />
               </g>
               <g className="feet">
-                <g transform="translate(-20, 68) rotate(-8)">
-                  <path d="M-16,-14 L8,-14 Q16,-14 16,-6 L16,0 L-16,0 Z" fill="#ffd60a" />
-                  <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#0D0D0D" strokeWidth="2" />
+                <g transform="translate(-20, 76)">
+                  <ellipse cx="0" cy="0" rx="16" ry="9" fill="#ff0a8a" />
                 </g>
-                <g transform="translate(20, 68) rotate(8)">
-                  <path d="M-8,-14 L16,-14 Q16,-14 16,-6 L16,0 L-16,0 L-16,-6 Q-16,-14 -8,-14 Z" fill="#ffd60a" />
-                  <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#0D0D0D" strokeWidth="2" />
+                <g transform="translate(20, 76)">
+                  <ellipse cx="0" cy="0" rx="16" ry="9" fill="#ff0a8a" />
                 </g>
               </g>
               <g className="click-sparkles">
-                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(-50,-45)" />
-                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(50,-55)" />
-                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(55,30)" />
-                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(-55,25)" />
+                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(-50,-45)" />
+                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(50,-55)" />
+                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ffd60a" transform="translate(55,30)" />
+                <path d="M0,-7 L2,-2 L7,0 L2,2 L0,7 L-2,2 L-7,0 L-2,-2 Z" fill="#ff0a8a" transform="translate(-55,25)" />
               </g>
             </g>
                     </g>
@@ -629,51 +614,47 @@ export default function LetsConnect() {
                         <g className="scroll-shift" data-depth="0.6">
 <g transform="translate(480, 403)">
               <g className="body">
-                <circle cx="0" cy="0" r="68" fill="#A58CF4" />
+                <ellipse cx="0" cy="8" rx="68" ry="62" fill="#ff5a00" />
               </g>
               <g className="face">
-                <g className="eyes">
-                  <g className="dots" fill="#0D0D0D">
-                    <circle cx="-20" cy="-15" r="3.5" />
-                    <circle cx="20" cy="-15" r="3.5" />
+                <g className="lc-eyes">
+                  <g className="dots">
+                    <circle cx="-22" cy="-18" r="12" fill="#ffffff" />
+                    <circle cx="22" cy="-18" r="12" fill="#ffffff" />
+                    <circle cx="-22" cy="-16" r="5" fill="#0D0D0D" />
+                    <circle cx="22" cy="-16" r="5" fill="#0D0D0D" />
                   </g>
-                  <g className="happy" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" fill="none">
-                    <path d="M-25,-15 Q-20,-21 -15,-15" />
-                    <path d="M15,-15 Q20,-21 25,-15" />
+                  <g className="happy" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" fill="none">
+                    <path d="M-34,-18 Q-22,-28 -10,-18" />
+                    <path d="M10,-18 Q22,-28 34,-18" />
                   </g>
                 </g>
                 <g className="mouth">
-                  <path className="mouth-normal" d="M-28,12 Q0,34 28,12" stroke="#0D0D0D" strokeWidth="3" fill="none" strokeLinecap="round" />
-                  <path className="mouth-happy" d="M-32,10 Q0,40 32,10" stroke="#0D0D0D" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+                  <path className="mouth-normal" d="M-14,16 Q0,24 14,16" stroke="#0D0D0D" strokeWidth="3" fill="none" strokeLinecap="round" />
+                  <g className="mouth-happy">
+                    <ellipse cx="0" cy="18" rx="16" ry="12" fill="#0D0D0D" />
+                    <ellipse cx="0" cy="22" rx="8" ry="5" fill="#ff6b9d" />
+                  </g>
                 </g>
-                {/* blush */}
-                <ellipse cx="-34" cy="2" rx="7" ry="5" fill="rgba(255,10,138,0.3)" />
-                <ellipse cx="34" cy="2" rx="7" ry="5" fill="rgba(255,10,138,0.3)" />
+                <ellipse cx="-36" cy="0" rx="8" ry="5" fill="rgba(255,10,138,0.3)" />
+                <ellipse cx="36" cy="0" rx="8" ry="5" fill="rgba(255,10,138,0.3)" />
               </g>
               <g className="arms">
-                {/* right hand resting on belly */}
-                <line x1="52" y1="12" x2="30" y2="36" stroke="#A58CF4" strokeWidth="11" strokeLinecap="round" />
-                <circle cx="28" cy="38" r="8" fill="#A58CF4" />
-                <g stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round">
-                  <line x1="24" y1="32" x2="20" y2="28" />
-                  <line x1="30" y1="32" x2="28" y2="27" />
-                </g>
-                {/* left arm relaxed */}
-                <line x1="-52" y1="8" x2="-68" y2="28" stroke="#A58CF4" strokeWidth="11" strokeLinecap="round" />
-                <circle cx="-68" cy="28" r="8" fill="#A58CF4" />
+                <line x1="-56" y1="8" x2="-72" y2="26" stroke="#ff5a00" strokeWidth="12" strokeLinecap="round" />
+                <circle cx="-72" cy="26" r="9" fill="#ff5a00" />
+                <line x1="56" y1="8" x2="72" y2="26" stroke="#ff5a00" strokeWidth="12" strokeLinecap="round" />
+                <circle cx="72" cy="26" r="9" fill="#ff5a00" />
               </g>
-              <g className="legs" stroke="#A58CF4" strokeWidth="12" strokeLinecap="round">
-                <line x1="-22" y1="60" x2="-22" y2="76" />
-                <line x1="22" y1="60" x2="22" y2="76" />
+              <g className="legs" stroke="#ff5a00" strokeWidth="13" strokeLinecap="round">
+                <line x1="-24" y1="62" x2="-24" y2="78" />
+                <line x1="24" y1="62" x2="24" y2="78" />
               </g>
               <g className="feet">
-                <g transform="translate(-22, 82) rotate(-8)">
-                  <path d="M-16,-14 L8,-14 Q16,-14 16,-6 L16,0 L-16,0 Z" fill="#A58CF4" />
-                  <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#0D0D0D" strokeWidth="2" />
+                <g transform="translate(-24, 84)">
+                  <ellipse cx="0" cy="0" rx="17" ry="9" fill="#ff5a00" />
                 </g>
-                <g transform="translate(22, 82) rotate(8)">
-                  <path d="M-8,-14 L16,-14 Q16,-14 16,-6 L16,0 L-16,0 L-16,-6 Q-16,-14 -8,-14 Z" fill="#A58CF4" />
-                  <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#0D0D0D" strokeWidth="2" />
+                <g transform="translate(24, 84)">
+                  <ellipse cx="0" cy="0" rx="17" ry="9" fill="#ff5a00" />
                 </g>
               </g>
               <g className="click-sparkles">
@@ -692,43 +673,42 @@ export default function LetsConnect() {
                         <g className="scroll-shift" data-depth="0.65">
 <g transform="translate(480, 295)">
               <g className="body">
-                <path d="M0,-42 L12,-14 L40,-14 L18,4 L26,32 L0,16 L-26,32 L-18,4 L-40,-14 L-12,-14 Z"
-                      fill="#ff9f0a" stroke="#ff9f0a" strokeWidth="10" strokeLinejoin="round" />
+                <rect x="-34" y="-36" width="68" height="72" rx="34" fill="#2dd4bf" />
               </g>
               <g className="face">
-                <g className="eyes">
-                  {/* closed ^ ^ giggling eyes — no dots, doesn't blink */}
-                  <g stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" fill="none">
-                    <path d="M-20,-8 Q-14,-15 -8,-8" />
-                    <path d="M8,-8 Q14,-15 20,-8" />
+                <g className="lc-eyes">
+                  <g className="dots">
+                    <circle cx="-13" cy="-8" r="9" fill="#ffffff" />
+                    <circle cx="13" cy="-8" r="9" fill="#ffffff" />
+                    <circle cx="-13" cy="-8" r="4" fill="#0D0D0D" />
+                    <circle cx="13" cy="-8" r="4" fill="#0D0D0D" />
+                  </g>
+                  <g className="happy" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" fill="none">
+                    <path d="M-22,-8 Q-13,-15 -4,-8" />
+                    <path d="M4,-8 Q13,-15 22,-8" />
                   </g>
                 </g>
                 <g className="mouth">
-                  <path className="mouth-normal" d="M-10,8 Q0,20 10,8 Q0,14 -10,8 Z" fill="none" stroke="#0D0D0D" strokeWidth="2.5" />
-                  <path className="mouth-happy" d="M-14,6 Q0,24 14,6 Q0,16 -14,6 Z" fill="none" stroke="#0D0D0D" strokeWidth="3" />
+                  <ellipse className="mouth-normal" cx="0" cy="12" rx="7" ry="8" fill="none" stroke="#0D0D0D" strokeWidth="2.5" />
+                  <ellipse className="mouth-happy" cx="0" cy="12" rx="10" ry="11" fill="none" stroke="#0D0D0D" strokeWidth="3" />
                 </g>
-                {/* blush */}
-                <ellipse cx="-26" cy="0" rx="6" ry="4" fill="rgba(255,10,138,0.3)" />
-                <ellipse cx="26" cy="0" rx="6" ry="4" fill="rgba(255,10,138,0.3)" />
               </g>
               <g className="arms">
-                {/* both hands on cheeks */}
-                <line x1="-28" y1="8" x2="-20" y2="-2" stroke="#ff9f0a" strokeWidth="10" strokeLinecap="round" />
-                <circle cx="-19" cy="-3" r="7" fill="#ff9f0a" />
-                <line x1="28" y1="8" x2="20" y2="-2" stroke="#ff9f0a" strokeWidth="10" strokeLinecap="round" />
-                <circle cx="19" cy="-3" r="7" fill="#ff9f0a" />
+                <line x1="-28" y1="-6" x2="-40" y2="-22" stroke="#2dd4bf" strokeWidth="10" strokeLinecap="round" />
+                <circle cx="-40" cy="-22" r="7" fill="#2dd4bf" />
+                <line x1="28" y1="-6" x2="40" y2="-22" stroke="#2dd4bf" strokeWidth="10" strokeLinecap="round" />
+                <circle cx="40" cy="-22" r="7" fill="#2dd4bf" />
               </g>
-              <g className="legs" stroke="#ff9f0a" strokeWidth="10" strokeLinecap="round">
-                <line x1="-12" y1="30" x2="-12" y2="38" />
-                <line x1="12" y1="30" x2="12" y2="38" />
+              <g className="legs" stroke="#2dd4bf" strokeWidth="10" strokeLinecap="round">
+                <line x1="-12" y1="32" x2="-12" y2="40" />
+                <line x1="12" y1="32" x2="12" y2="40" />
               </g>
               <g className="feet">
-                {/* feet rest on the circle's head */}
-                <g transform="translate(-12, 40)">
-                  <path d="M-12,-8 L6,-8 Q12,-8 12,-3 L12,0 L-12,0 Z" fill="#ff9f0a" />
+                <g transform="translate(-12, 42)">
+                  <ellipse cx="0" cy="0" rx="11" ry="6" fill="#2dd4bf" />
                 </g>
-                <g transform="translate(12, 40)">
-                  <path d="M-6,-8 L12,-8 Q12,-8 12,-3 L12,0 L-12,0 L-12,-3 Q-12,-8 -6,-8 Z" fill="#ff9f0a" />
+                <g transform="translate(12, 42)">
+                  <ellipse cx="0" cy="0" rx="11" ry="6" fill="#2dd4bf" />
                 </g>
               </g>
               <g className="click-sparkles">
@@ -746,48 +726,42 @@ export default function LetsConnect() {
                         <g className="scroll-shift" data-depth="0.5">
 <g transform="translate(660, 413)">
               <g className="body">
-                <rect x="-57" y="-57" width="114" height="114" rx="28" fill="#ff0a8a" />
+                <rect x="-57" y="-57" width="114" height="114" rx="54" fill="#4a90ff" />
               </g>
               <g className="face">
-                <g className="eyes">
-                  {/* eyes looking sideways (shy) */}
-                  <g className="dots" fill="#0D0D0D">
-                    <circle cx="-16" cy="-12" r="3.5" />
-                    <circle cx="24" cy="-12" r="3.5" />
+                <g className="lc-eyes">
+                  <g className="dots">
+                    <circle cx="-20" cy="-14" r="12" fill="#ffffff" />
+                    <circle cx="20" cy="-14" r="12" fill="#ffffff" />
+                    <circle cx="-20" cy="-14" r="5" fill="#0D0D0D" />
+                    <circle cx="20" cy="-14" r="5" fill="#0D0D0D" />
                   </g>
-                  <g className="happy" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" fill="none">
-                    <path d="M-21,-12 Q-16,-18 -11,-12" />
-                    <path d="M19,-12 Q24,-18 29,-12" />
+                  <g className="happy" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" fill="none">
+                    <path d="M-32,-14 Q-20,-24 -8,-14" />
+                    <path d="M8,-14 Q20,-24 32,-14" />
                   </g>
                 </g>
                 <g className="mouth">
-                  <path className="mouth-normal" d="M-10,16 Q0,21 10,16" stroke="#0D0D0D" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                  <path className="mouth-happy" d="M-14,14 Q0,26 14,14" stroke="#0D0D0D" strokeWidth="3" fill="none" strokeLinecap="round" />
+                  <path className="mouth-normal" d="M-16,16 Q0,28 16,16" stroke="#0D0D0D" strokeWidth="3" fill="none" strokeLinecap="round" />
+                  <path className="mouth-happy" d="M-20,14 Q0,34 20,14" stroke="#0D0D0D" strokeWidth="3.5" fill="none" strokeLinecap="round" />
                 </g>
               </g>
               <g className="arms">
-                {/* both hands clasped in front */}
-                <line x1="-44" y1="16" x2="-12" y2="36" stroke="#ff0a8a" strokeWidth="11" strokeLinecap="round" />
-                <line x1="44" y1="16" x2="12" y2="36" stroke="#ff0a8a" strokeWidth="11" strokeLinecap="round" />
-                <circle cx="0" cy="38" r="9" fill="#ff0a8a" />
-                <g stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round">
-                  <line x1="-6" y1="34" x2="-6" y2="42" />
-                  <line x1="0" y1="33" x2="0" y2="42" />
-                  <line x1="6" y1="34" x2="6" y2="42" />
-                </g>
+                <line x1="-50" y1="10" x2="-66" y2="28" stroke="#4a90ff" strokeWidth="12" strokeLinecap="round" />
+                <circle cx="-66" cy="28" r="9" fill="#4a90ff" />
+                <line x1="50" y1="10" x2="66" y2="28" stroke="#4a90ff" strokeWidth="12" strokeLinecap="round" />
+                <circle cx="66" cy="28" r="9" fill="#4a90ff" />
               </g>
-              <g className="legs" stroke="#ff0a8a" strokeWidth="12" strokeLinecap="round">
+              <g className="legs" stroke="#4a90ff" strokeWidth="13" strokeLinecap="round">
                 <line x1="-24" y1="50" x2="-24" y2="66" />
                 <line x1="24" y1="50" x2="24" y2="66" />
               </g>
               <g className="feet">
-                <g transform="translate(-24, 72) rotate(-8)">
-                  <path d="M-16,-14 L8,-14 Q16,-14 16,-6 L16,0 L-16,0 Z" fill="#ff0a8a" />
-                  <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#0D0D0D" strokeWidth="2" />
+                <g transform="translate(-24, 72)">
+                  <ellipse cx="0" cy="0" rx="16" ry="9" fill="#4a90ff" />
                 </g>
-                <g transform="translate(24, 72) rotate(8)">
-                  <path d="M-8,-14 L16,-14 Q16,-14 16,-6 L16,0 L-16,0 L-16,-6 Q-16,-14 -8,-14 Z" fill="#ff0a8a" />
-                  <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#0D0D0D" strokeWidth="2" />
+                <g transform="translate(24, 72)">
+                  <ellipse cx="0" cy="0" rx="16" ry="9" fill="#4a90ff" />
                 </g>
               </g>
               <g className="click-sparkles">
@@ -806,52 +780,46 @@ export default function LetsConnect() {
                         <g className="scroll-shift" data-depth="0.25">
 <g transform="translate(790, 393)">
               <g className="body">
-                <rect x="-48" y="-80" width="96" height="160" rx="48" fill="#FAFAFA" />
+                <rect x="-48" y="-80" width="96" height="160" rx="48" fill="#A58CF4" />
               </g>
               <g className="face">
                 <g className="brows" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" fill="none">
-                  {/* one eyebrow raised */}
-                  <path d="M-24,-34 Q-16,-37 -8,-34" />
-                  <path d="M8,-40 Q16,-44 24,-40" />
+                  <path d="M-28,-38 Q-20,-41 -12,-38" />
+                  <path d="M12,-44 Q20,-48 28,-44" />
                 </g>
-                <g className="eyes">
-                  <g className="dots" fill="#0D0D0D">
-                    <circle cx="-16" cy="-18" r="3.5" />
-                    <circle cx="16" cy="-18" r="3.5" />
+                <g className="lc-eyes">
+                  <g className="dots">
+                    <circle cx="-20" cy="-20" r="11" fill="#ffffff" />
+                    <circle cx="20" cy="-20" r="11" fill="#ffffff" />
+                    <circle cx="-20" cy="-20" r="4.5" fill="#0D0D0D" />
+                    <circle cx="20" cy="-20" r="4.5" fill="#0D0D0D" />
                   </g>
-                  <g className="happy" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" fill="none">
-                    <path d="M-21,-18 Q-16,-24 -11,-18" />
-                    <path d="M11,-18 Q16,-24 21,-18" />
+                  <g className="happy" stroke="#0D0D0D" strokeWidth="3" strokeLinecap="round" fill="none">
+                    <path d="M-31,-20 Q-20,-29 -9,-20" />
+                    <path d="M9,-20 Q20,-29 31,-20" />
                   </g>
                 </g>
                 <g className="mouth">
-                  <path className="mouth-normal" d="M-12,12 L12,12" stroke="#0D0D0D" strokeWidth="2.5" strokeLinecap="round" />
-                  <path className="mouth-happy" d="M-14,10 Q0,20 14,10" stroke="#0D0D0D" strokeWidth="3" fill="none" strokeLinecap="round" />
+                  <path className="mouth-normal" d="M-14,14 Q0,22 14,14" stroke="#0D0D0D" strokeWidth="3" fill="none" strokeLinecap="round" />
+                  <path className="mouth-happy" d="M-18,12 Q0,30 18,12" stroke="#0D0D0D" strokeWidth="3.5" fill="none" strokeLinecap="round" />
                 </g>
               </g>
               <g className="arms">
-                {/* arms crossed over body with fold lines */}
-                <line x1="-38" y1="22" x2="28" y2="12" stroke="#FAFAFA" strokeWidth="11" strokeLinecap="round" />
-                <line x1="38" y1="22" x2="-28" y2="12" stroke="#FAFAFA" strokeWidth="11" strokeLinecap="round" />
-                <circle cx="30" cy="12" r="8" fill="#FAFAFA" />
-                <circle cx="-30" cy="12" r="8" fill="#FAFAFA" />
-                <g stroke="#0D0D0D" strokeWidth="2" strokeLinecap="round" opacity="0.6">
-                  <line x1="-10" y1="18" x2="-4" y2="26" />
-                  <line x1="10" y1="18" x2="4" y2="26" />
-                </g>
+                <line x1="-42" y1="10" x2="-58" y2="30" stroke="#A58CF4" strokeWidth="12" strokeLinecap="round" />
+                <circle cx="-58" cy="30" r="9" fill="#A58CF4" />
+                <line x1="42" y1="10" x2="58" y2="30" stroke="#A58CF4" strokeWidth="12" strokeLinecap="round" />
+                <circle cx="58" cy="30" r="9" fill="#A58CF4" />
               </g>
-              <g className="legs" stroke="#FAFAFA" strokeWidth="12" strokeLinecap="round">
-                <line x1="-20" y1="72" x2="-20" y2="86" />
-                <line x1="20" y1="72" x2="20" y2="86" />
+              <g className="legs" stroke="#A58CF4" strokeWidth="13" strokeLinecap="round">
+                <line x1="-20" y1="74" x2="-20" y2="88" />
+                <line x1="20" y1="74" x2="20" y2="88" />
               </g>
               <g className="feet">
-                <g className="rect-tap-foot" transform="translate(-20, 92) rotate(-8)">
-                  <path d="M-16,-14 L8,-14 Q16,-14 16,-6 L16,0 L-16,0 Z" fill="#FAFAFA" />
-                  <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#0D0D0D" strokeWidth="2" />
+                <g className="rect-tap-foot" transform="translate(-20, 94)">
+                  <ellipse cx="0" cy="0" rx="16" ry="9" fill="#A58CF4" />
                 </g>
-                <g transform="translate(20, 92) rotate(8)">
-                  <path d="M-8,-14 L16,-14 Q16,-14 16,-6 L16,0 L-16,0 L-16,-6 Q-16,-14 -8,-14 Z" fill="#FAFAFA" />
-                  <line x1="-16" y1="-5" x2="16" y2="-5" stroke="#0D0D0D" strokeWidth="2" />
+                <g transform="translate(20, 94)">
+                  <ellipse cx="0" cy="0" rx="16" ry="9" fill="#A58CF4" />
                 </g>
               </g>
               <g className="click-sparkles">
