@@ -482,16 +482,6 @@ export default function LetsConnect() {
 
       <div className="lc-stage">
         <svg viewBox="0 0 900 520" role="img" aria-label="A group of friendly cartoon shape characters standing together">
-          {/* ground: soft band + contact shadows under each pair of feet */}
-          <rect x="60" y="486" width="780" height="16" rx="8" fill="rgba(165,140,244,0.12)" />
-          <g fill="rgba(165,140,244,0.18)">
-            <ellipse cx="175" cy="491" rx="52" ry="6" />
-            <ellipse cx="305" cy="491" rx="48" ry="6" />
-            <ellipse cx="435" cy="491" rx="52" ry="6" />
-            <ellipse cx="570" cy="491" rx="54" ry="6" />
-            <ellipse cx="695" cy="491" rx="44" ry="6" />
-            <ellipse cx="805" cy="491" rx="46" ry="6" />
-          </g>
           <g fill="rgba(255,255,255,0.25)">
             <circle className="lc-sparkle" cx="120" cy="120" r="4" style={{ animationDelay: "0s" }} />
             <circle className="lc-sparkle" cx="780" cy="90" r="5" style={{ animationDelay: "1.5s" }} />
