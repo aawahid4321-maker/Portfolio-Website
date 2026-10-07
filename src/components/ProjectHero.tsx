@@ -178,22 +178,33 @@ export default function ProjectHero({
     }, { threshold: 0.1 });
     if (heroEl) heroObs.observe(heroEl);
 
-    /* ── nav: sliding highlight (offsetLeft/offsetWidth — adapts to size changes) ── */
+    /* ── nav: sliding highlight (offsetLeft/offsetWidth relative to .pp-links) ── */
     const highlight = highlightRef.current;
     const linksWrap = linksWrapRef.current;
     const linkFor = (name: string | undefined) =>
       name === "work" ? workLinkRef.current : name === "about" ? aboutLinkRef.current : null;
     const moveHighlight = (el: HTMLElement | null) => {
-      if (!highlight || !nav || !linksWrap || reduceMotion) return;
+      if (!highlight || !linksWrap || reduceMotion) return;
       if (!el) {
         highlight.classList.remove("is-visible");
         return;
       }
-      // offsetLeft is relative to .pp-links; add its offset for nav-relative position
-      const x = linksWrap.offsetLeft + el.offsetLeft;
+      // highlight is inside .pp-links: offsetLeft is relative to it
       highlight.style.width = `${el.offsetWidth}px`;
-      highlight.style.transform = `translateX(${x}px)`;
+      highlight.style.transform = `translateX(${el.offsetLeft}px)`;
       highlight.classList.add("is-visible");
+      // DEBUG: log 3 zones (remove after verified)
+      const navRect = nav.getBoundingClientRect();
+      const logoRect = nav.querySelector(".pp-logo")?.getBoundingClientRect();
+      const hireRect = nav.querySelector(".pp-hire")?.getBoundingClientRect();
+      const linksRect = linksWrap.getBoundingClientRect();
+      console.log("[nav zones]", {
+        logoLeft: logoRect ? Math.round(logoRect.left - navRect.left) : null,
+        linksCenter: Math.round(linksRect.left - navRect.left + linksRect.width / 2),
+        navCenter: Math.round(navRect.width / 2),
+        hireRight: hireRect ? Math.round(hireRect.right - navRect.left) : null,
+        navWidth: Math.round(navRect.width),
+      });
     };
     const activeEl = linkFor(activeLink);
     const highlightInit = window.setTimeout(() => moveHighlight(activeEl), 100);
@@ -435,7 +446,7 @@ export default function ProjectHero({
           to { transform: translate(30px, -30px); }
         }
 
-        /* ── nav: compact floating pill (reference style) ── */
+        /* ── nav: 3-zone grid (logo left / links center / hire right) ── */
         .ph-nav {
           --pp-purple: #A58CF4;
           --pp-yellow: #FFD60A;
@@ -447,15 +458,15 @@ export default function ProjectHero({
           --nav-font: 22px;
           --nav-logo: 68px;
           --nav-pad: 12px;
-          --nav-gap: 10px;
           position: fixed;
           top: var(--nav-top);
           left: 50%;
           transform: translateX(-50%);
           z-index: 1000;
-          display: flex;
+          /* 3-column grid: 1fr auto 1fr keeps links centered, logo/hire at edges */
+          display: grid;
+          grid-template-columns: 1fr auto 1fr;
           align-items: center;
-          gap: var(--nav-gap);
           width: min(1040px, calc(100% - 48px));
           height: var(--nav-h);
           padding: var(--nav-pad);
@@ -468,6 +479,12 @@ export default function ProjectHero({
           white-space: nowrap;
           transition: transform 0.3s ease;
         }
+        .pp-logo { justify-self: start; }
+        .pp-links { justify-self: center; }
+        /* right zone wrapper: transparent on desktop (children in grid), flex on mobile */
+        .pp-nav-right { display: contents; }
+        .pp-nav-right .pp-hire { justify-self: end; }
+        .pp-menu-btn { display: none; } /* desktop: hidden */
         /* large screens: scale up a bit more */
         @media (min-width: 1600px) {
           .ph-nav { --nav-h: 100px; --nav-font: 24px; --nav-logo: 74px; }
@@ -499,12 +516,12 @@ export default function ProjectHero({
           0% { transform: scale(0.8); opacity: 0; }
           100% { transform: scale(1); opacity: 1; }
         }
-        /* sliding highlight behind hovered/active link */
+        /* sliding highlight: inside .pp-links, behind hovered/active link */
         .pp-highlight {
           position: absolute;
-          top: var(--nav-pad);
+          top: 0;
           left: 0;
-          height: calc(var(--nav-h) - var(--nav-pad) * 2); /* 56px on desktop */
+          height: 100%;
           width: 0;
           background: var(--pp-purple);
           border-radius: 999px;
@@ -818,7 +835,7 @@ export default function ProjectHero({
 
         /* responsive */
         @media (max-width: 768px) {
-          /* mobile: compact pill — logo, menu button, hire (48px tap targets) */
+          /* mobile: logo left, menu+hire grouped right */
           .ph-nav {
             --nav-top: 12px;
             --nav-h: 68px;
@@ -827,9 +844,16 @@ export default function ProjectHero({
             top: var(--nav-top);
             width: calc(100% - 24px);
             padding: 8px;
-            gap: 6px;
+            grid-template-columns: auto 1fr auto;
           }
+          .pp-logo { justify-self: start; }
           .pp-links { display: none; }
+          .pp-nav-right {
+            display: flex;
+            gap: 8px;
+            justify-self: end;
+            align-items: center;
+          }
           .pp-menu-btn {
             display: inline-flex;
             align-items: center;
@@ -972,9 +996,7 @@ export default function ProjectHero({
 
         {/* nav */}
         <nav ref={navRef} className="ph-nav" aria-label="Main">
-          {/* sliding highlight behind the hovered/active link */}
-          <span ref={highlightRef} className="pp-highlight" aria-hidden="true" />
-          {/* logo: round button with cartoon face → HOME */}
+          {/* logo: round button with cartoon face → HOME (left zone) */}
           <a
             className="pp-logo"
             onClick={onNavigateHome}
@@ -996,8 +1018,9 @@ export default function ProjectHero({
               />
             </svg>
           </a>
-          {/* middle links */}
+          {/* middle links + sliding highlight (center zone) */}
           <div ref={linksWrapRef} className="pp-links">
+            <span ref={highlightRef} className="pp-highlight" aria-hidden="true" />
             <a
               ref={workLinkRef}
               onClick={onNavigateWork}
@@ -1011,25 +1034,28 @@ export default function ProjectHero({
               className={activeLink === "about" ? "is-active" : ""}
             >About</a>
           </div>
-          {/* mobile menu button */}
-          <button
-            className="pp-menu-btn"
-            aria-expanded="false"
-            aria-controls="pp-mobile-menu"
-            onClick={() => {
-              menuOpen.current = !menuOpen.current;
-              const isOpen = menuOpen.current;
-              navRef.current?.classList.toggle("is-open", isOpen);
-              navRef.current?.querySelector(".pp-menu-btn")?.setAttribute("aria-expanded", isOpen ? "true" : "false");
-            }}
-          >
-            <span className="pp-burger" aria-hidden="true" />
-            Menu
-          </button>
-          {/* hire: white pill → same link as before */}
-          <button className="pp-hire" onClick={onNavigateHome}>
-            Hire me <span className="pp-arrow">↗</span>
-          </button>
+          {/* right zone: hire (desktop) / menu+hire grouped (mobile) */}
+          <div className="pp-nav-right">
+            {/* mobile menu button (hidden on desktop) */}
+            <button
+              className="pp-menu-btn"
+              aria-expanded="false"
+              aria-controls="pp-mobile-menu"
+              onClick={() => {
+                menuOpen.current = !menuOpen.current;
+                const isOpen = menuOpen.current;
+                navRef.current?.classList.toggle("is-open", isOpen);
+                navRef.current?.querySelector(".pp-menu-btn")?.setAttribute("aria-expanded", isOpen ? "true" : "false");
+              }}
+            >
+              <span className="pp-burger" aria-hidden="true" />
+              Menu
+            </button>
+            {/* hire: white pill → same link as before */}
+            <button className="pp-hire" onClick={onNavigateHome}>
+              Hire me <span className="pp-arrow">↗</span>
+            </button>
+          </div>
           {/* mobile dropdown */}
           <div id="pp-mobile-menu" className="pp-mobile-menu" role="menu">
             <a onClick={() => { closeMenu(); onNavigateWork(); }} role="menuitem">Work</a>
