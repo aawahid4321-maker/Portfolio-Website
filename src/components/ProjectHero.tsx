@@ -553,10 +553,8 @@ export default function ProjectHero({
         .pp-links a {
           position: relative;
           z-index: 1;
-          font-family: "Zilla Slab", Rockwell, Georgia, serif;
-          font-weight: 700;
-          text-transform: uppercase;
-          letter-spacing: 0.03em;
+          font-family: "Zilla Slab", Georgia, serif;
+          font-weight: 500;
           font-size: var(--nav-font);
           color: var(--pp-white);
           cursor: pointer;
