@@ -95,10 +95,10 @@ function Group1() {
   return (
     <div className="absolute contents left-[741.29px] top-[2542.46px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[2542.46px] tracking-[-0.6912px] w-[202.719px]">{`Years Experience `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[960.29px] text-[#0f0f0f] text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap">10+</p>
-      <div className="absolute left-[741.29px] size-[438px] top-[2592.39px]">
-        <svg className="absolute block inset-0 size-full" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
-          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" stroke="#B4B4B4" />
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[960.29px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap metric-enter">10+</p>
+      <div className="absolute left-[741.29px] size-[438px] top-[2592.39px] metric-enter">
+        <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
+          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
         </svg>
       </div>
     </div>
@@ -109,10 +109,10 @@ function Group2() {
   return (
     <div className="absolute contents left-[510.29px] top-[3143.01px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[510.29px] text-[#1e1e1f] text-[23.04px] top-[3143.01px] tracking-[-0.6912px] w-[410.156px]">{`Different Design Industries `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[729.29px] text-[#0f0f0f] text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap">10+</p>
-      <div className="absolute left-[510.29px] size-[438px] top-[3192.94px]">
-        <svg className="absolute block inset-0 size-full" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
-          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" stroke="#B4B4B4" />
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[729.29px] text-white text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap metric-enter">10+</p>
+      <div className="absolute left-[510.29px] size-[438px] top-[3192.94px] metric-enter">
+        <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
+          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
         </svg>
       </div>
     </div>
@@ -123,10 +123,10 @@ function Group3() {
   return (
     <div className="absolute contents left-[1203px] top-[3143.01px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[1203px] text-[#1e1e1f] text-[23.04px] top-[3143.01px] tracking-[-0.6912px] w-[264.3px]">{`Agencies Worked With `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1422px] text-[#0f0f0f] text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap">5+</p>
-      <div className="absolute left-[1203px] size-[438px] top-[3192.94px]">
-        <svg className="absolute block inset-0 size-full" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
-          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" stroke="#B4B4B4" />
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1422px] text-white text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap metric-enter">5+</p>
+      <div className="absolute left-[1203px] size-[438px] top-[3192.94px] metric-enter">
+        <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
+          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
         </svg>
       </div>
     </div>
@@ -150,17 +150,17 @@ function Group4() {
       <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[22px] top-[4230.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[03]</p>
       <p className="absolute leading-[38px] left-[1075px] text-[27px] top-[4224px] w-[790px]" style={{ letterSpacing: "-1px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Social Media Manager</p>
       <p className="absolute leading-[32px] left-[1075px] text-[21px] top-[4266px] text-[#444444]" style={{ fontFamily: "'Geist:Regular'" }}>Suzuki Islamabad Motors</p>
-      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4266px] uppercase">2025 – 2026</p>
+      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4266px] uppercase">2025</p>
       {/* [04] Brand & Logo Designer — Local Pro */}
       <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[22px] top-[4335.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[04]</p>
       <p className="absolute leading-[38px] left-[1075px] text-[27px] top-[4329px] w-[790px]" style={{ letterSpacing: "-1px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Brand &amp; Logo Designer</p>
       <p className="absolute leading-[32px] left-[1075px] text-[21px] top-[4371px] text-[#444444]" style={{ fontFamily: "'Geist:Regular'" }}>Local Pro</p>
-      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4371px] uppercase">2024 – 2025</p>
+      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4371px] uppercase">2025</p>
       {/* [05] Graphic Design Intern — E-Tech Marketing */}
       <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[22px] top-[4440.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[05]</p>
       <p className="absolute leading-[38px] left-[1075px] text-[27px] top-[4434px] w-[790px]" style={{ letterSpacing: "-1px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Graphic Design Intern</p>
       <p className="absolute leading-[32px] left-[1075px] text-[21px] top-[4476px] text-[#444444]" style={{ fontFamily: "'Geist:Regular'" }}>E-Tech Marketing</p>
-      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4476px] uppercase">2024 – 2025</p>
+      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4476px] uppercase">2025</p>
     </div>
   );
 }
@@ -339,10 +339,10 @@ function Group() {
   return (
     <div className="absolute contents left-[1434px] top-[2542.46px]">
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[1434px] text-[#1e1e1f] text-[23.04px] top-[2542.46px] tracking-[-0.6912px] w-[202.719px]">Projects Completed</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1652.5px] text-[#0f0f0f] text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap">1000+</p>
-      <div className="absolute left-[1434px] size-[438px] top-[2592.39px]">
-        <svg className="absolute block inset-0 size-full" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
-          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" stroke="#B4B4B4" />
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1652.5px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap metric-enter">1000+</p>
+      <div className="absolute left-[1434px] size-[438px] top-[2592.39px] metric-enter">
+        <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
+          <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
         </svg>
       </div>
     </div>
@@ -576,6 +576,32 @@ function Group6() {
 export default function Frame() {
   return (
     <div className="bg-[#e6e6e6] relative size-full">
+      <style>{`
+        /* Metric circles: entrance pop on scroll into view (CSS scroll-driven, no JS) */
+        .metric-enter {
+          animation: metricPop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+          animation-timeline: view();
+          animation-range: entry 0% entry 100%;
+          transform-origin: center;
+          will-change: scale, opacity;
+        }
+        @keyframes metricPop {
+          from { scale: 0.7; opacity: 0; }
+          to { scale: 1; opacity: 1; }
+        }
+        /* Metric circles: gentle continuous pulse */
+        .metric-pulse {
+          animation: metricPulse 3s ease-in-out 1.2s infinite;
+          transform-origin: center;
+        }
+        @keyframes metricPulse {
+          0%, 100% { scale: 1; }
+          50% { scale: 1.04; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .metric-enter, .metric-pulse { animation: none; }
+        }
+      `}</style>
       <Container />
       <Container1 />
       <Container2 />
