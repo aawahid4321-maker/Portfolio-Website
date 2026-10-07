@@ -458,9 +458,7 @@ export default function LetsConnect() {
       <p className="lc-para">
         If you&apos;re looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I&apos;m here to listen and collaborate.
       </p>
-      <a href="mailto:aawahid321@gmail.com" className="lc-contact" aria-label="Contact via email">
-        CONTACT <span className="lc-arrow">↗</span>
-      </a>
+      {/* CONTACT link removed per user request */}
 
       <div className="lc-stage">
         <svg viewBox="0 0 900 520" role="img" aria-label="A group of friendly cartoon shape characters standing together">
