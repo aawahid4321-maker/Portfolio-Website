@@ -924,8 +924,7 @@ export default function LetsConnect() {
                     </g>
                     <g className="mouth">
                       <g className="mouth-normal">
-              <ellipse cx="0" cy="-72" rx="20" ry="24" fill="#2B1840" />
-              <ellipse cx="0" cy="-60" rx="10" ry="12" fill="#FF5FA2" />
+              <path d="M-28,-84 Q0,-58 28,-84" stroke="#2B1840" strokeWidth="6" fill="none" strokeLinecap="round" />
             </g>
                       <g className="mouth-happy">
               <ellipse cx="0" cy="-70" rx="25" ry="29" fill="#2B1840" />
@@ -1048,8 +1047,7 @@ export default function LetsConnect() {
                     </g>
                     <g className="mouth">
                       <g className="mouth-normal">
-              <ellipse cx="0" cy="-72" rx="20" ry="22" fill="#2B1840" />
-              <ellipse cx="0" cy="-60" rx="10" ry="12" fill="#FF5FA2" />
+              <path d="M-24,-80 Q0,-60 24,-80" stroke="#2B1840" strokeWidth="6" fill="none" strokeLinecap="round" />
             </g>
                       <g className="mouth-happy">
               <ellipse cx="0" cy="-70" rx="24" ry="26" fill="#2B1840" />
@@ -1092,6 +1090,7 @@ export default function LetsConnect() {
                     </g>
                   </g>
                   <g className="body">
+                    <circle cx="0" cy="-105" r="46" fill="#FF5A00" />
                     <path d="M45.4,-112.2L80.0,-105.0L45.4,-97.8Z M42.9,-88.5L69.3,-65.0L35.7,-76.1Z M28.9,-69.3L40.0,-35.7L16.5,-62.1Z M7.2,-59.6L0.0,-25.0L-7.2,-59.6Z M-16.5,-62.1L-40.0,-35.7L-28.9,-69.3Z M-35.7,-76.1L-69.3,-65.0L-42.9,-88.5Z M-45.4,-97.8L-80.0,-105.0L-45.4,-112.2Z M-42.9,-121.5L-69.3,-145.0L-35.7,-133.9Z M-28.9,-140.7L-40.0,-174.3L-16.5,-147.9Z M-7.2,-150.4L-0.0,-185.0L7.2,-150.4Z M16.5,-147.9L40.0,-174.3L28.9,-140.7Z M35.7,-133.9L69.3,-145.0L42.9,-121.5Z" fill="#FF5A00"/>
                   </g>
                   <g className="face">
@@ -1236,8 +1235,7 @@ export default function LetsConnect() {
                     </g>
                     <g className="mouth">
                       <g className="mouth-normal">
-              <ellipse cx="0" cy="-74" rx="22" ry="18" fill="#2B1840" />
-              <ellipse cx="0" cy="-67" rx="9" ry="7" fill="#FF5FA2" />
+              <path d="M-24,-82 Q0,-62 24,-82" stroke="#2B1840" strokeWidth="6" fill="none" strokeLinecap="round" />
             </g>
                       <g className="mouth-happy">
               <ellipse cx="0" cy="-72" rx="26" ry="22" fill="#2B1840" />
