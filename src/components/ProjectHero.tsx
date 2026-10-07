@@ -30,6 +30,7 @@ export default function ProjectHero({
   const navRef = useRef<HTMLElement>(null);
   const highlightRef = useRef<HTMLSpanElement>(null);
   const logoEyesRef = useRef<SVGGElement>(null);
+  const homeLinkRef = useRef<HTMLAnchorElement>(null);
   const workLinkRef = useRef<HTMLAnchorElement>(null);
   const aboutLinkRef = useRef<HTMLAnchorElement>(null);
   const linksWrapRef = useRef<HTMLDivElement>(null);
@@ -182,7 +183,7 @@ export default function ProjectHero({
     const highlight = highlightRef.current;
     const linksWrap = linksWrapRef.current;
     const linkFor = (name: string | undefined) =>
-      name === "work" ? workLinkRef.current : name === "about" ? aboutLinkRef.current : null;
+      name === "home" ? homeLinkRef.current : name === "work" ? workLinkRef.current : name === "about" ? aboutLinkRef.current : null;
     const moveHighlight = (el: HTMLElement | null) => {
       if (!highlight || !linksWrap || reduceMotion) return;
       if (!el) {
@@ -193,18 +194,6 @@ export default function ProjectHero({
       highlight.style.width = `${el.offsetWidth}px`;
       highlight.style.transform = `translateX(${el.offsetLeft}px)`;
       highlight.classList.add("is-visible");
-      // DEBUG: log 3 zones (remove after verified)
-      const navRect = nav.getBoundingClientRect();
-      const logoRect = nav.querySelector(".pp-logo")?.getBoundingClientRect();
-      const hireRect = nav.querySelector(".pp-hire")?.getBoundingClientRect();
-      const linksRect = linksWrap.getBoundingClientRect();
-      console.log("[nav zones]", {
-        logoLeft: logoRect ? Math.round(logoRect.left - navRect.left) : null,
-        linksCenter: Math.round(linksRect.left - navRect.left + linksRect.width / 2),
-        navCenter: Math.round(navRect.width / 2),
-        hireRight: hireRect ? Math.round(hireRect.right - navRect.left) : null,
-        navWidth: Math.round(navRect.width),
-      });
     };
     const activeEl = linkFor(activeLink);
     const highlightInit = window.setTimeout(() => moveHighlight(activeEl), 100);
@@ -213,7 +202,7 @@ export default function ProjectHero({
       document.fonts.ready.then(() => moveHighlight(activeEl)).catch(() => {});
     }
     const highlightAfterEnter = window.setTimeout(() => moveHighlight(activeEl), 900);
-    const linkEls = [workLinkRef.current, aboutLinkRef.current].filter(Boolean) as HTMLAnchorElement[];
+    const linkEls = [homeLinkRef.current, workLinkRef.current, aboutLinkRef.current].filter(Boolean) as HTMLAnchorElement[];
     const onLinkEnter = (e: Event) => moveHighlight(e.currentTarget as HTMLElement);
     const onLinkLeave = () => moveHighlight(activeEl);
     const onLinkFocus = (e: Event) => moveHighlight(e.currentTarget as HTMLElement);
@@ -275,13 +264,8 @@ export default function ProjectHero({
         if (!nav || reduceMotion) { lastY = y; return; }
         const dy = y - lastY;
         nav.classList.toggle("is-scrolled", y > 120);
-        if (y < 100) {
-          nav.classList.remove("is-hidden");
-        } else if (dy > 8) {
-          nav.classList.add("is-hidden");
-        } else if (dy < -4) {
-          nav.classList.remove("is-hidden");
-        }
+        // nav always stays visible while scrolling (no hide on scroll down)
+        nav.classList.remove("is-hidden");
         lastY = y;
       });
     };
@@ -1022,6 +1006,12 @@ export default function ProjectHero({
           <div ref={linksWrapRef} className="pp-links">
             <span ref={highlightRef} className="pp-highlight" aria-hidden="true" />
             <a
+              ref={homeLinkRef}
+              onClick={onNavigateHome}
+              aria-current={activeLink === "home" ? "page" : undefined}
+              className={activeLink === "home" ? "is-active" : ""}
+            >Home</a>
+            <a
               ref={workLinkRef}
               onClick={onNavigateWork}
               aria-current={activeLink === "work" ? "page" : undefined}
@@ -1058,6 +1048,7 @@ export default function ProjectHero({
           </div>
           {/* mobile dropdown */}
           <div id="pp-mobile-menu" className="pp-mobile-menu" role="menu">
+            <a onClick={() => { closeMenu(); onNavigateHome(); }} role="menuitem">Home</a>
             <a onClick={() => { closeMenu(); onNavigateWork(); }} role="menuitem">Work</a>
             <a onClick={() => { closeMenu(); onNavigateAbout(); }} role="menuitem">About</a>
           </div>

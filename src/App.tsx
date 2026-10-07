@@ -1,4 +1,5 @@
 import Frame9 from "@/imports/Frame9";
+import FloatingNav from "@/components/FloatingNav";
 import Frame5 from "@/imports/Frame5";
 import Frame7 from "@/imports/Frame7";
 import ProjectPage from "@/components/ProjectPage";
@@ -1473,6 +1474,12 @@ export default function App() {
       >
         {view === "home" ? (
           <>
+            <FloatingNav
+              onNavigateHome={() => { setView("home"); window.scrollTo({ top: 0, behavior: "instant" }); }}
+              onNavigateWork={() => { setView("work"); window.scrollTo({ top: 0, behavior: "instant" }); }}
+              onNavigateAbout={() => { setView("about"); window.scrollTo({ top: 0, behavior: "instant" }); }}
+              activeLink="home"
+            />
             <Frame9 />
             <p className="absolute left-[1203.29px] top-[348px] w-[669px] leading-[29.952px] tracking-[-0.6912px] text-[#1e1e1f]" style={{ fontSize: "30px", marginTop: "-51px", marginBottom: "-51px", fontFamily: "'Geist:Medium',sans-serif", fontWeight: 500 }}>
               <span className="inline-bold">
