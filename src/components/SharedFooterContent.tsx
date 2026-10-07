@@ -109,6 +109,17 @@ export default function SharedFooterContent() {
 
       <div ref={rootRef} className="h-[500px] relative shrink-0 w-[1824px]">
 
+        {/* ── Grid lines (same as main page) ───────────────────────── */}
+        <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+          {[48, 279, 510, 741, 972, 1203, 1434, 1665].map((left) => (
+            <div
+              key={left}
+              className="absolute top-0 h-full w-[207px] border-l border-r border-solid border-[#cfcfcf]"
+              style={{ left: `${left}px` }}
+            />
+          ))}
+        </div>
+
         {/* ── Left: Availability + statement + CTA ─────────────────── */}
         <div className="absolute left-0 top-0 w-[560px] flex flex-col" data-reveal="0">
           <div className="flex items-center gap-[10px]">
