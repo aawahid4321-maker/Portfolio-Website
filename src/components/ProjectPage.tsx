@@ -2,9 +2,9 @@ import { type ProjectData, getProjectCanvasH, IMG_SLOT_H, IMG_GAP, IMAGES_TOP, T
 import SharedFooterContent from "@/components/SharedFooterContent";
 import ProjectHero from "@/components/ProjectHero";
 
-/* Hero is now ~924px tall (flex: 152 top pad + tags + title + card + 72 bottom pad).
+/* Hero is now ~800px tall (flex: 152 top pad + tags + card + 72 bottom pad, no title).
    Shift content so Overview starts right after the hero's bottom padding. */
-const HERO_SHIFT = 128;
+const HERO_SHIFT = 4;
 
 interface ProjectPageProps {
   project: ProjectData;

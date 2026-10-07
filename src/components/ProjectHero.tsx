@@ -1073,8 +1073,7 @@ export default function ProjectHero({
           ))}
         </div>
 
-        {/* big title */}
-        <h1 className="ph-title">{title}</h1>
+        {/* title removed per user request — pills + card only */}
 
         {/* sticker card: wrap > shadow + card > img (shadow is separate layer for perfect corners) */}
         <div ref={cardRef} className="ph-card-wrap ph-enter">
