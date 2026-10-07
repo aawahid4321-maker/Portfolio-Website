@@ -1081,9 +1081,13 @@ export default function PhysicsTags() {
       const visibleH = Math.min(r.bottom, vh) - Math.max(r.top, 0);
       return visibleH >= r.height * 0.4;
     };
-    const maybeStartDropSequence = () => {
+    const maybeStartDropSequence = (fromBelow?: boolean) => {
       if (hasDropped || !ready || reduceMotion || locked) return;
-      if (scrollDir !== "down") return; // only while scrolling DOWN
+      // Only trigger when entering from above (scrolling down). If fromBelow is true,
+      // the user is scrolling up from below — don't trigger per spec.
+      if (fromBelow === true) return;
+      // Fallback to scrollDir tracking if fromBelow not provided
+      if (fromBelow === undefined && scrollDir !== "down") return;
       if (!isSection40Visible()) return;
       hasDropped = true;
       sequenceObserver.disconnect();
@@ -1101,7 +1105,12 @@ export default function PhysicsTags() {
     const sequenceObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) maybeStartDropSequence();
+          if (entry.isIntersecting) {
+            // Determine if entering from above (scrolling down) or below (scrolling up)
+            // boundingClientRect.top > 0 means section is below viewport top → scrolling down to it
+            const fromBelow = entry.boundingClientRect.top < 0;
+            maybeStartDropSequence(fromBelow);
+          }
         });
       },
       { threshold: [0, 0.25, 0.4] }
@@ -1181,6 +1190,7 @@ export default function PhysicsTags() {
       window.addEventListener("pageshow", onPageShow);
       // already in view on load: drop with NO lock, NO scroll-into-place
       if (isSection40Visible()) {
+        hasDropped = true;
         triggerDrop();
       } else {
         sequenceObserver.observe(section);
