@@ -48,11 +48,11 @@ export default function ProjectPage({
       style={{ width: 1920, height: canvasH }}
     >
       <style>{`
-        /* Overview: light text on dark (scoped to project page) */
-        .project-page .pp-overview-heading { color: #FAFAFA !important; }
-        .project-page .pp-overview-desc { color: rgba(250,250,250,0.78) !important; }
-        .project-page .pp-overview-label { color: rgba(250,250,250,0.6) !important; }
-        .project-page .pp-overview-value { color: #FAFAFA !important; }
+        /* Overview: dark text on light (scoped to project page) */
+        .project-page .pp-overview-heading { color: #0D0D0D !important; }
+        .project-page .pp-overview-desc { color: #1e1e1f !important; }
+        .project-page .pp-overview-label { color: #0f0f0f !important; }
+        .project-page .pp-overview-value { color: #0f0f0f !important; }
       `}</style>
       {/* ── Grid columns ────────────────────────────────────── */}
       {[48, 279, 510, 741, 972, 1203, 1434, 1665].map((left) => (
