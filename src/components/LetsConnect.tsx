@@ -16,7 +16,6 @@ const CSS_VARS = {
 } as React.CSSProperties;
 
 const INK = "#0D0D0D";
-const BLUSH = "rgba(255,10,138,0.3)";
 
 export default function LetsConnect() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -872,7 +871,7 @@ export default function LetsConnect() {
       {/* CONTACT link removed per user request */}
 
       <div className="lc-stage">
-        <svg viewBox="0 0 900 520" role="group" aria-label="A group of friendly cartoon shape characters">
+        <svg viewBox="0 0 900 520" role="group" aria-label="A group of friendly cartoon shape characters" style={{ shapeRendering: "geometricPrecision" }}>
           <g fill="rgba(255,255,255,0.25)">
             <circle className="lc-sparkle" cx="120" cy="120" r="4" style={{ animationDelay: "0s" }} />
             <circle className="lc-sparkle" cx="780" cy="90" r="5" style={{ animationDelay: "1.5s" }} />
@@ -881,7 +880,7 @@ export default function LetsConnect() {
           </g>
           <g className="fx-layer" />
 
-          {/* ══ 1. CIRCLE (#A58CF4) — one hand waving, other on hip ══ */}
+          {/* ══ 1. CIRCLE (#A58CF4) — one hand waving up, other at side ══ */}
           <g className="mover" data-slot="0" data-home="100" data-cx="100" data-cy="486" data-x="0"
              tabIndex={0} role="button" aria-label="Make the circle character run to a new spot">
             <ellipse cx="100" cy="490" rx="46" ry="7" fill="rgba(13,13,13,0.25)" />
@@ -890,59 +889,56 @@ export default function LetsConnect() {
               <g className="scroll-shift" data-depth="0.6">
                 <g transform="translate(100,486)">
                   <g className="legs">
-                    <g className="leg-l">
-                      <line x1="-20" y1="-34" x2="-20" y2="-8" stroke="#A58CF4" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M-35,-14 L-5,-14 L-5,-6 Q-5,0 -13,0 L-27,0 Q-35,0 -35,-8 Z" fill="#A58CF4" />
-                      <line x1="-12" y1="-11" x2="-12" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                    <g className="leg-r">
-                      <line x1="20" y1="-34" x2="20" y2="-8" stroke="#A58CF4" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M5,-14 L35,-14 L35,-6 Q35,0 27,0 L13,0 Q5,0 5,-8 Z" fill="#A58CF4" />
-                      <line x1="28" y1="-11" x2="28" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                  </g>
-                  <g className="arm-back">
-                    <path d="M-46,-86 Q-58,-66 -54,-48" stroke="#A58CF4" strokeWidth="12" fill="none" strokeLinecap="round" />
-                    <circle cx="-54" cy="-44" r="11" fill="#A58CF4" />
-                    <path d="M-62,-50 Q-54,-57 -46,-50" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <line x1="-58" y1="-38" x2="-60" y2="-32" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    <line x1="-51" y1="-37" x2="-52" y2="-31" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                  </g>
-                  <g className="body">
-                    <circle cx="0" cy="-94" r="60" fill="#A58CF4" />
-                  </g>
-                  <g className="face">
-                    <g stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                      <path d="M-31,-121 Q-21,-127 -11,-121" />
-                      <path d="M11,-121 Q21,-127 31,-121" />
-                    </g>
-                    <g className="lc-eyes">
-                      <g className="dots" fill={INK}>
-                        <circle cx="-21" cy="-106" r="4.5" />
-                        <circle cx="21" cy="-106" r="4.5" />
-                      </g>
-                      <g className="happy" stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                        <path d="M-29,-106 Q-21,-115 -13,-106" />
-                        <path d="M13,-106 Q21,-115 29,-106" />
-                      </g>
-                    </g>
-                    <g className="mouth">
-                      <path className="mouth-normal" d="M-30,-70 Q0,-44 30,-70" stroke={INK} strokeWidth="3.5" fill="none" strokeLinecap="round" />
-                      <path className="mouth-happy" d="M-34,-68 Q0,-36 34,-68" stroke={INK} strokeWidth="4" fill="none" strokeLinecap="round" />
-                    </g>
-                    <g fill={BLUSH}>
-                      <ellipse cx="-41" cy="-86" rx="8" ry="5" />
-                      <ellipse cx="41" cy="-86" rx="8" ry="5" />
-                    </g>
-                  </g>
-                  <g className="arm-front wave-hand">
-                    <path d="M46,-86 Q64,-98 72,-138" stroke="#A58CF4" strokeWidth="12" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M38,-78 Q50,-82 56,-90" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <circle cx="74" cy="-144" r="11" fill="#A58CF4" />
-                    <path d="M66,-150 Q74,-157 82,-150" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <line x1="70" y1="-138" x2="68" y2="-132" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    <line x1="77" y1="-137" x2="77" y2="-131" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                  </g>
+                                    <g className="leg-l">
+                                      <path d="M-22,-36L-22,-14A5,5 0 0 0 -12,-14L-12,-36A5,5 0 0 0 -22,-36Z" fill="#A58CF4" stroke="#5C4A9E" strokeWidth={2} />
+                                      <g transform="translate(-18,0) scale(-1,1)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#A58CF4" stroke="#5C4A9E" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#5C4A9E" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                    <g className="leg-r">
+                                      <path d="M14,-36L14,-14A5,5 0 0 0 24,-14L24,-36A5,5 0 0 0 14,-36Z" fill="#A58CF4" stroke="#5C4A9E" strokeWidth={2} />
+                                      <g transform="translate(18,0)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#A58CF4" stroke="#5C4A9E" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#5C4A9E" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  </g>
+                                  <g className="arm-back">
+                                    <path d="M-52,-102L-62,-78L-58,-54A5,5 0 0 0 -50,-54L-50,-78L-40,-98A6.5,6.5 0 0 0 -52,-102Z" fill="#A58CF4" stroke="#5C4A9E" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={-54} cy={-54} r={9} fill="#A58CF4" stroke="#5C4A9E" strokeWidth={2} />
+                                        <line x1={-54} y1={-51} x2={-54} y2={-46} stroke="#5C4A9E" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-55} y1={-51} x2={-57} y2={-46} stroke="#5C4A9E" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-56} y1={-52} x2={-59} y2={-48} stroke="#5C4A9E" strokeWidth={2} strokeLinecap="round" />
+                                  </g>
+                                  <g className="body">
+                                      <path d="M58,-94L58,-80L52,-68L44,-58L34,-50L24,-44L12,-38L0,-34L-14,-36L-26,-40L-36,-48L-44,-58L-52,-70L-56,-82L-58,-94L-56,-106L-52,-118L-46,-130L-38,-140L-26,-148L-14,-152L0,-150L12,-148L24,-144L36,-140L46,-130L52,-120L58,-108L58,-94Z" transform="translate(0,3)" fill="rgba(13,13,13,0.28)" />
+                                      <path d="M58,-94L58,-80L52,-68L44,-58L34,-50L24,-44L12,-38L0,-34L-14,-36L-26,-40L-36,-48L-44,-58L-52,-70L-56,-82L-58,-94L-56,-106L-52,-118L-46,-130L-38,-140L-26,-148L-14,-152L0,-150L12,-148L24,-144L36,-140L46,-130L52,-120L58,-108L58,-94Z" fill="#A58CF4" />
+                                    </g>
+                                  <g className="face">
+                                      <g className="lc-eyes">
+                                        <g className="dots" fill="#0D0D0D">
+                                          <circle cx={-18} cy={-110} r={3.5} />
+                                          <circle cx={18} cy={-110} r={3.5} />
+                                        </g>
+                                        <g className="happy" stroke="#0D0D0D" strokeWidth={2.5} strokeLinecap="round" fill="none">
+                                          <path d="M-26,-110 Q-18,-119 -10,-110" />
+                                          <path d="M10,-110 Q18,-119 26,-110" />
+                                        </g>
+                                      </g>
+                                      <g className="mouth">
+                                        <path className="mouth-normal" d="M-26,-80 Q0,-60 26,-80" stroke="#0D0D0D" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+                                        <path className="mouth-happy" d="M-30,-78 Q0,-52 30,-78" stroke="#0D0D0D" strokeWidth={3} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  <g className="arm-front wave-hand">
+                                    <path d="M52,-98L64,-126L66,-156A5,5 0 0 0 58,-156L52,-130L40,-102A6.5,6.5 0 0 0 52,-98Z" fill="#A58CF4" stroke="#5C4A9E" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={62} cy={-156} r={9} fill="#A58CF4" stroke="#5C4A9E" strokeWidth={2} />
+                                        <line x1={61} y1={-159} x2={59} y2={-164} stroke="#5C4A9E" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={62} y1={-159} x2={62} y2={-164} stroke="#5C4A9E" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={63} y1={-159} x2={65} y2={-164} stroke="#5C4A9E" strokeWidth={2} strokeLinecap="round" />
+                                        <path d="M40,-97 Q46,-108 51,-121" stroke="#0D0D0D" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+                                  </g>
                   <rect className="hit" x="-75" y="-175" width="150" height="179" rx="24" />
                 </g>
               </g>
@@ -958,62 +954,63 @@ export default function LetsConnect() {
               <g className="scroll-shift" data-depth="0.5">
                 <g transform="translate(222,486)">
                   <g className="legs">
-                    <g className="leg-l">
-                      <line x1="-20" y1="-30" x2="-20" y2="-8" stroke="#FFD60A" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M-35,-14 L-5,-14 L-5,-6 Q-5,0 -13,0 L-27,0 Q-35,0 -35,-8 Z" fill="#FFD60A" />
-                      <line x1="-12" y1="-11" x2="-12" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                    <g className="leg-r">
-                      <line x1="20" y1="-30" x2="20" y2="-8" stroke="#FFD60A" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M5,-14 L35,-14 L35,-6 Q35,0 27,0 L13,0 Q5,0 5,-8 Z" fill="#FFD60A" />
-                      <line x1="28" y1="-11" x2="28" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                  </g>
-                  <g className="arm-back">
-                    <path d="M-42,-70 Q-50,-54 -48,-36" stroke="#FFD60A" strokeWidth="12" fill="none" strokeLinecap="round" />
-                    <circle cx="-48" cy="-30" r="11" fill="#FFD60A" />
-                    <path d="M-56,-36 Q-48,-43 -40,-36" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <line x1="-52" y1="-24" x2="-54" y2="-18" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    <line x1="-45" y1="-23" x2="-46" y2="-17" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                  </g>
-                  <g className="body">
-                    <path d="M0,-142 L56,-18 L-56,-18 Z" fill="#FFD60A" stroke="#FFD60A" strokeWidth="12" strokeLinejoin="round" />
-                  </g>
-                  <g className="face">
-                    <g stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                      <path d="M-31,-105 Q-21,-113 -11,-105" />
-                      <path d="M11,-105 Q21,-113 31,-105" />
-                    </g>
-                    <g className="lc-eyes">
-                      <g className="dots" fill={INK}>
-                        <circle cx="-20" cy="-90" r="4.5" />
-                        <circle cx="20" cy="-90" r="4.5" />
-                      </g>
-                      <g className="happy" stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                        <path d="M-28,-90 Q-20,-99 -12,-90" />
-                        <path d="M12,-90 Q20,-99 28,-90" />
-                      </g>
-                    </g>
-                    <g className="mouth">
-                      <ellipse className="mouth-normal" cx="0" cy="-54" rx="9" ry="11" fill={INK} />
-                      <ellipse className="mouth-happy" cx="0" cy="-54" rx="12" ry="15" fill={INK} />
-                    </g>
-                  </g>
-                  <g className="arm-front cup-bob">
-                    <path d="M40,-70 Q32,-62 27,-55" stroke="#FFD60A" strokeWidth="12" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M34,-64 Q28,-60 24,-56" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <circle cx="25" cy="-51" r="11" fill="#FFD60A" />
-                    <path d="M17,-57 Q25,-64 33,-57" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <line x1="21" y1="-45" x2="19" y2="-39" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    <line x1="28" y1="-44" x2="28" y2="-38" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                  </g>
+                                    <g className="leg-l">
+                                      <path d="M-22,-36L-22,-14A5,5 0 0 0 -12,-14L-12,-36A5,5 0 0 0 -22,-36Z" fill="#FFD60A" stroke="#8C6E06" strokeWidth={2} />
+                                      <g transform="translate(-18,0) scale(-1,1)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#FFD60A" stroke="#8C6E06" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#8C6E06" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                    <g className="leg-r">
+                                      <path d="M14,-36L14,-14A5,5 0 0 0 24,-14L24,-36A5,5 0 0 0 14,-36Z" fill="#FFD60A" stroke="#8C6E06" strokeWidth={2} />
+                                      <g transform="translate(18,0)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#FFD60A" stroke="#8C6E06" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#8C6E06" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  </g>
+                                  <g className="arm-back">
+                                    <path d="M-46,-102L-56,-82L-52,-56A5,5 0 0 0 -44,-56L-44,-78L-34,-98A6.5,6.5 0 0 0 -46,-102Z" fill="#FFD60A" stroke="#8C6E06" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={-48} cy={-56} r={9} fill="#FFD60A" stroke="#8C6E06" strokeWidth={2} />
+                                        <line x1={-47} y1={-53} x2={-47} y2={-48} stroke="#8C6E06" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-49} y1={-53} x2={-49} y2={-48} stroke="#8C6E06" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-49} y1={-53} x2={-52} y2={-49} stroke="#8C6E06" strokeWidth={2} strokeLinecap="round" />
+                                  </g>
+                                  <g className="body">
+                                      <path d="M2,-160 L58,-34 L-56,-38 Z" transform="translate(0,3)" fill="rgba(13,13,13,0.28)" />
+                                      <path d="M2,-160 L58,-34 L-56,-38 Z" fill="#FFD60A" />
+                                    </g>
+                                  <g className="face">
+                                      <g className="lc-eyes">
+                                        <g className="dots" fill="#0D0D0D">
+                                          <circle cx={-18} cy={-112} r={3.5} />
+                                          <circle cx={18} cy={-112} r={3.5} />
+                                        </g>
+                                        <g className="happy" stroke="#0D0D0D" strokeWidth={2.5} strokeLinecap="round" fill="none">
+                                          <path d="M-26,-112 Q-18,-121 -10,-112" />
+                                          <path d="M10,-112 Q18,-121 26,-112" />
+                                        </g>
+                                      </g>
+                                      <g className="mouth">
+                                        <ellipse className="mouth-normal" cx={0} cy={-74} rx={6} ry={8} fill="#0D0D0D" />
+                                        <ellipse className="mouth-happy" cx={0} cy={-74} rx={8} ry={11} fill="#0D0D0D" />
+                                      </g>
+                                    </g>
+                                  <g className="arm-front cup-bob">
+                                    <path d="M34,-98L40,-86L24,-72A5,5 0 0 0 32,-64L52,-82L46,-102A6.5,6.5 0 0 0 34,-98Z" fill="#FFD60A" stroke="#8C6E06" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={28} cy={-68} r={9} fill="#FFD60A" stroke="#8C6E06" strokeWidth={2} />
+                                        <line x1={25} y1={-69} x2={21} y2={-71} stroke="#8C6E06" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={26} y1={-70} x2={22} y2={-74} stroke="#8C6E06" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={27} y1={-71} x2={25} y2={-75} stroke="#8C6E06" strokeWidth={2} strokeLinecap="round" />
+                                        <path d="M44,-96 Q46,-88 40,-80" stroke="#0D0D0D" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+                                  </g>
                   <rect className="hit" x="-70" y="-160" width="140" height="164" rx="24" />
                 </g>
               </g>
             </g>
           </g>
 
-          {/* ══ 3. ROUNDED SQUARE (#FF0A8A) — shy, hands clasped ══ */}
+          {/* ══ 3. ROUNDED SQUARE (#FF0A8A) — shy, hands at belly ══ */}
           <g className="mover" data-slot="2" data-home="344" data-cx="344" data-cy="486" data-x="0"
              tabIndex={0} role="button" aria-label="Make the rounded square character run to a new spot">
             <ellipse cx="344" cy="490" rx="46" ry="7" fill="rgba(13,13,13,0.25)" />
@@ -1022,54 +1019,59 @@ export default function LetsConnect() {
               <g className="scroll-shift" data-depth="0.5">
                 <g transform="translate(344,486)">
                   <g className="legs">
-                    <g className="leg-l">
-                      <line x1="-20" y1="-32" x2="-20" y2="-8" stroke="#FF0A8A" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M-35,-14 L-5,-14 L-5,-6 Q-5,0 -13,0 L-27,0 Q-35,0 -35,-8 Z" fill="#FF0A8A" />
-                      <line x1="-12" y1="-11" x2="-12" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                    <g className="leg-r">
-                      <line x1="20" y1="-32" x2="20" y2="-8" stroke="#FF0A8A" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M5,-14 L35,-14 L35,-6 Q35,0 27,0 L13,0 Q5,0 5,-8 Z" fill="#FF0A8A" />
-                      <line x1="28" y1="-11" x2="28" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                  </g>
-                  <g className="arm-back">
-                    <path d="M-44,-76 Q-28,-60 -14,-52" stroke="#FF0A8A" strokeWidth="12" fill="none" strokeLinecap="round" />
-                  </g>
-                  <g className="body">
-                    <rect x="-54" y="-146" width="108" height="128" rx="26" fill="#FF0A8A" />
-                  </g>
-                  <g className="face">
-                    <g stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                      <path d="M-21,-102 Q-13,-106 -5,-102" />
-                      <path d="M13,-102 Q21,-106 29,-102" />
-                    </g>
-                    <g className="lc-eyes">
-                      <g className="dots" fill={INK}>
-                        <circle cx="-13" cy="-90" r="4.5" />
-                        <circle cx="21" cy="-90" r="4.5" />
-                      </g>
-                      <g className="happy" stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                        <path d="M-21,-90 Q-13,-99 -5,-90" />
-                        <path d="M13,-90 Q21,-99 29,-90" />
-                      </g>
-                    </g>
-                    <g className="mouth">
-                      <path className="mouth-normal" d="M-13,-55 Q1,-47 15,-55" stroke={INK} strokeWidth="3" fill="none" strokeLinecap="round" />
-                      <path className="mouth-happy" d="M-15,-53 Q1,-41 17,-53" stroke={INK} strokeWidth="3.5" fill="none" strokeLinecap="round" />
-                    </g>
-                  </g>
-                  <g className="arm-front">
-                    <path d="M44,-76 Q28,-60 14,-52" stroke="#FF0A8A" strokeWidth="12" fill="none" strokeLinecap="round" />
-                    <g className="clasp-wiggle">
-                      <circle cx="-8" cy="-48" r="11" fill="#FF0A8A" />
-                      <circle cx="8" cy="-48" r="11" fill="#FF0A8A" />
-                      <path d="M-16,-54 Q-8,-61 0,-54" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                      <path d="M0,-54 Q8,-61 16,-54" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                      <line x1="-8" y1="-42" x2="-8" y2="-36" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                      <line x1="8" y1="-42" x2="8" y2="-36" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                  </g>
+                                    <g className="leg-l">
+                                      <path d="M-22,-36L-22,-14A5,5 0 0 0 -12,-14L-12,-36A5,5 0 0 0 -22,-36Z" fill="#FF0A8A" stroke="#8C054D" strokeWidth={2} />
+                                      <g transform="translate(-18,0) scale(-1,1)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#FF0A8A" stroke="#8C054D" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#8C054D" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                    <g className="leg-r">
+                                      <path d="M14,-36L14,-14A5,5 0 0 0 24,-14L24,-36A5,5 0 0 0 14,-36Z" fill="#FF0A8A" stroke="#8C054D" strokeWidth={2} />
+                                      <g transform="translate(18,0)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#FF0A8A" stroke="#8C054D" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#8C054D" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  </g>
+                                  <g className="arm-back">
+                                    <path d="M-54,-92L-36,-68L-14,-54A5,5 0 0 0 -10,-62L-28,-76L-42,-100A6.5,6.5 0 0 0 -54,-92Z" fill="#FF0A8A" stroke="#8C054D" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={-12} cy={-58} r={9} fill="#FF0A8A" stroke="#8C054D" strokeWidth={2} />
+                                        <line x1={-15} y1={-57} x2={-20} y2={-55} stroke="#8C054D" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-15} y1={-58} x2={-20} y2={-58} stroke="#8C054D" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-15} y1={-59} x2={-20} y2={-61} stroke="#8C054D" strokeWidth={2} strokeLinecap="round" />
+                                        <path d="M-42,-82 Q-32,-72 -22,-66" stroke="#0D0D0D" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+                                  </g>
+                                  <g className="body">
+                                      <path d="M-26,-152L28,-152Q54,-152 54,-126L54,-62Q54,-36 28,-36L-26,-36Q-54,-36 -54,-62L-54,-126Q-54,-152 -26,-152Z" transform="translate(0,3)" fill="rgba(13,13,13,0.28)" />
+                                      <path d="M-26,-152L28,-152Q54,-152 54,-126L54,-62Q54,-36 28,-36L-26,-36Q-54,-36 -54,-62L-54,-126Q-54,-152 -26,-152Z" fill="#FF0A8A" />
+                                    </g>
+                                  <g className="face">
+                                      <g className="lc-eyes">
+                                        <g className="dots" fill="#0D0D0D">
+                                          <circle cx={-10} cy={-108} r={3.5} />
+                                          <circle cx={24} cy={-108} r={3.5} />
+                                        </g>
+                                        <g className="happy" stroke="#0D0D0D" strokeWidth={2.5} strokeLinecap="round" fill="none">
+                                          <path d="M-18,-108 Q-10,-117 -2,-108" />
+                                          <path d="M16,-108 Q24,-117 32,-108" />
+                                        </g>
+                                      </g>
+                                      <g className="mouth">
+                                        <path className="mouth-normal" d="M-14,-74 Q2,-66 18,-74" stroke="#0D0D0D" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+                                        <path className="mouth-happy" d="M-16,-72 Q2,-60 20,-72" stroke="#0D0D0D" strokeWidth={3} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  <g className="arm-front">
+                                    <g className="clasp-wiggle">
+                                      <path d="M42,-100L28,-76L10,-62A5,5 0 0 0 14,-54L36,-68L54,-92A6.5,6.5 0 0 0 42,-100Z" fill="#FF0A8A" stroke="#8C054D" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={12} cy={-58} r={9} fill="#FF0A8A" stroke="#8C054D" strokeWidth={2} />
+                                        <line x1={15} y1={-59} x2={20} y2={-61} stroke="#8C054D" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={15} y1={-58} x2={20} y2={-58} stroke="#8C054D" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={15} y1={-57} x2={20} y2={-55} stroke="#8C054D" strokeWidth={2} strokeLinecap="round" />
+                                        <path d="M42,-82 Q32,-72 22,-66" stroke="#0D0D0D" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+                                    </g>
+                                  </g>
                   <rect className="hit" x="-68" y="-164" width="136" height="168" rx="24" />
                 </g>
               </g>
@@ -1085,74 +1087,64 @@ export default function LetsConnect() {
               <g className="scroll-shift" data-depth="0.25">
                 <g transform="translate(466,486)">
                   <g className="legs">
-                    <g className="leg-l">
-                      <line x1="-18" y1="-30" x2="-18" y2="-8" stroke="#FF5A00" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M-35,-14 L-5,-14 L-5,-6 Q-5,0 -13,0 L-27,0 Q-35,0 -35,-8 Z" fill="#FF5A00" />
-                      <line x1="-12" y1="-11" x2="-12" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                    <g className="leg-r">
-                      <line x1="18" y1="-30" x2="18" y2="-8" stroke="#FF5A00" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M5,-14 L35,-14 L35,-6 Q35,0 27,0 L13,0 Q5,0 5,-8 Z" fill="#FF5A00" />
-                      <line x1="28" y1="-11" x2="28" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                  </g>
-                  <g className="body">
-                    <circle cx="0" cy="-104" r="60" fill="#FF5A00" />
-                    <g fill="#FF5A00">
-                      {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((a) => (
-                        <path key={a} d="M-13,-158 L13,-158 L0,-184 Z" transform={`rotate(${a} 0 -104)`} />
-                      ))}
-                    </g>
-                  </g>
-                  <g className="face">
-                    <g stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                      <path d="M-33,-124 Q-23,-130 -13,-124" />
-                      <path d="M13,-124 Q23,-130 33,-124" />
-                    </g>
-                    <g className="lc-eyes">
-                      <g className="dots" fill={INK}>
-                        <circle cx="-22" cy="-110" r="4.5" />
-                        <circle cx="22" cy="-110" r="4.5" />
-                      </g>
-                      <g className="happy" stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                        <path d="M-30,-110 Q-22,-119 -14,-110" />
-                        <path d="M14,-110 Q22,-119 30,-110" />
-                      </g>
-                    </g>
-                    <g className="mouth">
-                      <path className="mouth-normal" d="M-33,-68 Q0,-36 33,-68" stroke={INK} strokeWidth="3.5" fill="none" strokeLinecap="round" />
-                      <path className="mouth-happy" d="M-37,-66 Q0,-28 37,-66" stroke={INK} strokeWidth="4" fill="none" strokeLinecap="round" />
-                    </g>
-                    <g fill={BLUSH}>
-                      <ellipse cx="-42" cy="-88" rx="8" ry="5" />
-                      <ellipse cx="42" cy="-88" rx="8" ry="5" />
-                    </g>
-                  </g>
-                  <g className="arm-front">
-                    <g className="sun-arm-l">
-                      <path d="M-46,-96 Q-62,-118 -70,-156" stroke="#FF5A00" strokeWidth="12" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M-40,-88 Q-50,-94 -54,-104" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                      <circle cx="-72" cy="-162" r="11" fill="#FF5A00" />
-                      <path d="M-80,-168 Q-72,-175 -64,-168" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                      <line x1="-76" y1="-156" x2="-78" y2="-150" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                      <line x1="-69" y1="-155" x2="-69" y2="-149" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                    <g className="sun-arm-r">
-                      <path d="M46,-96 Q62,-118 70,-156" stroke="#FF5A00" strokeWidth="12" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-                      <path d="M40,-88 Q50,-94 54,-104" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                      <circle cx="72" cy="-162" r="11" fill="#FF5A00" />
-                      <path d="M64,-168 Q72,-175 80,-168" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                      <line x1="76" y1="-156" x2="78" y2="-150" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                      <line x1="69" y1="-155" x2="69" y2="-149" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                  </g>
+                                    <g className="leg-l">
+                                      <path d="M-20,-36L-20,-14A5,5 0 0 0 -10,-14L-10,-36A5,5 0 0 0 -20,-36Z" fill="#FF5A00" stroke="#8C3200" strokeWidth={2} />
+                                      <g transform="translate(-16,0) scale(-1,1)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#FF5A00" stroke="#8C3200" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#8C3200" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                    <g className="leg-r">
+                                      <path d="M12,-36L12,-14A5,5 0 0 0 22,-14L22,-36A5,5 0 0 0 12,-36Z" fill="#FF5A00" stroke="#8C3200" strokeWidth={2} />
+                                      <g transform="translate(16,0)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#FF5A00" stroke="#8C3200" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#8C3200" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  </g>
+                                  <g className="body">
+                                      <path d="M0,-186L4,-180L6,-176L8,-170L10,-164L12,-156L14,-154L16,-154L22,-162L26,-166L32,-170L36,-172L42,-174L42,-168L42,-162L42,-156L40,-148L36,-142L36,-138L40,-138L46,-142L54,-144L60,-144L66,-144L74,-144L70,-138L68,-134L64,-128L60,-124L52,-118L52,-116L54,-114L62,-112L68,-110L74,-108L78,-106L84,-102L78,-98L72,-96L66,-94L60,-92L52,-90L50,-88L52,-86L58,-80L64,-76L68,-70L70,-66L74,-60L68,-60L62,-60L54,-60L48,-62L40,-66L36,-66L36,-62L40,-54L40,-48L42,-42L42,-36L42,-30L36,-32L30,-36L26,-40L22,-44L16,-50L14,-52L12,-48L10,-40L10,-34L6,-28L4,-22L0,-18L-4,-22L-6,-28L-8,-34L-10,-42L-12,-50L-14,-52L-16,-50L-20,-44L-26,-40L-30,-36L-36,-32L-42,-30L-42,-36L-42,-42L-42,-48L-40,-54L-38,-62L-38,-64L-40,-64L-48,-62L-54,-60L-60,-60L-66,-60L-72,-60L-70,-66L-66,-72L-62,-76L-58,-82L-52,-86L-50,-88L-52,-90L-60,-92L-68,-94L-74,-96L-80,-98L-84,-102L-80,-106L-74,-108L-68,-112L-62,-112L-54,-114L-50,-116L-52,-118L-58,-124L-62,-128L-66,-132L-70,-138L-72,-144L-66,-144L-60,-144L-54,-144L-48,-142L-40,-138L-36,-138L-38,-142L-40,-150L-42,-156L-42,-164L-42,-170L-42,-176L-36,-172L-32,-170L-26,-166L-22,-160L-16,-154L-14,-152L-12,-154L-10,-162L-8,-168L-6,-174L-4,-180L0,-186Z" transform="translate(0,3)" fill="rgba(13,13,13,0.28)" />
+                                      <path d="M0,-186L4,-180L6,-176L8,-170L10,-164L12,-156L14,-154L16,-154L22,-162L26,-166L32,-170L36,-172L42,-174L42,-168L42,-162L42,-156L40,-148L36,-142L36,-138L40,-138L46,-142L54,-144L60,-144L66,-144L74,-144L70,-138L68,-134L64,-128L60,-124L52,-118L52,-116L54,-114L62,-112L68,-110L74,-108L78,-106L84,-102L78,-98L72,-96L66,-94L60,-92L52,-90L50,-88L52,-86L58,-80L64,-76L68,-70L70,-66L74,-60L68,-60L62,-60L54,-60L48,-62L40,-66L36,-66L36,-62L40,-54L40,-48L42,-42L42,-36L42,-30L36,-32L30,-36L26,-40L22,-44L16,-50L14,-52L12,-48L10,-40L10,-34L6,-28L4,-22L0,-18L-4,-22L-6,-28L-8,-34L-10,-42L-12,-50L-14,-52L-16,-50L-20,-44L-26,-40L-30,-36L-36,-32L-42,-30L-42,-36L-42,-42L-42,-48L-40,-54L-38,-62L-38,-64L-40,-64L-48,-62L-54,-60L-60,-60L-66,-60L-72,-60L-70,-66L-66,-72L-62,-76L-58,-82L-52,-86L-50,-88L-52,-90L-60,-92L-68,-94L-74,-96L-80,-98L-84,-102L-80,-106L-74,-108L-68,-112L-62,-112L-54,-114L-50,-116L-52,-118L-58,-124L-62,-128L-66,-132L-70,-138L-72,-144L-66,-144L-60,-144L-54,-144L-48,-142L-40,-138L-36,-138L-38,-142L-40,-150L-42,-156L-42,-164L-42,-170L-42,-176L-36,-172L-32,-170L-26,-166L-22,-160L-16,-154L-14,-152L-12,-154L-10,-162L-8,-168L-6,-174L-4,-180L0,-186Z" fill="#FF5A00" />
+                                    </g>
+                                  <g className="face">
+                                      <g className="lc-eyes">
+                                        <g className="dots" fill="#0D0D0D">
+                                          <circle cx={-20} cy={-116} r={3.5} />
+                                          <circle cx={20} cy={-116} r={3.5} />
+                                        </g>
+                                        <g className="happy" stroke="#0D0D0D" strokeWidth={2.5} strokeLinecap="round" fill="none">
+                                          <path d="M-28,-116 Q-20,-125 -12,-116" />
+                                          <path d="M12,-116 Q20,-125 28,-116" />
+                                        </g>
+                                      </g>
+                                      <g className="mouth">
+                                        <path className="mouth-normal" d="M-32,-80 Q0,-46 32,-80" stroke="#0D0D0D" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+                                        <path className="mouth-happy" d="M-36,-78 Q0,-38 36,-78" stroke="#0D0D0D" strokeWidth={3} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  <g className="arm-front">
+                                    <g className="sun-arm-l">
+                                      <path d="M-34,-114L-50,-142L-58,-170A5,5 0 0 0 -66,-166L-62,-138L-46,-106A6.5,6.5 0 0 0 -34,-114Z" fill="#FF5A00" stroke="#8C3200" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={-62} cy={-168} r={9} fill="#FF5A00" stroke="#8C3200" strokeWidth={2} />
+                                        <line x1={-63} y1={-171} x2={-65} y2={-176} stroke="#8C3200" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-62} y1={-171} x2={-62} y2={-176} stroke="#8C3200" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-61} y1={-171} x2={-59} y2={-176} stroke="#8C3200" strokeWidth={2} strokeLinecap="round" />
+                                    </g>
+                                    <g className="sun-arm-r">
+                                      <path d="M46,-106L62,-138L66,-166A5,5 0 0 0 58,-170L50,-142L34,-114A6.5,6.5 0 0 0 46,-106Z" fill="#FF5A00" stroke="#8C3200" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={62} cy={-168} r={9} fill="#FF5A00" stroke="#8C3200" strokeWidth={2} />
+                                        <line x1={61} y1={-171} x2={59} y2={-176} stroke="#8C3200" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={62} y1={-171} x2={62} y2={-176} stroke="#8C3200" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={63} y1={-171} x2={65} y2={-176} stroke="#8C3200" strokeWidth={2} strokeLinecap="round" />
+                                    </g>
+                                  </g>
                   <rect className="hit" x="-95" y="-200" width="190" height="204" rx="24" />
                 </g>
               </g>
             </g>
           </g>
 
-          {/* ══ 5. WHITE PILL (#FAFAFA) — cool, arms crossed ══ */}
+          {/* ══ 5. WHITE PILL (#FAFAFA) — hand on hip, cool ══ */}
           <g className="mover" data-slot="4" data-home="588" data-cx="588" data-cy="486" data-x="0"
              tabIndex={0} role="button" aria-label="Make the white pill character run to a new spot">
             <ellipse cx="588" cy="490" rx="46" ry="7" fill="rgba(13,13,13,0.25)" />
@@ -1161,63 +1153,62 @@ export default function LetsConnect() {
               <g className="scroll-shift" data-depth="0.25">
                 <g transform="translate(588,486)">
                   <g className="legs">
-                    <g className="leg-l">
-                      <line x1="-18" y1="-32" x2="-18" y2="-8" stroke="#FAFAFA" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M-35,-14 L-5,-14 L-5,-6 Q-5,0 -13,0 L-27,0 Q-35,0 -35,-8 Z" fill="#FAFAFA" />
-                      <line x1="-12" y1="-11" x2="-12" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                    <g className="leg-r">
-                      <line x1="18" y1="-32" x2="18" y2="-8" stroke="#FAFAFA" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M5,-14 L35,-14 L35,-6 Q35,0 27,0 L13,0 Q5,0 5,-8 Z" fill="#FAFAFA" />
-                      <line x1="28" y1="-11" x2="28" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                  </g>
-                  <g className="arm-back crossed-breathe">
-                    <path d="M-34,-88 Q-8,-76 20,-64" stroke="#FAFAFA" strokeWidth="12" fill="none" strokeLinecap="round" />
-                    <circle cx="24" cy="-62" r="11" fill="#FAFAFA" />
-                    <path d="M16,-68 Q24,-75 32,-68" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <line x1="20" y1="-56" x2="18" y2="-50" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    <line x1="27" y1="-55" x2="27" y2="-49" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                  </g>
-                  <g className="body">
-                    <rect x="-40" y="-180" width="80" height="162" rx="40" fill="#FAFAFA" />
-                  </g>
-                  <g className="face">
-                    <g stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                      <path d="M-29,-123 Q-19,-128 -9,-123" />
-                      <path d="M9,-131 Q19,-137 29,-131" />
-                    </g>
-                    <g className="lc-eyes">
-                      <g className="dots" fill={INK}>
-                        <circle cx="-18" cy="-108" r="4.5" />
-                        <circle cx="18" cy="-108" r="4.5" />
-                      </g>
-                      <g className="happy" stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                        <path d="M-26,-108 Q-18,-117 -10,-108" />
-                        <path d="M10,-108 Q18,-117 26,-108" />
-                      </g>
-                    </g>
-                    <g className="mouth">
-                      <path className="mouth-normal" d="M-14,-68 Q0,-60 14,-68" stroke={INK} strokeWidth="3" fill="none" strokeLinecap="round" />
-                      <path className="mouth-happy" d="M-16,-66 Q0,-54 16,-66" stroke={INK} strokeWidth="3.5" fill="none" strokeLinecap="round" />
-                    </g>
-                  </g>
-                  <g className="arm-front crossed-breathe">
-                    <path d="M34,-88 Q8,-76 -20,-64" stroke="#FAFAFA" strokeWidth="12" fill="none" strokeLinecap="round" />
-                    <path d="M-10,-80 L8,-72" stroke={INK} strokeWidth="2.5" strokeLinecap="round" />
-                    <path d="M-4,-66 L12,-74" stroke={INK} strokeWidth="2.5" strokeLinecap="round" />
-                    <circle cx="-24" cy="-62" r="11" fill="#FAFAFA" />
-                    <path d="M-32,-68 Q-24,-75 -16,-68" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <line x1="-28" y1="-56" x2="-30" y2="-50" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    <line x1="-21" y1="-55" x2="-21" y2="-49" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                  </g>
+                                    <g className="leg-l">
+                                      <path d="M-20,-36L-20,-14A5,5 0 0 0 -10,-14L-10,-36A5,5 0 0 0 -20,-36Z" fill="#FAFAFA" stroke="#9A9A9A" strokeWidth={2} />
+                                      <g transform="translate(-16,0) scale(-1,1)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#FAFAFA" stroke="#9A9A9A" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#9A9A9A" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                    <g className="leg-r">
+                                      <path d="M12,-36L12,-14A5,5 0 0 0 22,-14L22,-36A5,5 0 0 0 12,-36Z" fill="#FAFAFA" stroke="#9A9A9A" strokeWidth={2} />
+                                      <g transform="translate(16,0)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#FAFAFA" stroke="#9A9A9A" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#9A9A9A" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  </g>
+                                  <g className="arm-back">
+                                    <path d="M-38,-142L-48,-110L-44,-86A5,5 0 0 0 -36,-86L-36,-110L-26,-138A6.5,6.5 0 0 0 -38,-142Z" fill="#FAFAFA" stroke="#9A9A9A" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={-40} cy={-86} r={9} fill="#FAFAFA" stroke="#9A9A9A" strokeWidth={2} />
+                                        <line x1={-39} y1={-83} x2={-39} y2={-78} stroke="#9A9A9A" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-41} y1={-83} x2={-41} y2={-78} stroke="#9A9A9A" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-41} y1={-83} x2={-44} y2={-79} stroke="#9A9A9A" strokeWidth={2} strokeLinecap="round" />
+                                  </g>
+                                  <g className="body">
+                                      <path d="M-2,-190L-2,-190Q38,-190 38,-150L38,-74Q38,-38 -2,-38L-2,-38Q-38,-38 -38,-74L-38,-150Q-38,-190 -2,-190Z" transform="translate(0,3)" fill="rgba(13,13,13,0.28)" />
+                                      <path d="M-2,-190L-2,-190Q38,-190 38,-150L38,-74Q38,-38 -2,-38L-2,-38Q-38,-38 -38,-74L-38,-150Q-38,-190 -2,-190Z" fill="#FAFAFA" />
+                                    </g>
+                                  <g className="face">
+                                      <g className="lc-eyes">
+                                        <g className="dots" fill="#0D0D0D">
+                                          <circle cx={-16} cy={-136} r={3.5} />
+                                          <circle cx={16} cy={-136} r={3.5} />
+                                        </g>
+                                        <g className="happy" stroke="#0D0D0D" strokeWidth={2.5} strokeLinecap="round" fill="none">
+                                          <path d="M-24,-136 Q-16,-145 -8,-136" />
+                                          <path d="M8,-136 Q16,-145 24,-136" />
+                                        </g>
+                                      </g>
+                                      <g className="mouth">
+                                        <path className="mouth-normal" d="M-14,-104 Q0,-96 14,-104" stroke="#0D0D0D" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+                                        <path className="mouth-happy" d="M-16,-102 Q0,-90 16,-102" stroke="#0D0D0D" strokeWidth={3} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  <g className="arm-front crossed-breathe">
+                                    <path d="M26,-136L42,-110L28,-90A5,5 0 0 0 36,-86L54,-110L38,-144A6.5,6.5 0 0 0 26,-136Z" fill="#FAFAFA" stroke="#9A9A9A" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={32} cy={-88} r={9} fill="#FAFAFA" stroke="#9A9A9A" strokeWidth={2} />
+                                        <line x1={35} y1={-88} x2={40} y2={-88} stroke="#9A9A9A" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={35} y1={-87} x2={40} y2={-85} stroke="#9A9A9A" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={34} y1={-86} x2={38} y2={-83} stroke="#9A9A9A" strokeWidth={2} strokeLinecap="round" />
+                                  </g>
                   <rect className="hit" x="-58" y="-196" width="116" height="200" rx="24" />
                 </g>
               </g>
             </g>
           </g>
 
-          {/* ══ 6. STAR (#FF9F0A) — giggling, hands on cheeks ══ */}
+          {/* ══ 6. STAR (#FF9F0A) — laughing, hands on hips ══ */}
           <g className="mover" data-slot="5" data-home="706" data-cx="706" data-cy="486" data-x="0"
              tabIndex={0} role="button" aria-label="Make the star character run to a new spot">
             <ellipse cx="706" cy="490" rx="46" ry="7" fill="rgba(13,13,13,0.25)" />
@@ -1226,57 +1217,55 @@ export default function LetsConnect() {
               <g className="scroll-shift" data-depth="0.65">
                 <g transform="translate(706,486)">
                   <g className="legs">
-                    <g className="leg-l">
-                      <line x1="-14" y1="-34" x2="-14" y2="-8" stroke="#FF9F0A" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M-31,-14 L-1,-14 L-1,-6 Q-1,0 -9,0 L-23,0 Q-31,0 -31,-8 Z" fill="#FF9F0A" />
-                      <line x1="-8" y1="-11" x2="-8" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                    <g className="leg-r">
-                      <line x1="14" y1="-34" x2="14" y2="-8" stroke="#FF9F0A" strokeWidth="12" strokeLinecap="round" />
-                      <path d="M1,-14 L31,-14 L31,-6 Q31,0 23,0 L9,0 Q1,0 1,-8 Z" fill="#FF9F0A" />
-                      <line x1="24" y1="-11" x2="24" y2="-3" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    </g>
-                  </g>
-                  <g className="body">
-                    <path d="M0,-130 L13,-95 L50,-92 L21,-68 L31,-32 L0,-52 L-31,-32 L-21,-68 L-50,-92 L-13,-95 Z"
-                          fill="#FF9F0A" stroke="#FF9F0A" strokeWidth="10" strokeLinejoin="round" />
-                  </g>
-                  <g className="face">
-                    <g stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                      <path d="M-29,-112 Q-21,-117 -13,-112" />
-                      <path d="M13,-112 Q21,-117 29,-112" />
-                    </g>
-                    <g className="lc-eyes">
-                      <g className="dots" stroke={INK} strokeWidth="3" strokeLinecap="round" fill="none">
-                        <path d="M-29,-96 Q-21,-106 -13,-96" />
-                        <path d="M13,-96 Q21,-106 29,-96" />
-                      </g>
-                      <g className="happy" stroke={INK} strokeWidth="3.5" strokeLinecap="round" fill="none">
-                        <path d="M-31,-96 Q-21,-108 -11,-96" />
-                        <path d="M11,-96 Q21,-108 31,-96" />
-                      </g>
-                    </g>
-                    <g className="mouth">
-                      <ellipse className="mouth-normal" cx="0" cy="-54" rx="12" ry="14" fill={INK} />
-                      <ellipse className="mouth-happy" cx="0" cy="-54" rx="15" ry="18" fill={INK} />
-                    </g>
-                    <g fill={BLUSH}>
-                      <ellipse cx="-34" cy="-78" rx="7" ry="4.5" />
-                      <ellipse cx="34" cy="-78" rx="7" ry="4.5" />
-                    </g>
-                  </g>
-                  <g className="arm-front cheek-tap">
-                    <path d="M-36,-68 Q-32,-58 -28,-52" stroke="#FF9F0A" strokeWidth="12" fill="none" strokeLinecap="round" />
-                    <circle cx="-26" cy="-48" r="11" fill="#FF9F0A" />
-                    <path d="M-34,-54 Q-26,-61 -18,-54" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <line x1="-30" y1="-42" x2="-32" y2="-36" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    <line x1="-23" y1="-41" x2="-23" y2="-35" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    <path d="M36,-68 Q32,-58 28,-52" stroke="#FF9F0A" strokeWidth="12" fill="none" strokeLinecap="round" />
-                    <circle cx="26" cy="-48" r="11" fill="#FF9F0A" />
-                    <path d="M18,-54 Q26,-61 34,-54" stroke={INK} strokeWidth="2.5" fill="none" strokeLinecap="round" />
-                    <line x1="30" y1="-42" x2="32" y2="-36" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                    <line x1="23" y1="-41" x2="23" y2="-35" stroke={INK} strokeWidth="2" strokeLinecap="round" />
-                  </g>
+                                    <g className="leg-l">
+                                      <path d="M-18,-36L-18,-14A5,5 0 0 0 -8,-14L-8,-36A5,5 0 0 0 -18,-36Z" fill="#FF9F0A" stroke="#8C5806" strokeWidth={2} />
+                                      <g transform="translate(-14,0) scale(-1,1)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#FF9F0A" stroke="#8C5806" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#8C5806" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                    <g className="leg-r">
+                                      <path d="M10,-36L10,-14A5,5 0 0 0 20,-14L20,-36A5,5 0 0 0 10,-36Z" fill="#FF9F0A" stroke="#8C5806" strokeWidth={2} />
+                                      <g transform="translate(14,0)">
+                                        <path d="M-6,-14 L6,-14 C12,-14 18,-11 18,-6 C18,-2 15,0 10,0 L-8,0 C-11,0 -13,-3 -13,-6 Z" fill="#FF9F0A" stroke="#8C5806" strokeWidth={2} strokeLinejoin="round" />
+                                        <path d="M8,-10 Q12,-6 11,-1" stroke="#8C5806" strokeWidth={2} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  </g>
+                                  <g className="body">
+                                      <path d="M0,-168L16,-128L58,-124L26,-98L36,-56L0,-80L-36,-56L-26,-98L-58,-124L-16,-128L0,-168Z" transform="translate(0,3)" fill="rgba(13,13,13,0.28)" />
+                                      <path d="M0,-168L16,-128L58,-124L26,-98L36,-56L0,-80L-36,-56L-26,-98L-58,-124L-16,-128L0,-168Z" fill="#FF9F0A" />
+                                    </g>
+                                  <g className="face">
+                                      <g className="lc-eyes">
+                                        <g className="dots" stroke="#0D0D0D" strokeWidth={2.5} strokeLinecap="round" fill="none">
+                                          <path d="M-28,-108 Q-20,-118 -12,-108" />
+                                          <path d="M12,-108 Q20,-118 28,-108" />
+                                        </g>
+                                        <g className="happy" stroke="#0D0D0D" strokeWidth={3} strokeLinecap="round" fill="none">
+                                          <path d="M-30,-108 Q-20,-120 -10,-108" />
+                                          <path d="M10,-108 Q20,-120 30,-108" />
+                                        </g>
+                                      </g>
+                                      <g className="mouth">
+                                        <path className="mouth-normal" d="M-24,-86 Q0,-66 24,-86" stroke="#0D0D0D" strokeWidth={2.5} fill="none" strokeLinecap="round" />
+                                        <path className="mouth-happy" d="M-28,-84 Q0,-58 28,-84" stroke="#0D0D0D" strokeWidth={3} fill="none" strokeLinecap="round" />
+                                      </g>
+                                    </g>
+                                  <g className="arm-front">
+                                    <g className="cheek-tap">
+                                      <path d="M-42,-108L-56,-78L-44,-54A5,5 0 0 0 -36,-58L-44,-78L-30,-100A6.5,6.5 0 0 0 -42,-108Z" fill="#FF9F0A" stroke="#8C5806" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={-40} cy={-56} r={9} fill="#FF9F0A" stroke="#8C5806" strokeWidth={2} />
+                                        <line x1={-43} y1={-54} x2={-47} y2={-52} stroke="#8C5806" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-43} y1={-55} x2={-48} y2={-55} stroke="#8C5806" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={-43} y1={-57} x2={-48} y2={-57} stroke="#8C5806" strokeWidth={2} strokeLinecap="round" />
+                                      <path d="M30,-100L44,-78L36,-58A5,5 0 0 0 44,-54L56,-78L42,-108A6.5,6.5 0 0 0 30,-100Z" fill="#FF9F0A" stroke="#8C5806" strokeWidth={2} strokeLinejoin="round" />
+                                        <circle cx={40} cy={-56} r={9} fill="#FF9F0A" stroke="#8C5806" strokeWidth={2} />
+                                        <line x1={43} y1={-57} x2={48} y2={-57} stroke="#8C5806" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={43} y1={-55} x2={48} y2={-55} stroke="#8C5806" strokeWidth={2} strokeLinecap="round" />
+                                        <line x1={43} y1={-54} x2={47} y2={-52} stroke="#8C5806" strokeWidth={2} strokeLinecap="round" />
+                                    </g>
+                                  </g>
                   <rect className="hit" x="-66" y="-146" width="132" height="150" rx="24" />
                 </g>
               </g>
