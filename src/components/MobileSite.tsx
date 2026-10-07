@@ -662,7 +662,7 @@ function MobileProject({
             <Label>[Next Project]</Label>
           </Reveal>
           <button onClick={() => onProject(nextProject.id)} className="mt-[16px] block w-full text-left">
-            <MobileImage src={nextProject.thumbnail} alt={nextProject.title} ratio="16 / 10" />
+            <MobileImage src={nextProject.thumbnail} alt={nextProject.title} ratio="16 / 9" />
             <Reveal>
               <div className="mt-[14px] flex items-baseline justify-between">
                 <span className="font-geist-semibold-ss text-[28px] tracking-[-0.8px] text-[#1e1e1f] uppercase">
