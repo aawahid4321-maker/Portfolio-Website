@@ -104,7 +104,7 @@ function Group1() {
               <circle cx="219" cy="219" r="218.5" />
             </clipPath>
           </defs>
-          <circle cx="219" cy="219" r="218.5" fill="#A58CF4" fillOpacity="0.22" />
+          <circle cx="219" cy="219" r="218.5" fill="#A58CF4" fillOpacity="1" />
           <g clipPath="url(#metric-clip-1)">
             <rect x="0" y="0" width="438" height="438" fill="#A58CF4" className="metric-fill" style={{ animationDelay: "0.25s" }} />
           </g>
@@ -126,7 +126,7 @@ function Group2() {
               <circle cx="219" cy="219" r="218.5" />
             </clipPath>
           </defs>
-          <circle cx="219" cy="219" r="218.5" fill="#FFD60A" fillOpacity="0.22" />
+          <circle cx="219" cy="219" r="218.5" fill="#FFD60A" fillOpacity="1" />
           <g clipPath="url(#metric-clip-3)">
             <rect x="0" y="0" width="438" height="438" fill="#FFD60A" className="metric-fill" style={{ animationDelay: "0.55s" }} />
           </g>
@@ -148,7 +148,7 @@ function Group3() {
               <circle cx="219" cy="219" r="218.5" />
             </clipPath>
           </defs>
-          <circle cx="219" cy="219" r="218.5" fill="#FF5A00" fillOpacity="0.22" />
+          <circle cx="219" cy="219" r="218.5" fill="#FF5A00" fillOpacity="1" />
           <g clipPath="url(#metric-clip-4)">
             <rect x="0" y="0" width="438" height="438" fill="#FF5A00" className="metric-fill" style={{ animationDelay: "0.7s" }} />
           </g>
@@ -372,7 +372,7 @@ function Group() {
               <circle cx="219" cy="219" r="218.5" />
             </clipPath>
           </defs>
-          <circle cx="219" cy="219" r="218.5" fill="#FF0A8A" fillOpacity="0.22" />
+          <circle cx="219" cy="219" r="218.5" fill="#FF0A8A" fillOpacity="1" />
           <g clipPath="url(#metric-clip-2)">
             <rect x="0" y="0" width="438" height="438" fill="#FF0A8A" className="metric-fill" style={{ animationDelay: "0.4s" }} />
           </g>
