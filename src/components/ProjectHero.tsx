@@ -71,7 +71,8 @@ export default function ProjectHero({
       }
     };
 
-    // scroll: title parallax 0.25x, blobs shift — transform only, passive
+    // scroll: title parallax 0.25x + fade out before reaching nav, blobs shift
+    // transform + opacity only, no layout reads
     let lastY = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
@@ -79,6 +80,10 @@ export default function ProjectHero({
       lastY = y;
       if (titleRef.current) {
         titleRef.current.style.transform = `translateY(${y * 0.25}px)`;
+        // title fades 1→0 over the last ~120px before it reaches the 72px nav
+        // title top ≈ 220 - y*0.75 in viewport; fade between y=37 and y=197
+        const t = Math.min(1, Math.max(0, (y - 37) / 160));
+        titleRef.current.style.opacity = String(1 - t);
       }
       if (blobsRef.current) {
         blobsRef.current.style.transform = `translateY(${y * 0.12}px)`;
@@ -109,6 +114,7 @@ export default function ProjectHero({
   return (
     <>
       <style>{`
+        html { scroll-padding-top: 80px; } /* anchors never hide under the fixed nav */
         .ph-hero {
           --ph-purple-light: #A58CF4;
           --ph-pink: #ff0a8a;
@@ -180,18 +186,24 @@ export default function ProjectHero({
           to { transform: translate(40px, -40px); }
         }
 
-        /* nav */
+        /* nav — FIXED: always on top, solid bar after scroll */
         .ph-nav {
-          position: absolute;
+          position: fixed; /* was absolute: stayed in hero, title overlapped it on scroll */
           top: 0; left: 0; right: 0;
+          height: 72px;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 28px 48px;
-          z-index: 30; /* always above the title */
-          transition: background 0.3s ease;
+          padding: 0 24px;
+          z-index: 1000; /* above hero, title, blobs, card, decorations */
+          white-space: nowrap;
+          border-bottom: 1px solid transparent;
+          transition: background 0.3s ease, border-color 0.3s ease;
         }
-        .ph-nav.is-scrolled { background: rgba(13,13,13,0.7); }
+        .ph-nav.is-scrolled {
+          background: rgba(13,13,13,0.92); /* solid bar, no backdrop blur (perf) */
+          border-bottom-color: rgba(255,255,255,0.08);
+        }
         .ph-logo {
           font-family: "Zilla Slab", Rockwell, Georgia, serif;
           font-weight: 700;
@@ -223,9 +235,17 @@ export default function ProjectHero({
           letter-spacing: 0.03em;
           flex-shrink: 0;
           white-space: nowrap;
+          text-shadow: 0 1px 0 rgba(13,13,13,0.5); /* readable while nav is transparent */
         }
+        .ph-nav.is-scrolled .ph-links a { text-shadow: none; } /* solid bg: no shadow needed */
         .ph-links a:hover { color: var(--ph-purple-light); }
-        .ph-sep { color: rgba(250,250,250,0.5); font-size: 15px; }
+        .ph-sep { color: rgba(250,250,250,0.4); font-size: 15px; }
+        /* visible focus ring */
+        .ph-nav a:focus-visible,
+        .ph-nav button:focus-visible {
+          outline: 3px solid var(--ph-soft-white);
+          outline-offset: 3px;
+        }
         .ph-hire {
           font-family: "Zilla Slab", Rockwell, Georgia, serif;
           font-weight: 700;
@@ -365,6 +385,21 @@ export default function ProjectHero({
         /* responsive */
         @media (max-width: 768px) {
           .ph-links { display: none; }
+          /* open menu: full-width solid panel below the nav */
+          .ph-nav.is-open .ph-links {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+            position: fixed;
+            top: 72px; left: 0; right: 0;
+            background: #0D0D0D;
+            z-index: 999;
+            padding: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+          }
+          .ph-nav.is-open .ph-links a { font-size: 22px; } /* Zilla Slab 700, stacked */
+          .ph-nav.is-open .ph-sep { display: none; }
           .ph-menu-btn {
             display: block;
             background: none;
@@ -390,6 +425,7 @@ export default function ProjectHero({
 
         /* reduced motion: final static layout */
         @media (prefers-reduced-motion: reduce) {
+          .ph-nav { transition: none; } /* solid bar, no animation */
           .ph-title .mask > span { animation: none; transform: none; }
           .ph-tag { animation: none; transform: none; opacity: 1; }
           .ph-card-wrap { animation: none; }
@@ -409,7 +445,7 @@ export default function ProjectHero({
         </div>
 
         {/* nav */}
-        <nav ref={navRef} className="ph-nav" aria-label="Project page navigation">
+        <nav ref={navRef} className="ph-nav" aria-label="Main">
           <div className="ph-logo" onClick={onNavigateHome}>ABDUL</div>
           <div className="ph-links">
             <a onClick={onNavigateHome}>Home</a>
@@ -420,8 +456,7 @@ export default function ProjectHero({
           </div>
           <button className="ph-menu-btn" onClick={() => {
             menuOpen.current = !menuOpen.current;
-            const links = heroRef.current?.querySelector(".ph-links") as HTMLElement;
-            if (links) links.style.display = menuOpen.current ? "flex" : "";
+            navRef.current?.classList.toggle("is-open", menuOpen.current);
           }}>Menu</button>
           <button className="ph-hire" onClick={onNavigateHome}>
             Hire <span className="ph-arrow">↗</span>
