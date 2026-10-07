@@ -200,14 +200,18 @@ export default function ProjectHero({
           text-transform: uppercase;
           cursor: pointer;
           letter-spacing: 0.04em;
+          flex-shrink: 0;
+          white-space: nowrap;
         }
         .ph-links {
           display: flex;
           align-items: center;
           gap: 12px;
           width: max-content; /* fix: never clip */
+          max-width: none;
           overflow: visible;
           white-space: nowrap;
+          flex-shrink: 0; /* don't let flexbox squeeze the links */
         }
         .ph-links a {
           font-family: "Zilla Slab", Rockwell, Georgia, serif;
@@ -217,6 +221,8 @@ export default function ProjectHero({
           color: var(--ph-soft-white);
           cursor: pointer;
           letter-spacing: 0.03em;
+          flex-shrink: 0;
+          white-space: nowrap;
         }
         .ph-links a:hover { color: var(--ph-purple-light); }
         .ph-sep { color: rgba(250,250,250,0.5); font-size: 15px; }
@@ -236,6 +242,8 @@ export default function ProjectHero({
           display: flex;
           align-items: center;
           gap: 8px;
+          flex-shrink: 0;
+          white-space: nowrap;
         }
         .ph-hire:hover { background: var(--ph-soft-white); }
         .ph-hire .ph-arrow { transition: transform 0.2s ease; display: inline-block; }
