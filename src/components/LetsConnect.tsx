@@ -36,6 +36,7 @@ export default function LetsConnect() {
     const blobs = Array.from(section.querySelectorAll<SVGGElement>(".lc-blob"));
     let io: IntersectionObserver | null = null;
     let pauseIO: IntersectionObserver | null = null;
+    let gridIO: IntersectionObserver | null = null;
     const blinkTimers: number[] = [];
     const safetyTimer: number[] = [];
 
@@ -43,6 +44,7 @@ export default function LetsConnect() {
       // disconnect old observers before creating new ones (route changes)
       io?.disconnect();
       pauseIO?.disconnect();
+      gridIO?.disconnect();
       blinkTimers.forEach((t) => window.clearTimeout(t));
       blinkTimers.length = 0;
       safetyTimer.forEach((t) => window.clearTimeout(t));
@@ -81,7 +83,8 @@ export default function LetsConnect() {
       );
 
       /* Toggle body class for grid-line styling when section is in view */
-      const gridIO = new IntersectionObserver(
+      gridIO?.disconnect();
+      gridIO = new IntersectionObserver(
         (entries) => {
           entries.forEach((entry) => {
             document.body.classList.toggle("connect-in-view", entry.isIntersecting);
@@ -173,7 +176,7 @@ export default function LetsConnect() {
     return () => {
       io?.disconnect();
       pauseIO?.disconnect();
-      gridIO.disconnect();
+      gridIO?.disconnect();
       document.body.classList.remove("connect-in-view");
       blinkTimers.forEach((t) => window.clearTimeout(t));
       safetyTimer.forEach((t) => window.clearTimeout(t));
