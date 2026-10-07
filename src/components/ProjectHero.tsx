@@ -572,21 +572,19 @@ export default function ProjectHero({
         .pp-hire {
           position: relative;
           z-index: 1;
-          font-family: "Zilla Slab", Rockwell, Georgia, serif;
-          font-weight: 700;
+          font-family: "Geist", system-ui, sans-serif;
+          font-weight: 600;
           font-size: var(--nav-font);
-          text-transform: uppercase;
-          letter-spacing: 0.03em;
-          color: var(--pp-white);
-          background: var(--pp-black);
-          border: 2px solid var(--pp-black);
-          border-radius: 8px;
-          padding: 14px 26px;
+          color: var(--pp-black);
+          background: var(--pp-white);
+          border: none;
+          border-radius: 999px;
+          padding: 16px 30px;
           height: 56px;
           cursor: pointer;
           display: inline-flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
           white-space: nowrap;
           min-height: 48px;
           flex-shrink: 0;
@@ -594,9 +592,7 @@ export default function ProjectHero({
         }
         .pp-hire .pp-arrow { font-size: 18px; }
         .pp-hire:hover {
-          background: var(--pp-purple);
-          border-color: var(--pp-purple);
-          color: var(--pp-black);
+          background: var(--pp-yellow);
           transform: scale(1.05);
         }
         .pp-hire:hover .pp-arrow { transform: translate(2px, -2px); }
