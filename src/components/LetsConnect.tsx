@@ -175,10 +175,10 @@ export default function LetsConnect() {
       const onLeave = () => ch.classList.remove("is-happy");
       const onClick = () => {
         if (reduceMotion) return;
-        // scatter: run to a random spot near the ground (stays there until clicked again)
+        // scatter: run to a random spot near the ground (stays within section bounds)
         const small = window.innerWidth < 640;
-        const rangeX = small ? 90 : 300;
-        const rangeY = small ? 40 : 100;
+        const rangeX = small ? 40 : 80;
+        const rangeY = small ? 30 : 60;
         const rx = Math.round((Math.random() * 2 - 1) * rangeX);
         const ry = Math.round(-Math.random() * rangeY);
         ch.style.setProperty("--scatter-x", rx + "px");
