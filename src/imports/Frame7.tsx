@@ -1,4 +1,5 @@
 import SharedFooterContent from "@/components/SharedFooterContent";
+import LetsConnect from "@/components/LetsConnect";
 import imgCampusApp from "@/assets/brochure-hero.webp";
 import imgWorkBg from "@/assets/work-bg.webp";
 const imgGradia = `${assetPathPrefix}/brand-hero.webp`;
@@ -17,7 +18,6 @@ const imgContainer2 = `${assetPathPrefix}/f95a7.webp`;
 const imgContainer3 = `${assetPathPrefix}/91219.webp`;
 const imgContainer4 = `${assetPathPrefix}/stint-hero.webp`;
 const imgContainer5 = `${assetPathPrefix}/49ca5.webp`;
-const imgSpaceBg = `${assetPathPrefix}/870fa.webp`;
 
 export default function Frame7() {
   return (
@@ -209,29 +209,10 @@ export default function Frame7() {
         </div>
       </div>
 
-      {/* Let's Connect section — space image */}
-      <div className="absolute left-[-4.02px] top-[7501.49px] w-[1928.035px] h-[763.125px] overflow-hidden pointer-events-none">
-        <img alt="" className="absolute h-[171.51%] left-[-11.74%] max-w-none top-[-49.8%] w-[123.48%]" src={imgSpaceBg} loading="eager" decoding="async" />
+      {/* Let's Connect section — interactive component */}
+      <div className="absolute left-[-4.02px] top-[7501.49px] w-[1920px] h-[763px] overflow-hidden">
+        <LetsConnect />
       </div>
-      <p className="[word-break:break-word] absolute font-['Geist:Medium'] leading-[94.952px] text-[94.952px] text-white tracking-[-3.7981px] whitespace-nowrap left-[102.77px] top-[7835.55px]">
-        {`Let's Connect`}
-      </p>
-      <p className="[word-break:break-word] absolute font-['Geist:Medium'] leading-[49.62px] text-[32px] text-white tracking-[-1.1451px] left-[970.79px] top-[7753.34px] w-[796.5px]">
-        {`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}
-      </p>
-      <a
-        href="https://wa.me/923295460848"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute flex items-center gap-[12px] cursor-pointer group/contact"
-        style={{ left: "970.79px", top: "7971.76px" }}
-      >
-        <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-white uppercase whitespace-nowrap transition-opacity duration-300 group-hover/contact:opacity-60">Contact</p>
-        <div className="relative flex items-center justify-center w-[42px] h-[42px] overflow-hidden">
-          <span className="absolute block -rotate-45 font-['Geist:Medium'] text-[34px] text-[#f2f2f2] leading-none transition-transform duration-[450ms] group-hover/contact:translate-x-[120%] group-hover/contact:-translate-y-[120%]">→</span>
-          <span className="absolute block -rotate-45 font-['Geist:Medium'] text-[34px] text-[#f2f2f2] leading-none -translate-x-[120%] translate-y-[120%] transition-transform duration-[450ms] group-hover/contact:translate-x-0 group-hover/contact:translate-y-0">→</span>
-        </div>
-      </a>
 
       {/* Dark footer */}
       <div className="absolute bg-[#0f0f0f] left-[-4.02px] top-[8264.61px] w-[1920px] h-[660px] flex flex-col items-start pb-[32px] pt-[100px]">

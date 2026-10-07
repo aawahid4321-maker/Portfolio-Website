@@ -1,5 +1,6 @@
 import { type ProjectData, getProjectCanvasH, IMG_SLOT_H, IMG_GAP, IMAGES_TOP, TAIL_H } from "@/data/projects";
 import SharedFooterContent from "@/components/SharedFooterContent";
+import LetsConnect from "@/components/LetsConnect";
 import ProjectHero from "@/components/ProjectHero";
 
 /* Hero is now ~800px tall (flex: 152 top pad + tags + card + 72 bottom pad, no title).
@@ -36,10 +37,6 @@ export default function ProjectPage({
   // Offsets from IB — derived from the original 6-image layout
   const NEXT_TOP      = IB + 332;
   const LC_BG_TOP     = IB + 1308;
-  const LC_TITLE_TOP  = IB + 1642;
-  const LC_DESC_TOP   = IB + 1560;
-  const CONTACT_TOP   = IB + 1778;
-  const ARROW_TOP     = IB + 1781;
   const FOOTER_TOP    = IB + 2071;
 
   return (
@@ -278,45 +275,13 @@ export default function ProjectPage({
         </div>
       )}
 
-      {/* ── Let's Connect section ────────────────────────────── */}
+      {/* ── Let's Connect section (interactive component) ────── */}
       <div
-        className="absolute overflow-hidden pointer-events-none"
-        style={{ left: -4.02, top: LC_BG_TOP, width: 1928.035, height: 763.125 }}
+        className="absolute overflow-hidden"
+        style={{ left: -4.02, top: LC_BG_TOP, width: 1920, height: 763 }}
       >
-        <img
-          alt=""
-          className="absolute h-[171.51%] left-[-11.74%] max-w-none top-[-49.8%] w-[123.48%]"
-          src={`${import.meta.env.BASE_URL}assets/870fa.webp`} loading="lazy" decoding="async"
-        />
+        <LetsConnect />
       </div>
-
-      <p
-        className="[word-break:break-word] absolute font-['Geist:Medium'] leading-[94.952px] text-[94.952px] text-white tracking-[-3.7981px] whitespace-nowrap"
-        style={{ left: 102.77, top: LC_TITLE_TOP }}
-      >
-        {`Let's Connect`}
-      </p>
-
-      <p
-        className="[word-break:break-word] absolute font-['Geist:Medium'] leading-[49.62px] text-[32px] text-white tracking-[-1.1451px] w-[796.5px]"
-        style={{ left: 970.79, top: LC_DESC_TOP }}
-      >
-        {`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}
-      </p>
-
-      <a
-        href="https://wa.me/923295460848"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute flex items-center gap-[12px] cursor-pointer group/contact"
-        style={{ left: 970.79, top: CONTACT_TOP }}
-      >
-        <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[41.009px] not-italic text-[31.546px] text-white uppercase whitespace-nowrap transition-opacity duration-300 group-hover/contact:opacity-60">Contact</p>
-        <div className="relative flex items-center justify-center w-[42px] h-[42px] overflow-hidden">
-          <span className="absolute block -rotate-45 font-['Geist:Medium'] text-[34px] text-[#f2f2f2] leading-none transition-transform duration-[450ms] group-hover/contact:translate-x-[120%] group-hover/contact:-translate-y-[120%]">→</span>
-          <span className="absolute block -rotate-45 font-['Geist:Medium'] text-[34px] text-[#f2f2f2] leading-none -translate-x-[120%] translate-y-[120%] transition-transform duration-[450ms] group-hover/contact:translate-x-0 group-hover/contact:translate-y-0">→</span>
-        </div>
-      </a>
 
       {/* ── Dark footer ──────────────────────────────────────── */}
       <div

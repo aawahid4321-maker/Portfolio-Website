@@ -1,7 +1,7 @@
 import svgPaths from "./svg-8jh5l27o5h";
 import imgChatGptImageSep132026012119Am1 from "./b389fd9fe37e840e82ef570bd3a6044d75d431d7.webp";
-import imgChatGptImageSep132026012119Am3 from "./9c7fd0b5ce7362a6a763479384adfd65f38440cc.webp";
 import SharedFooterContent from "@/components/SharedFooterContent";
+import LetsConnect from "@/components/LetsConnect";
 
 function Container() {
   return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[7272px] left-[48.29px] top-[-0.05px] w-[207px]" data-name="Container" />;
@@ -353,27 +353,6 @@ function Group() {
   );
 }
 
-function Group5() {
-  return (
-    <div className="absolute contents left-[974.8px] top-[4851.84px]">
-      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[4851.84px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
-      <a
-        href="https://wa.me/923295460848"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="absolute flex items-center gap-[12px] cursor-pointer group/contact"
-        style={{ left: "974.8px", top: "5070.27px" }}
-      >
-        <p className="[word-break:break-word] font-pt-mono-ss leading-[41.009px] not-italic text-[31.546px] text-white uppercase whitespace-nowrap transition-opacity duration-300 group-hover/contact:opacity-60">Contact</p>
-        <div className="relative flex items-center justify-center w-[42px] h-[42px] overflow-hidden">
-          <span className="absolute block -rotate-45 font-geist-medium-ss text-[34px] text-[#f2f2f2] leading-none transition-transform duration-[450ms] group-hover/contact:translate-x-[120%] group-hover/contact:-translate-y-[120%]">→</span>
-          <span className="absolute block -rotate-45 font-geist-medium-ss text-[34px] text-[#f2f2f2] leading-none -translate-x-[120%] translate-y-[120%] transition-transform duration-[450ms] group-hover/contact:translate-x-0 group-hover/contact:translate-y-0">→</span>
-        </div>
-      </a>
-    </div>
-  );
-}
-
 function Link5() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Link">
@@ -590,13 +569,9 @@ function Container24() {
 function Group6() {
   return (
     <div className="absolute contents left-0 top-[4600px]">
-      <div className="absolute h-[763.125px] left-0 top-[4600px] w-[1928.035px]" data-name="ChatGPT Image Sep 13, 2026, 01_21_19 AM 2">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <img alt="" className="absolute h-[171.51%] left-[-11.74%] max-w-none top-[-49.8%] w-[123.48%]" src={imgChatGptImageSep132026012119Am3} loading="eager" decoding="async" />
-        </div>
+      <div className="absolute left-0 top-[4600px] w-[1920px] h-[763px]">
+        <LetsConnect />
       </div>
-      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[94.952px] left-[106.79px] text-[94.952px] text-white top-[4934.06px] tracking-[-3.7981px] whitespace-nowrap">{`Let's Connect`}</p>
-      <Group5 />
       <Container24 />
     </div>
   );
