@@ -95,7 +95,7 @@ function Group1() {
   return (
     <div className="absolute contents left-[741.29px] top-[2542.46px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[2542.46px] tracking-[-0.6912px] w-[202.719px]">{`Years Experience `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[960.29px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap metric-enter">10+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[960.29px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap metric-enter">2+</p>
       <div className="absolute left-[741.29px] size-[438px] top-[2592.39px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
@@ -109,7 +109,7 @@ function Group2() {
   return (
     <div className="absolute contents left-[510.29px] top-[3143.01px]">
       <p className="[word-break:break-word] absolute font-['Geist:Medium','Noto_Sans:Medium','Noto_Sans_Math:Regular','Noto_Sans_Symbols:Medium','Noto_Sans_Symbols2:Regular',sans-serif] leading-[29.952px] left-[510.29px] text-[#1e1e1f] text-[23.04px] top-[3143.01px] tracking-[-0.6912px] w-[410.156px]">{`Different Design Industries `}</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[729.29px] text-white text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap metric-enter">10+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[729.29px] text-white text-[103.471px] text-center top-[3359.94px] tracking-[-4.1388px] whitespace-nowrap metric-enter">8+</p>
       <div className="absolute left-[510.29px] size-[438px] top-[3192.94px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
@@ -339,7 +339,7 @@ function Group() {
   return (
     <div className="absolute contents left-[1434px] top-[2542.46px]">
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[1434px] text-[#1e1e1f] text-[23.04px] top-[2542.46px] tracking-[-0.6912px] w-[202.719px]">Projects Completed</p>
-      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1652.5px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap metric-enter">1000+</p>
+      <p className="-translate-x-1/2 [word-break:break-word] absolute font-geist-medium-ss leading-[103.471px] left-[1652.5px] text-white text-[103.471px] text-center top-[2759.39px] tracking-[-4.1388px] whitespace-nowrap metric-enter">50+</p>
       <div className="absolute left-[1434px] size-[438px] top-[2592.39px] metric-enter">
         <svg className="absolute block inset-0 size-full metric-pulse" fill="none" height="438" preserveAspectRatio="none" viewBox="0 0 438 438" width="438">
           <circle cx="219" cy="219" id="Ellipse 3101" r="218.5" fill="#A58CF4" />
@@ -577,13 +577,12 @@ export default function Frame() {
   return (
     <div className="bg-[#e6e6e6] relative size-full">
       <style>{`
-        /* Metric circles: entrance pop on scroll into view (CSS scroll-driven, no JS) */
+        /* Metric circles: entrance pop on load, then gentle continuous pulse.
+           No scroll-timeline — plain CSS animations that always work and
+           always end fully visible (no opacity:0 end states). */
         .metric-enter {
-          animation: metricPop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-          animation-timeline: view();
-          animation-range: entry 0% entry 100%;
+          animation: metricPop 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
           transform-origin: center;
-          will-change: scale, opacity;
         }
         @keyframes metricPop {
           from { scale: 0.7; opacity: 0; }
@@ -591,12 +590,12 @@ export default function Frame() {
         }
         /* Metric circles: gentle continuous pulse */
         .metric-pulse {
-          animation: metricPulse 3s ease-in-out 1.2s infinite;
+          animation: metricPulse 3s ease-in-out 1s infinite;
           transform-origin: center;
         }
         @keyframes metricPulse {
           0%, 100% { scale: 1; }
-          50% { scale: 1.04; }
+          50% { scale: 1.03; }
         }
         @media (prefers-reduced-motion: reduce) {
           .metric-enter, .metric-pulse { animation: none; }
