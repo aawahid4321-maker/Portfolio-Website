@@ -67,6 +67,8 @@ body {
 #root,
 .portfolio-viewport {
   min-width: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .portfolio-viewport {
