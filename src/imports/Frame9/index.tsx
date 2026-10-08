@@ -940,11 +940,11 @@ export default function Frame() {
       <Group14 />
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[71.674px] left-[46px] text-[#0f0f0f] text-[71.674px] top-[1144px] tracking-[-2.8669px] w-[912px] animate-[fadeUpIn_0.9s_0.35s_cubic-bezier(0.22,1,0.36,1)_both]">Selected Works</p>
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8018.03px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8274.42px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8530.81px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8787.20px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9043.59px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9286.37px] uppercase w-[85.255px]">[01]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8274.42px] uppercase w-[85.255px]">[02]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8530.81px] uppercase w-[85.255px]">[03]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8787.20px] uppercase w-[85.255px]">[04]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9043.59px] uppercase w-[85.255px]">[05]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9286.37px] uppercase w-[85.255px]">[06]</p>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[1203.29px] text-[#1e1e1f] text-[35px] top-[357.07px] tracking-[-0.6912px] w-[523.479px]">/ 30</p>
       <Banner />
       <div className="absolute inset-[3.14%_50.92%_96.42%_46.37%] animate-[fadeRotateIn_1s_0.5s_cubic-bezier(0.22,1,0.36,1)_both]" data-name="Vector">
