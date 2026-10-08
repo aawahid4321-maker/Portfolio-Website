@@ -344,7 +344,7 @@ export function getNextProject(currentId: string): ProjectData | undefined {
 const IMG_SLOT_H = Math.round((1823.5 * 9) / 16); // 1025
 const IMG_GAP = 44;
 const IMAGES_TOP = 1396;
-const TAIL_H = 2502; // constant: Next Project + Let's Connect + Footer
+const TAIL_H = 2442; // constant: Next Project + Let's Connect + Footer
 
 export function getProjectCanvasH(imageCount: number): number {
   const imagesH = imageCount * IMG_SLOT_H + Math.max(0, imageCount - 1) * IMG_GAP;
