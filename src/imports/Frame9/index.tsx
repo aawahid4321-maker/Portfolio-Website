@@ -952,7 +952,7 @@ export default function Frame() {
           <path d={svgPaths.pc20cf3e} fill="black" id="Vector" />
         </svg>
       </div>
-      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[312.07px] tracking-[-9.6861px] whitespace-nowrap animate-[fadeBlurIn_1s_cubic-bezier(0.22,1,0.36,1)_both]">Wahid</p>
+      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[48px] text-[#1e1e1f] text-[237px] top-[312.07px] tracking-[-9.6861px] whitespace-nowrap animate-[fadeBlurIn_1s_cubic-bezier(0.22,1,0.36,1)_both]">Wahid</p>
       <Container53 />
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[23.04px] left-[279.29px] not-italic text-[#29292b] text-[19.2px] top-[723.2px] uppercase whitespace-nowrap">[Intro]</p>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[485.18px] text-[#1e1e1f] text-[23.04px] top-[723.2px] tracking-[-0.6912px] w-[392.105px] animate-[fadeUpIn_0.8s_0.55s_cubic-bezier(0.22,1,0.36,1)_both]">I build brands, visual identities, and social creatives that help businesses communicate, connect, and grow.</p>
