@@ -415,7 +415,7 @@ function Container21() {
 
 function Container20() {
   return (
-    <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[16px] pt-[100px] top-[10172.27px] w-[1920px]" data-name="Container">
+    <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-0 pt-[100px] top-[10172.27px] w-[1920px]" data-name="Container">
       <Container21 />
     </div>
   );
