@@ -14,12 +14,12 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 // We scale the whole canvas to the viewport width so it fits every
 // screen (desktop, tablet, mobile) while keeping the exact layout.
 const BASE_W = 1920;
-const BASE_H = 10772;
+const BASE_H = 10953;
 // The About page (Frame5) is authored at the same width. It is a separate
 // view reached from the navbar, not stacked below the home page. The imported
 // grid columns run the full 7272px artboard, but the dark footer ends at
 // ~7037px — clip the canvas there so no empty grey space trails the footer.
-const ABOUT_H = 5964;
+const ABOUT_H = 5893;
 const HERO_TOP = 420;
 const HERO_SIZE = 669;
 const SCROLL_DOWN_BOTTOM_INSET = 14;
