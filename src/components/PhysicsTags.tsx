@@ -791,11 +791,16 @@ export default function PhysicsTags() {
       raf = requestAnimationFrame(loop);
       let delta = now - lastT;
       lastT = now;
-      // During active scroll: run physics in slow-motion (half delta).
-      // This genuinely halves the physics workload (unlike frame-skipping,
-      // which just batches the same work). Tags keep gliding smoothly,
-      // no freeze, and scroll stays fluid.
-      if (isScrolling) delta *= 0.5;
+      // During active scroll: keep full speed (no slow-motion, no freeze)
+      // but lighten the physics solver so scrolling stays fluid.
+      // Restored right after scroll settles.
+      if (isScrolling) {
+        engine.positionIterations = 2;
+        engine.velocityIterations = 1;
+      } else {
+        engine.positionIterations = degraded ? 4 : 6;
+        engine.velocityIterations = degraded ? 3 : 4;
+      }
       // Refresh pointer geometry once per frame here instead of on scroll
       // events — a scroll listener forced 2 synchronous layouts per scroll
       // tick, which janked scrolling through this section.
