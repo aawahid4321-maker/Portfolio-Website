@@ -1468,7 +1468,6 @@ export default function App() {
           width: BASE_W,
           height: canvasHeight,
           zoom: scale,
-          margin: "0 auto",
           overflow: view !== "home" ? "clip" : undefined,
         }}
       >
