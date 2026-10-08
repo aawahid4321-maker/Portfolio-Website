@@ -166,10 +166,10 @@ function Group13() {
         <br aria-hidden />I design websites that bring the brand together with clear structure, thoughtful interactions, and a strong visual point of view.
       </p>
       <p className="absolute leading-[33px] left-[1203.29px] top-[9043.59px] w-[589.484px] whitespace-pre-wrap">
-        {`5.1 / MAKING DIGITAL PRODUCTS FEEL SIMPLEI create intuitive interfaces and user experiences that balance function, clarity, and visual character.`}
+        {`5.1 / MAKING DIGITAL PRODUCTS FEEL SIMPLE. I create intuitive interfaces and user experiences that balance function, clarity, and visual character.`}
       </p>
       <p className="absolute leading-[33px] left-[1203.29px] top-[9286.37px] w-[641.38px] whitespace-pre-wrap">
-        {`6.1 / TURNING IDEAS INTO CAMPAIGNS PEOPLE NOTICEI develop big creative ideas and campaign directions that give brands something worth saying, seeing, and remembering.`}
+        {`6.1 / TURNING IDEAS INTO CAMPAIGNS PEOPLE NOTICE. I develop big creative ideas and campaign directions that give brands something worth saying, seeing, and remembering.`}
       </p>
     </div>
   );
@@ -423,8 +423,8 @@ function Container20() {
 
 function Group14() {
   return (
-    <div className="absolute contents left-0 top-[9529.15px]">
-      <div className="absolute left-0 top-[9529.15px] w-[1920px] h-[763px]">
+    <div className="absolute contents left-0 top-[9409.15px]">
+      <div className="absolute left-0 top-[9409.15px] w-[1920px] h-[763px]">
         <LetsConnect />
       </div>
       <Container20 />
