@@ -50,7 +50,7 @@ export function getWorkCanvasH(cardCount: number = WORK_CARDS.length) {
     (cardCount * WORK_CARD_H + Math.max(0, cardCount - 1) * WORK_CARD_GAP) +
     253 + // cards block pb
     763 + 72 + // Let's Connect + its bottom margin
-    660 // footer
+    600 // footer
   );
 }
 
@@ -191,7 +191,7 @@ export default function Frame7() {
       </div>
 
       {/* Footer — identical to homepage, follows in flow */}
-      <div className="relative bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start pb-0 pt-[100px] w-[1920px]" data-name="Container">
+      <div className="relative bg-[#e6e6e6] content-stretch flex flex-col h-[600px] items-start pb-0 pt-[100px] w-[1920px]" data-name="Container">
         <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
           <SharedFooterContent />
         </div>
