@@ -415,7 +415,7 @@ function Container21() {
 
 function Container20() {
   return (
-    <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[10172.27px] w-[1920px]" data-name="Container">
+    <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[10222.27px] w-[1920px]" data-name="Container">
       <Container21 />
     </div>
   );
@@ -423,8 +423,8 @@ function Container20() {
 
 function Group14() {
   return (
-    <div className="absolute contents left-0 top-[9409.15px]">
-      <div className="absolute left-0 top-[9409.15px] w-[1920px] h-[763px]">
+    <div className="absolute contents left-0 top-[9459.15px]">
+      <div className="absolute left-0 top-[9459.15px] w-[1920px] h-[763px]">
         <LetsConnect />
       </div>
       <Container20 />
