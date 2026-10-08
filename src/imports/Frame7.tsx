@@ -191,7 +191,7 @@ export default function Frame7() {
       </div>
 
       {/* Footer — identical to homepage, follows in flow */}
-      <div className="relative bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start pb-[32px] pt-[100px] w-[1920px]" data-name="Container">
+      <div className="relative bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start pb-[16px] pt-[100px] w-[1920px]" data-name="Container">
         <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
           <SharedFooterContent />
         </div>
