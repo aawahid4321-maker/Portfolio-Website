@@ -196,7 +196,7 @@ function Group() {
       <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8799.20px] tracking-[0.5px] whitespace-nowrap">Website Design</p>
       <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9055.59px] tracking-[0.5px] whitespace-nowrap">UI/UX Design</p>
       <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9298.37px] tracking-[0.5px] whitespace-nowrap">Campaign Big Ideas</p>
-      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[7726.56px] tracking-[-9.6861px] whitespace-nowrap">My Services</p>
+      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[48px] text-[#1e1e1f] text-[237px] top-[7726.56px] tracking-[-9.6861px] whitespace-nowrap">My Services</p>
     </div>
   );
 }
@@ -921,14 +921,14 @@ function Group5() {
 
 function Group15() {
   return (
-    <div className="[word-break:break-word] absolute contents left-[30.29px] top-[5678px]">
+    <div className="[word-break:break-word] absolute contents left-[48px] top-[5678px]">
       <p className="absolute font-pt-mono-ss leading-[23.04px] left-[510.29px] not-italic text-[#29292b] text-[19.2px] top-[6089.12px] uppercase whitespace-nowrap">[Process]</p>
       <div className="absolute font-geist-medium-ss leading-[0] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[6089.12px] tracking-[-0.6912px] w-[786.817px] whitespace-pre-wrap">
         <p className="leading-[29.952px] mb-0">I’m Abdul Wahid, a multidisciplinary designer working across branding, visual identity, logo design, social media creatives, and presentation design — with hands-on experience in video editing and motion graphics.</p>
         <p className="leading-[29.952px] mb-0">​</p>
         <p className="leading-[29.952px]">{`For me, good design starts with understanding the business, the audience, and the goal. I turn those insights into a clear creative direction — building strong brand identities and compelling visual experiences that communicate clearly, connect with people, and help businesses grow.`}</p>
       </div>
-      <p className="absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[5678px] tracking-[-9.6861px] whitespace-nowrap">Introduction</p>
+      <p className="absolute font-geist-semibold-ss leading-[normal] left-[48px] text-[#1e1e1f] text-[237px] top-[5678px] tracking-[-9.6861px] whitespace-nowrap">Introduction</p>
     </div>
   );
 }
@@ -952,7 +952,7 @@ export default function Frame() {
           <path d={svgPaths.pc20cf3e} fill="black" id="Vector" />
         </svg>
       </div>
-      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[312.07px] tracking-[-9.6861px] whitespace-nowrap animate-[fadeBlurIn_1s_cubic-bezier(0.22,1,0.36,1)_both]">Wahid</p>
+      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[48px] text-[#1e1e1f] text-[237px] top-[312.07px] tracking-[-9.6861px] whitespace-nowrap animate-[fadeBlurIn_1s_cubic-bezier(0.22,1,0.36,1)_both]">Wahid</p>
       <Container53 />
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[23.04px] left-[279.29px] not-italic text-[#29292b] text-[19.2px] top-[723.2px] uppercase whitespace-nowrap">[Intro]</p>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[485.18px] text-[#1e1e1f] text-[23.04px] top-[723.2px] tracking-[-0.6912px] w-[392.105px] animate-[fadeUpIn_0.8s_0.55s_cubic-bezier(0.22,1,0.36,1)_both]">I build brands, visual identities, and social creatives that help businesses communicate, connect, and grow.</p>
