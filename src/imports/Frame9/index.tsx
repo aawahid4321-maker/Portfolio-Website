@@ -834,7 +834,7 @@ function Group3() {
 
 function Container70() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4118.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="brand">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4118.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="pypo">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer5} loading="eager" decoding="async" />
     </div>
   );
@@ -843,7 +843,7 @@ function Container70() {
 function Container72() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">Brand</p>
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">Pypo</p>
     </div>
   );
 }
@@ -851,7 +851,7 @@ function Container72() {
 function Container73() {
   return (
     <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2025</p>
     </div>
   );
 }
