@@ -239,7 +239,7 @@ function Group4() {
       <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[22px] top-[4230.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[03]</p>
       <p className="absolute leading-[38px] left-[1075px] text-[27px] top-[4224px] w-[790px]" style={{ letterSpacing: "-1px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Social Media Manager</p>
       <p className="absolute leading-[32px] left-[1075px] text-[21px] top-[4266px] text-[#444444]" style={{ fontFamily: "'Geist:Regular'" }}>Suzuki Islamabad Motors</p>
-      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4266px] uppercase">2025</p>
+      <p className="absolute font-pt-mono-ss leading-[32px] left-[1650px] not-italic text-[19px] top-[4266px] uppercase">2025 - 2026</p>
       {/* [04] Brand & Logo Designer — Local Pro */}
       <p className="absolute font-pt-mono-ss leading-[41.009px] left-[972.29px] not-italic text-[22px] top-[4335.87px] uppercase w-[85.255px]" style={{ marginTop: "-18px", marginBottom: "-18px" }}>[04]</p>
       <p className="absolute leading-[38px] left-[1075px] text-[27px] top-[4329px] w-[790px]" style={{ letterSpacing: "-1px", fontFamily: "'Geist:Regular'", fontWeight: 700 }}>Brand &amp; Logo Designer</p>
