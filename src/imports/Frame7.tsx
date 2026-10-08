@@ -38,6 +38,22 @@ const WORK_CARDS = [
   { name: "Mini", year: "2026", img: imgMini },
 ];
 
+// Dynamic work-page canvas height so the footer is never clipped when cards
+// are added. Card = 1024x576 image (16:9) + 8px gap + 23.04px label row;
+// 72px gaps between cards; then Let's Connect (763 + 72 margin) + footer (660).
+export const WORK_CARD_H = 576 + 8 + 23.04;
+export const WORK_CARD_GAP = 72;
+export function getWorkCanvasH(cardCount: number = WORK_CARDS.length) {
+  return (
+    908.31 + // outer paddingTop
+    160 + // cards block pt
+    (cardCount * WORK_CARD_H + Math.max(0, cardCount - 1) * WORK_CARD_GAP) +
+    253 + // cards block pb
+    763 + 72 + // Let's Connect + its bottom margin
+    660 // footer
+  );
+}
+
 export default function Frame7() {
   return (
     <div className="bg-[#e6e6e6] relative" style={{ width: 1920, paddingTop: 908.31 }} data-node-id="48:133">
