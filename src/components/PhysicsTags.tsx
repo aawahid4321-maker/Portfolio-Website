@@ -153,14 +153,22 @@ export default function PhysicsTags() {
     const DPR = Math.min(window.devicePixelRatio || 1, 2);
 
     let W = 0, H = 0;
+    // Effective DPR for the main canvas: the section is CSS-zoomed (≈0.535),
+    // so a full-DPR backing store renders ~3.7x more pixels than ever displayed.
+    // Scaling by the zoom factor keeps on-screen sharpness identical while
+    // cutting the per-frame draw cost dramatically (this was the scroll lag).
+    let effDPR = DPR;
     const resizeCanvas = () => {
       W = section.clientWidth;
       H = section.clientHeight;
-      canvas.width = Math.round(W * DPR);
-      canvas.height = Math.round(H * DPR);
+      const r = section.getBoundingClientRect();
+      const zoom = (r.width / Math.max(section.clientWidth, 1)) || 1;
+      effDPR = Math.max(DPR * zoom, 1);
+      canvas.width = Math.round(W * effDPR);
+      canvas.height = Math.round(H * effDPR);
       canvas.style.width = `${W}px`;
       canvas.style.height = `${H}px`;
-      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.setTransform(effDPR, 0, 0, effDPR, 0, 0);
     };
     resizeCanvas();
 
@@ -434,7 +442,7 @@ export default function PhysicsTags() {
       const rect = r ?? section.getBoundingClientRect();
       Matter.Mouse.setOffset(mouse, { x: -rect.left, y: -rect.top });
       Matter.Mouse.setScale(mouse, { x: 1, y: 1 });
-      mouse.pixelRatio = DPR;
+      mouse.pixelRatio = effDPR;
     };
     const mouseConstraint = Matter.MouseConstraint.create({
       mouse, constraint: { stiffness: 0.2, render: { visible: false } },
