@@ -1,7 +1,7 @@
 import Frame9 from "@/imports/Frame9";
 import FloatingNav from "@/components/FloatingNav";
 import Frame5 from "@/imports/Frame5";
-import Frame7 from "@/imports/Frame7";
+import Frame7, { getWorkCanvasH } from "@/imports/Frame7";
 import ProjectPage from "@/components/ProjectPage";
 import NodaliqSite from "@/components/NodaliqSite";
 import Preloader from "@/components/Preloader";
@@ -20,7 +20,6 @@ const BASE_H = 10953;
 // grid columns run the full 7272px artboard, but the dark footer ends at
 // ~7037px — clip the canvas there so no empty grey space trails the footer.
 const ABOUT_H = 5893;
-const WORK_H = 8795;
 const HERO_TOP = 420;
 const HERO_SIZE = 669;
 const SCROLL_DOWN_BOTTOM_INSET = 14;
@@ -1414,7 +1413,7 @@ export default function App() {
           ? getProjectCanvasH(currentProject?.images.length ?? 6)
           : view === "nodaliq-site"
             ? 0
-            : WORK_H;
+            : getWorkCanvasH();
 
   // Navbar canvas height (~88px). Used to position the overlay below the nav.
   const NAV_H = 88;
