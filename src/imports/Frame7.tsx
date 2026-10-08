@@ -145,7 +145,7 @@ export default function Frame7() {
       </p>
 
       {/* Heading */}
-      <p className="[word-break:break-word] absolute font-['Geist:SemiBold'] leading-[normal] text-[#1e1e1f] text-[237px] tracking-[-9.6861px] whitespace-nowrap left-[30.29px] top-[312.07px]">
+      <p className="[word-break:break-word] absolute font-['Geist:SemiBold'] leading-[normal] text-[#1e1e1f] text-[237px] tracking-[-9.6861px] whitespace-nowrap left-[48px] top-[312.07px]">
         Selected Works
       </p>
 
