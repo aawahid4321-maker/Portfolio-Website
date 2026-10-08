@@ -285,7 +285,7 @@ export default function ProjectPage({
 
       {/* ── Footer — identical to homepage ───────────────────── */}
       <div
-        className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[600px] items-start left-1/2 pb-0 pt-[100px] w-[1920px]"
+        className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] w-[1920px]"
         data-name="Container"
         style={{ top: FOOTER_TOP }}
       >
