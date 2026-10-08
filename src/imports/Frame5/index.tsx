@@ -769,8 +769,8 @@ export default function Frame() {
       <Group4 />
       <p className="-translate-x-full [word-break:break-word] absolute font-pt-mono-ss leading-[24.96px] left-[1874.29px] not-italic text-[#0f0f0f] text-[19.2px] text-right top-[545.07px] uppercase w-[523.479px]">[EST 2005]</p>
       <Banner />
-      <p className="[word-break:break-word] absolute font-['Geist:SemiBold','Noto_Sans:SemiBold','Noto_Sans_Math:Regular','Noto_Sans_Symbols:SemiBold','Noto_Sans_Symbols2:Regular',sans-serif] leading-[normal] left-[30.29px] ml-[17px] mr-[17px] text-[#1e1e1f] text-[178.941px] top-[312.07px] tracking-[-7.3133px] whitespace-nowrap">{`About `}</p>
-      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] ml-[14px] mr-[14px] mt-0 mb-0 text-[#1e1e1f] text-[178.941px] top-[3802.09px] tracking-[-7.3133px] whitespace-nowrap">Experience</p>
+      <p className="[word-break:break-word] absolute font-['Geist:SemiBold','Noto_Sans:SemiBold','Noto_Sans_Math:Regular','Noto_Sans_Symbols:SemiBold','Noto_Sans_Symbols2:Regular',sans-serif] leading-[normal] left-[48px] mr-[17px] text-[#1e1e1f] text-[178.941px] top-[312.07px] tracking-[-7.3133px] whitespace-nowrap">{`About `}</p>
+      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[48px] mr-[14px] mt-0 mb-0 text-[#1e1e1f] text-[178.941px] top-[3802.09px] tracking-[-7.3133px] whitespace-nowrap">Experience</p>
       <Container20 />
       <Group />
       <Group6 />
