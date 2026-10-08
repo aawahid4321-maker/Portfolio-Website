@@ -453,13 +453,13 @@ export default function PhysicsTags() {
       const now = performance.now();
       if (now - lastMove < 16) return;
       lastMove = now;
-      cursor.tx = (e.clientX - rectCache.left) * DPR;
-      cursor.ty = (e.clientY - rectCache.top) * DPR;
+      cursor.tx = (e.clientX - rectCache.left);
+      cursor.ty = (e.clientY - rectCache.top);
       cursor.active = true;
     };
     const onLeave = () => { cursor.active = false; cursor.x = -9999; cursor.y = -9999; };
     const onDown = (e: PointerEvent) => {
-      const cx = (e.clientX - rectCache.left) * DPR, cy = (e.clientY - rectCache.top) * DPR;
+      const cx = (e.clientX - rectCache.left), cy = (e.clientY - rectCache.top);
       const bodies = allItems().map((it) => (it as { body: Matter.Body | null }).body).filter(Boolean) as Matter.Body[];
       const found = Matter.Query.point(bodies, { x: cx, y: cy })[0];
       if (found) {
@@ -473,9 +473,9 @@ export default function PhysicsTags() {
         bodies.forEach((b) => {
           const dx = b.position.x - cx, dy = b.position.y - cy;
           const dist = Math.max(Math.hypot(dx, dy), 1);
-          const SHOCK_R = 220 * DPR;
+          const SHOCK_R = 220;
           if (dist > SHOCK_R) return;
-          const f = Math.min(0.005 * (1 - dist / SHOCK_R), 0.004);
+          const f = Math.min(0.005 * b.mass * (1 - dist / SHOCK_R), 0.02 * b.mass);
           Matter.Body.applyForce(b, b.position, { x: (dx / dist) * f, y: (dy / dist) * f - f * 0.35 });
         });
       }
@@ -618,7 +618,7 @@ export default function PhysicsTags() {
       // cursor look offset (≤3px)
       let lx = 0, ly = 0;
       if (cursor.active) {
-        const dx = cursor.x / DPR - f.dx, dy = cursor.y / DPR - f.dy;
+        const dx = cursor.x - f.dx, dy = cursor.y - f.dy;
         const d = Math.hypot(dx, dy);
         if (d < 220 && d > 1) { lx = (dx / d) * 3; ly = (dy / d) * 3; }
       }
@@ -865,7 +865,7 @@ export default function PhysicsTags() {
         cursor.vx = cursor.x - cursor.px;
         cursor.vy = cursor.y - cursor.py;
         const speed = Math.hypot(cursor.vx, cursor.vy);
-        const PUSH_R = 150 * DPR;
+        const PUSH_R = 150;
         const speedFactor = 0.25 + (Math.min(speed, 28) / 28) * 0.75;
         items.forEach((it) => {
           const b = it.body; if (!b) return;
@@ -874,14 +874,14 @@ export default function PhysicsTags() {
           if (dist > PUSH_R || dist < 1) return;
           if (b.isSleeping) Matter.Sleeping.set(b, false);
           const falloff = 1 - dist / PUSH_R;
-          const f = Math.min(0.0006 * b.mass * falloff * speedFactor, 0.012);
+          const f = Math.min(0.004 * b.mass * falloff * speedFactor, 0.004 * b.mass);
           Matter.Body.applyForce(b, b.position, {
             x: (dx / dist) * f + (cursor.vx / Math.max(speed, 1)) * f * 0.7,
             y: (dy / dist) * f + (cursor.vy / Math.max(speed, 1)) * f * 0.7 - f * 0.2,
           });
           b.torque += (Math.random() - 0.5) * 0.0004 * falloff;
           // PART C: face near cursor → surprised mouth 400ms
-          if (dist < 140 * DPR) {
+          if (dist < 140) {
             const fi = faces.findIndex((fc) => fc.body === b);
             if (fi >= 0 && faces[fi].cur === faces[fi].mood) {
               faces[fi].cur = "surprised"; faces[fi].curUntil = now + 400;
