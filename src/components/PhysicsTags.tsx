@@ -430,9 +430,9 @@ export default function PhysicsTags() {
 
     /* ── Mouse: drag/throw via MouseConstraint, cursor push manual ── */
     const mouse = Matter.Mouse.create(section);
-    const syncMouse = () => {
-      const r = section.getBoundingClientRect();
-      Matter.Mouse.setOffset(mouse, { x: -r.left, y: -r.top });
+    const syncMouse = (r?: DOMRect) => {
+      const rect = r ?? section.getBoundingClientRect();
+      Matter.Mouse.setOffset(mouse, { x: -rect.left, y: -rect.top });
       Matter.Mouse.setScale(mouse, { x: 1, y: 1 });
       mouse.pixelRatio = DPR;
     };
@@ -453,13 +453,21 @@ export default function PhysicsTags() {
       const now = performance.now();
       if (now - lastMove < 16) return;
       lastMove = now;
-      cursor.tx = (e.clientX - rectCache.left);
-      cursor.ty = (e.clientY - rectCache.top);
+      // Viewport px → section local px: the whole canvas is CSS-zoomed, so
+      // scale by clientWidth/rect.width (Matter's own Mouse does the same).
+      const r = section.getBoundingClientRect();
+      const sx = section.clientWidth / r.width;
+      const sy = section.clientHeight / r.height;
+      cursor.tx = (e.clientX - r.left) * sx;
+      cursor.ty = (e.clientY - r.top) * sy;
       cursor.active = true;
     };
     const onLeave = () => { cursor.active = false; cursor.x = -9999; cursor.y = -9999; };
     const onDown = (e: PointerEvent) => {
-      const cx = (e.clientX - rectCache.left), cy = (e.clientY - rectCache.top);
+      const r = section.getBoundingClientRect();
+      const sx = section.clientWidth / r.width;
+      const sy = section.clientHeight / r.height;
+      const cx = (e.clientX - r.left) * sx, cy = (e.clientY - r.top) * sy;
       const bodies = allItems().map((it) => (it as { body: Matter.Body | null }).body).filter(Boolean) as Matter.Body[];
       const found = Matter.Query.point(bodies, { x: cx, y: cy })[0];
       if (found) {
@@ -775,6 +783,11 @@ export default function PhysicsTags() {
       raf = requestAnimationFrame(loop);
       let delta = now - lastT;
       lastT = now;
+      // Refresh pointer geometry once per frame here instead of on scroll
+      // events — a scroll listener forced 2 synchronous layouts per scroll
+      // tick, which janked scrolling through this section.
+      rectCache = section.getBoundingClientRect();
+      syncMouse(rectCache);
       delta = Math.min(delta, 1000 / 30);
       accumulator += delta;
       let steps = 0;
@@ -1032,7 +1045,6 @@ export default function PhysicsTags() {
         rectCache = section.getBoundingClientRect();
       }, 200);
     };
-    const onScrollSync = () => { syncMouse(); rectCache = section.getBoundingClientRect(); };
     const onVis = () => {
       if (document.hidden) { stopLoop(); }
       else startLoop();
@@ -1047,7 +1059,6 @@ export default function PhysicsTags() {
       section.addEventListener("pointerleave", onLeave);
       section.addEventListener("pointerdown", onDown);
       window.addEventListener("resize", onResize);
-      window.addEventListener("scroll", onScrollSync, { passive: true });
       document.addEventListener("visibilitychange", onVis);
       window.addEventListener("pageshow", onPageShow);
       // already in view on load: drop immediately
@@ -1076,7 +1087,6 @@ export default function PhysicsTags() {
       section.removeEventListener("pointerleave", onLeave);
       section.removeEventListener("pointerdown", onDown);
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("scroll", onScrollSync);
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("pageshow", onPageShow);
       timeouts.forEach((t) => window.clearTimeout(t));
