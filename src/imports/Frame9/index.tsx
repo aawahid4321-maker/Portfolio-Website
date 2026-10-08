@@ -15,15 +15,15 @@ import PhysicsTags from "@/components/PhysicsTags";
 import LetsConnect from "@/components/LetsConnect";
 
 function Container() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[9901px] left-[48px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[48px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container1() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[9901px] left-[279px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[279px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container2() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[9901px] left-[510px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[510px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container4() {
@@ -86,26 +86,26 @@ function Link() {
 
 function Container3() {
   return (
-    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[9901px] left-[741px] top-0 w-[207px]" data-name="Container">
+    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[741px] top-0 w-[207px]" data-name="Container">
       <Link />
     </div>
   );
 }
 
 function Container8() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[9901px] left-[972px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[972px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container9() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[9901px] left-[1203px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[1203px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container10() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[9901px] left-[1434px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[1434px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container11() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[9901px] left-[1665px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[1665px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container12() {
@@ -138,7 +138,7 @@ function Container16() {
 
 function Container14() {
   return (
-    <div className="absolute content-stretch flex h-[38.092px] items-start justify-between left-[51.49px] top-[7495px] w-[1817.023px]" data-name="Container">
+    <div className="absolute content-stretch flex h-[38.092px] items-start justify-between left-[51.49px] top-[7615px] w-[1817.023px]" data-name="Container">
       <Container15 />
       <Container16 />
     </div>
@@ -147,28 +147,28 @@ function Container14() {
 
 function Group13() {
   return (
-    <div className="[word-break:break-word] absolute contents font-pt-mono-ss left-[1203.29px] not-italic text-[#0f0f0f] text-[22px] top-[7898.03px] uppercase">
-      <div className="absolute leading-[0] left-[1203.29px] top-[7898.03px] w-[589.484px]">
+    <div className="[word-break:break-word] absolute contents font-pt-mono-ss left-[1203.29px] not-italic text-[#0f0f0f] text-[22px] top-[8018.03px] uppercase">
+      <div className="absolute leading-[0] left-[1203.29px] top-[8018.03px] w-[589.484px]">
         <p className="leading-[33px] mb-0">1.1 / BUILDING A CLEAR BRAND DIRECTION</p>
         <p className="leading-[33px]">I define the positioning, personality, audience, and visual direction that give a brand a clear place in the market.</p>
       </div>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[8154.42px] w-[589.484px]">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[8274.42px] w-[589.484px]">
         2.1 / SHAPING THE VISUAL WORLD OF A BRAND
         <br aria-hidden />I develop the creative direction, mood, and visual language that bring an idea to life and make it feel distinctive.
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[8410.81px] w-[589.484px]">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[8530.81px] w-[589.484px]">
         3.1 / CREATING IDENTITIES PEOPLE REMEMBER
         <br aria-hidden />
         From logos and visual systems to typography and color, I build cohesive identities that feel recognizable and built to last.
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[8667.20px] w-[641.38px]">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[8787.20px] w-[641.38px]">
         4.1 / TURNING BRAND INTO DIGITAL EXPERIENCE
         <br aria-hidden />I design websites that bring the brand together with clear structure, thoughtful interactions, and a strong visual point of view.
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[8923.59px] w-[589.484px] whitespace-pre-wrap">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[9043.59px] w-[589.484px] whitespace-pre-wrap">
         {`5.1 / MAKING DIGITAL PRODUCTS FEEL SIMPLEI create intuitive interfaces and user experiences that balance function, clarity, and visual character.`}
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[9166.37px] w-[641.38px] whitespace-pre-wrap">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[9286.37px] w-[641.38px] whitespace-pre-wrap">
         {`6.1 / TURNING IDEAS INTO CAMPAIGNS PEOPLE NOTICEI develop big creative ideas and campaign directions that give brands something worth saying, seeing, and remembering.`}
       </p>
     </div>
@@ -190,13 +190,13 @@ function Group() {
       <Container13 />
       <Container14 />
       <Group13 />
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[7910.03px] tracking-[0.5px] whitespace-nowrap">Brand Strategy</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8166.42px] tracking-[0.5px] whitespace-nowrap">Art Direction</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8422.81px] tracking-[0.5px] whitespace-nowrap">Brand Visuals</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8679.20px] tracking-[0.5px] whitespace-nowrap">Website Design</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8935.59px] tracking-[0.5px] whitespace-nowrap">UI/UX Design</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9178.37px] tracking-[0.5px] whitespace-nowrap">Campaign Big Ideas</p>
-      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[7606.56px] tracking-[-9.6861px] whitespace-nowrap">My Services</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8030.03px] tracking-[0.5px] whitespace-nowrap">Brand Strategy</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8286.42px] tracking-[0.5px] whitespace-nowrap">Art Direction</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8542.81px] tracking-[0.5px] whitespace-nowrap">Brand Visuals</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8799.20px] tracking-[0.5px] whitespace-nowrap">Website Design</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9055.59px] tracking-[0.5px] whitespace-nowrap">UI/UX Design</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9298.37px] tracking-[0.5px] whitespace-nowrap">Campaign Big Ideas</p>
+      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[30.29px] text-[#1e1e1f] text-[237px] top-[7726.56px] tracking-[-9.6861px] whitespace-nowrap">My Services</p>
     </div>
   );
 }
@@ -204,8 +204,8 @@ function Group() {
 
 function Group12() {
   return (
-    <div className="absolute contents left-[974.8px] top-[9660.99px]">
-      <p className="absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[9660.99px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
+    <div className="absolute contents left-[974.8px] top-[9780.99px]">
+      <p className="absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[9780.99px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
     </div>
   );
 }
@@ -415,7 +415,7 @@ function Container21() {
 
 function Container20() {
   return (
-    <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[600px] items-start left-1/2 pb-0 pt-[100px] top-[10172.27px] w-[1920px]" data-name="Container">
+    <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[10172.27px] w-[1920px]" data-name="Container">
       <Container21 />
     </div>
   );
@@ -423,8 +423,8 @@ function Container20() {
 
 function Group14() {
   return (
-    <div className="absolute contents left-0 top-[9409.15px]">
-      <div className="absolute left-0 top-[9409.15px] w-[1920px] h-[763px]">
+    <div className="absolute contents left-0 top-[9529.15px]">
+      <div className="absolute left-0 top-[9529.15px] w-[1920px] h-[763px]">
         <LetsConnect />
       </div>
       <Container20 />
@@ -939,12 +939,12 @@ export default function Frame() {
       <Group />
       <Group14 />
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[71.674px] left-[46px] text-[#0f0f0f] text-[71.674px] top-[1144px] tracking-[-2.8669px] w-[912px] animate-[fadeUpIn_0.9s_0.35s_cubic-bezier(0.22,1,0.36,1)_both]">Selected Works</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[7898.03px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8154.42px] uppercase w-[85.255px]">[02]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8410.81px] uppercase w-[85.255px]">[03]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8667.20px] uppercase w-[85.255px]">[04]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8923.59px] uppercase w-[85.255px]">[05]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9166.37px] uppercase w-[85.255px]">[06]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8018.03px] uppercase w-[85.255px]">[01]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8274.42px] uppercase w-[85.255px]">[02]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8530.81px] uppercase w-[85.255px]">[03]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8787.20px] uppercase w-[85.255px]">[04]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9043.59px] uppercase w-[85.255px]">[05]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9286.37px] uppercase w-[85.255px]">[06]</p>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[1203.29px] text-[#1e1e1f] text-[35px] top-[357.07px] tracking-[-0.6912px] w-[523.479px]">/ 30</p>
       <Banner />
       <div className="absolute inset-[3.14%_50.92%_96.42%_46.37%] animate-[fadeRotateIn_1s_0.5s_cubic-bezier(0.22,1,0.36,1)_both]" data-name="Vector">
@@ -964,35 +964,35 @@ export default function Frame() {
       <Group5 />
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[27.648px] left-[48px] text-[#1e1e1f] text-[23.04px] top-[1063px] tracking-[-0.6912px] whitespace-nowrap" style={{ marginTop: "-85px", marginBottom: "-85px" }}>Scroll Down</p>
       <Group15 />
-      <div className="absolute h-0 left-[1203.29px] top-[8087.25px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[8207.25px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[8343.09px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[8463.09px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[8598.93px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[8718.93px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[8854.77px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[8974.77px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[9106.30px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[9226.30px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
