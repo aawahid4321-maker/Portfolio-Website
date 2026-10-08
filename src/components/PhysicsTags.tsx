@@ -1023,6 +1023,19 @@ export default function PhysicsTags() {
     );
 
     let lastW = W, lastH = H, resizeT = 0;
+    // Pause the simulation while the user is actively scrolling: 66 physics
+    // bodies + full canvas redraw at 60fps competes with scroll compositing
+    // and janks. Tags freeze mid-air during scroll (imperceptible while the
+    // page is moving) and resume ~160ms after scroll settles.
+    let scrollHoldT = 0;
+    const onScrollHold = () => {
+      if (!loopOn) return;
+      stopLoop();
+      window.clearTimeout(scrollHoldT);
+      scrollHoldT = window.setTimeout(() => {
+        if (isVisible) startLoop();
+      }, 160);
+    };
     const onResize = () => {
       window.clearTimeout(resizeT);
       resizeT = window.setTimeout(() => {
@@ -1059,6 +1072,7 @@ export default function PhysicsTags() {
       section.addEventListener("pointerleave", onLeave);
       section.addEventListener("pointerdown", onDown);
       window.addEventListener("resize", onResize);
+      window.addEventListener("scroll", onScrollHold, { passive: true });
       document.addEventListener("visibilitychange", onVis);
       window.addEventListener("pageshow", onPageShow);
       // already in view on load: drop immediately
@@ -1087,6 +1101,8 @@ export default function PhysicsTags() {
       section.removeEventListener("pointerleave", onLeave);
       section.removeEventListener("pointerdown", onDown);
       window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onScrollHold);
+      window.clearTimeout(scrollHoldT);
       document.removeEventListener("visibilitychange", onVis);
       window.removeEventListener("pageshow", onPageShow);
       timeouts.forEach((t) => window.clearTimeout(t));
