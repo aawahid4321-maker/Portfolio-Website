@@ -783,6 +783,13 @@ export default function PhysicsTags() {
       raf = requestAnimationFrame(loop);
       let delta = now - lastT;
       lastT = now;
+      // Half the frame rate while scrolling: skip every other frame's work
+      // but double its delta so motion stays continuous, not frozen.
+      if (isScrolling) {
+        skipFrame = !skipFrame;
+        if (skipFrame) return;
+        delta *= 2;
+      }
       // Refresh pointer geometry once per frame here instead of on scroll
       // events — a scroll listener forced 2 synchronous layouts per scroll
       // tick, which janked scrolling through this section.
@@ -1023,18 +1030,13 @@ export default function PhysicsTags() {
     );
 
     let lastW = W, lastH = H, resizeT = 0;
-    // Pause the simulation while the user is actively scrolling: 66 physics
-    // bodies + full canvas redraw at 60fps competes with scroll compositing
-    // and janks. Tags freeze mid-air during scroll (imperceptible while the
-    // page is moving) and resume ~160ms after scroll settles.
-    let scrollHoldT = 0;
+    // During active scroll: run at half frame-rate to keep scrolling smooth.
+    // Tags keep moving (no jarring freeze), just lighter on CPU.
+    let scrollHoldT = 0, isScrolling = false, skipFrame = false;
     const onScrollHold = () => {
-      if (!loopOn) return;
-      stopLoop();
+      isScrolling = true;
       window.clearTimeout(scrollHoldT);
-      scrollHoldT = window.setTimeout(() => {
-        if (isVisible) startLoop();
-      }, 160);
+      scrollHoldT = window.setTimeout(() => { isScrolling = false; }, 160);
     };
     const onResize = () => {
       window.clearTimeout(resizeT);
