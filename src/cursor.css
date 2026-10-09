@@ -35,6 +35,7 @@ html.cst-link #cursor-root { --cuff: var(--cursor-yellow); }
 html.cst-view #cursor-root { --cuff: var(--cursor-pink); }
 html.cst-drag #cursor-root { --cuff: var(--cursor-orange); }
 html.cst-poke #cursor-root { --cuff: var(--cursor-paper); }
+html.cst-poke .cursor-poses { scale: 1.35; } /* poke reads clearly, not tiny */
 
 /* ── the hand: positioned by rAF (translate3d only) ── */
 .cursor-hand {
