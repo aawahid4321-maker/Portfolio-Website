@@ -98,8 +98,7 @@
     p.innerHTML = poseSVG(POSES[k]);
     poseEls[k] = p;
   });
-  var badge = div('cursor-badge', pop);
-  badge.textContent = '↗';
+  // (link arrow badge removed per user request)
 
   // view-state buddy: cartoon character with eyes + VIEW banner (replaces the sticker)
   var YEL = '#FFD60A', PNK = '#FF0A8A';
