@@ -43,7 +43,7 @@ export default function LearnMoreButton({ onClick }: LearnMoreButtonProps) {
         .lm-blob--blue {
           left: 44%;
           width: 30px; height: 30px;
-          background: #7e4fed;
+          background: #A58CF4;
           border-radius: 6px;
           rotate: 45deg;
         }
@@ -88,7 +88,7 @@ export default function LearnMoreButton({ onClick }: LearnMoreButtonProps) {
           display: inline-flex;
           align-items: center;
           gap: 10px;
-          background: #7e4fed;
+          background: #A58CF4;
           color: #fff;
           border: none;
           border-radius: 8px;
@@ -99,7 +99,7 @@ export default function LearnMoreButton({ onClick }: LearnMoreButtonProps) {
           font-size: 17px;
           font-weight: 500;
           letter-spacing: 0.06em;
-          box-shadow: 0 14px 28px -12px rgba(126, 79, 237, 0.5);
+          box-shadow: 0 14px 28px -12px rgba(165, 140, 244, 0.55);
           transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease;
         }
         .lm-arrow {
