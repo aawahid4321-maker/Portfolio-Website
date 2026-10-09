@@ -13,6 +13,7 @@ import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFirefly
 import SharedFooterContent from "@/components/SharedFooterContent";
 import PhysicsTags from "@/components/PhysicsTags";
 import LetsConnect from "@/components/LetsConnect";
+import PlayfulButton from "@/components/PlayfulButton";
 
 function Container() {
   return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[48px] top-0 w-[207px]" data-name="Container" />;
@@ -26,60 +27,10 @@ function Container2() {
   return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[510px] top-0 w-[207px]" data-name="Container" />;
 }
 
-function Container4() {
-  return (
-    <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[19.2px] not-italic relative shrink-0 text-[#f2f2f2] text-[19.2px] uppercase whitespace-nowrap">{`LEARN MORE `}</p>
-    </div>
-  );
-}
-
-function Container6() {
-  return (
-    <div className="absolute flex items-center justify-center left-[-5.45px] size-[28.991px] top-[-2.85px]">
-      <div className="-rotate-45 flex-none">
-        <div className="content-stretch flex flex-col h-[23px] items-start relative w-[18px]" data-name="Container">
-          <p className="[word-break:break-word] font-geist-medium-ss leading-[23.04px] relative shrink-0 text-[#f2f2f2] text-[23.04px] whitespace-nowrap">→</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function ContainerTransform() {
-  return (
-    <div className="content-stretch flex flex-col h-[23px] items-start relative shrink-0 w-full" data-name="Container:transform">
-      <Container6 />
-    </div>
-  );
-}
-
-function Container7() {
-  return (
-    <div className="absolute flex items-center justify-center left-[-23.89px] size-[30.406px] top-[19.34px]">
-      <div className="-rotate-45 flex-none">
-        <div className="content-stretch flex flex-col items-start relative" data-name="Container">
-          <p className="[word-break:break-word] font-geist-medium-ss leading-[23.04px] relative shrink-0 text-[#f2f2f2] text-[23.04px] whitespace-nowrap">→</p>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Container5() {
-  return (
-    <div className="content-stretch flex flex-col h-[23px] items-start overflow-clip relative shrink-0 w-[18px]" data-name="Container">
-      <ContainerTransform />
-      <Container7 />
-    </div>
-  );
-}
-
 function Link() {
   return (
-    <div className="absolute bg-[#1e1e1f] content-stretch flex gap-[8px] h-[47px] items-center justify-center left-[-1px] overflow-clip p-[12px] rounded-[5px] top-[6424px] w-[180px] cursor-pointer transition-colors duration-300 hover:bg-black" data-name="Link">
-      <Container4 />
-      <Container5 />
+    <div className="absolute left-[-1px] top-[6424px]" data-name="Link" data-playful-btn="true">
+      <PlayfulButton />
     </div>
   );
 }
