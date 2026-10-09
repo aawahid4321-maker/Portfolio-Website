@@ -65,7 +65,7 @@ function Container12() {
 
 function Container13() {
   return (
-    <div className="-translate-x-1/2 absolute left-1/2 top-[6641px] w-[1818px]" data-name="Container">
+    <div className="-translate-x-1/2 absolute left-1/2 top-[6641px] w-[1818px]" data-name="Container" data-cursor="drag">
       <PhysicsTags />
     </div>
   );
@@ -616,7 +616,7 @@ function Group11() {
 
 function Container54() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[1514.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="noire-coffee">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[1514.63px] w-[900px] cursor-pointer" data-name="Container" data-cursor="view" data-project-id="noire-coffee">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer1} loading="eager" decoding="async" />
       <Group11 />
     </div>
@@ -659,7 +659,7 @@ function Group1() {
 
 function Container58() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[2165.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="fitflow">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[2165.63px] w-[900px] cursor-pointer" data-name="Container" data-cursor="view" data-project-id="fitflow">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer2} loading="eager" decoding="async" />
     </div>
   );
@@ -701,7 +701,7 @@ function Group6() {
 
 function Container62() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[2816.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="stint">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[2816.63px] w-[900px] cursor-pointer" data-name="Container" data-cursor="view" data-project-id="stint">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer3} loading="eager" decoding="async" />
     </div>
   );
@@ -743,7 +743,7 @@ function Group2() {
 
 function Container66() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[3467.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="axorix">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[3467.63px] w-[900px] cursor-pointer" data-name="Container" data-cursor="view" data-project-id="axorix">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer4} loading="eager" decoding="async" />
     </div>
   );
@@ -785,7 +785,7 @@ function Group3() {
 
 function Container70() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4118.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="pypo">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4118.63px] w-[900px] cursor-pointer" data-name="Container" data-cursor="view" data-project-id="pypo">
       <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer5} loading="eager" decoding="async" />
     </div>
   );
@@ -827,7 +827,7 @@ function Group4() {
 
 function Container74() {
   return (
-    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4769.63px] w-[900px] cursor-pointer" data-name="Container" data-project-id="brochure">
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[4769.63px] w-[900px] cursor-pointer" data-name="Container" data-cursor="view" data-project-id="brochure">
       <div aria-hidden className="absolute inset-0 pointer-events-none">
         <div className="absolute bg-[#a4a4a4] inset-0" />
         <img alt="" className="absolute max-w-none object-cover size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer6} loading="eager" decoding="async" />
