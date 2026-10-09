@@ -172,7 +172,7 @@ export default function Frame7() {
         `}</style>
         <div className="work-zigzag">
           {WORK_CARDS.map((card) => (
-            <div className="work-card flex flex-col gap-[8px]" data-name="work-card" key={card.name}>
+            <div className="work-card flex flex-col gap-[8px]" data-name="work-card" data-cursor="view" key={card.name}>
               <div className="work-card-img relative shrink-0 w-full" data-name="work-card-img">
                 <img alt="" className="object-cover pointer-events-none" src={card.img} loading="eager" decoding="async" />
               </div>
