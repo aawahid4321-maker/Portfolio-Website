@@ -43,7 +43,7 @@ export default function LearnMoreButton({ onClick }: LearnMoreButtonProps) {
         .lm-blob--blue {
           left: 44%;
           width: 30px; height: 30px;
-          background: #0000ff;
+          background: #7e4fed;
           border-radius: 6px;
           rotate: 45deg;
         }
