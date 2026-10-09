@@ -42,7 +42,10 @@ html.cst-poke #cursor-root { --cuff: var(--cursor-paper); }
   top: 0;
   left: 0;
   will-change: transform;
+  transition: opacity 0.15s ease, scale 0.15s ease;
 }
+/* in view state the glove hides and only the buddy shows */
+html.cst-view .cursor-hand { opacity: 0; scale: 0.6; }
 /* idle + goodbye motion (never fights the rAF layers below) */
 .cursor-wave { display: block; }
 html.cst-idle-tap .cursor-wave { animation: cursor-tap-tap 3s ease-in-out infinite; }
@@ -87,11 +90,9 @@ html.cst-bye .cursor-wave { animation: cursor-wave-bye 0.4s ease-in-out; }
   transform-origin: 6.5px 6px;
   transition: scale 0.18s ease;
 }
-html.cst-view .cursor-poses { scale: 1.5; }   /* big OK hand */
 html.cst-text .cursor-poses { scale: 0.8; }   /* small pointing hand */
 html.sq-down .cursor-poses { scale: 0.88; }    /* fist squash */
 html.sq-grab .cursor-poses { scale: 1.1 0.9; }/* grabbing squash */
-html.cst-view.sq-down .cursor-poses { scale: 1.32; }
 /* poke motion: quick nudge toward top-left and back */
 .cursor-poses.poking { animation: cursor-poke-move 0.25s ease; }
 @keyframes cursor-poke-move {
@@ -147,54 +148,49 @@ html.cursor-on-dark .pose-glow { opacity: 1; }
 }
 html.cst-link .cursor-badge { opacity: 1; transform: scale(1); }
 
-/* ── view sticker: 64px round arrow sticker, top-right of the hand ── */
-.cursor-sticker {
+/* ── the template's own VIEW badge (App.tsx) — only one cursor system ── */
+.cursor-badge-global { display: none !important; }
+
+/* ── view buddy: cartoon character that replaces the arrow sticker ── */
+.view-buddy {
   position: absolute;
-  left: 20px;
-  top: -60px;
-  width: 64px;
-  height: 64px;
+  top: 0;
+  left: 0;
+  width: 96px;
   opacity: 0;
+  transition: opacity 0.18s ease;
+  will-change: transform;
   pointer-events: none;
 }
-html.cst-view .cursor-sticker {
-  opacity: 1;
-  animation: cursor-pop 0.2s var(--cursor-spring);
+html.cst-view .view-buddy { opacity: 1; }
+.view-buddy-offset { transform: translate(-48px, -52px); }
+.view-buddy-offset.popping { animation: buddy-pop 0.25s var(--cursor-spring); }
+@keyframes buddy-pop {
+  0%   { transform: translate(-48px, -52px) scale(0.6); }
+  60%  { transform: translate(-48px, -52px) scale(1.1); }
+  100% { transform: translate(-48px, -52px) scale(1); }
 }
-.sticker-disc {
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--cursor-yellow);
-  border: 3px solid var(--cursor-ink);
-  box-shadow: 3px 3px 0 var(--cursor-ink); /* hard shadow, no blur */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.view-buddy-tilt { will-change: transform; }
+.view-buddy-svg { width: 96px; height: auto; display: block; overflow: visible; }
+/* VIEW banner: sibling of the tilt group — always upright, never rotated */
+.view-text { display: flex; justify-content: center; margin-top: 8px; }
+.view-text span {
+  background: var(--cursor-ink);
+  color: var(--cursor-paper);
+  font-family: "Zilla Slab", Georgia, serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  padding: 7px 16px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  transform: none;
+  direction: ltr;
+  unicode-bidi: normal;
+  user-select: none;
 }
-.sticker-arrow { animation: sticker-nudge 1.2s ease-in-out infinite; }
-@keyframes sticker-nudge {
-  0%, 100% { translate: 0 0; }
-  50%      { translate: 3px -3px; }
-}
-.sticker-orbit {
-  position: absolute;
-  inset: -9px;
-  animation: sticker-orbit 6s linear infinite;
-}
-@keyframes sticker-orbit {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-.sticker-orbit i {
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  background: var(--cursor-pink);
-  clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
-}
-.sticker-orbit i:first-child { top: 0; left: 50%; margin-left: -3.5px; }
-.sticker-orbit i:last-child { bottom: 0; left: 50%; margin-left: -3.5px; background: var(--cursor-purple); }
 
 /* ── trail: 3 tiny sparkles with longer lag ── */
 .trail-star {
