@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import "./cursor.css";
+import "./raf.js";
 import "./cursor.js";
 import { initSmoothScroll } from "./smoothScroll";
 
