@@ -747,9 +747,10 @@ export default function LetsConnect() {
           transform-origin: 50% 15%;
           transition: translate 0.3s ease;
         }
-        /* cute fix: no feet (cleaner look), bigger mitten hands */
+        /* cute fix: no feet, clean rounded stubby arms (no separate lollipop hands) */
         #connect .legs { display: none; }
-        #connect .arm-back circle, #connect .arm-front circle { r: 14; }
+        #connect .arm-back circle, #connect .arm-front circle { display: none; }
+        #connect .arm-back path, #connect .arm-front path { stroke-width: 22; }
         /* raised arms pivot at the shoulder (bottom of bbox) */
         #connect .arm-up { transform-origin: 50% 85%; }
         #connect .leg-l, #connect .leg-r {
