@@ -304,8 +304,16 @@
 
   document.addEventListener('pointerdown', function (e) {
     isDown = true;
-    html.classList.add(state === 'drag' ? 'sq-grab' : 'sq-down');
-    setPose('fist');
+    if (state === 'drag') {
+      html.classList.add('sq-grab');
+      setPose('fist');
+    } else if (state === 'link') {
+      // on buttons keep the thumbs-up and just squash it — no fist switch
+      html.classList.add('sq-down');
+    } else {
+      html.classList.add('sq-down');
+      setPose('fist');
+    }
     if (state === 'poke' && !reduced) {
       posesBox.classList.add('poking');
       setTimeout(function () { posesBox.classList.remove('poking'); }, 280);
