@@ -219,7 +219,7 @@ export default function FloatingNav({
           }}>
             <span className="pp-burger" aria-hidden="true" />Menu
           </button>
-          <button className="pp-hire" onClick={onNavigateHome}>Hire me <span className="pp-arrow">↗</span></button>
+          <button className="pp-hire" onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })}>Hire me <span className="pp-arrow">↗</span></button>
         </div>
       </nav>
     </>
