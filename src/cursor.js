@@ -1,100 +1,183 @@
 /* ═══════════════════════════════════════════════════════════════════
-   Custom cursor — playful sticker layer (see cursor.css).
-   • One rAF loop, transform-only movement (translate3d), no layout reads.
+   Custom cursor — cartoon glove hand. Replaces the old blob cursor.
+   • 6 pre-built SVG poses (point, thumbs-up, OK, open palm, fist, poke),
+     swapped with opacity — never re-created.
+   • One rAF loop, translate3d only, no layout reads in the loop.
    • Event delegation via pointerover + closest(); no per-element listeners.
-   • pointer-events: none everywhere, so Matter.js + character clicks are
-     unaffected. Pauses when the tab hides; stops when idle and settled.
+   • pointer-events: none everywhere, so Matter.js, character clicks and
+     the scroll lock keep working. Pauses when the tab hides; stops when
+     everything caught up and the mouse is still.
    ═══════════════════════════════════════════════════════════════════ */
 (function () {
   'use strict';
 
-  // Only on devices with a fine hover-capable pointer — touch does nothing.
+  // Only on devices with a fine hover-capable pointer — touch creates nothing.
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   var html = document.documentElement;
+  var INK = '#0D0D0D', PAPER = '#FAFAFA';
+  var S = 'fill="' + PAPER + '" stroke="' + INK + '" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"';
+  var DET = 'class="detail" fill="none" stroke="' + INK + '" stroke-width="2.5" stroke-linecap="round"';
+  var CUFF = '<rect x="22" y="58" width="24" height="17" rx="6" class="cuff" stroke="' + INK + '" stroke-width="3"/>';
 
-  /* ── build the two cursor elements ─────────────────────────────── */
-  function el(tag, cls) {
-    var n = document.createElement(tag);
-    n.className = cls;
+  /* ── the 6 poses (viewBox 0 0 64 80, 52px tall) ────────────────── */
+  var POSES = {
+    point:
+      CUFF +
+      '<rect x="16" y="36" width="34" height="26" rx="11" ' + S + '/>' +
+      '<circle cx="26" cy="34" r="6" ' + S + '/><circle cx="36" cy="33" r="6.5" ' + S + '/><circle cx="46" cy="35" r="6" ' + S + '/>' +
+      '<rect x="13" y="8" width="11" height="36" rx="5.5" transform="rotate(-14 18 44)" ' + S + '/>' +
+      '<ellipse cx="17" cy="50" rx="5.5" ry="9" transform="rotate(-28 17 50)" ' + S + '/>' +
+      '<path d="M28 48h7 M28 54h7" ' + DET + '/>',
+    thumb:
+      CUFF +
+      '<rect x="20" y="32" width="28" height="26" rx="10" ' + S + '/>' +
+      '<rect x="35" y="4" width="11" height="34" rx="5.5" transform="rotate(8 40 38)" ' + S + '/>' +
+      '<path d="M29 37v8 M37 37v8" ' + DET + '/>',
+    ok:
+      CUFF +
+      '<rect x="14" y="40" width="34" height="22" rx="10" ' + S + '/>' +
+      '<rect x="34" y="6" width="9" height="26" rx="4.5" ' + S + '/>' +
+      '<rect x="43" y="8" width="9" height="26" rx="4.5" ' + S + '/>' +
+      '<rect x="51" y="14" width="8" height="20" rx="4" ' + S + '/>' +
+      '<rect x="30" y="2" width="11" height="20" rx="5.5" transform="rotate(10 35 22)" ' + S + '/>' +
+      '<circle cx="28" cy="28" r="9" ' + S + '/>' +
+      '<rect x="13" y="28" width="11" height="24" rx="5.5" transform="rotate(28 18 40)" ' + S + '/>' +
+      '<path d="M24 50h7" ' + DET + '/>',
+    palm:
+      CUFF +
+      '<rect x="17" y="36" width="30" height="24" rx="10" ' + S + '/>' +
+      '<rect x="14" y="12" width="9" height="24" rx="4.5" transform="rotate(-16 18 36)" ' + S + '/>' +
+      '<rect x="23" y="10" width="9" height="24" rx="4.5" transform="rotate(-5 27 34)" ' + S + '/>' +
+      '<rect x="32" y="10" width="9" height="24" rx="4.5" transform="rotate(6 36 34)" ' + S + '/>' +
+      '<rect x="41" y="12" width="9" height="24" rx="4.5" transform="rotate(17 45 36)" ' + S + '/>' +
+      '<ellipse cx="49" cy="46" rx="5" ry="8" transform="rotate(35 49 46)" ' + S + '/>' +
+      '<path d="M27 48h7" ' + DET + '/>',
+    fist:
+      CUFF +
+      '<rect x="17" y="32" width="30" height="28" rx="11" ' + S + '/>' +
+      '<rect x="17" y="46" width="22" height="9" rx="4.5" ' + S + '/>' +
+      '<path d="M25 37v7 M32 36v7 M39 37v7" ' + DET + '/>',
+    poke:
+      CUFF +
+      '<rect x="26" y="32" width="26" height="28" rx="11" ' + S + '/>' +
+      '<rect x="24" y="2" width="12" height="42" rx="6" transform="rotate(-14 30 44)" ' + S + '/>' +
+      '<ellipse cx="27" cy="48" rx="5" ry="8" transform="rotate(-25 27 48)" ' + S + '/>' +
+      '<path d="M36 48h7" ' + DET + '/>'
+  };
+
+  function poseSVG(inner) {
+    return '<svg class="pose-svg" viewBox="0 0 64 80" aria-hidden="true">' +
+      '<g class="pose-glow">' + inner + '</g>' +
+      '<g class="pose-art">' + inner + '</g></svg>';
+  }
+  function div(cls, parent) {
+    var n = document.createElement('div');
+    if (cls) n.className = cls;
     n.setAttribute('aria-hidden', 'true');
+    if (parent) parent.appendChild(n);
     return n;
   }
-  var dot = el('div', 'cursor-dot');
-  var dotInner = el('div', 'cursor-dot-inner');
-  dot.appendChild(dotInner);
 
-  var ring = el('div', 'cursor-ring');
-  var breathe = el('div', 'cursor-breathe');
-  var ringInner = el('div', 'cursor-ring-inner');
-  var label = el('span', 'cursor-label');
-  ringInner.appendChild(label);
-  breathe.appendChild(ringInner);
-  ring.appendChild(breathe);
+  /* ── build the cursor tree ─────────────────────────────────────── */
+  var root = div('', null);
+  root.id = 'cursor-root';
+  document.body.appendChild(root);
 
-  document.body.appendChild(dot);
-  document.body.appendChild(ring);
+  var hand = div('cursor-hand', root);
+  var wave = div('cursor-wave', hand);
+  var tilt = div('cursor-tilt', wave);
+  var pop = div('cursor-pop', tilt);
+  var posesBox = div('cursor-poses', pop);
+  var poseEls = {};
+  Object.keys(POSES).forEach(function (k) {
+    var p = div('pose', posesBox);
+    p.setAttribute('data-pose', k);
+    p.innerHTML = poseSVG(POSES[k]);
+    poseEls[k] = p;
+  });
+  var badge = div('cursor-badge', pop);
+  badge.textContent = '↗';
 
-  /* click-sparkle pool (max 6, reused) */
-  var sparkles = [];
-  var sparkleIdx = 0;
-  if (!reducedMotion) {
-    for (var i = 0; i < 6; i++) {
-      var s = el('div', 'cursor-sparkle');
-      document.body.appendChild(s);
-      sparkles.push(s);
+  // view-state sticker: 64px round arrow, sibling of the tilt layer
+  var sticker = div('cursor-sticker', hand);
+  sticker.innerHTML =
+    '<div class="sticker-disc"><svg class="sticker-arrow" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true">' +
+    '<path d="M22 42 L42 22 M27 22 h15 v15" fill="none" stroke="' + INK + '" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '</svg></div><div class="sticker-orbit"><i></i><i></i></div>';
+
+  // trail: 3 tiny sparkles (skipped under reduced motion)
+  var trail = [];
+  if (!reduced) {
+    var tcols = ['#FFD60A', '#FF0A8A', '#A58CF4'];
+    var tsize = [8, 9, 10];
+    for (var i = 0; i < 3; i++) {
+      var t = div('trail-star', root);
+      t.style.width = tsize[i] + 'px';
+      t.style.height = tsize[i] + 'px';
+      t.style.background = tcols[i];
+      t.style.opacity = '0';
+      trail.push({ el: t, x: 0, y: 0, o: 0 });
     }
   }
+  // confetti pool (12) and boing pool (3) — skipped confetti under reduced motion
+  var confetti = [], ci = 0;
+  if (!reduced) {
+    for (var j = 0; j < 12; j++) confetti.push(div('confetti', root));
+  }
+  var boings = [], bi = 0;
+  for (var b = 0; b < 3; b++) boings.push(div('boing', root));
 
   html.classList.add('has-custom-cursor'); // native cursor hides only now
 
   /* ── state ─────────────────────────────────────────────────────── */
-  var mx = window.innerWidth / 2, my = window.innerHeight / 2; // mouse (cached)
-  var rx = mx, ry = my;                                       // ring (lerped)
-  var pmx = mx, pmy = my;                                     // prev mouse (velocity)
+  var mx = window.innerWidth / 2, my = window.innerHeight / 2;
+  var hx = mx, hy = my;                 // hand (lerped)
+  var pmx = mx, pmy = my;               // previous mouse (velocity)
   var hasMoved = false;
-  var state = 'default';
-  var grabbing = false;
-  var uiScale = 1, uiTarget = 1;      // mousedown shrink, lerped for spring-back
-  var stretch = 0, angle = 0;         // fast-movement stretch
-  var lastMoveT = 0;
-  var idleTimer = 0;
+  var state = 'default', currentPose = '';
+  var isDown = false;
+  var tiltA = 0;
+  var idleT1 = 0, idleT2 = 0;
   var rafId = 0, running = false;
 
   var STATE_CLASSES = ['cst-link', 'cst-view', 'cst-drag', 'cst-poke', 'cst-text'];
 
-  function refreshLabel() {
-    var txt = '';
-    if (state === 'link') txt = '↗';
-    else if (state === 'view') txt = 'VIEW ↗';
-    else if (state === 'drag') txt = grabbing ? 'WHEEE' : 'DRAG';
-    else if (state === 'poke') txt = 'POKE';
-    if (label.textContent !== txt) label.textContent = txt;
+  function setPose(p) {
+    if (p === currentPose) return;
+    currentPose = p;
+    for (var k in poseEls) poseEls[k].classList.toggle('active', k === p);
+    pop.classList.remove('popping');
+    void pop.offsetWidth;
+    pop.classList.add('popping');
   }
-
-  function setState(next, customLabel) {
-    if (state === next && !customLabel) return;
+  function poseFor() {
+    if (isDown) return 'fist';
+    if (state === 'link') return 'thumb';
+    if (state === 'view') return 'ok';
+    if (state === 'drag') return 'palm';
+    if (state === 'poke') return 'poke';
+    return 'point';
+  }
+  function setState(next) {
+    if (state === next) return;
     state = next;
     for (var i = 0; i < STATE_CLASSES.length; i++) {
       html.classList.toggle(STATE_CLASSES[i], ('cst-' + next) === STATE_CLASSES[i]);
     }
     html.classList.toggle('cursor-hidden-zone', next === 'hide');
-    if (customLabel) {
-      if (label.textContent !== customLabel) label.textContent = customLabel;
-    } else {
-      refreshLabel();
-    }
+    setPose(poseFor());
   }
 
   /* ── zone detection (delegation) ───────────────────────────────── */
   function detect(target) {
     if (!(target instanceof Element)) return;
+    html.classList.toggle('cursor-on-dark', !!target.closest('[data-theme="dark"]'));
     var zoned = target.closest('[data-cursor]');
     if (zoned) {
       var kind = zoned.getAttribute('data-cursor');
-      var custom = zoned.getAttribute('data-cursor-label');
-      if (kind === 'view' || kind === 'drag' || kind === 'poke') { setState(kind, custom); return; }
+      if (kind === 'view' || kind === 'drag' || kind === 'poke') { setState(kind); return; }
       if (kind === 'hide') { setState('hide'); return; }
     }
     if (target.closest('input, textarea, select, [contenteditable="true"]')) { setState('hide'); return; }
@@ -105,70 +188,92 @@
   document.addEventListener('pointerover', function (e) { detect(e.target); });
 
   /* ── pointer tracking ──────────────────────────────────────────── */
-  function armIdleBreathing() {
-    clearTimeout(idleTimer);
-    html.classList.remove('cst-breathing');
-    if (!reducedMotion) {
-      idleTimer = setTimeout(function () { html.classList.add('cst-breathing'); }, 3000);
-    }
+  function armIdle() {
+    clearTimeout(idleT1);
+    clearTimeout(idleT2);
+    html.classList.remove('cst-idle-tap', 'cst-idle-wave');
+    if (reduced) return;
+    idleT1 = setTimeout(function () { html.classList.add('cst-idle-tap'); }, 3000);
+    idleT2 = setTimeout(function () {
+      html.classList.remove('cst-idle-tap');
+      html.classList.add('cst-idle-wave');
+    }, 8000);
   }
 
   document.addEventListener('pointermove', function (e) {
     mx = e.clientX; my = e.clientY;
     if (!hasMoved) {
       hasMoved = true;
-      rx = mx; ry = my; pmx = mx; pmy = my;
+      hx = mx; hy = my; pmx = mx; pmy = my;
+      for (var i = 0; i < trail.length; i++) { trail[i].x = mx; trail[i].y = my; }
       html.classList.add('cursor-live'); // reveal only after first move
+      setPose(poseFor());
     }
-    lastMoveT = performance.now();
-    html.classList.remove('cursor-away');
-    armIdleBreathing();
+    html.classList.remove('cursor-away', 'cst-bye');
+    armIdle();
     kick();
   }, { passive: true });
 
   /* ── press / release ───────────────────────────────────────────── */
-  function spawnSparkle(x, y) {
-    if (reducedMotion || sparkles.length === 0) return;
-    var s = sparkles[sparkleIdx];
-    sparkleIdx = (sparkleIdx + 1) % sparkles.length;
-    var size = 10 + Math.random() * 4; // 10–14px
-    s.style.width = size + 'px';
-    s.style.height = size + 'px';
-    s.style.background = Math.random() < 0.5 ? '#FFD60A' : '#FF0A8A';
-    s.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0) translate(-50%,-50%) rotate(' + (Math.random() * 90) + 'deg)';
-    s.classList.remove('go');
-    void s.offsetWidth; // restart the animation
-    s.classList.add('go');
+  var CCOLS = ['#FFD60A', '#FF0A8A', '#A58CF4', '#FF5A00'];
+  function fireBoing(x, y) {
+    var el = boings[bi];
+    bi = (bi + 1) % boings.length;
+    el.style.transform = 'translate3d(' + x + 'px,' + y + 'px,0)';
+    el.classList.remove('go');
+    void el.offsetWidth;
+    el.classList.add('go');
+  }
+  function spawnConfetti(x, y) {
+    for (var k = 0; k < 5; k++) {
+      var c = confetti[ci];
+      ci = (ci + 1) % confetti.length;
+      var size = 8 + Math.random() * 4; // 8–12px
+      var ox = (Math.random() - 0.5) * 28, oy = (Math.random() - 0.5) * 28;
+      c.className = 'confetti ' + (Math.random() < 0.5 ? 'star' : 'dot');
+      c.setAttribute('aria-hidden', 'true');
+      c.style.width = size + 'px';
+      c.style.height = size + 'px';
+      c.style.background = CCOLS[(Math.random() * CCOLS.length) | 0];
+      c.style.transform = 'translate3d(' + (x + ox) + 'px,' + (y + oy) + 'px,0) rotate(' + ((Math.random() * 180) | 0) + 'deg)';
+      void c.offsetWidth;
+      c.classList.add('go');
+    }
   }
 
   document.addEventListener('pointerdown', function (e) {
-    uiTarget = 0.8;
-    if (state === 'drag') {
-      grabbing = true;
-      html.classList.add('cst-grabbing');
-      refreshLabel(); // DRAG → WHEEE
+    isDown = true;
+    html.classList.add(state === 'drag' ? 'sq-grab' : 'sq-down');
+    setPose('fist');
+    if (state === 'poke' && !reduced) {
+      posesBox.classList.add('poking');
+      setTimeout(function () { posesBox.classList.remove('poking'); }, 280);
+      fireBoing(e.clientX, e.clientY);
     }
-    if (state === 'poke') {
-      html.classList.add('poke-bouncing');
-      setTimeout(function () { html.classList.remove('poke-bouncing'); }, 380);
-    }
-    spawnSparkle(e.clientX, e.clientY);
     kick();
   });
-  window.addEventListener('pointerup', function () {
-    uiTarget = 1;
-    if (grabbing) {
-      grabbing = false;
-      html.classList.remove('cst-grabbing');
-      refreshLabel(); // WHEEE → DRAG
-    }
+  window.addEventListener('pointerup', function (e) {
+    isDown = false;
+    html.classList.remove('sq-grab', 'sq-down');
+    setPose(poseFor());
+    if (!reduced) spawnConfetti(e.clientX, e.clientY);
     kick();
   });
 
   /* ── leave / return ────────────────────────────────────────────── */
-  document.addEventListener('mouseleave', function () { html.classList.add('cursor-away'); });
+  document.addEventListener('mouseleave', function () {
+    if (reduced) { html.classList.add('cursor-away'); return; }
+    html.classList.add('cst-bye'); // wave goodbye, then fade
+    setTimeout(function () {
+      html.classList.add('cursor-away');
+      html.classList.remove('cst-bye');
+    }, 400);
+  });
   document.addEventListener('mouseenter', function () {
-    html.classList.remove('cursor-away');
+    html.classList.remove('cursor-away', 'cst-bye');
+    pop.classList.remove('popping');
+    void pop.offsetWidth;
+    pop.classList.add('popping'); // pop back in
     kick();
   });
   document.addEventListener('visibilitychange', function () {
@@ -187,51 +292,49 @@
       rafId = requestAnimationFrame(frame);
     }
   }
+  var TRAIL_K = [0.12, 0.08, 0.05];
+  var TRAIL_O = [1, 0.7, 0.4];
 
   function frame() {
-    // ring follows with lerp 0.18 (instant when reduced motion)
-    var k = reducedMotion ? 1 : 0.18;
-    rx += (mx - rx) * k;
-    ry += (my - ry) * k;
+    // hand follows with a short lag (0.35) — snappy and precise
+    hx += (mx - hx) * 0.35;
+    hy += (my - hy) * 0.35;
 
-    // velocity → directional stretch (capped, smoothed)
     var vx = mx - pmx, vy = my - pmy;
     pmx = mx; pmy = my;
-    if (!reducedMotion) {
-      var speed = Math.sqrt(vx * vx + vy * vy);
-      var target = Math.min(speed / 60, 0.25); // never past 1.25x
-      stretch += (target - stretch) * 0.2;
-      if (speed > 3) {
-        var a = Math.atan2(vy, vx) * 180 / Math.PI;
-        var d = a - angle;
-        while (d > 180) d -= 360;
-        while (d < -180) d += 360;
-        angle += d * 0.25;
-      }
+    var speed = Math.sqrt(vx * vx + vy * vy);
+
+    // tilt from horizontal speed: smoothed, capped ±8°, never flips
+    var target = vx * 0.12;
+    if (target > 8) target = 8;
+    else if (target < -8) target = -8;
+    tiltA += (target - tiltA) * 0.15;
+    tilt.style.transform = 'rotate(' + tiltA.toFixed(2) + 'deg)';
+
+    hand.style.transform = 'translate3d(' + hx.toFixed(1) + 'px,' + hy.toFixed(1) + 'px,0)';
+
+    // trail: longer lag, fades to 40%, hidden when still
+    var showTrail = !reduced && speed > 3;
+    var settled = true;
+    for (var i = 0; i < trail.length; i++) {
+      var s = trail[i];
+      s.x += (mx - s.x) * TRAIL_K[i];
+      s.y += (my - s.y) * TRAIL_K[i];
+      var to = showTrail ? TRAIL_O[i] : 0;
+      s.o += (to - s.o) * 0.2;
+      s.el.style.transform = 'translate3d(' + s.x.toFixed(1) + 'px,' + s.y.toFixed(1) + 'px,0) translate(-50%,-50%)';
+      s.el.style.opacity = s.o.toFixed(3);
+      if (Math.abs(mx - s.x) > 0.5 || s.o > 0.01) settled = false;
     }
 
-    // mousedown shrink springs back
-    uiScale += (uiTarget - uiScale) * 0.3;
-
-    var sx = uiScale * (1 + stretch);
-    var sy = uiScale * (1 - stretch * 0.6);
-    ring.style.transform =
-      'translate3d(' + rx + 'px,' + ry + 'px,0)' +
-      ' translate(-50%,-50%)' +
-      ' rotate(' + angle + 'deg)' +
-      ' scale(' + sx + ',' + sy + ')';
-    // dot follows instantly (same press-shrink, no stretch)
-    dot.style.transform =
-      'translate3d(' + mx + 'px,' + my + 'px,0)' +
-      ' translate(-50%,-50%) scale(' + uiScale + ')';
-
-    // stop when the ring caught up and everything settled
-    var caughtUp = Math.abs(mx - rx) < 0.4 && Math.abs(my - ry) < 0.4;
-    var settled = Math.abs(uiScale - uiTarget) < 0.003 && stretch < 0.004;
-    if (!document.hidden && (!caughtUp || !settled)) {
+    var caughtUp = Math.abs(mx - hx) < 0.3 && Math.abs(my - hy) < 0.3;
+    var tiltSettled = Math.abs(target - tiltA) < 0.05;
+    if (!document.hidden && (!caughtUp || !tiltSettled || !settled)) {
       rafId = requestAnimationFrame(frame);
     } else {
       running = false;
+      tiltA = 0;
+      tilt.style.transform = 'rotate(0deg)';
     }
   }
 })();
