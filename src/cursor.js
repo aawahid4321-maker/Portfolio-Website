@@ -62,10 +62,10 @@
       '<path d="M25 37v7 M32 36v7 M39 37v7" ' + DET + '/>',
     poke:
       CUFF +
-      '<rect x="26" y="32" width="26" height="28" rx="11" ' + S + '/>' +
-      '<rect x="24" y="2" width="12" height="42" rx="6" transform="rotate(-14 30 44)" ' + S + '/>' +
-      '<ellipse cx="27" cy="48" rx="5" ry="8" transform="rotate(-25 27 48)" ' + S + '/>' +
-      '<path d="M36 48h7" ' + DET + '/>'
+      '<rect x="18" y="32" width="30" height="28" rx="11" ' + S + '/>' +
+      '<rect x="16" y="4" width="15" height="42" rx="7.5" transform="rotate(-12 23 46)" ' + S + '/>' +
+      '<ellipse cx="20" cy="50" rx="6" ry="9" transform="rotate(-25 20 50)" ' + S + '/>' +
+      '<path d="M30 46h9 M30 52h9" ' + DET + '/>'
   };
 
   function poseSVG(inner) {
