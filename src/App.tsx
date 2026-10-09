@@ -402,9 +402,9 @@ export default function App() {
         cleanups.push(() => { btn.removeEventListener("click", onClick); btn.style.cursor = ""; });
       });
 
-    // ── PlayfulButton (replaced LEARN MORE) → navigate to About page ──
-    // PlayfulButton handles its own hover/active styles; here we only wire the click.
-    Array.from(canvas.querySelectorAll<HTMLElement>('[data-playful-btn="true"]'))
+    // ── LearnMoreButton → navigate to About page ──
+    // The button handles its own hover/active styles; here we only wire the click.
+    Array.from(canvas.querySelectorAll<HTMLElement>('[data-learnmore-btn="true"]'))
       .forEach((btn) => {
         if (!btn) return;
         btn.style.cursor = "pointer";
