@@ -13,7 +13,7 @@ import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFirefly
 import SharedFooterContent from "@/components/SharedFooterContent";
 import PhysicsTags from "@/components/PhysicsTags";
 import LetsConnect from "@/components/LetsConnect";
-import PlayfulButton from "@/components/PlayfulButton";
+import LearnMoreButton from "@/components/LearnMoreButton";
 
 function Container() {
   return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10021px] left-[48px] top-0 w-[207px]" data-name="Container" />;
@@ -29,8 +29,8 @@ function Container2() {
 
 function Link() {
   return (
-    <div className="absolute left-[-1px] top-[6424px]" data-name="Link" data-playful-btn="true">
-      <PlayfulButton />
+    <div className="absolute left-[-1px] top-[6424px]" data-name="Link" data-learnmore-btn="true">
+      <LearnMoreButton />
     </div>
   );
 }
