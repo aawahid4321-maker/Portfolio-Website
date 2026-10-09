@@ -894,7 +894,7 @@ export default function LetsConnect() {
           <g className="fx-layer" />
 
           {/* == 1. CIRCLE (#A58CF4) — laughing, one arm waving up == */}
-          <g className="mover" data-slot="0" data-home="100" data-cx="100" data-cy="486" data-x="0"
+          <g className="mover" data-cursor="poke" data-slot="0" data-home="100" data-cx="100" data-cy="486" data-x="0"
              tabIndex={0} role="button" aria-label="Make the circle character run to a new spot">
             <ellipse cx="100" cy="490" rx="46" ry="7" fill="rgba(13,13,13,0.25)" />
             <g id="char-circle" className="lc-char"
@@ -956,7 +956,7 @@ export default function LetsConnect() {
           </g>
 
           {/* == 2. TRIANGLE (#FFD60A) — cheeky grin, hand cupped by mouth == */}
-          <g className="mover" data-slot="1" data-home="222" data-cx="222" data-cy="486" data-x="0"
+          <g className="mover" data-cursor="poke" data-slot="1" data-home="222" data-cx="222" data-cy="486" data-x="0"
              tabIndex={0} role="button" aria-label="Make the triangle character run to a new spot">
             <ellipse cx="222" cy="490" rx="46" ry="7" fill="rgba(13,13,13,0.25)" />
             <g id="char-triangle" className="lc-char"
@@ -1019,7 +1019,7 @@ export default function LetsConnect() {
           </g>
 
           {/* == 3. ROUNDED SQUARE (#FF0A8A) — X eyes laughing, arms out == */}
-          <g className="mover" data-slot="2" data-home="344" data-cx="344" data-cy="486" data-x="0"
+          <g className="mover" data-cursor="poke" data-slot="2" data-home="344" data-cx="344" data-cy="486" data-x="0"
              tabIndex={0} role="button" aria-label="Make the rounded square character run to a new spot">
             <ellipse cx="344" cy="490" rx="46" ry="7" fill="rgba(13,13,13,0.25)" />
             <g id="char-square" className="lc-char"
@@ -1077,7 +1077,7 @@ export default function LetsConnect() {
           </g>
 
           {/* == 4. SUN (#FF5A00) — grumpy, fists on sides == */}
-          <g className="mover" data-slot="3" data-home="466" data-cx="466" data-cy="486" data-x="0"
+          <g className="mover" data-cursor="poke" data-slot="3" data-home="466" data-cx="466" data-cy="486" data-x="0"
              tabIndex={0} role="button" aria-label="Make the sun character run to a new spot">
             <ellipse cx="466" cy="490" rx="46" ry="7" fill="rgba(13,13,13,0.25)" />
             <g id="char-sun" className="lc-char"
@@ -1146,7 +1146,7 @@ export default function LetsConnect() {
           </g>
 
           {/* == 5. WHITE PILL (#FAFAFA) — surprised, hands near cheeks == */}
-          <g className="mover" data-slot="4" data-home="588" data-cx="588" data-cy="486" data-x="0"
+          <g className="mover" data-cursor="poke" data-slot="4" data-home="588" data-cx="588" data-cy="486" data-x="0"
              tabIndex={0} role="button" aria-label="Make the white pill character run to a new spot">
             <ellipse cx="588" cy="490" rx="46" ry="7" fill="rgba(13,13,13,0.25)" />
             <g id="char-pill" className="lc-char"
@@ -1209,7 +1209,7 @@ export default function LetsConnect() {
           </g>
 
           {/* == 6. STAR (#FF9F0A) — giggling, hands on hips == */}
-          <g className="mover" data-slot="5" data-home="706" data-cx="706" data-cy="486" data-x="0"
+          <g className="mover" data-cursor="poke" data-slot="5" data-home="706" data-cx="706" data-cy="486" data-x="0"
              tabIndex={0} role="button" aria-label="Make the star character run to a new spot">
             <ellipse cx="706" cy="490" rx="46" ry="7" fill="rgba(13,13,13,0.25)" />
             <g id="char-star" className="lc-char"
