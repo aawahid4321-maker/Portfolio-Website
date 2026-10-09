@@ -1,5 +1,15 @@
 import { useEffect, useRef } from "react";
 import Matter from "matter-js";
+import "../raf.js";
+
+declare global {
+  interface Window {
+    __raf: {
+      add(cb: (now: number) => void): void;
+      remove(cb: (now: number) => void): void;
+    };
+  }
+}
 
 /* ── Palette: purple-light reduced, orange added ────────────────────────────
    Split: Purple Light 24% / Orange 20% / Pink 17% / Yellow 17% / White 14% / Black 8% */
@@ -90,6 +100,8 @@ interface PTag {
   body: Matter.Body | null;
   dx: number; dy: number; da: number;
   hoverT: number;
+  sprite: HTMLCanvasElement | null; // pre-rendered pill (invisible perf)
+  br: number; // bounding radius for offscreen culling
 }
 interface PShape {
   kind: "circle" | "ring" | "star" | "square" | "dome" | "triangle" | "plus" | "squiggle";
@@ -98,16 +110,19 @@ interface PShape {
   body: Matter.Body | null;
   dx: number; dy: number; da: number;
   hoverT: number;
+  sprite: HTMLCanvasElement | null;
+  br: number;
 }
 /* PART B: plain system-emoji sticker */
 interface PEmoji {
   char: string;
   size: number; // 52–72px diameter
   color: string;
-  baked: HTMLCanvasElement | null; // pre-rendered emoji glyph
+  sprite: HTMLCanvasElement | null; // pre-rendered sticker (disc + glyph)
   body: Matter.Body | null;
   dx: number; dy: number; da: number;
   hoverT: number;
+  br: number;
   squashMs: number; // landing squash remaining
   boingMs: number;  // click boing remaining
   sparkles: Array<{ x: number; y: number; vx: number; vy: number; life: number; color: string }>;
@@ -131,6 +146,25 @@ interface PFace {
   grabbed: boolean;
   laughUntil: number;  // post-release laugh timestamp
   sparkles: Array<{ x: number; y: number; vx: number; vy: number; life: number; color: string }>;
+  br: number;
+  sprBase: HTMLCanvasElement | null;
+  sprEyeOpen: HTMLCanvasElement | null;
+  sprEyeClosed: HTMLCanvasElement | null;
+  sprEyeArc: HTMLCanvasElement | null;
+  sprEyeWide: HTMLCanvasElement | null;
+  sprEyeHeart: HTMLCanvasElement | null;
+  sprEyeX: HTMLCanvasElement | null;
+  sprEyeWink: HTMLCanvasElement | null;
+  sprEyeWinkBlink: HTMLCanvasElement | null;
+  sprGlasses: HTMLCanvasElement | null;
+  sprMouthSmile: HTMLCanvasElement | null;
+  sprMouthSmileWide: HTMLCanvasElement | null;
+  sprMouthOpen: HTMLCanvasElement | null;
+  sprMouthO: HTMLCanvasElement | null;
+  sprMouthSmirk: HTMLCanvasElement | null;
+  sprMouthTongue: HTMLCanvasElement | null;
+  sprMouthTongueSilly: HTMLCanvasElement | null;
+  sprMouthSleepy: HTMLCanvasElement | null;
 }
 
 export default function PhysicsTags() {
@@ -144,7 +178,7 @@ export default function PhysicsTags() {
     if (!section || !canvas || startedRef.current) return;
     startedRef.current = true;
 
-    const ctx = canvas.getContext("2d")!;
+    const ctx = canvas.getContext("2d", { alpha: false, desynchronized: true })!;
     const isMobile = window.innerWidth < 768;
     const tagCount = isMobile ? TAG_COUNT_MOBILE : TAG_COUNT_DESKTOP;
     const shapeCount = isMobile ? SHAPE_COUNT_MOBILE : SHAPE_COUNT_DESKTOP;
@@ -187,7 +221,7 @@ export default function PhysicsTags() {
       const zilla = zillaAt.has(i);
       const word = zilla ? ZILLA_WORDS[i % ZILLA_WORDS.length] : GEIST_WORDS[i % GEIST_WORDS.length];
       const font = zilla ? `700 22px "Zilla Slab", Rockwell, Georgia, serif` : `600 20px "Geist", system-ui, sans-serif`;
-      tags.push({ word, zilla, font, w: 0, h: 0, color: palette[i], body: null, dx: 0, dy: 0, da: 0, hoverT: 0 });
+      tags.push({ word, zilla, font, w: 0, h: 0, color: palette[i], body: null, dx: 0, dy: 0, da: 0, hoverT: 0, sprite: null, br: 0 });
     }
 
     /* ── Plain shapes (reduced counts) ── */
@@ -200,7 +234,7 @@ export default function PhysicsTags() {
       const size = 28 + Math.random() * 28;
       let color = kind === "star" ? STAR_COLORS[i % STAR_COLORS.length] : shapePalette[i].bg;
       if (color === COLORS.jetBlack) color = COLORS.purpleLight;
-      shapes.push({ kind, size, color, body: null, dx: 0, dy: 0, da: 0, hoverT: 0 });
+      shapes.push({ kind, size, color, body: null, dx: 0, dy: 0, da: 0, hoverT: 0, sprite: null, br: size });
     }
 
     /* ── PART B: emoji stickers ── */
@@ -221,26 +255,238 @@ export default function PhysicsTags() {
         let fill = fills[i % fills.length];
         if (fill === lastFill) fill = fills[(i + 2) % fills.length];
         lastFill = fill;
-        emojis.push({ char, size, color: fill, baked: null, body: null, dx: 0, dy: 0, da: 0, hoverT: 0, squashMs: 0, boingMs: 0, sparkles: [] });
+        emojis.push({ char, size, color: fill, sprite: null, body: null, dx: 0, dy: 0, da: 0, hoverT: 0, br: size / 2, squashMs: 0, boingMs: 0, sparkles: [] });
       }
     }
-    /* pre-render each emoji glyph once (after fonts ready) */
+    /* ── SPRITE BAKING (invisible perf): every body is rendered ONCE to its
+       own offscreen canvas at the main canvas DPR. The loop then draws each
+       body with a single drawImage — no fillText/roundRect/stroke/path work. ── */
     const EMOJI_FONT = `"Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif`;
-    const bakeEmojis = () => {
-      emojis.forEach((e) => {
-        if (e.baked) return;
-        const px = Math.round(e.size * 0.55); // glyph ~55% of diameter
-        const c = document.createElement("canvas");
-        c.width = Math.ceil(px * DPR * 1.4);
-        c.height = Math.ceil(px * DPR * 1.4);
-        const g = c.getContext("2d")!;
-        g.scale(DPR, DPR);
-        g.font = `${px}px ${EMOJI_FONT}`;
-        g.textAlign = "center";
-        g.textBaseline = "middle";
-        g.fillText(e.char, c.width / DPR / 2, c.height / DPR / 2 + px * 0.05);
-        e.baked = c;
+    const FACE_INK = "#0D0D0D";
+    let SPR_DPR = effDPR;
+    const makeSprite = (w: number, h: number) => {
+      const c = document.createElement("canvas");
+      c.width = Math.max(1, Math.round(w * SPR_DPR));
+      c.height = Math.max(1, Math.round(h * SPR_DPR));
+      const g = c.getContext("2d")!;
+      g.scale(SPR_DPR, SPR_DPR);
+      return { c, g };
+    };
+
+    const bakePill = (t: PTag) => {
+      if (t.w <= 0) return;
+      const { c, g } = makeSprite(t.w, t.h);
+      g.translate(t.w / 2, t.h / 2);
+      const hw = t.w / 2, hh = t.h / 2;
+      g.beginPath();
+      g.roundRect(-hw, -hh, t.w, t.h, t.h / 2);
+      g.fillStyle = t.color.bg;
+      g.fill();
+      if (t.color.outline) {
+        g.strokeStyle = t.color.outline;
+        g.lineWidth = 1.5;
+        g.stroke();
+      }
+      g.font = t.font;
+      g.textAlign = "center";
+      g.textBaseline = "middle";
+      g.fillStyle = t.color.fg;
+      g.fillText(t.word, 0, t.zilla ? 2 : 1);
+      t.sprite = c;
+      t.br = Math.hypot(t.w, t.h) / 2;
+    };
+
+    const bakeShape = (s: PShape) => {
+      const S = s.size * 2; // generous: covers squiggle overhang
+      const { c, g } = makeSprite(S, S);
+      g.translate(S / 2, S / 2);
+      const r = s.size / 2;
+      g.fillStyle = s.color;
+      switch (s.kind) {
+        case "circle":
+          g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill(); break;
+        case "ring":
+          g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2);
+          g.strokeStyle = s.color; g.lineWidth = 5; g.stroke(); break;
+        case "star": {
+          g.beginPath();
+          for (let i = 0; i < 8; i++) {
+            const rr = i % 2 === 0 ? r : r * 0.38;
+            const a = (i / 8) * Math.PI * 2 - Math.PI / 2;
+            const px = Math.cos(a) * rr, py = Math.sin(a) * rr;
+            if (i === 0) g.moveTo(px, py); else g.lineTo(px, py);
+          }
+          g.closePath(); g.fill(); break;
+        }
+        case "square":
+          g.beginPath(); g.roundRect(-r, -r, s.size, s.size, 10); g.fill(); break;
+        case "dome":
+          g.beginPath(); g.arc(0, r * 0.4, r, Math.PI, 0); g.closePath(); g.fill();
+          g.fillRect(-r, r * 0.4 - 2, s.size, r * 0.6); break;
+        case "triangle":
+          g.beginPath();
+          g.moveTo(0, -r);
+          g.quadraticCurveTo(r * 0.15, -r * 0.7, r * 0.87, r * 0.7);
+          g.quadraticCurveTo(0, r * 0.45, -r * 0.87, r * 0.7);
+          g.quadraticCurveTo(-r * 0.15, -r * 0.7, 0, -r);
+          g.fill(); break;
+        case "plus":
+          g.fillRect(-r, -r * 0.18, s.size, s.size * 0.36);
+          g.fillRect(-r * 0.18, -r, s.size * 0.36, s.size); break;
+        default:
+          g.strokeStyle = s.color; g.lineWidth = 13; g.lineCap = "round";
+          g.beginPath();
+          g.moveTo(-r * 1.2, 0);
+          g.quadraticCurveTo(-r * 0.6, -r * 0.7, 0, 0);
+          g.quadraticCurveTo(r * 0.6, r * 0.7, r * 1.2, 0);
+          g.stroke(); break;
+      }
+      s.sprite = c;
+      s.br = s.kind === "squiggle" ? r * 1.2 + 7 : r + 4;
+    };
+
+    const bakeEmoji = (e: PEmoji) => {
+      const S = e.size;
+      const { c, g } = makeSprite(S, S);
+      g.translate(S / 2, S / 2);
+      const r = S / 2;
+      g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2);
+      g.fillStyle = e.color; g.fill();
+      const px = Math.round(S * 0.55);
+      g.font = `${px}px ${EMOJI_FONT}`;
+      g.textAlign = "center";
+      g.textBaseline = "middle";
+      g.fillText(e.char, 0, px * 0.05);
+      e.sprite = c;
+    };
+
+    const bakeFaceBase = (f: PFace) => {
+      const S = f.size, r = S / 2;
+      const { c, g } = makeSprite(S, S);
+      g.translate(r, r);
+      g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2);
+      g.fillStyle = f.color; g.fill();
+      g.lineWidth = 3; g.strokeStyle = FACE_INK; g.stroke();
+      f.sprBase = c;
+    };
+    const bakeFacePart = (f: PFace, draw: (g: CanvasRenderingContext2D, r: number, ex: number, eyeY: number) => void) => {
+      const S = f.size, r = S / 2;
+      const { c, g } = makeSprite(S, S);
+      g.translate(r, r);
+      g.strokeStyle = FACE_INK; g.fillStyle = FACE_INK;
+      g.lineWidth = 2.5; g.lineCap = "round"; g.lineJoin = "round";
+      draw(g, r, r * 0.30, -r * 0.12);
+      return c;
+    };
+    const bakeFaceParts = (f: PFace) => {
+      const heart = (g: CanvasRenderingContext2D, x: number, y: number, s: number) => {
+        g.save(); g.translate(x, y); g.scale(s / 10, s / 10);
+        g.beginPath();
+        g.moveTo(0, 4);
+        g.bezierCurveTo(-8, -4, -4, -10, 0, -4);
+        g.bezierCurveTo(4, -10, 8, -4, 0, 4);
+        g.fillStyle = COLORS.pink; g.fill();
+        g.restore();
+      };
+      f.sprEyeOpen = bakeFacePart(f, (g, r, ex, eyeY) => {
+        g.beginPath(); g.arc(-ex, eyeY, r * 0.10, 0, Math.PI * 2); g.fill();
+        g.beginPath(); g.arc(ex, eyeY, r * 0.10, 0, Math.PI * 2); g.fill();
       });
+      f.sprEyeClosed = bakeFacePart(f, (g, r, ex, eyeY) => {
+        const rr = r * 0.10;
+        g.beginPath(); g.moveTo(-ex - rr, eyeY); g.lineTo(-ex + rr, eyeY); g.stroke();
+        g.beginPath(); g.moveTo(ex - rr, eyeY); g.lineTo(ex + rr, eyeY); g.stroke();
+      });
+      f.sprEyeArc = bakeFacePart(f, (g, r, ex, eyeY) => {
+        const rr = r * 0.16;
+        g.beginPath(); g.arc(-ex, eyeY + rr * 0.4, rr, Math.PI * 1.15, Math.PI * 1.85); g.stroke();
+        g.beginPath(); g.arc(ex, eyeY + rr * 0.4, rr, Math.PI * 1.15, Math.PI * 1.85); g.stroke();
+      });
+      f.sprEyeWide = bakeFacePart(f, (g, r, ex, eyeY) => {
+        g.beginPath(); g.arc(-ex, eyeY, r * 0.14, 0, Math.PI * 2); g.stroke();
+        g.beginPath(); g.arc(ex, eyeY, r * 0.14, 0, Math.PI * 2); g.stroke();
+      });
+      f.sprEyeHeart = bakeFacePart(f, (g, r, ex, eyeY) => {
+        heart(g, -ex, eyeY, r * 0.16); heart(g, ex, eyeY, r * 0.16);
+      });
+      f.sprEyeX = bakeFacePart(f, (g, r, ex, eyeY) => {
+        const o = r * 0.08;
+        g.beginPath();
+        g.moveTo(-ex - o, eyeY - o); g.lineTo(-ex + o, eyeY + o);
+        g.moveTo(-ex + o, eyeY - o); g.lineTo(-ex - o, eyeY + o);
+        g.moveTo(ex - o, eyeY - o); g.lineTo(ex + o, eyeY + o);
+        g.moveTo(ex + o, eyeY - o); g.lineTo(ex - o, eyeY + o);
+        g.stroke();
+      });
+      f.sprEyeWink = bakeFacePart(f, (g, r, ex, eyeY) => {
+        g.beginPath(); g.arc(-ex, eyeY, r * 0.10, 0, Math.PI * 2); g.fill();
+        g.beginPath(); g.arc(ex, eyeY + r * 0.06, r * 0.12, Math.PI * 1.15, Math.PI * 1.85); g.stroke();
+      });
+      f.sprEyeWinkBlink = bakeFacePart(f, (g, r, ex, eyeY) => {
+        const rr = r * 0.10;
+        g.beginPath(); g.moveTo(-ex - rr, eyeY); g.lineTo(-ex + rr, eyeY); g.stroke();
+        g.beginPath(); g.arc(ex, eyeY + r * 0.06, r * 0.12, Math.PI * 1.15, Math.PI * 1.85); g.stroke();
+      });
+      f.sprGlasses = bakeFacePart(f, (g, r, ex, eyeY) => {
+        g.fillStyle = FACE_INK;
+        g.beginPath(); g.roundRect(-ex - r * 0.16, eyeY - r * 0.13, r * 0.32, r * 0.24, r * 0.06); g.fill();
+        g.beginPath(); g.roundRect(ex - r * 0.16, eyeY - r * 0.13, r * 0.32, r * 0.24, r * 0.06); g.fill();
+        g.fillRect(-r * 0.08, eyeY - r * 0.03, r * 0.16, r * 0.05);
+      });
+      f.sprMouthSmile = bakeFacePart(f, (g, r) => {
+        g.beginPath(); g.arc(0, r * 0.42 - r * 0.26 * 0.6, r * 0.36, Math.PI * 0.15, Math.PI * 0.85); g.stroke();
+      });
+      f.sprMouthSmileWide = bakeFacePart(f, (g, r) => {
+        g.beginPath(); g.arc(0, r * 0.42 - r * 0.30 * 0.6, r * 0.42, Math.PI * 0.15, Math.PI * 0.85); g.stroke();
+      });
+      f.sprMouthOpen = bakeFacePart(f, (g, r) => {
+        g.beginPath(); g.ellipse(0, r * 0.32, r * 0.20, r * 0.26, 0, 0, Math.PI * 2);
+        g.fillStyle = FACE_INK; g.fill();
+      });
+      f.sprMouthO = bakeFacePart(f, (g, r) => {
+        g.beginPath(); g.arc(0, r * 0.34, r * 0.13, 0, Math.PI * 2); g.stroke();
+      });
+      f.sprMouthSmirk = bakeFacePart(f, (g, r) => {
+        g.beginPath(); g.arc(r * 0.10, r * 0.36, r * 0.22, Math.PI * 1.1, Math.PI * 1.9); g.stroke();
+      });
+      f.sprMouthTongue = bakeFacePart(f, (g, r) => {
+        g.fillStyle = COLORS.pink;
+        g.beginPath(); g.roundRect(-r * 0.07, r * 0.30, r * 0.14, r * 0.20, r * 0.07); g.fill();
+      });
+      f.sprMouthTongueSilly = bakeFacePart(f, (g, r) => {
+        g.fillStyle = COLORS.pink;
+        g.beginPath(); g.roundRect(r * 0.02, r * 0.28, r * 0.16, r * 0.24, r * 0.08); g.fill();
+      });
+      f.sprMouthSleepy = bakeFacePart(f, (g, r) => {
+        g.font = `${Math.round(r * 0.34)}px "Geist", sans-serif`;
+        g.textAlign = "left"; g.textBaseline = "alphabetic";
+        g.fillStyle = FACE_INK; g.fillText("z", r * 0.42, -r * 0.34);
+        g.beginPath(); g.arc(0, r * 0.38, r * 0.10, 0, Math.PI); g.stroke();
+      });
+    };
+
+    let sprSparkYellow: HTMLCanvasElement | null = null;
+    let sprSparkPink: HTMLCanvasElement | null = null;
+    const bakeSparkle = (color: string) => {
+      const { c, g } = makeSprite(16, 16);
+      g.translate(8, 8);
+      g.fillStyle = color;
+      const s = 8;
+      g.beginPath();
+      g.moveTo(0, -s); g.quadraticCurveTo(0, 0, s, 0); g.quadraticCurveTo(0, 0, 0, s);
+      g.quadraticCurveTo(0, 0, -s, 0); g.quadraticCurveTo(0, 0, 0, -s);
+      g.fill();
+      return c;
+    };
+
+    const bakeAllSprites = () => {
+      SPR_DPR = effDPR;
+      tags.forEach(bakePill);
+      shapes.forEach(bakeShape);
+      emojis.forEach(bakeEmoji);
+      faces.forEach((f) => { bakeFaceBase(f); bakeFaceParts(f); });
+      sprSparkYellow = bakeSparkle(COLORS.yellow);
+      sprSparkPink = bakeSparkle(COLORS.pink);
     };
 
     /* ── PART C: cartoon faces ── */
@@ -258,6 +504,13 @@ export default function PhysicsTags() {
           blinkMs: 0, squashMs: 0, boingMs: 0,
           wiggleAt: performance.now() + 4000 + Math.random() * 4000,
           grabbed: false, laughUntil: 0, sparkles: [],
+          br: size / 2,
+          sprBase: null, sprEyeOpen: null, sprEyeClosed: null, sprEyeArc: null,
+          sprEyeWide: null, sprEyeHeart: null, sprEyeX: null, sprEyeWink: null,
+          sprEyeWinkBlink: null, sprGlasses: null, sprMouthSmile: null,
+          sprMouthSmileWide: null,
+          sprMouthOpen: null, sprMouthO: null, sprMouthSmirk: null,
+          sprMouthTongue: null, sprMouthTongueSilly: null, sprMouthSleepy: null,
         });
       }
     }
@@ -303,6 +556,11 @@ export default function PhysicsTags() {
     const timeouts: number[] = [];
     const DROP_OPTS = { restitution: 0.5, friction: 0.2, frictionAir: 0.012, density: 0.0009 };
 
+    /* body registries: every dynamic body + face/emoji lookups (no per-frame alloc) */
+    const physBodies: Matter.Body[] = [];
+    const bodyToFace = new Map<Matter.Body, PFace>();
+    const bodyToEmoji = new Map<Matter.Body, PEmoji>();
+
     const spawnBody = (x: number, y: number, w: number, h: number, circleR: number | null) => {
       const body = circleR !== null
         ? Matter.Bodies.circle(x, y, circleR, DROP_OPTS)
@@ -311,6 +569,7 @@ export default function PhysicsTags() {
       Matter.Body.setVelocity(body, { x: (Math.random() - 0.5) * 3, y: 8 + Math.random() * 6 });
       Matter.Sleeping.set(body, false);
       Matter.Composite.add(engine.world, body);
+      physBodies.push(body);
       return body;
     };
 
@@ -343,19 +602,43 @@ export default function PhysicsTags() {
       Matter.Sleeping.set(body, false);
       s.body = body; s.dx = x; s.dy = y; s.da = body.angle;
       Matter.Composite.add(engine.world, body);
+      physBodies.push(body);
     };
     /* PART B: emoji sticker spawn (circle collider) */
     const spawnEmoji = (i: number, x: number, y: number) => {
       const e = emojis[i];
       const body = spawnBody(x, y, 0, 0, e.size / 2);
       e.body = body; e.dx = x; e.dy = y; e.da = body.angle;
+      e.squashMs = 140; // spawn squash (was set when speed>6 on early frames)
+      bodyToEmoji.set(body, e);
     };
     /* PART C: cartoon face spawn (circle collider) */
     const spawnFace = (i: number, x: number, y: number) => {
       const f = faces[i];
       const body = spawnBody(x, y, 0, 0, f.size / 2);
       f.body = body; f.dx = x; f.dy = y; f.da = body.angle;
+      f.squashMs = 140; // spawn squash (was set when speed>6 on early frames)
+      bodyToFace.set(body, f);
     };
+
+    /* one collision listener for landing squash (was a per-frame speed check) */
+    Matter.Events.on(engine, "collisionStart", (ev) => {
+      const pairs = ev.pairs;
+      for (let i = 0; i < pairs.length; i++) {
+        const pa = pairs[i];
+        const ax = pa.bodyA.velocity.x - pa.bodyB.velocity.x;
+        const ay = pa.bodyA.velocity.y - pa.bodyB.velocity.y;
+        if (ax * ax + ay * ay < 36) continue; // relative speed < 6
+        const fa = bodyToFace.get(pa.bodyA);
+        if (fa && fa.squashMs <= 0) fa.squashMs = 140;
+        const fb = bodyToFace.get(pa.bodyB);
+        if (fb && fb.squashMs <= 0) fb.squashMs = 140;
+        const ea = bodyToEmoji.get(pa.bodyA);
+        if (ea && ea.squashMs <= 0) ea.squashMs = 140;
+        const eb = bodyToEmoji.get(pa.bodyB);
+        if (eb && eb.squashMs <= 0) eb.squashMs = 140;
+      }
+    });
 
     /* ── Drop state ── */
     let dropStart = 0;
@@ -391,16 +674,6 @@ export default function PhysicsTags() {
 
     const allItems = () => [...tags, ...shapes, ...emojis, ...faces];
 
-    const syncDrawState = () => {
-      allItems().forEach((it) => {
-        const b = (it as { body: Matter.Body | null }).body;
-        if (!b) return;
-        (it as { dx: number }).dx = b.position.x;
-        (it as { dy: number }).dy = b.position.y;
-        (it as { da: number }).da = b.angle;
-      });
-    };
-
     /* wave release from CENTER outward over ~0.6s */
     const triggerDrop = () => {
       if (!ready || hasDropped) return;
@@ -427,13 +700,13 @@ export default function PhysicsTags() {
         document.fonts.load('700 22px "Zilla Slab"'),
       ];
       // PART B: wait for fonts before baking emoji glyphs
-      document.fonts.ready.then(() => bakeEmojis()).catch(() => {});
+      document.fonts.ready.then(() => { if (ready) bakeAllSprites(); }).catch(() => {});
       Promise.all(loads).catch(() => {}).finally(() => {
         if (reduceMotion) { drawSettled(); return; }
         measureAndBuild();
-        bakeEmojis();
+        bakeAllSprites();
       });
-      window.setTimeout(() => { if (!ready && !reduceMotion) { measureAndBuild(); bakeEmojis(); } }, 2500);
+      window.setTimeout(() => { if (!ready && !reduceMotion) { measureAndBuild(); bakeAllSprites(); } }, 2500);
     };
 
     /* ── Mouse: drag/throw via MouseConstraint, cursor push manual ── */
@@ -456,46 +729,55 @@ export default function PhysicsTags() {
     };
 
     const cursor = { x: -9999, y: -9999, vx: 0, vy: 0, tx: -9999, ty: -9999, px: -9999, py: -9999, active: false };
-    let lastMove = 0, rectCache = section.getBoundingClientRect();
+    let lastMove = 0, lastPointerMove = 0, hoverDirty = false;
+    let rectCache = section.getBoundingClientRect();
+    const updateRectCache = () => { rectCache = section.getBoundingClientRect(); };
     const onMove = (e: PointerEvent) => {
       const now = performance.now();
       if (now - lastMove < 16) return;
       lastMove = now;
-      // Viewport px → section local px: the whole canvas is CSS-zoomed, so
-      // scale by clientWidth/rect.width (Matter's own Mouse does the same).
-      const r = section.getBoundingClientRect();
+      lastPointerMove = now;
+      // cached rect (refreshed on resize / scroll-end / enter-viewport) — no layout here
+      const r = rectCache;
       const sx = section.clientWidth / r.width;
       const sy = section.clientHeight / r.height;
       cursor.tx = (e.clientX - r.left) * sx;
       cursor.ty = (e.clientY - r.top) * sy;
       cursor.active = true;
+      hoverDirty = true; // hover query runs once next frame, not every frame
+      if (idle) startLoop(); // wake from idle
     };
     const onLeave = () => { cursor.active = false; cursor.x = -9999; cursor.y = -9999; };
     const onDown = (e: PointerEvent) => {
-      const r = section.getBoundingClientRect();
+      if (idle) startLoop();
+      lastPointerMove = performance.now();
+      hoverDirty = true;
+      const r = rectCache;
       const sx = section.clientWidth / r.width;
       const sy = section.clientHeight / r.height;
       const cx = (e.clientX - r.left) * sx, cy = (e.clientY - r.top) * sy;
-      const bodies = allItems().map((it) => (it as { body: Matter.Body | null }).body).filter(Boolean) as Matter.Body[];
-      const found = Matter.Query.point(bodies, { x: cx, y: cy })[0];
+      const found = Matter.Query.point(physBodies, { x: cx, y: cy })[0];
       if (found) {
         Matter.Body.applyForce(found, found.position, { x: 0, y: -0.004 });
         // PART C: face click → boing + sparkles; emoji → boing
-        const fi = faces.findIndex((f) => f.body === found);
-        if (fi >= 0) { faces[fi].boingMs = 600; spawnSparkles(faces[fi]); }
-        const ei = emojis.findIndex((em) => em.body === found);
-        if (ei >= 0) { emojis[ei].boingMs = 600; spawnSparkles(emojis[ei]); }
+        const fc = bodyToFace.get(found);
+        if (fc) { fc.boingMs = 600; spawnSparkles(fc); }
+        const em = bodyToEmoji.get(found);
+        if (em) { em.boingMs = 600; spawnSparkles(em); }
       } else {
-        bodies.forEach((b) => {
+        const SHOCK_R = 220, SHOCK_R2 = SHOCK_R * SHOCK_R;
+        for (let i = 0; i < physBodies.length; i++) {
+          const b = physBodies[i];
           const dx = b.position.x - cx, dy = b.position.y - cy;
-          const dist = Math.max(Math.hypot(dx, dy), 1);
-          const SHOCK_R = 220;
-          if (dist > SHOCK_R) return;
+          const d2 = dx * dx + dy * dy;
+          if (d2 > SHOCK_R2) continue;
+          const dist = Math.max(Math.sqrt(d2), 1);
           const f = Math.min(0.005 * b.mass * (1 - dist / SHOCK_R), 0.02 * b.mass);
           Matter.Body.applyForce(b, b.position, { x: (dx / dist) * f, y: (dy / dist) * f - f * 0.35 });
-        });
+        }
       }
     };
+    const onUp = () => { hoverDirty = true; if (idle) startLoop(); };
     /* click sparkles for faces + emoji */
     const spawnSparkles = (it: PFace | PEmoji) => {
       const b = it.body!;
@@ -509,225 +791,116 @@ export default function PhysicsTags() {
       }
     };
 
-    /* ── Draw helpers ── */
+    /* ── Draw helpers (sprite-based: one drawImage per body, setTransform
+       instead of save/translate/rotate/restore; no per-frame path work) ── */
+    // device-px transform: translate(dx,dy) · rotate(da) · scale(sx,sy)
+    const bodyTransform = (dx: number, dy: number, da: number, sx: number, sy: number) => {
+      const cos = Math.cos(da), sin = Math.sin(da);
+      ctx.setTransform(
+        effDPR * cos * sx, effDPR * sin * sx,
+        effDPR * -sin * sy, effDPR * cos * sy,
+        effDPR * dx, effDPR * dy
+      );
+    };
+    const offscreen = (x: number, y: number, br: number) =>
+      x + br < 0 || x - br > W || y + br < 0 || y - br > H;
+
     const drawPill = (t: PTag) => {
-      const b = t.body!;
-      ctx.save();
-      ctx.translate(t.dx, t.dy);
-      ctx.rotate(t.da);
-      if (t.hoverT > 0.01) { const s = 1 + 0.06 * t.hoverT; ctx.scale(s, s); }
-      const hw = t.w / 2, hh = t.h / 2;
-      ctx.beginPath();
-      ctx.roundRect(-hw, -hh, t.w, t.h, t.h / 2);
-      ctx.fillStyle = t.color.bg;
-      ctx.fill();
-      if (t.color.outline) {
-        ctx.strokeStyle = t.color.outline;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-      }
-      ctx.font = t.font;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.fillStyle = t.color.fg;
-      ctx.fillText(t.word, 0, t.zilla ? 2 : 1);
-      ctx.restore();
+      if (!t.sprite || offscreen(t.dx, t.dy, t.br)) return;
+      const sc = 1 + 0.06 * t.hoverT;
+      bodyTransform(t.dx, t.dy, t.da, sc, sc);
+      ctx.drawImage(t.sprite, -t.w / 2, -t.h / 2, t.w, t.h);
     };
 
     const drawShape = (s: PShape) => {
-      ctx.save();
-      ctx.translate(s.dx, s.dy);
-      ctx.rotate(s.da);
-      if (s.hoverT > 0.01) { const sc = 1 + 0.06 * s.hoverT; ctx.scale(sc, sc); }
-      const r = s.size / 2;
-      ctx.fillStyle = s.color;
-      switch (s.kind) {
-        case "circle":
-          ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.fill(); break;
-        case "ring":
-          ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
-          ctx.strokeStyle = s.color; ctx.lineWidth = 5; ctx.stroke(); break;
-        case "star": {
-          ctx.beginPath();
-          for (let i = 0; i < 8; i++) {
-            const rr = i % 2 === 0 ? r : r * 0.38;
-            const a = (i / 8) * Math.PI * 2 - Math.PI / 2;
-            const px = Math.cos(a) * rr, py = Math.sin(a) * rr;
-            if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-          }
-          ctx.closePath(); ctx.fill(); break;
-        }
-        case "square":
-          ctx.beginPath(); ctx.roundRect(-r, -r, s.size, s.size, 10); ctx.fill(); break;
-        case "dome":
-          ctx.beginPath(); ctx.arc(0, r * 0.4, r, Math.PI, 0); ctx.closePath(); ctx.fill();
-          ctx.fillRect(-r, r * 0.4 - 2, s.size, r * 0.6); break;
-        case "triangle":
-          ctx.beginPath();
-          ctx.moveTo(0, -r);
-          ctx.quadraticCurveTo(r * 0.15, -r * 0.7, r * 0.87, r * 0.7);
-          ctx.quadraticCurveTo(0, r * 0.45, -r * 0.87, r * 0.7);
-          ctx.quadraticCurveTo(-r * 0.15, -r * 0.7, 0, -r);
-          ctx.fill(); break;
-        case "plus":
-          ctx.fillRect(-r, -r * 0.18, s.size, s.size * 0.36);
-          ctx.fillRect(-r * 0.18, -r, s.size * 0.36, s.size); break;
-        default:
-          ctx.strokeStyle = s.color; ctx.lineWidth = 13; ctx.lineCap = "round";
-          ctx.beginPath();
-          ctx.moveTo(-r * 1.2, 0);
-          ctx.quadraticCurveTo(-r * 0.6, -r * 0.7, 0, 0);
-          ctx.quadraticCurveTo(r * 0.6, r * 0.7, r * 1.2, 0);
-          ctx.stroke(); break;
-      }
-      ctx.restore();
+      if (!s.sprite || offscreen(s.dx, s.dy, s.br)) return;
+      const sc = 1 + 0.06 * s.hoverT;
+      const S = s.sprite.width / SPR_DPR;
+      bodyTransform(s.dx, s.dy, s.da, sc, sc);
+      ctx.drawImage(s.sprite, -S / 2, -S / 2, S, S);
     };
 
-    /* PART B: draw emoji sticker (baked glyph on round sticker) */
+    /* PART B: draw emoji sticker (baked disc + glyph sprite) */
     const drawEmoji = (e: PEmoji) => {
-      const b = e.body!;
-      ctx.save();
-      ctx.translate(e.dx, e.dy);
-      ctx.rotate(e.da);
+      if (!e.sprite || offscreen(e.dx, e.dy, e.br)) return;
       // squash + boing scale (draw-time only, collider unchanged)
       let sx = 1, sy = 1;
       if (e.squashMs > 0) { sx = 1.15; sy = 0.85; }
       if (e.boingMs > 0) { const k = e.boingMs / 600; const s = 1 + 0.2 * Math.sin(k * Math.PI); sx *= s; sy *= s; }
-      ctx.scale(sx, sy);
-      if (e.hoverT > 0.01) { const s = 1 + 0.06 * e.hoverT; ctx.scale(s, s); }
+      if (e.hoverT > 0.01) { const s = 1 + 0.06 * e.hoverT; sx *= s; sy *= s; }
       const r = e.size / 2;
-      ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
-      ctx.fillStyle = e.color; ctx.fill();
-      if (e.baked) {
-        const bw = e.baked.width / DPR, bh = e.baked.height / DPR;
-        ctx.drawImage(e.baked, -bw / 2, -bh / 2, bw, bh);
-      }
-      ctx.restore();
+      bodyTransform(e.dx, e.dy, e.da, sx, sy);
+      ctx.drawImage(e.sprite, -r, -r, e.size, e.size);
       drawSparkles(e);
     };
 
-    /* PART C: draw cartoon face — ink-line style, spins with body */
+    /* PART C: draw cartoon face — sprite-based (base + eye/mouth parts) */
     const drawFace = (f: PFace, now: number) => {
-      const b = f.body!;
-      ctx.save();
-      ctx.translate(f.dx, f.dy);
-      ctx.rotate(f.da);
+      const r = f.size / 2;
+      if (!f.sprBase || offscreen(f.dx, f.dy, f.br)) return;
       let sx = 1, sy = 1;
       if (f.squashMs > 0) { sx = 1.15; sy = 0.85; }
       if (f.boingMs > 0) { const k = f.boingMs / 600; const s = 1 + 0.2 * Math.sin(k * Math.PI); sx *= s; sy *= s; }
-      ctx.scale(sx, sy);
-      if (f.hoverT > 0.01) { const s = 1 + 0.06 * f.hoverT; ctx.scale(s, s); }
-      const r = f.size / 2;
-      // body
-      ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2);
-      ctx.fillStyle = f.color; ctx.fill();
-      ctx.lineWidth = 3; ctx.strokeStyle = "#0D0D0D"; ctx.stroke();
+      if (f.hoverT > 0.01) { const s = 1 + 0.06 * f.hoverT; sx *= s; sy *= s; }
 
       const mood = f.cur;
       const laughing = f.laughUntil > now;
-      const eyeY = -r * 0.12, ex = r * 0.30;
       const blinking = f.blinkMs > 0;
-      const INK = "#0D0D0D";
-      ctx.fillStyle = INK; ctx.strokeStyle = INK;
-      ctx.lineWidth = 2.5; ctx.lineCap = "round";
-
-      // cursor look offset (≤3px)
-      let lx = 0, ly = 0;
-      if (cursor.active) {
-        const dx = cursor.x - f.dx, dy = cursor.y - f.dy;
-        const d = Math.hypot(dx, dy);
-        if (d < 220 && d > 1) { lx = (dx / d) * 3; ly = (dy / d) * 3; }
-      }
-
-      const dotEye = (x: number, y: number, rr: number) => {
-        if (blinking) { ctx.beginPath(); ctx.moveTo(x - rr, y); ctx.lineTo(x + rr, y); ctx.stroke(); }
-        else { ctx.beginPath(); ctx.arc(x + lx * 0.5, y + ly * 0.5, rr, 0, Math.PI * 2); ctx.fill(); }
-      };
-      const arcEye = (x: number, y: number, rr: number) => { // ^ ^ happy arc
-        ctx.beginPath(); ctx.arc(x, y + rr * 0.4, rr, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();
-      };
-      const smile = (w: number, h: number, y: number) => {
-        ctx.beginPath(); ctx.arc(0, y - h * 0.6, w, Math.PI * 0.15, Math.PI * 0.85); ctx.stroke();
-      };
-
+      let eyeSpr: HTMLCanvasElement | null, mouthSpr: HTMLCanvasElement | null;
       if (laughing) {
-        arcEye(-ex, eyeY, r * 0.16); arcEye(ex, eyeY, r * 0.16);
-        ctx.beginPath(); ctx.ellipse(0, r * 0.32, r * 0.20, r * 0.26, 0, 0, Math.PI * 2);
-        ctx.fillStyle = INK; ctx.fill();
+        eyeSpr = f.sprEyeArc; mouthSpr = f.sprMouthOpen;
       } else switch (mood) {
         case "happy":
-          dotEye(-ex, eyeY, r * 0.10); dotEye(ex, eyeY, r * 0.10);
-          smile(r * 0.42, r * 0.30, r * 0.42); break;
+          eyeSpr = blinking ? f.sprEyeClosed : f.sprEyeOpen;
+          mouthSpr = f.sprMouthSmileWide; break;
         case "laughing":
-          arcEye(-ex, eyeY, r * 0.16); arcEye(ex, eyeY, r * 0.16);
-          ctx.beginPath(); ctx.ellipse(0, r * 0.30, r * 0.20, r * 0.26, 0, 0, Math.PI * 2);
-          ctx.fillStyle = INK; ctx.fill(); break;
+          eyeSpr = f.sprEyeArc; mouthSpr = f.sprMouthOpen; break;
         case "surprised":
-          ctx.beginPath(); ctx.arc(-ex + lx * 0.5, eyeY + ly * 0.5, r * 0.14, 0, Math.PI * 2); ctx.stroke();
-          ctx.beginPath(); ctx.arc(ex + lx * 0.5, eyeY + ly * 0.5, r * 0.14, 0, Math.PI * 2); ctx.stroke();
-          ctx.beginPath(); ctx.arc(0, r * 0.34, r * 0.13, 0, Math.PI * 2); ctx.stroke(); break;
+          eyeSpr = f.sprEyeWide; mouthSpr = f.sprMouthO; break;
         case "cool":
-          ctx.fillStyle = INK;
-          ctx.beginPath(); ctx.roundRect(-ex - r * 0.16, eyeY - r * 0.13, r * 0.32, r * 0.24, r * 0.06); ctx.fill();
-          ctx.beginPath(); ctx.roundRect(ex - r * 0.16, eyeY - r * 0.13, r * 0.32, r * 0.24, r * 0.06); ctx.fill();
-          ctx.fillRect(-r * 0.08, eyeY - r * 0.03, r * 0.16, r * 0.05); // bridge
-          ctx.beginPath(); ctx.arc(r * 0.10, r * 0.36, r * 0.22, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); // smirk
-          break;
+          eyeSpr = f.sprGlasses; mouthSpr = f.sprMouthSmirk; break;
         case "love":
-          drawHeart(-ex, eyeY, r * 0.16, COLORS.pink);
-          drawHeart(ex, eyeY, r * 0.16, COLORS.pink);
-          smile(r * 0.36, r * 0.26, r * 0.42); break;
+          eyeSpr = f.sprEyeHeart; mouthSpr = f.sprMouthSmile; break;
         case "sleepy":
-          ctx.beginPath(); ctx.moveTo(-ex - r * 0.12, eyeY); ctx.lineTo(-ex + r * 0.12, eyeY); ctx.stroke();
-          ctx.beginPath(); ctx.moveTo(ex - r * 0.12, eyeY); ctx.lineTo(ex + r * 0.12, eyeY); ctx.stroke();
-          ctx.font = `${Math.round(r * 0.34)}px "Geist", sans-serif`;
-          ctx.textAlign = "left"; ctx.textBaseline = "alphabetic";
-          ctx.fillStyle = INK; ctx.fillText("z", r * 0.42, -r * 0.34);
-          ctx.beginPath(); ctx.arc(0, r * 0.38, r * 0.10, 0, Math.PI); ctx.stroke(); break;
+          eyeSpr = f.sprEyeClosed; mouthSpr = f.sprMouthSleepy; break;
         case "wink":
-          dotEye(-ex, eyeY, r * 0.10);
-          ctx.beginPath(); ctx.arc(ex, eyeY + r * 0.06, r * 0.12, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();
-          ctx.fillStyle = COLORS.pink;
-          ctx.beginPath(); ctx.roundRect(-r * 0.07, r * 0.30, r * 0.14, r * 0.20, r * 0.07); ctx.fill(); // tongue
-          break;
-        case "silly":
-          ctx.beginPath();
-          ctx.moveTo(-ex - r * 0.08, eyeY - r * 0.08); ctx.lineTo(-ex + r * 0.08, eyeY + r * 0.08);
-          ctx.moveTo(-ex + r * 0.08, eyeY - r * 0.08); ctx.lineTo(-ex - r * 0.08, eyeY + r * 0.08);
-          ctx.moveTo(ex - r * 0.08, eyeY - r * 0.08); ctx.lineTo(ex + r * 0.08, eyeY + r * 0.08);
-          ctx.moveTo(ex + r * 0.08, eyeY - r * 0.08); ctx.lineTo(ex - r * 0.08, eyeY + r * 0.08);
-          ctx.stroke();
-          ctx.fillStyle = COLORS.pink;
-          ctx.beginPath(); ctx.roundRect(r * 0.02, r * 0.28, r * 0.16, r * 0.24, r * 0.08); ctx.fill(); // tongue out
-          break;
+          eyeSpr = blinking ? f.sprEyeWinkBlink : f.sprEyeWink;
+          mouthSpr = f.sprMouthTongue; break;
+        default: // "silly"
+          eyeSpr = f.sprEyeX; mouthSpr = f.sprMouthTongueSilly; break;
       }
-      ctx.restore();
+
+      // cursor look offset (≤3px), as before — only for dot/circle eyes
+      let lx = 0, ly = 0;
+      if ((eyeSpr === f.sprEyeOpen || eyeSpr === f.sprEyeWide || eyeSpr === f.sprEyeWink) && cursor.active) {
+        const dx = cursor.x - f.dx, dy = cursor.y - f.dy;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 48400 && d2 > 1) {
+          const d = Math.sqrt(d2);
+          lx = (dx / d) * 3; ly = (dy / d) * 3;
+        }
+      }
+
+      bodyTransform(f.dx, f.dy, f.da, sx, sy);
+      ctx.drawImage(f.sprBase, -r, -r, f.size, f.size);
+      if (eyeSpr) ctx.drawImage(eyeSpr, -r + lx, -r + ly, f.size, f.size);
+      if (mouthSpr) ctx.drawImage(mouthSpr, -r, -r, f.size, f.size);
       drawSparkles(f);
     };
-    const drawHeart = (x: number, y: number, s: number, color: string) => {
-      ctx.save();
-      ctx.translate(x, y); ctx.scale(s / 10, s / 10);
-      ctx.beginPath();
-      ctx.moveTo(0, 4);
-      ctx.bezierCurveTo(-8, -4, -4, -10, 0, -4);
-      ctx.bezierCurveTo(4, -10, 8, -4, 0, 4);
-      ctx.fillStyle = color; ctx.fill();
-      ctx.restore();
-    };
     const drawSparkles = (it: PFace | PEmoji) => {
-      it.sparkles.forEach((p) => {
-        const a = Math.max(p.life / 600, 0);
-        ctx.save();
-        ctx.globalAlpha = a;
-        ctx.translate(p.x, p.y);
-        const s = 5 * a + 3;
-        ctx.fillStyle = p.color;
-        ctx.beginPath();
-        ctx.moveTo(0, -s); ctx.quadraticCurveTo(0, 0, s, 0); ctx.quadraticCurveTo(0, 0, 0, s);
-        ctx.quadraticCurveTo(0, 0, -s, 0); ctx.quadraticCurveTo(0, 0, 0, -s);
-        ctx.fill();
-        ctx.restore();
-      });
+      const n = it.sparkles.length;
+      if (n === 0) return;
+      for (let i = 0; i < n; i++) {
+        const p = it.sparkles[i];
+        const a = p.life / 600;
+        if (a <= 0) continue;
+        const sz = 10 * a + 6;
+        ctx.globalAlpha = a < 1 ? a : 1;
+        ctx.setTransform(effDPR, 0, 0, effDPR, effDPR * p.x, effDPR * p.y);
+        const spr = p.color === COLORS.yellow ? sprSparkYellow : sprSparkPink;
+        if (spr) ctx.drawImage(spr, -sz / 2, -sz / 2, sz, sz);
+      }
+      ctx.globalAlpha = 1;
     };
 
     /* reduced motion: static settled layout */
@@ -751,7 +924,7 @@ export default function PhysicsTags() {
         placed.push({ x, y, w, h });
         return { x, y, r: (Math.random() - 0.5) * 0.6 };
       };
-      bakeEmojis();
+      bakeAllSprites();
       tags.forEach((t) => {
         const p = place(t.w, t.h);
         t.dx = p.x; t.dy = p.y; t.da = p.r;
@@ -778,34 +951,107 @@ export default function PhysicsTags() {
       });
     };
 
-    /* ── THE single rAF loop ── */
-    let raf = 0, loopOn = false, lastT = 0;
+    /* ── THE single rAF loop (registered on the shared page scheduler) ── */
+    let loopOn = false, lastT = 0;
     let hoverBody: Matter.Body | null = null;
-    let frameTimes: number[] = [];
-    let degraded = false;
     let accumulator = 0;
     let fastForwardSteps = 0;
+    let sectionInView = true;
+    // idle mode: stop physics+draw when nothing moves; keep the last frame
+    let idle = false;
+    let idleWakeT = 0;
+    let lastNudge = 0;
+    let lastDebug = 0, debugFrames = 0; // DEBUG (temporary): 2s log
 
-    const loop = (now: number) => {
+    // lerp helper (defined once — no closure created per frame)
+    const lerpItem = (it: { body: Matter.Body | null; dx: number; dy: number; da: number }) => {
+      const b = it.body;
+      if (!b) return;
+      it.dx += (b.position.x - it.dx) * 0.5;
+      it.dy += (b.position.y - it.dy) * 0.5;
+      let diff = b.angle - it.da;
+      diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+      it.da += diff * 0.5;
+    };
+    const syncDrawState = () => {
+      // snap drawn state to physics state (fast-forward catch-up)
+      for (let i = 0; i < tags.length; i++) { const t = tags[i]; if (t.body) { t.dx = t.body.position.x; t.dy = t.body.position.y; t.da = t.body.angle; } }
+      for (let i = 0; i < shapes.length; i++) { const x = shapes[i]; if (x.body) { x.dx = x.body.position.x; x.dy = x.body.position.y; x.da = x.body.angle; } }
+      for (let i = 0; i < emojis.length; i++) { const e = emojis[i]; if (e.body) { e.dx = e.body.position.x; e.dy = e.body.position.y; e.da = e.body.angle; } }
+      for (let i = 0; i < faces.length; i++) { const f = faces[i]; if (f.body) { f.dx = f.body.position.x; f.dy = f.body.position.y; f.da = f.body.angle; } }
+    };
+
+    const checkIdle = (now: number) => {
+      if (!hasDropped || physBodies.length === 0) return false;
+      if (now - lastPointerMove < 2000) return false; // pointer moved recently
+      const mc = mouseConstraint as unknown as { constraint: { bodyB: Matter.Body | null } };
+      if (mc.constraint.bodyB) return false; // dragging
+      let sum = 0;
+      for (let i = 0; i < physBodies.length; i++) sum += physBodies[i].speed;
+      if (sum / physBodies.length >= 0.1) return false; // still moving
+      for (let i = 0; i < faces.length; i++) {
+        const f = faces[i];
+        if (!f.body) continue;
+        if (f.blinkMs > 0 || f.squashMs > 0 || f.boingMs > 0 || f.sparkles.length > 0) return false;
+        if (f.curUntil > now || f.laughUntil > now) return false;
+        if (f.hoverT > 0.01) return false;
+      }
+      for (let i = 0; i < emojis.length; i++) {
+        const e = emojis[i];
+        if (!e.body) continue;
+        if (e.squashMs > 0 || e.boingMs > 0 || e.sparkles.length > 0) return false;
+        if (e.hoverT > 0.01) return false;
+      }
+      for (let i = 0; i < tags.length; i++) if (tags[i].body && tags[i].hoverT > 0.01) return false;
+      for (let i = 0; i < shapes.length; i++) if (shapes[i].body && shapes[i].hoverT > 0.01) return false;
+      return true;
+    };
+
+    const enterIdle = (now: number) => {
+      idle = true;
+      stopLoop(); // unregisters from __raf; the last frame stays on the canvas
+      // wake for the earliest scheduled thing: nudge (3s), blink, wiggle, mood
+      let wakeIn = 3000;
+      for (let i = 0; i < faces.length; i++) {
+        const f = faces[i];
+        if (!f.body) continue;
+        if (f.blinkAt > now) wakeIn = Math.min(wakeIn, f.blinkAt - now);
+        if (f.wiggleAt > now) wakeIn = Math.min(wakeIn, f.wiggleAt - now);
+        if (f.curUntil > now) wakeIn = Math.min(wakeIn, f.curUntil - now);
+        if (f.laughUntil > now) wakeIn = Math.min(wakeIn, f.laughUntil - now);
+      }
+      if (idleWakeT) window.clearTimeout(idleWakeT);
+      idleWakeT = window.setTimeout(() => { idleWakeT = 0; startLoop(); }, Math.max(wakeIn, 60));
+    };
+
+    const startLoop = () => {
+      if (loopOn || !ready || !sectionInView || document.hidden) return;
+      loopOn = true;
+      idle = false;
+      if (idleWakeT) { window.clearTimeout(idleWakeT); idleWakeT = 0; }
+      lastT = performance.now();
+      lastNudge = lastT;
+      window.__raf.add(loopCb);
+    };
+    const stopLoop = () => {
+      loopOn = false;
+      window.__raf.remove(loopCb);
+    };
+
+    const loopCb = (now: number) => {
       if (!loopOn) return;
-      raf = requestAnimationFrame(loop);
       let delta = now - lastT;
       lastT = now;
       // During active scroll: keep full speed (no slow-motion, no freeze)
       // but lighten the physics solver so scrolling stays fluid.
-      // Restored right after scroll settles.
       if (isScrolling) {
         engine.positionIterations = 2;
         engine.velocityIterations = 1;
       } else {
-        engine.positionIterations = degraded ? 4 : 6;
-        engine.velocityIterations = degraded ? 3 : 4;
+        engine.positionIterations = 6;
+        engine.velocityIterations = 4;
       }
-      // Refresh pointer geometry once per frame here instead of on scroll
-      // events — a scroll listener forced 2 synchronous layouts per scroll
-      // tick, which janked scrolling through this section.
-      rectCache = section.getBoundingClientRect();
-      syncMouse(rectCache);
+      syncMouse(rectCache); // cached rect — no getBoundingClientRect in the loop
       delta = Math.min(delta, 1000 / 30);
       accumulator += delta;
       let steps = 0;
@@ -823,20 +1069,9 @@ export default function PhysicsTags() {
         syncDrawState();
       }
 
-      frameTimes.push(delta);
-      if (!degraded && frameTimes.length === 60) {
-        const avg = frameTimes.reduce((a, b) => a + b, 0) / 60;
-        if (avg > 24) {
-          degraded = true;
-          // lower pixel ratio instead of deleting bodies
-          engine.positionIterations = 4;
-          engine.velocityIterations = 3;
-        }
-        frameTimes = [];
-      }
-
       /* PART C: per-frame face + emoji animation state (no allocations) */
-      for (const f of faces) {
+      for (let fi = 0; fi < faces.length; fi++) {
+        const f = faces[fi];
         if (!f.body) continue;
         // blink
         if (f.blinkMs > 0) f.blinkMs -= delta;
@@ -845,7 +1080,7 @@ export default function PhysicsTags() {
         }
         // temp mood expiry
         if (f.curUntil && now > f.curUntil) { f.cur = f.mood; f.curUntil = 0; }
-        // squash / boing decay
+        // squash / boing decay (landing squash now comes from collisionStart)
         if (f.squashMs > 0) f.squashMs -= delta;
         if (f.boingMs > 0) f.boingMs -= delta;
         // idle wiggle: tiny angular impulse + blink-smile
@@ -854,8 +1089,6 @@ export default function PhysicsTags() {
           Matter.Body.setAngularVelocity(f.body, f.body.angularVelocity + (Math.random() - 0.5) * 0.15);
           if (f.mood === "happy") f.blinkMs = 120;
         }
-        // landing squash: hard floor/body hit
-        if (f.body.speed > 6 && f.squashMs <= 0) f.squashMs = 140;
         // sparkles
         for (let i = f.sparkles.length - 1; i >= 0; i--) {
           const p = f.sparkles[i];
@@ -864,10 +1097,10 @@ export default function PhysicsTags() {
           if (p.life <= 0) f.sparkles.splice(i, 1);
         }
       }
-      for (const e of emojis) {
+      for (let ei = 0; ei < emojis.length; ei++) {
+        const e = emojis[ei];
         if (e.squashMs > 0) e.squashMs -= delta;
         if (e.boingMs > 0) e.boingMs -= delta;
-        if (e.body && e.body.speed > 6 && e.squashMs <= 0) e.squashMs = 140;
         for (let i = e.sparkles.length - 1; i >= 0; i--) {
           const p = e.sparkles[i];
           p.life -= delta;
@@ -877,17 +1110,12 @@ export default function PhysicsTags() {
       }
 
       // smooth visuals: lerp drawn state toward physics state
-      const items = allItems() as Array<{ body: Matter.Body | null; dx: number; dy: number; da: number; hoverT: number }>;
-      items.forEach((it) => {
-        if (!it.body) return;
-        it.dx += (it.body.position.x - it.dx) * 0.5;
-        it.dy += (it.body.position.y - it.dy) * 0.5;
-        let diff = it.body.angle - it.da;
-        diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-        it.da += diff * 0.5;
-      });
+      for (let i = 0; i < tags.length; i++) lerpItem(tags[i]);
+      for (let i = 0; i < shapes.length; i++) lerpItem(shapes[i]);
+      for (let i = 0; i < emojis.length; i++) lerpItem(emojis[i]);
+      for (let i = 0; i < faces.length; i++) lerpItem(faces[i]);
 
-      // cursor hover-push
+      // cursor hover-push (squared distances — no sqrt for far bodies; same force)
       if (cursor.active) {
         if (cursor.x < -9000) { cursor.x = cursor.tx; cursor.y = cursor.ty; }
         cursor.px = cursor.x; cursor.py = cursor.y;
@@ -896,59 +1124,76 @@ export default function PhysicsTags() {
         cursor.vx = cursor.x - cursor.px;
         cursor.vy = cursor.y - cursor.py;
         const speed = Math.hypot(cursor.vx, cursor.vy);
-        const PUSH_R = 150;
+        const PUSH_R = 150, PUSH_R2 = PUSH_R * PUSH_R;
         const speedFactor = 0.25 + (Math.min(speed, 28) / 28) * 0.75;
-        items.forEach((it) => {
-          const b = it.body; if (!b) return;
+        const invSpeed = 1 / Math.max(speed, 1);
+        for (let bi = 0; bi < physBodies.length; bi++) {
+          const b = physBodies[bi];
           const dx = b.position.x - cursor.x, dy = b.position.y - cursor.y;
-          const dist = Math.hypot(dx, dy);
-          if (dist > PUSH_R || dist < 1) return;
-          if (b.isSleeping) Matter.Sleeping.set(b, false);
+          const d2 = dx * dx + dy * dy;
+          if (d2 > PUSH_R2 || d2 < 1) continue;
+          const dist = Math.sqrt(d2);
           const falloff = 1 - dist / PUSH_R;
           const f = Math.min(0.004 * b.mass * falloff * speedFactor, 0.004 * b.mass);
           Matter.Body.applyForce(b, b.position, {
-            x: (dx / dist) * f + (cursor.vx / Math.max(speed, 1)) * f * 0.7,
-            y: (dy / dist) * f + (cursor.vy / Math.max(speed, 1)) * f * 0.7 - f * 0.2,
+            x: (dx / dist) * f + cursor.vx * invSpeed * f * 0.7,
+            y: (dy / dist) * f + cursor.vy * invSpeed * f * 0.7 - f * 0.2,
           });
           b.torque += (Math.random() - 0.5) * 0.0004 * falloff;
           // PART C: face near cursor → surprised mouth 400ms
-          if (dist < 140) {
-            const fi = faces.findIndex((fc) => fc.body === b);
-            if (fi >= 0 && faces[fi].cur === faces[fi].mood) {
-              faces[fi].cur = "surprised"; faces[fi].curUntil = now + 400;
+          if (d2 < 19600) {
+            const fc = bodyToFace.get(b);
+            if (fc && fc.cur === fc.mood) {
+              fc.cur = "surprised"; fc.curUntil = now + 400;
             }
           }
-        });
+        }
       }
 
-      // hover detection
-      if (cursor.active) {
-        const all = items.map((it) => it.body).filter(Boolean) as Matter.Body[];
-        const found = Matter.Query.point(all, { x: cursor.x, y: cursor.y })[0] || null;
-        hoverBody = found;
+      // hover detection: only when the pointer moved (flag), not every frame
+      if (hoverDirty) {
+        hoverDirty = false;
+        hoverBody = cursor.active
+          ? (Matter.Query.point(physBodies, { x: cursor.x, y: cursor.y })[0] || null)
+          : null;
         const dragging = (mouseConstraint as unknown as { constraint: { bodyB: Matter.Body | null } }).constraint.bodyB;
-        // PART C: grab state
-        faces.forEach((f) => { f.grabbed = dragging === f.body; });
-        section.style.cursor = dragging ? "grabbing" : found ? "grab" : "";
-        if (dragging) {
-          const fi = faces.findIndex((f) => f.body === dragging);
-          if (fi >= 0 && !faces[fi].grabbed) { /* grabbed set above */ }
+        for (let fi = 0; fi < faces.length; fi++) {
+          faces[fi].grabbed = dragging !== null && dragging === faces[fi].body;
         }
-      } else {
+        section.style.cursor = dragging ? "grabbing" : hoverBody ? "grab" : "";
+      }
+      if (!cursor.active) {
         hoverBody = null;
         section.style.cursor = "";
-        faces.forEach((f) => {
-          if (f.grabbed) { f.grabbed = false; f.laughUntil = now + 600; } // release → laugh
-        });
+        for (let fi = 0; fi < faces.length; fi++) {
+          const f = faces[fi];
+          if (f.grabbed) { f.grabbed = false; f.laughUntil = now + 600; }
+        }
       }
-      items.forEach((it) => {
-        const target = it.body === hoverBody ? 1 : 0;
-        it.hoverT += (target - it.hoverT) * 0.25;
-      });
+      for (let i = 0; i < tags.length; i++) {
+        const t = tags[i];
+        const target = t.body === hoverBody ? 1 : 0;
+        t.hoverT += (target - t.hoverT) * 0.25;
+      }
+      for (let i = 0; i < shapes.length; i++) {
+        const x = shapes[i];
+        const target = x.body === hoverBody ? 1 : 0;
+        x.hoverT += (target - x.hoverT) * 0.25;
+      }
+      for (let i = 0; i < emojis.length; i++) {
+        const e = emojis[i];
+        const target = e.body === hoverBody ? 1 : 0;
+        e.hoverT += (target - e.hoverT) * 0.25;
+      }
+      for (let i = 0; i < faces.length; i++) {
+        const f = faces[i];
+        const target = f.body === hoverBody ? 1 : 0;
+        f.hoverT += (target - f.hoverT) * 0.25;
+      }
 
       // angular damping + upright settle
-      items.forEach((it) => {
-        const b = it.body; if (!b) return;
+      for (let bi = 0; bi < physBodies.length; bi++) {
+        const b = physBodies[bi];
         if (Math.abs(b.angularVelocity) > 0.25) {
           Matter.Body.setAngularVelocity(b, b.angularVelocity * 0.97);
         } else if (Math.abs(b.velocity.x) < 0.35 && Math.abs(b.velocity.y) < 0.35) {
@@ -957,40 +1202,42 @@ export default function PhysicsTags() {
           if (a > Math.PI) a -= twoPi;
           Matter.Body.setAngle(b, b.angle - a * 0.02);
         }
-      });
+      }
 
-      // draw: shapes, emoji, faces, then pills
-      ctx.clearRect(0, 0, W, H);
+      // draw: opaque bg fill (no clearRect), then one drawImage per body
+      ctx.setTransform(effDPR, 0, 0, effDPR, 0, 0);
       ctx.fillStyle = COLORS.bg;
       ctx.fillRect(0, 0, W, H);
-      shapes.forEach((s) => { if (s.body) drawShape(s); });
-      emojis.forEach((e) => { if (e.body) drawEmoji(e); });
-      faces.forEach((f) => { if (f.body) drawFace(f, now); });
-      tags.forEach((t) => { if (t.body) drawPill(t); });
+      for (let i = 0; i < shapes.length; i++) { const x = shapes[i]; if (x.body) drawShape(x); }
+      for (let i = 0; i < emojis.length; i++) { const e = emojis[i]; if (e.body) drawEmoji(e); }
+      for (let i = 0; i < faces.length; i++) { const f = faces[i]; if (f.body) drawFace(f, now); }
+      for (let i = 0; i < tags.length; i++) { const t = tags[i]; if (t.body) drawPill(t); }
 
-      // PART C: grab → wide mouth + wide eyes handled in drawFace via f.grabbed
-      // (grabbed faces draw with open mouth — applied below via temp mood)
-      for (const f of faces) {
+      // PART C: grab → laughing temp mood
+      for (let fi = 0; fi < faces.length; fi++) {
+        const f = faces[fi];
         if (f.grabbed && f.cur === f.mood) { f.cur = "laughing"; f.curUntil = now + 200; }
       }
-    };
 
-    const startLoop = () => {
-      if (loopOn || !ready) return;
-      loopOn = true;
-      lastT = performance.now();
-      raf = requestAnimationFrame(loop);
-    };
-    const stopLoop = () => { loopOn = false; cancelAnimationFrame(raf); };
+      // idle nudge (was a 3s setInterval — now a timestamp check in the loop)
+      if (now - lastNudge > 3000 && !document.hidden && physBodies.length > 0) {
+        lastNudge = now;
+        const b = physBodies[(Math.random() * physBodies.length) | 0];
+        Matter.Body.applyForce(b, b.position, { x: (Math.random() - 0.5) * 0.0006, y: -Math.random() * 0.0007 });
+      }
 
-    /* idle life: tiny nudge every 3s */
-    const idleTimer = window.setInterval(() => {
-      if (document.hidden || !loopOn) return;
-      const all = allItems().map((it) => (it as { body: Matter.Body | null }).body).filter(Boolean) as Matter.Body[];
-      if (!all.length) return;
-      const b = all[Math.floor(Math.random() * all.length)];
-      Matter.Body.applyForce(b, b.position, { x: (Math.random() - 0.5) * 0.0006, y: -Math.random() * 0.0007 });
-    }, 3000);
+      // DEBUG (temporary): every 2s — fps, body count (must not change), idle on/off
+      debugFrames++;
+      if (now - lastDebug > 2000) {
+        const fps = Math.round((debugFrames * 1000) / Math.max(now - lastDebug, 1));
+        console.log("[tags] fps", fps, "bodies", physBodies.length, "idle", idle ? "on" : "off");
+        lastDebug = now;
+        debugFrames = 0;
+      }
+
+      // idle: stop physics+draw when nothing moves; the last frame stays
+      if (checkIdle(now)) enterIdle(now);
+    };
 
     const is20Visible = () => {
       const r = section.getBoundingClientRect();
@@ -1015,6 +1262,7 @@ export default function PhysicsTags() {
     const loopObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          sectionInView = entry.isIntersecting;
           if (entry.isIntersecting) startLoop();
           else stopLoop();
         });
@@ -1030,7 +1278,7 @@ export default function PhysicsTags() {
           isVisible = entry.isIntersecting;
           if (isVisible) {
             syncMouse();
-            rectCache = section.getBoundingClientRect();
+            updateRectCache();
             if (!was && hasDropped && fastForwardSteps === 0 && performance.now() - dropStart < 4000) {
               fastForwardSteps = 90;
             }
@@ -1047,7 +1295,7 @@ export default function PhysicsTags() {
     const onScrollHold = () => {
       isScrolling = true;
       window.clearTimeout(scrollHoldT);
-      scrollHoldT = window.setTimeout(() => { isScrolling = false; }, 160);
+      scrollHoldT = window.setTimeout(() => { isScrolling = false; updateRectCache(); }, 160);
     };
     const onResize = () => {
       window.clearTimeout(resizeT);
@@ -1055,7 +1303,11 @@ export default function PhysicsTags() {
         const newW = section.clientWidth, newH = section.clientHeight;
         if (newW === lastW && Math.abs(newH - lastH) < 120) return;
         lastW = newW; lastH = newH;
+        const oldDPR = effDPR;
         resizeCanvas();
+        if (effDPR !== oldDPR) bakeAllSprites(); // re-bake at the new DPR
+        updateRectCache();
+        if (idle) startLoop(); // layout changed — wake
         Matter.Composite.remove(engine.world, walls);
         buildWalls();
         allItems().forEach((it) => {
@@ -1068,7 +1320,7 @@ export default function PhysicsTags() {
           }
         });
         syncMouse();
-        rectCache = section.getBoundingClientRect();
+        updateRectCache();
       }, 200);
     };
     const onVis = () => {
@@ -1081,9 +1333,12 @@ export default function PhysicsTags() {
       Matter.Composite.add(engine.world, mouseConstraint);
       stripWheel();
       syncMouse();
+      updateRectCache();
       section.addEventListener("pointermove", onMove);
       section.addEventListener("pointerleave", onLeave);
       section.addEventListener("pointerdown", onDown);
+      section.addEventListener("pointerup", onUp);
+      section.addEventListener("touchstart", onUp, { passive: true });
       window.addEventListener("resize", onResize);
       window.addEventListener("scroll", onScrollHold, { passive: true });
       document.addEventListener("visibilitychange", onVis);
@@ -1105,14 +1360,16 @@ export default function PhysicsTags() {
 
     return () => {
       window.clearInterval(bootCheck);
-      window.clearInterval(idleTimer);
       window.clearTimeout(resizeT);
+      window.clearTimeout(idleWakeT);
       dropObserver.disconnect();
       loopObserver.disconnect();
       visibleObserver.disconnect();
       section.removeEventListener("pointermove", onMove);
       section.removeEventListener("pointerleave", onLeave);
       section.removeEventListener("pointerdown", onDown);
+      section.removeEventListener("pointerup", onUp);
+      section.removeEventListener("touchstart", onUp);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onScrollHold);
       window.clearTimeout(scrollHoldT);
@@ -1136,12 +1393,13 @@ export default function PhysicsTags() {
           border-radius: 24px;
           overflow: hidden;
           touch-action: pan-y;
-          contain: layout paint;
+          contain: layout paint size;
         }
         .physics-tags-section canvas {
           position: absolute;
           inset: 0;
           display: block;
+          transform: translateZ(0);
         }
         @media (max-width: 768px) {
           .physics-tags-section { height: 70vh; }
