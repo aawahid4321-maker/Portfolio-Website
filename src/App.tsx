@@ -402,36 +402,17 @@ export default function App() {
         cleanups.push(() => { btn.removeEventListener("click", onClick); btn.style.cursor = ""; });
       });
 
-    // ── LEARN MORE button → navigate to About page ──
-    Array.from(canvas.querySelectorAll<HTMLElement>("p"))
-      .filter((p) => p.textContent?.trim() === "LEARN MORE")
-      .forEach((p) => {
-        // Walk up to the dark pill [data-name="Link"] container (the whole button)
-        const btn = (p.closest('[data-name="Link"]') as HTMLElement) ?? (p.closest('[data-name="Container"]') as HTMLElement) ?? p.parentElement as HTMLElement;
+    // ── PlayfulButton (replaced LEARN MORE) → navigate to About page ──
+    // PlayfulButton handles its own hover/active styles; here we only wire the click.
+    Array.from(canvas.querySelectorAll<HTMLElement>('[data-playful-btn="true"]'))
+      .forEach((btn) => {
         if (!btn) return;
         btn.style.cursor = "pointer";
-
-        // Find the dark bg div inside the button and apply hover transition
-        const darkDiv = Array.from(btn.querySelectorAll<HTMLElement>("div")).find(
-          (d) => d.className.includes("bg-[#1e1e1f]")
-        ) ?? (btn.className.includes("bg-[#1e1e1f]") ? btn : null);
-        const hoverTarget = darkDiv ?? btn;
-        hoverTarget.style.transition = "background-color 300ms cubic-bezier(0.22, 1, 0.36, 1)";
-
-        const onEnter = () => { hoverTarget.style.backgroundColor = "#38383a"; };
-        const onLeave = () => { hoverTarget.style.backgroundColor = ""; };
-        btn.addEventListener("mouseenter", onEnter);
-        btn.addEventListener("mouseleave", onLeave);
-
         const onClick = () => { setView("about"); window.scrollTo({ top: 0, behavior: 'instant' }); };
         btn.addEventListener("click", onClick);
         cleanups.push(() => {
           btn.removeEventListener("click", onClick);
-          btn.removeEventListener("mouseenter", onEnter);
-          btn.removeEventListener("mouseleave", onLeave);
           btn.style.cursor = "";
-          hoverTarget.style.backgroundColor = "";
-          hoverTarget.style.transition = "";
         });
       });
 
