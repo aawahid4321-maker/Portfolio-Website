@@ -1,145 +1,244 @@
 /* ═══════════════════════════════════════════════════════════════════
-   Custom cursor — playful sticker layer.
-   Extra layer only: no layout, color, font or section changes.
-   Tweak via the --cursor-* variables below.
+   Custom cursor — cartoon glove hand. Extra layer only: no layout,
+   color, font or section changes. Tweak via the --cursor-* variables.
+   The old blob cursor is gone; this file replaces it completely.
    ═══════════════════════════════════════════════════════════════════ */
 :root {
-  --cursor-dot: 10px;
-  --cursor-ring: 40px;
-  --cursor-purple: #A58CF4;
-  --cursor-pink: #FF0A8A;
+  --cursor-size: 52px;          /* hand height */
+  --cursor-cuff: #A58CF4;       /* cuff color, swapped per state */
   --cursor-yellow: #FFD60A;
+  --cursor-pink: #FF0A8A;
+  --cursor-orange: #FF5A00;
+  --cursor-purple: #A58CF4;
   --cursor-ink: #0D0D0D;
   --cursor-paper: #FAFAFA;
   --cursor-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ── base: fixed, click-through, above everything, hidden until first move ── */
-.cursor-dot,
-.cursor-ring {
+/* ── root: fixed overlay, click-through, hidden until first mouse move ── */
+#cursor-root {
+  --cuff: var(--cursor-cuff);
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   pointer-events: none;
   z-index: 99999;
-  will-change: transform;
   opacity: 0;
   transition: opacity 0.25s ease;
   margin: 0;
   padding: 0;
 }
-/* visible once the mouse has moved and the page is in focus */
-html.cursor-live:not(.cursor-away):not(.cursor-hidden-zone) .cursor-dot,
-html.cursor-live:not(.cursor-away):not(.cursor-hidden-zone) .cursor-ring {
-  opacity: 1;
+html.cursor-live:not(.cursor-away) #cursor-root { opacity: 1; }
+html.cursor-hidden-zone #cursor-root { opacity: 0 !important; }
+
+/* cuff color per state */
+html.cst-link #cursor-root { --cuff: var(--cursor-yellow); }
+html.cst-view #cursor-root { --cuff: var(--cursor-pink); }
+html.cst-drag #cursor-root { --cuff: var(--cursor-orange); }
+html.cst-poke #cursor-root { --cuff: var(--cursor-paper); }
+
+/* ── the hand: positioned by rAF (translate3d only) ── */
+.cursor-hand {
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+/* idle + goodbye motion (never fights the rAF layers below) */
+.cursor-wave { display: block; }
+html.cst-idle-tap .cursor-wave { animation: cursor-tap-tap 3s ease-in-out infinite; }
+html.cst-idle-wave .cursor-wave { animation: cursor-wave-hello 0.6s ease-in-out 3; }
+html.cst-bye .cursor-wave { animation: cursor-wave-bye 0.4s ease-in-out; }
+@keyframes cursor-tap-tap {
+  0%, 100% { transform: rotate(0deg); }
+  7%  { transform: rotate(-6deg); }
+  14% { transform: rotate(0deg); }
+  21% { transform: rotate(-6deg); }
+  28% { transform: rotate(0deg); }
+}
+@keyframes cursor-wave-hello {
+  0%, 100% { transform: rotate(-12deg); }
+  50%      { transform: rotate(12deg); }
+}
+@keyframes cursor-wave-bye {
+  0%   { transform: rotate(0deg); }
+  25%  { transform: rotate(-15deg); }
+  75%  { transform: rotate(15deg); }
+  100% { transform: rotate(0deg); }
+}
+/* tilt from horizontal speed (rAF) */
+.cursor-tilt { display: block; will-change: transform; }
+/* pop on pose change */
+.cursor-pop {
+  position: relative;
+  width: 42px;
+  height: 52px;
+}
+.cursor-pop.popping { animation: cursor-pop 0.2s var(--cursor-spring); }
+@keyframes cursor-pop {
+  0%   { transform: scale(0.85); }
+  60%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+/* hotspot offset: fingertip sits exactly on the pointer */
+.cursor-poses {
+  position: absolute;
+  inset: 0;
+  transform: translate(-6.5px, -6px);
+  transform-origin: 6.5px 6px;
+  transition: scale 0.18s ease;
+}
+html.cst-view .cursor-poses { scale: 1.5; }   /* big OK hand */
+html.cst-text .cursor-poses { scale: 0.8; }   /* small pointing hand */
+html.sq-down .cursor-poses { scale: 0.88; }    /* fist squash */
+html.sq-grab .cursor-poses { scale: 1.1 0.9; }/* grabbing squash */
+html.cst-view.sq-down .cursor-poses { scale: 1.32; }
+/* poke motion: quick nudge toward top-left and back */
+.cursor-poses.poking { animation: cursor-poke-move 0.25s ease; }
+@keyframes cursor-poke-move {
+  0%   { translate: 0 0; }
+  40%  { translate: -8px -8px; }
+  100% { translate: 0 0; }
 }
 
-/* ── the dot: instant follower ── */
-.cursor-dot-inner {
-  width: var(--cursor-dot);
-  height: var(--cursor-dot);
+/* ── poses: pre-built, swapped with opacity ── */
+.pose {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.pose.active { opacity: 1; }
+.pose-svg {
+  height: var(--cursor-size);
+  width: auto;
+  display: block;
+  overflow: visible;
+}
+.cuff { fill: var(--cuff); transition: fill 0.2s ease; }
+/* dark-section glow: a second purple stroke behind the ink outline, no blur */
+.pose-glow { opacity: 0; transition: opacity 0.25s ease; }
+html.cursor-on-dark .pose-glow { opacity: 1; }
+.pose-glow [stroke] { stroke: var(--cursor-purple) !important; stroke-width: 7 !important; }
+.pose-glow [fill]:not([fill="none"]) { fill: none !important; }
+.pose-glow .cuff { fill: none !important; }
+.pose-glow .detail { display: none; }
+
+/* ── link badge: tiny ↗ in a 22px circle next to the hand ── */
+.cursor-badge {
+  position: absolute;
+  left: 32px;
+  top: -14px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   background: var(--cursor-ink);
-  box-shadow: 0 0 0 2px var(--cursor-paper); /* sticker outline, no blur */
-  box-sizing: border-box;
-  transition: transform 0.25s var(--cursor-spring), background-color 0.25s ease;
-}
-html.cst-link .cursor-dot-inner { transform: scale(0.5); }
-html.cst-text .cursor-dot-inner { opacity: 0; } /* the bar replaces the dot */
-
-/* ── the ring: smooth follower; states morph via transform + opacity only ── */
-.cursor-ring-inner {
-  width: var(--cursor-ring);
-  height: var(--cursor-ring);
-  border-radius: 50%;
-  box-sizing: border-box;
-  border: 2px solid var(--cursor-ink);
-  box-shadow: 0 0 0 2px var(--cursor-paper); /* outer sticker ring, no blur */
-  background: transparent;
+  box-shadow: 0 0 0 2px var(--cursor-paper);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.25s var(--cursor-spring),
-              background-color 0.25s ease,
-              opacity 0.25s ease;
-}
-
-/* breathing wrapper (idle animation lives here so it never fights states) */
-.cursor-breathe { display: flex; }
-html.cst-breathing .cursor-breathe { animation: cursor-breathe 2s ease-in-out infinite; }
-@keyframes cursor-breathe {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.12); }
-}
-
-/* ── states ── */
-html.cst-link .cursor-ring-inner {
-  transform: scale(1.6);
-  background: rgba(165, 140, 244, 0.85); /* --cursor-purple at 85% */
-}
-html.cst-view .cursor-ring-inner {
-  transform: scale(2.4) rotate(-6deg);
-  background: var(--cursor-yellow);
-}
-html.cst-drag .cursor-ring-inner {
-  transform: scale(1.8);
-  background: var(--cursor-pink);
-}
-/* grabbing a tag: squash while held */
-html.cst-drag.cst-grabbing .cursor-ring-inner {
-  transform: scaleX(2.07) scaleY(1.53);
-  background: var(--cursor-pink);
-}
-html.cst-poke .cursor-ring-inner {
-  transform: scale(1.8);
-  background: var(--cursor-paper);
-}
-/* text: thin vertical bar, ink fill keeps its paper edge */
-html.cst-text .cursor-ring-inner {
-  transform: scaleX(0.15) scaleY(1.4);
-  background: var(--cursor-ink);
-}
-
-/* poke click bounce */
-html.poke-bouncing .cursor-ring-inner {
-  animation: cursor-poke-bounce 0.35s var(--cursor-spring);
-}
-@keyframes cursor-poke-bounce {
-  0%   { scale: 1; }
-  40%  { scale: 1.3; }
-  100% { scale: 1; }
-}
-
-/* ── label inside the ring ── */
-.cursor-label {
-  font-family: "Zilla Slab", Georgia, serif;
+  color: var(--cursor-paper);
+  font-size: 12px;
   font-weight: 700;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
   line-height: 1;
-  color: var(--cursor-ink);
-  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.18s ease, transform 0.18s var(--cursor-spring);
   user-select: none;
-  transition: color 0.2s ease;
 }
-html.cst-drag .cursor-label { color: var(--cursor-paper); }
+html.cst-link .cursor-badge { opacity: 1; transform: scale(1); }
 
-/* ── click sparkles (JS pool, max 6) ── */
-.cursor-sparkle {
-  position: fixed;
+/* ── view sticker: 64px round arrow sticker, top-right of the hand ── */
+.cursor-sticker {
+  position: absolute;
+  left: 20px;
+  top: -60px;
+  width: 64px;
+  height: 64px;
+  opacity: 0;
+  pointer-events: none;
+}
+html.cst-view .cursor-sticker {
+  opacity: 1;
+  animation: cursor-pop 0.2s var(--cursor-spring);
+}
+.sticker-disc {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--cursor-yellow);
+  border: 3px solid var(--cursor-ink);
+  box-shadow: 3px 3px 0 var(--cursor-ink); /* hard shadow, no blur */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sticker-arrow { animation: sticker-nudge 1.2s ease-in-out infinite; }
+@keyframes sticker-nudge {
+  0%, 100% { translate: 0 0; }
+  50%      { translate: 3px -3px; }
+}
+.sticker-orbit {
+  position: absolute;
+  inset: -9px;
+  animation: sticker-orbit 6s linear infinite;
+}
+@keyframes sticker-orbit {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.sticker-orbit i {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  background: var(--cursor-pink);
+  clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+}
+.sticker-orbit i:first-child { top: 0; left: 50%; margin-left: -3.5px; }
+.sticker-orbit i:last-child { bottom: 0; left: 50%; margin-left: -3.5px; background: var(--cursor-purple); }
+
+/* ── trail: 3 tiny sparkles with longer lag ── */
+.trail-star {
+  position: absolute;
   top: 0;
   left: 0;
-  pointer-events: none;
-  z-index: 99998;
-  /* 4-point star, no blur, no gradients */
   clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+  will-change: transform, opacity;
+}
+
+/* ── confetti pool (stars + dots) ── */
+.confetti {
+  position: absolute;
+  top: 0;
+  left: 0;
   opacity: 0;
 }
-.cursor-sparkle.go { animation: cursor-sparkle-fade 0.5s ease-out forwards; }
-@keyframes cursor-sparkle-fade {
-  0%   { opacity: 1; scale: 0.6; }
-  100% { opacity: 0; scale: 1.5; }
+.confetti.star {
+  clip-path: polygon(50% 0%, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0% 50%, 38% 38%);
+}
+.confetti.dot { border-radius: 50%; }
+.confetti.go { animation: confetti-pop 0.6s ease-out forwards; }
+@keyframes confetti-pop {
+  0%   { opacity: 1; scale: 0.4; }
+  100% { opacity: 0; scale: 1.3; }
+}
+
+/* ── poke "boing" ring ── */
+.boing {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  margin: -15px 0 0 -15px;
+  border: 3px solid var(--cursor-ink);
+  border-radius: 50%;
+  box-sizing: border-box;
+  opacity: 0;
+}
+.boing.go { animation: boing-go 0.4s ease-out forwards; }
+@keyframes boing-go {
+  0%   { opacity: 1; scale: 0.5; }
+  100% { opacity: 0; scale: 1.4; }
 }
 
 /* ── native cursor: hidden only while the custom one is live ── */
@@ -147,7 +246,6 @@ html.has-custom-cursor,
 html.has-custom-cursor * {
   cursor: none !important;
 }
-/* …but never in hide zones or form fields */
 html.has-custom-cursor input,
 html.has-custom-cursor textarea,
 html.has-custom-cursor select,
