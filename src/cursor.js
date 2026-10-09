@@ -32,9 +32,10 @@
       '<path d="M28 48h7 M28 54h7" ' + DET + '/>',
     thumb:
       CUFF +
-      '<rect x="20" y="32" width="28" height="26" rx="10" ' + S + '/>' +
-      '<rect x="35" y="4" width="11" height="34" rx="5.5" transform="rotate(8 40 38)" ' + S + '/>' +
-      '<path d="M29 37v8 M37 37v8" ' + DET + '/>',
+      '<rect x="22" y="34" width="28" height="24" rx="10" ' + S + '/>' +
+      '<circle cx="30" cy="33" r="5.5" ' + S + '/><circle cx="39" cy="32" r="5.5" ' + S + '/><circle cx="47" cy="33" r="5" ' + S + '/>' +
+      '<rect x="12" y="8" width="12" height="36" rx="6" ' + S + '/>' +
+      '<path d="M30 47h10" ' + DET + '/>',
     ok:
       CUFF +
       '<rect x="14" y="40" width="34" height="22" rx="10" ' + S + '/>' +
@@ -100,12 +101,36 @@
   var badge = div('cursor-badge', pop);
   badge.textContent = '↗';
 
-  // view-state sticker: 64px round arrow, sibling of the tilt layer
-  var sticker = div('cursor-sticker', hand);
-  sticker.innerHTML =
-    '<div class="sticker-disc"><svg class="sticker-arrow" width="34" height="34" viewBox="0 0 64 64" aria-hidden="true">' +
-    '<path d="M22 42 L42 22 M27 22 h15 v15" fill="none" stroke="' + INK + '" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>' +
-    '</svg></div><div class="sticker-orbit"><i></i><i></i></div>';
+  // view-state buddy: cartoon character with eyes + VIEW banner (replaces the sticker)
+  var YEL = '#FFD60A', PNK = '#FF0A8A';
+  var BS = 'fill="' + YEL + '" stroke="' + INK + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"';
+  var BO = 'stroke="' + INK + '" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"';
+  var BUDDY_SVG =
+    '<ellipse cx="52" cy="56" rx="34" ry="30" fill="' + INK + '"/>' +
+    '<ellipse cx="36" cy="86" rx="10" ry="5.5" ' + BS + '/>' +
+    '<ellipse cx="60" cy="86" rx="10" ry="5.5" ' + BS + '/>' +
+    '<rect x="4" y="54" width="18" height="10" rx="5" transform="rotate(12 13 59)" ' + BS + '/>' +
+    '<rect x="74" y="36" width="10" height="22" rx="5" transform="rotate(-16 79 47)" ' + BS + '/>' +
+    '<ellipse cx="48" cy="52" rx="34" ry="30" fill="none" stroke="' + PAPER + '" stroke-width="7"/>' +
+    '<ellipse cx="48" cy="52" rx="34" ry="30" fill="' + YEL + '" ' + BO + '/>' +
+    '<ellipse cx="22" cy="50" rx="5" ry="3.5" fill="' + PNK + '"/>' +
+    '<ellipse cx="74" cy="50" rx="5" ry="3.5" fill="' + PNK + '"/>' +
+    '<path d="M27 22 l10 -3 M59 19 l10 3" fill="none" stroke="' + INK + '" stroke-width="2.5" stroke-linecap="round"/>' +
+    '<circle cx="36" cy="36" r="9" fill="' + PAPER + '" ' + BO + '/>' +
+    '<circle cx="60" cy="36" r="9" fill="' + PAPER + '" ' + BO + '/>' +
+    '<g class="pupil"><circle cx="36" cy="36" r="4.5" fill="' + INK + '"/>' +
+    '<circle cx="37.5" cy="34.5" r="1.5" fill="' + PAPER + '"/></g>' +
+    '<g class="pupil"><circle cx="60" cy="36" r="4.5" fill="' + INK + '"/>' +
+    '<circle cx="61.5" cy="34.5" r="1.5" fill="' + PAPER + '"/></g>' +
+    '<path d="M40 58 Q48 64 56 58" fill="none" stroke="' + INK + '" stroke-width="2.5" stroke-linecap="round"/>';
+  var buddy = div('view-buddy', root);
+  var buddyOffset = div('view-buddy-offset', buddy);
+  var buddyTilt = div('view-buddy-tilt', buddyOffset);
+  buddyTilt.innerHTML = '<svg class="view-buddy-svg" viewBox="0 0 96 100" aria-hidden="true">' + BUDDY_SVG + '</svg>';
+  var viewText = div('view-text', buddyOffset);
+  var viewLabel = document.createElement('span');
+  viewText.appendChild(viewLabel);
+  var pupils = buddyTilt.querySelectorAll('.pupil');
 
   // trail: 3 tiny sparkles (skipped under reduced motion)
   var trail = [];
@@ -139,6 +164,8 @@
   var state = 'default', currentPose = '';
   var isDown = false;
   var tiltA = 0;
+  var bx = mx, by = my, buddyTiltA = 0;   // view buddy (lerped)
+  var viewCard = null, viewRect = null;
   var idleT1 = 0, idleT2 = 0;
   var rafId = 0, running = false;
 
@@ -160,13 +187,47 @@
     if (state === 'poke') return 'poke';
     return 'point';
   }
-  function setState(next) {
+  function setViewLabel(card) {
+    var t = (card && card.getAttribute('data-cursor-label')) || 'VIEW';
+    t = String(t).toUpperCase().slice(0, 12);
+    viewLabel.textContent = t;
+    viewLabel.style.fontSize = t.length > 6 ? '15px' : '18px';
+  }
+  // pupils look toward the center of the hovered card
+  function updatePupils() {
+    if (!viewRect || pupils.length === 0) return;
+    var cx = viewRect.left + viewRect.width / 2;
+    var cy = viewRect.top + viewRect.height / 2;
+    var dx = cx - mx, dy = cy - my;
+    var len = Math.sqrt(dx * dx + dy * dy) || 1;
+    var tr = 'translate(' + (dx / len * 2.5).toFixed(1) + ' ' + (dy / len * 2.5).toFixed(1) + ')';
+    for (var i = 0; i < pupils.length; i++) pupils[i].setAttribute('transform', tr);
+  }
+  window.addEventListener('scroll', function () {
+    if (state === 'view' && viewCard) viewRect = viewCard.getBoundingClientRect();
+  }, { passive: true });
+
+  function setState(next, card) {
     if (state === next) return;
     state = next;
     for (var i = 0; i < STATE_CLASSES.length; i++) {
       html.classList.toggle(STATE_CLASSES[i], ('cst-' + next) === STATE_CLASSES[i]);
     }
     html.classList.toggle('cursor-hidden-zone', next === 'hide');
+    if (next === 'view') {
+      viewCard = card || null;
+      viewRect = viewCard ? viewCard.getBoundingClientRect() : null;
+      setViewLabel(viewCard);
+      bx = mx; by = my; buddyTiltA = 0;
+      buddyTilt.style.transform = 'rotate(0deg)';
+      buddyOffset.classList.remove('popping');
+      void buddyOffset.offsetWidth;
+      buddyOffset.classList.add('popping');
+      updatePupils();
+      kick();
+    } else {
+      viewCard = null; viewRect = null;
+    }
     setPose(poseFor());
   }
 
@@ -177,8 +238,8 @@
     var zoned = target.closest('[data-cursor]');
     if (zoned) {
       var kind = zoned.getAttribute('data-cursor');
-      if (kind === 'view' || kind === 'drag' || kind === 'poke') { setState(kind); return; }
-      if (kind === 'hide') { setState('hide'); return; }
+      if (kind === 'view' || kind === 'drag' || kind === 'poke') { setState(kind, zoned); return; }
+      if (kind === 'hide') { setState('hide', null); return; }
     }
     if (target.closest('input, textarea, select, [contenteditable="true"]')) { setState('hide'); return; }
     if (target.closest('a, button, [role="button"]')) { setState('link'); return; }
@@ -313,8 +374,23 @@
 
     hand.style.transform = 'translate3d(' + hx.toFixed(1) + 'px,' + hy.toFixed(1) + 'px,0)';
 
-    // trail: longer lag, fades to 40%, hidden when still
-    var showTrail = !reduced && speed > 3;
+    // view buddy follows with a little more lag; tilts ±6° with horizontal speed
+    var buddySettled = true;
+    if (state === 'view') {
+      bx += (mx - bx) * 0.3;
+      by += (my - by) * 0.3;
+      var bt = reduced ? 0 : vx * 0.08;
+      if (bt > 6) bt = 6;
+      else if (bt < -6) bt = -6;
+      buddyTiltA += (bt - buddyTiltA) * 0.15;
+      buddy.style.transform = 'translate3d(' + bx.toFixed(1) + 'px,' + by.toFixed(1) + 'px,0)';
+      buddyTilt.style.transform = 'rotate(' + buddyTiltA.toFixed(2) + 'deg)';
+      updatePupils();
+      buddySettled = Math.abs(mx - bx) < 0.5 && Math.abs(my - by) < 0.5 && Math.abs(bt - buddyTiltA) < 0.1;
+    }
+
+    // trail: longer lag, fades to 40%, hidden when still (and in view state)
+    var showTrail = !reduced && speed > 3 && state !== 'view';
     var settled = true;
     for (var i = 0; i < trail.length; i++) {
       var s = trail[i];
@@ -329,7 +405,7 @@
 
     var caughtUp = Math.abs(mx - hx) < 0.3 && Math.abs(my - hy) < 0.3;
     var tiltSettled = Math.abs(target - tiltA) < 0.05;
-    if (!document.hidden && (!caughtUp || !tiltSettled || !settled)) {
+    if (!document.hidden && (!caughtUp || !tiltSettled || !settled || !buddySettled)) {
       rafId = requestAnimationFrame(frame);
     } else {
       running = false;
