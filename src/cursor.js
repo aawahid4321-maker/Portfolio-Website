@@ -166,7 +166,7 @@
   var bx = mx, by = my, buddyTiltA = 0;   // view buddy (lerped)
   var viewCard = null, viewRect = null;
   var idleT1 = 0, idleT2 = 0;
-  var rafId = 0, running = false;
+  var running = false; // registered with window.__raf (shared page scheduler)
 
   var STATE_CLASSES = ['cst-link', 'cst-view', 'cst-drag', 'cst-poke', 'cst-text'];
 
@@ -347,7 +347,7 @@
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
       running = false;
-      cancelAnimationFrame(rafId);
+      window.__raf.remove(frame);
     } else {
       kick();
     }
@@ -357,7 +357,7 @@
   function kick() {
     if (!running && !document.hidden && hasMoved) {
       running = true;
-      rafId = requestAnimationFrame(frame);
+      window.__raf.add(frame);
     }
   }
   var TRAIL_K = [0.12, 0.08, 0.05];
@@ -413,9 +413,10 @@
     var caughtUp = Math.abs(mx - hx) < 0.3 && Math.abs(my - hy) < 0.3;
     var tiltSettled = Math.abs(target - tiltA) < 0.05;
     if (!document.hidden && (!caughtUp || !tiltSettled || !settled || !buddySettled)) {
-      rafId = requestAnimationFrame(frame);
+      // stay registered — the shared scheduler keeps calling frame
     } else {
       running = false;
+      window.__raf.remove(frame);
       tiltA = 0;
       tilt.style.transform = 'rotate(0deg)';
     }
