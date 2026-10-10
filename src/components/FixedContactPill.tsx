@@ -191,18 +191,15 @@ export default function FixedContactPill() {
           outline: 3px solid var(--pill-blue);
           outline-offset: 3px;
         }
-        /* mobile: icon-only round button */
+        /* phones: same pill (face + CONTACT + arrow), just a touch smaller */
         @media (max-width: 639px) {
           .fixed-contact-pill {
-            padding: 12px;
-            border-radius: 50%;
-            width: 56px; height: 56px;
-            justify-content: center;
-            gap: 0;
-            right: 16px;
-            bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+            gap: 8px;
+            font-size: 14px;
+            padding: 9px 10px 9px 10px;
+            right: 14px;
+            bottom: calc(14px + env(safe-area-inset-bottom, 0px));
           }
-          .fixed-contact-pill .pill-label { display: none; }
         }
         @media (prefers-reduced-motion: reduce) {
           .fixed-contact-pill:not(.is-hidden) { animation: none; }
