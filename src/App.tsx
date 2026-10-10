@@ -585,7 +585,7 @@ export default function App() {
     const maxDist = Math.hypot(CX, CY);
     const rows = Math.ceil(H / pitch);
 
-    type Dot = { x: number; y: number; r: number; v: number; tr: number; base: number; at: number };
+    type Dot = { x: number; y: number; r: number; v: number; tr: number; base: number; at: number; drawnR: number };
     const now0 = performance.now();
     const dots: Dot[] = [];
 
@@ -596,7 +596,7 @@ export default function App() {
         const dist = Math.hypot(x - CX, y - CY);
         // Centre dots appear first, edges staggered up to 750 ms later
         const at = now0 + 200 + (dist / maxDist) * 750;
-        dots.push({ x, y, r: rMin, v: 0, tr: rMin, base: rMin, at });
+        dots.push({ x, y, r: rMin, v: 0, tr: rMin, base: rMin, at, drawnR: -1 });
       }
     }
 
@@ -633,27 +633,51 @@ export default function App() {
     // ── Spring loop ──────────────────────────────────────────
     const K = 0.16, D = 0.65; // spring stiffness / damping (slight overshoot = pop)
 
+    // Perf: the spring sim keeps running every frame (cheap math), but the
+    // canvas is only repainted when a dot radius actually changed by a visible
+    // amount (or the image just became ready) and the portrait is on screen.
+    // Once the dots settle, the old loop redrew 196 clipped images every frame
+    // forever — even while the user was far down the page — which stole frame
+    // time from the physics tags section. Output pixels are identical.
+    let portraitOnScreen = true;
+    const portraitIO = new IntersectionObserver((entries) => {
+      for (const en of entries) portraitOnScreen = en.isIntersecting;
+    });
+    portraitIO.observe(cvs);
+    let drawnWithImage = false;
+
     let rafId = 0;
     const loop = (now: number) => {
-      ctx.clearRect(0, 0, W, H);
-
       for (const dot of dots) {
-        // Auto-reveal target
         if (now >= dot.at) dot.base = rFull;
-
-        // Hover boost: cursor proximity expands toward rMax
         let hover = 0;
         if (mouse.on) {
           const d = Math.hypot(mouse.x - dot.x, mouse.y - dot.y);
           const n = Math.max(0, 1 - d / HOVER_R);
-          hover = n * n; // smooth falloff
+          hover = n * n;
         }
         dot.tr = dot.base + (rMax - dot.base) * hover;
-
-        // Spring physics → natural bubble pop
         dot.v += (dot.tr - dot.r) * K - dot.v * D;
         dot.r  = Math.max(rMin, dot.r + dot.v);
+      }
 
+      const imgReady = !!(portraitImg && portraitImg.complete && portraitImg.naturalWidth && fit);
+      let dirty = imgReady !== drawnWithImage;
+      if (!dirty) {
+        for (const dot of dots) {
+          if (Math.abs(dot.r - dot.drawnR) > 0.002) { dirty = true; break; }
+        }
+      }
+      if (!dirty || !portraitOnScreen) {
+        rafId = requestAnimationFrame(loop);
+        return;
+      }
+      drawnWithImage = imgReady;
+
+      ctx.clearRect(0, 0, W, H);
+
+      for (const dot of dots) {
+        dot.drawnR = dot.r;
         // Draw dot
         ctx.save();
         ctx.translate(dot.x, dot.y);
@@ -678,6 +702,7 @@ export default function App() {
 
     return () => {
       cancelAnimationFrame(rafId);
+      portraitIO.disconnect();
       portrait.removeEventListener("mousemove", onMove);
       portrait.removeEventListener("mouseleave", onLeave);
       if (leaveTimer) clearTimeout(leaveTimer);
@@ -1058,9 +1083,23 @@ export default function App() {
     // the viewport; image zooms 1.25→1.0 over the same travel.
     let scrubActive = true;
     let scrubRaf = 0;
+    // Perf: only re-measure when the scroll position / viewport changed (plus
+    // a periodic safety refresh), and only write styles that actually changed.
+    // The old loop forced a layout read + style write on every card every
+    // frame, even when nothing moved. Same values, same look.
+    let lastSX = NaN, lastVH = NaN, lastVW = NaN, framesSince = 0;
+    const lastClip = new Map<HTMLElement, string>();
+    const lastZoom = new Map<HTMLElement, string>();
     const scrub = () => {
       if (!scrubActive) return;
       const vh = window.innerHeight;
+      const sx = window.scrollY, vw = window.innerWidth;
+      if (sx === lastSX && vh === lastVH && vw === lastVW && framesSince < 30) {
+        framesSince++;
+        scrubRaf = requestAnimationFrame(scrub);
+        return;
+      }
+      lastSX = sx; lastVH = vh; lastVW = vw; framesSince = 0;
       workCards.forEach((card) => {
         const rect = card.getBoundingClientRect();
         const raw  = (vh - rect.top) / (vh + rect.height);
@@ -1071,11 +1110,13 @@ export default function App() {
         const closeP = Math.min(1, (1 - p) / 0.3);
         const half   = card.offsetWidth / 2; // dynamic: works for any card width
         const clip   = (1 - Math.min(openP, closeP)) * half;
-        card.style.clipPath = `inset(0 ${clip.toFixed(1)}px 0 ${clip.toFixed(1)}px)`;
+        const clipV  = `inset(0 ${clip.toFixed(1)}px 0 ${clip.toFixed(1)}px)`;
+        if (lastClip.get(card) !== clipV) { card.style.clipPath = clipV; lastClip.set(card, clipV); }
 
         const img = card.querySelector("img");
         if (img instanceof HTMLElement) {
-          img.style.transform = `scale(${(1.25 - 0.25 * p).toFixed(4)})`;
+          const zoomV = `scale(${(1.25 - 0.25 * p).toFixed(4)})`;
+          if (lastZoom.get(img) !== zoomV) { img.style.transform = zoomV; lastZoom.set(img, zoomV); }
         }
       });
       scrubRaf = requestAnimationFrame(scrub);
@@ -1254,9 +1295,21 @@ export default function App() {
 
     // ── Continuous rAF scrub: horizontal clip-path + image zoom ──────────────
     let scrubActive = true, scrubRaf = 0;
+    // Perf: skip re-measuring when scroll/viewport are unchanged (periodic
+    // safety refresh), and only write styles that changed. Same output.
+    let lastSX = NaN, lastVH = NaN, lastVW = NaN, framesSince = 0;
+    const lastClip = new Map<HTMLElement, string>();
+    const lastZoom = new Map<HTMLElement, string>();
     const scrub = () => {
       if (!scrubActive) return;
       const vh = window.innerHeight;
+      const sx = window.scrollY, vw = window.innerWidth;
+      if (sx === lastSX && vh === lastVH && vw === lastVW && framesSince < 30) {
+        framesSince++;
+        scrubRaf = requestAnimationFrame(scrub);
+        return;
+      }
+      lastSX = sx; lastVH = vh; lastVW = vw; framesSince = 0;
       workCards.forEach((card) => {
         const rect = card.getBoundingClientRect();
         const raw = (vh - rect.top) / (vh + rect.height);
@@ -1265,9 +1318,13 @@ export default function App() {
         const openP  = Math.min(1, p / 0.3);
         const closeP = Math.min(1, (1 - p) / 0.3);
         const clip = (1 - Math.min(openP, closeP)) * half;
-        card.style.clipPath = `inset(0 ${clip.toFixed(1)}px 0 ${clip.toFixed(1)}px)`;
+        const clipV = `inset(0 ${clip.toFixed(1)}px 0 ${clip.toFixed(1)}px)`;
+        if (lastClip.get(card) !== clipV) { card.style.clipPath = clipV; lastClip.set(card, clipV); }
         const img = card.querySelector<HTMLElement>("img");
-        if (img) img.style.transform = `scale(${(1.25 - 0.25 * p).toFixed(4)})`;
+        if (img) {
+          const zoomV = `scale(${(1.25 - 0.25 * p).toFixed(4)})`;
+          if (lastZoom.get(img) !== zoomV) { img.style.transform = zoomV; lastZoom.set(img, zoomV); }
+        }
       });
       scrubRaf = requestAnimationFrame(scrub);
     };

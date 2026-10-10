@@ -679,7 +679,6 @@ export default function PhysicsTags() {
       if (!ready || hasDropped) return;
       hasDropped = true;
       dropStart = performance.now();
-      console.log("bodies", TOTAL_BODIES); // DEBUG (temporary)
       startLoop();
       const spawns = buildSpawnList();
       spawns.forEach(({ kind, i, x, y }) => {
@@ -961,7 +960,6 @@ export default function PhysicsTags() {
     let idle = false;
     let idleWakeT = 0;
     let lastNudge = 0;
-    let lastDebug = 0, debugFrames = 0; // DEBUG (temporary): 2s log
 
     // lerp helper (defined once — no closure created per frame)
     const lerpItem = (it: { body: Matter.Body | null; dx: number; dy: number; da: number }) => {
@@ -1224,15 +1222,6 @@ export default function PhysicsTags() {
         lastNudge = now;
         const b = physBodies[(Math.random() * physBodies.length) | 0];
         Matter.Body.applyForce(b, b.position, { x: (Math.random() - 0.5) * 0.0006, y: -Math.random() * 0.0007 });
-      }
-
-      // DEBUG (temporary): every 2s — fps, body count (must not change), idle on/off
-      debugFrames++;
-      if (now - lastDebug > 2000) {
-        const fps = Math.round((debugFrames * 1000) / Math.max(now - lastDebug, 1));
-        console.log("[tags] fps", fps, "bodies", physBodies.length, "idle", idle ? "on" : "off");
-        lastDebug = now;
-        debugFrames = 0;
       }
 
       // idle: stop physics+draw when nothing moves; the last frame stays
