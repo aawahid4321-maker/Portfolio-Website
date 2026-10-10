@@ -206,7 +206,7 @@ export default function SharedFooterContent() {
         {/* ── Copyright ────────────────────────────────────────────── */}
         <div className="absolute left-[1155px] bottom-0" data-reveal="300">
           <p className="font-['Zilla_Slab'] leading-[23.04px] not-italic text-[rgba(13,13,13,0.5)] text-[22px] uppercase whitespace-nowrap">
-            ©2026. All right reserved
+            ©2026. All rights reserved
           </p>
         </div>
       </div>

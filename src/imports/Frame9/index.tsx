@@ -10,7 +10,10 @@ import imgContainer4 from "@/assets/axorix-hero.webp";
 const imgContainer5 = `${import.meta.env.BASE_URL}assets/pypo-hero.webp`;
 import imgContainer6 from "@/assets/brochure-hero.webp";
 import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy3 } from "./svg-8vx37";
-import SharedFooterContent from "@/components/SharedFooterContent";
+import SiteFooter from "@/components/SiteFooter";
+
+// Canvas y where the shared footer starts on the home page.
+export const HOME_FOOTER_TOP = 10222.27;
 import PhysicsTags from "@/components/PhysicsTags";
 import LetsConnect from "@/components/LetsConnect";
 import LearnMoreButton from "@/components/LearnMoreButton";
@@ -352,24 +355,8 @@ function Container40() {
   );
 }
 
-function Container22() {
-  return <SharedFooterContent />;
-}
-
-function Container21() {
-  return (
-    <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
-      <Container22 />
-    </div>
-  );
-}
-
 function Container20() {
-  return (
-    <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[10222.27px] w-[1920px]" data-name="Container">
-      <Container21 />
-    </div>
-  );
+  return <SiteFooter top={HOME_FOOTER_TOP} />;
 }
 
 function Group14() {

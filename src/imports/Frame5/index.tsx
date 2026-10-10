@@ -1,7 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import svgPaths from "./svg-8jh5l27o5h";
 import imgChatGptImageSep132026012119Am1 from "./b389fd9fe37e840e82ef570bd3a6044d75d431d7.webp";
-import SharedFooterContent from "@/components/SharedFooterContent";
+import SiteFooter from "@/components/SiteFooter";
+
+// Canvas y where the shared footer starts on the About page.
+export const ABOUT_FOOTER_TOP = 5363.12;
 import LetsConnect from "@/components/LetsConnect";
 
 /* Metric mascot eyes: two small white eyes with black pupils that blink
@@ -640,20 +643,8 @@ function Container44() {
   );
 }
 
-function Container26() {
-  return (
-    <SharedFooterContent />
-  );
-}
-
 function Container24() {
-  return (
-    <div className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] top-[5363.12px] w-[1920px]" data-name="Container">
-      <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
-        <Container26 />
-      </div>
-    </div>
-  );
+  return <SiteFooter top={ABOUT_FOOTER_TOP} />;
 }
 
 function Group6() {

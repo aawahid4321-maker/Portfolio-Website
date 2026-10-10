@@ -1,3 +1,4 @@
+import { FOOTER_H } from "@/components/SiteFooter";
 export interface ProjectData {
   id: string;
   title: string;
@@ -344,13 +345,21 @@ export function getNextProject(currentId: string): ProjectData | undefined {
 const IMG_SLOT_H = Math.round((1823.5 * 9) / 16); // 1025
 const IMG_GAP = 44;
 const IMAGES_TOP = 1396;
-const TAIL_H = 2502; // constant: Next Project + Let's Connect + Footer
+// Hero is ~800px tall; content below it is shifted by this much.
+const HERO_SHIFT = 4;
+// Footer starts this far below the last project image (after Next Project +
+// Let's Connect). The canvas ends exactly at the bottom of the footer, so
+// TAIL_H = Next Project + Let's Connect + Footer.
+const FOOTER_OFFSET = 1972;
+const TAIL_H = FOOTER_OFFSET + FOOTER_H;
 
-export function getProjectCanvasH(imageCount: number): number {
-  const imagesH = imageCount * IMG_SLOT_H + Math.max(0, imageCount - 1) * IMG_GAP;
-  // +404px for the taller new hero (1050px vs old 679px)
-  return IMAGES_TOP + 404 + imagesH + TAIL_H;
+export function getProjectCanvasH(imageCount: number, imageHeights?: (number | null)[]): number {
+  // Respect per-image custom heights (e.g. one extra-tall image) so the canvas
+  // never cuts off the footer for that project.
+  let imagesH = Math.max(0, imageCount - 1) * IMG_GAP;
+  for (let i = 0; i < imageCount; i++) imagesH += imageHeights?.[i] ?? IMG_SLOT_H;
+  return IMAGES_TOP + HERO_SHIFT + imagesH + TAIL_H;
 }
 
 // Convenience constants re-exported for ProjectPage's internal layout math
-export { IMG_SLOT_H, IMG_GAP, IMAGES_TOP, TAIL_H };
+export { IMG_SLOT_H, IMG_GAP, IMAGES_TOP, HERO_SHIFT, FOOTER_OFFSET, TAIL_H };
