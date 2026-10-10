@@ -748,13 +748,18 @@ export default function PhysicsTags() {
     };
     const onLeave = () => { cursor.active = false; cursor.x = -9999; cursor.y = -9999; };
     const onDown = (e: PointerEvent) => {
+      // touch taps are handled by onTouchEnd (so a scroll swipe never "pokes")
+      if (e.pointerType === "touch") return;
+      pokeAt(e.clientX, e.clientY);
+    };
+    const pokeAt = (clientX: number, clientY: number) => {
       if (idle) startLoop();
       lastPointerMove = performance.now();
       hoverDirty = true;
       const r = rectCache;
       const sx = section.clientWidth / r.width;
       const sy = section.clientHeight / r.height;
-      const cx = (e.clientX - r.left) * sx, cy = (e.clientY - r.top) * sy;
+      const cx = (clientX - r.left) * sx, cy = (clientY - r.top) * sy;
       const found = Matter.Query.point(physBodies, { x: cx, y: cy })[0];
       if (found) {
         Matter.Body.applyForce(found, found.position, { x: 0, y: -0.004 });
@@ -777,6 +782,91 @@ export default function PhysicsTags() {
       }
     };
     const onUp = () => { hoverDirty = true; if (idle) startLoop(); };
+
+    /* ── Touch (phones/tablets): never block page scrolling ──────────────────
+       Matter's built-in touch handlers call preventDefault() on touchstart /
+       touchmove, which froze page scrolling whenever a finger landed on this
+       section. They are removed (see boot) and replaced with:
+       - quick tap  → same poke / boing as a mouse click
+       - long-press (~280ms, finger still) on a tag → grab and drag it
+       - any other swipe → normal page scroll */
+    type MouseInternals = {
+      mousemove: EventListener; mousedown: EventListener; mouseup: EventListener;
+      absolute: { x: number; y: number }; offset: { x: number; y: number };
+      position: { x: number; y: number }; mousedownPosition: { x: number; y: number };
+      button: number;
+    };
+    const mInt = mouse as unknown as MouseInternals;
+    const stripTouch = () => {
+      section.removeEventListener("touchmove", mInt.mousemove);
+      section.removeEventListener("touchstart", mInt.mousedown);
+      section.removeEventListener("touchend", mInt.mouseup);
+    };
+    let tDrag = false, tTimer = 0, tMoved = false;
+    let tStartX = 0, tStartY = 0, tStartT = 0;
+    const touchWorld = (clientX: number, clientY: number) => {
+      const r = rectCache;
+      return {
+        x: (clientX - r.left) * (section.clientWidth / r.width),
+        y: (clientY - r.top) * (section.clientHeight / r.height),
+      };
+    };
+    const setTouchMouse = (clientX: number, clientY: number) => {
+      const p = touchWorld(clientX, clientY);
+      // syncMouse() recomputes position = absolute + offset every frame
+      mInt.absolute.x = p.x - mInt.offset.x;
+      mInt.absolute.y = p.y - mInt.offset.y;
+      mInt.position.x = p.x; mInt.position.y = p.y;
+      return p;
+    };
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      updateRectCache();
+      tStartX = t.clientX; tStartY = t.clientY; tStartT = performance.now();
+      tMoved = false;
+      if (idle) startLoop();
+      window.clearTimeout(tTimer);
+      tTimer = window.setTimeout(() => {
+        if (tMoved) return;
+        const p = touchWorld(tStartX, tStartY);
+        if (!Matter.Query.point(physBodies, p)[0]) return;
+        tDrag = true;
+        setTouchMouse(tStartX, tStartY);
+        mInt.mousedownPosition.x = mInt.position.x;
+        mInt.mousedownPosition.y = mInt.position.y;
+        mInt.button = 0;
+        lastPointerMove = performance.now();
+        hoverDirty = true;
+        if (idle) startLoop();
+      }, 280);
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      const t = e.touches[0];
+      if (!t) return;
+      if (tDrag) {
+        if (e.cancelable) e.preventDefault(); // only while intentionally dragging
+        setTouchMouse(t.clientX, t.clientY);
+        lastPointerMove = performance.now();
+        return;
+      }
+      if (Math.abs(t.clientX - tStartX) > 10 || Math.abs(t.clientY - tStartY) > 10) {
+        tMoved = true;
+        window.clearTimeout(tTimer);
+      }
+    };
+    const endTouch = (tap: boolean) => {
+      window.clearTimeout(tTimer);
+      if (tDrag) {
+        tDrag = false;
+        mInt.button = -1;
+        hoverDirty = true;
+        return;
+      }
+      if (tap && !tMoved && performance.now() - tStartT < 300) pokeAt(tStartX, tStartY);
+    };
+    const onTouchEnd = () => endTouch(true);
+    const onTouchCancel = () => endTouch(false);
     /* click sparkles for faces + emoji */
     const spawnSparkles = (it: PFace | PEmoji) => {
       const b = it.body!;
@@ -1321,6 +1411,11 @@ export default function PhysicsTags() {
     const boot = () => {
       Matter.Composite.add(engine.world, mouseConstraint);
       stripWheel();
+      stripTouch();
+      section.addEventListener("touchstart", onTouchStart, { passive: true });
+      section.addEventListener("touchmove", onTouchMove, { passive: false });
+      section.addEventListener("touchend", onTouchEnd, { passive: true });
+      section.addEventListener("touchcancel", onTouchCancel, { passive: true });
       syncMouse();
       updateRectCache();
       section.addEventListener("pointermove", onMove);
@@ -1359,6 +1454,11 @@ export default function PhysicsTags() {
       section.removeEventListener("pointerdown", onDown);
       section.removeEventListener("pointerup", onUp);
       section.removeEventListener("touchstart", onUp);
+      section.removeEventListener("touchstart", onTouchStart);
+      section.removeEventListener("touchmove", onTouchMove);
+      section.removeEventListener("touchend", onTouchEnd);
+      section.removeEventListener("touchcancel", onTouchCancel);
+      window.clearTimeout(tTimer);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("scroll", onScrollHold);
       window.clearTimeout(scrollHoldT);
