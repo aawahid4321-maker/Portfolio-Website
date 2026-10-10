@@ -8,7 +8,8 @@ import SharedFooterContent from "@/components/SharedFooterContent";
  * the bottom of this band, which keeps the copyright line, the grid lines and
  * the empty space under it identical everywhere.
  */
-export const FOOTER_H = 660;
+export const FOOTER_BOTTOM_SPACE = 28; // space under the copyright line (canvas px, ~20px on a 1366px screen)
+export const FOOTER_H = 100 + 500 + FOOTER_BOTTOM_SPACE; // = 628
 
 interface SiteFooterProps {
   /** Absolute top offset (canvas px). Omit to render the footer in normal flow. */
@@ -21,8 +22,8 @@ export default function SiteFooter({ top }: SiteFooterProps) {
     <div
       className={
         positioned
-          ? "-translate-x-1/2 absolute left-1/2 bg-[#e6e6e6] content-stretch flex flex-col items-start pb-[32px] pt-[100px] w-[1920px]"
-          : "relative bg-[#e6e6e6] content-stretch flex flex-col items-start pb-[32px] pt-[100px] w-[1920px]"
+          ? "-translate-x-1/2 absolute left-1/2 bg-[#e6e6e6] content-stretch flex flex-col items-start pb-[28px] pt-[100px] w-[1920px]"
+          : "relative bg-[#e6e6e6] content-stretch flex flex-col items-start pb-[28px] pt-[100px] w-[1920px]"
       }
       style={positioned ? { top, height: FOOTER_H } : { height: FOOTER_H }}
       data-name="Footer"
