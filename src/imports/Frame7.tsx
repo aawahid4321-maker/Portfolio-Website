@@ -1,4 +1,4 @@
-import SharedFooterContent from "@/components/SharedFooterContent";
+import SiteFooter, { FOOTER_H } from "@/components/SiteFooter";
 import LetsConnect from "@/components/LetsConnect";
 import imgCampusApp from "@/assets/brochure-hero.webp";
 import imgWorkBg from "@/assets/work-bg.webp";
@@ -40,7 +40,7 @@ const WORK_CARDS = [
 
 // Dynamic work-page canvas height so the footer is never clipped when cards
 // are added. Card = 1024x576 image (16:9) + 8px gap + 23.04px label row;
-// 72px gaps between cards; then Let's Connect (763 + 72 margin) + footer (660).
+// 72px gaps between cards; then Let's Connect (763) + footer (FOOTER_H).
 export const WORK_CARD_H = 576 + 8 + 23.04;
 export const WORK_CARD_GAP = 72;
 export function getWorkCanvasH(cardCount: number = WORK_CARDS.length) {
@@ -49,8 +49,8 @@ export function getWorkCanvasH(cardCount: number = WORK_CARDS.length) {
     160 + // cards block pt
     (cardCount * WORK_CARD_H + Math.max(0, cardCount - 1) * WORK_CARD_GAP) +
     253 + // cards block pb
-    763 + 72 + // Let's Connect + its bottom margin
-    600 // footer
+    763 + // Let's Connect (footer follows directly, same as every other page)
+    FOOTER_H // footer (same height as on every other page)
   );
 }
 
@@ -186,16 +186,12 @@ export default function Frame7() {
       </div>
 
       {/* Let's Connect section — interactive component, follows the cards in flow */}
-      <div className="relative left-[-4.02px] w-[1920px] h-[763px] overflow-hidden mb-[72px]">
+      <div className="relative left-[-4.02px] w-[1920px] h-[763px] overflow-hidden">
         <LetsConnect />
       </div>
 
       {/* Footer — identical to homepage, follows in flow */}
-      <div className="relative bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start pb-[32px] pt-[100px] w-[1920px]" data-name="Container">
-        <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
-          <SharedFooterContent />
-        </div>
-      </div>
+      <SiteFooter />
     </div>
   );
 }

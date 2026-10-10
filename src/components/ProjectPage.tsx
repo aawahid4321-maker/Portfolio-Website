@@ -1,11 +1,11 @@
-import { type ProjectData, getProjectCanvasH, IMG_SLOT_H, IMG_GAP, IMAGES_TOP, TAIL_H } from "@/data/projects";
-import SharedFooterContent from "@/components/SharedFooterContent";
+import { type ProjectData, getProjectCanvasH, IMG_SLOT_H, IMG_GAP, IMAGES_TOP, HERO_SHIFT, FOOTER_OFFSET } from "@/data/projects";
+import SiteFooter from "@/components/SiteFooter";
 import LetsConnect from "@/components/LetsConnect";
 import ProjectHero from "@/components/ProjectHero";
 
 /* Hero is now ~800px tall (flex: 152 top pad + tags + card + 72 bottom pad, no title).
-   Shift content so Overview starts right after the hero's bottom padding. */
-const HERO_SHIFT = 4;
+   Content is shifted by HERO_SHIFT (see data/projects.ts) so Overview starts
+   right after the hero's bottom padding. */
 
 interface ProjectPageProps {
   project: ProjectData;
@@ -32,12 +32,14 @@ export default function ProjectPage({
   const imagesH = project.images.reduce((sum, _, i) => sum + slotH(i), 0) + Math.max(0, imageCount - 1) * IMG_GAP;
   const IMAGES_TOP_ADJ = IMAGES_TOP + HERO_SHIFT; // shift images below the new taller hero
   const IB = IMAGES_TOP_ADJ + imagesH; // images bottom — all sections below anchor here
-  const canvasH = IB + TAIL_H;
+  // Same formula as getProjectCanvasH, so App and this page always agree and
+  // the canvas ends exactly at the bottom of the footer.
+  const canvasH = getProjectCanvasH(imageCount, project.imageHeights);
 
   // Offsets from IB — derived from the original 6-image layout
   const NEXT_TOP      = IB + 332;
   const LC_BG_TOP     = IB + 1209;
-  const FOOTER_TOP    = IB + 1972;
+  const FOOTER_TOP    = IB + FOOTER_OFFSET;
 
   return (
     <div
@@ -284,15 +286,7 @@ export default function ProjectPage({
       </div>
 
       {/* ── Footer — identical to homepage ───────────────────── */}
-      <div
-        className="-translate-x-1/2 absolute bg-[#e6e6e6] content-stretch flex flex-col h-[660px] items-start left-1/2 pb-[32px] pt-[100px] w-[1920px]"
-        data-name="Container"
-        style={{ top: FOOTER_TOP }}
-      >
-        <div className="content-stretch flex flex-col items-start px-[48px] relative shrink-0 w-[1920px]" data-name="Container">
-          <SharedFooterContent />
-        </div>
-      </div>
+      <SiteFooter top={FOOTER_TOP} />
     </div>
   );
 }

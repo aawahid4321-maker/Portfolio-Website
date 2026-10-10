@@ -1,6 +1,7 @@
-import Frame9 from "@/imports/Frame9";
+import Frame9, { HOME_FOOTER_TOP } from "@/imports/Frame9";
 import FloatingNav from "@/components/FloatingNav";
-import Frame5 from "@/imports/Frame5";
+import Frame5, { ABOUT_FOOTER_TOP } from "@/imports/Frame5";
+import { FOOTER_H } from "@/components/SiteFooter";
 import Frame7, { getWorkCanvasH } from "@/imports/Frame7";
 import ProjectPage from "@/components/ProjectPage";
 import NodaliqSite from "@/components/NodaliqSite";
@@ -14,12 +15,14 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 // We scale the whole canvas to the viewport width so it fits every
 // screen (desktop, tablet, mobile) while keeping the exact layout.
 const BASE_W = 1920;
-const BASE_H = 11003;
+// Every page canvas ends exactly at the bottom of the shared footer, so the
+// footer looks the same (same space under the copyright) on every page.
+const BASE_H = HOME_FOOTER_TOP + FOOTER_H;
 // The About page (Frame5) is authored at the same width. It is a separate
 // view reached from the navbar, not stacked below the home page. The imported
 // grid columns run the full 7272px artboard, but the dark footer ends at
 // ~7037px — clip the canvas there so no empty grey space trails the footer.
-const ABOUT_H = 5893;
+const ABOUT_H = ABOUT_FOOTER_TOP + FOOTER_H;
 const HERO_TOP = 420;
 const HERO_SIZE = 669;
 const SCROLL_DOWN_BOTTOM_INSET = 14;
@@ -995,6 +998,10 @@ export default function App() {
     // already carry a baked-in Figma load animation or an existing transform.
     Array.from(canvas.querySelectorAll<HTMLElement>("p, h1, h2, h3"))
       .filter((element) => {
+        // The shared footer has its own reveal; the global "reveal at 92% of the
+        // viewport" check can never fire for its last line (it sits at the very
+        // bottom of the page), which would leave the copyright invisible.
+        if (element.closest('[data-name="Footer"]')) return false;
         if (element.className.includes("animate-[")) return false;
         if (element.className.includes("translate")) return false;
         if (element.closest('[data-name="Banner"]')) return false;
@@ -1214,6 +1221,10 @@ export default function App() {
 
     // ── Text rise-in for large headings + labels ──────────────────────────────
     Array.from(canvas.querySelectorAll<HTMLElement>("p")).filter((el) => {
+      // The shared footer has its own reveal; the global "reveal at 92% of the
+      // viewport" check can never fire for its last line (it sits at the very
+      // bottom of the page), which would leave the copyright invisible.
+      if (el.closest('[data-name="Footer"]')) return false;
       if (el.className.includes("animate-[")) return false;
       if (el.closest('[data-name="Banner"]')) return false;
       return parseFloat(getComputedStyle(el).fontSize) >= 19;
@@ -1334,6 +1345,10 @@ export default function App() {
 
     // Text reveals
     Array.from(canvas.querySelectorAll<HTMLElement>("p")).filter((el) => {
+      // The shared footer has its own reveal; the global "reveal at 92% of the
+      // viewport" check can never fire for its last line (it sits at the very
+      // bottom of the page), which would leave the copyright invisible.
+      if (el.closest('[data-name="Footer"]')) return false;
       if (el.className.includes("animate-[")) return false;
       const size = parseFloat(getComputedStyle(el).fontSize);
       return size >= 28;
@@ -1391,7 +1406,7 @@ export default function App() {
       : view === "about"
         ? ABOUT_H
         : view === "project"
-          ? getProjectCanvasH(currentProject?.images.length ?? 6)
+          ? getProjectCanvasH(currentProject?.images.length ?? 6, currentProject?.imageHeights)
           : view === "nodaliq-site"
             ? 0
             : getWorkCanvasH();
