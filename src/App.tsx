@@ -1501,6 +1501,7 @@ export default function App() {
             onNavigateSite={currentProject?.siteView === "nodaliq-site" ? navigateToNodaliqSite : undefined}
           />
         )}
+        {!showPreloader && <FixedContactPill />}
       </>
     );
   }
