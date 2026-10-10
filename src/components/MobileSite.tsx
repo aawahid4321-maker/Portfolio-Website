@@ -107,20 +107,27 @@ function MobileImage({
   alt = "",
   ratio = "4 / 3",
   priority = false,
+  natural = false,
 }: {
   src: string;
   alt?: string;
   ratio?: string;
   priority?: boolean;
+  /** Use the image's own aspect ratio once loaded (no cropping). */
+  natural?: boolean;
 }) {
+  // Observe an unclipped wrapper: IntersectionObserver applies the target's
+  // own clip-path, so observing the clipped box (inset 0 50%) never reported
+  // it as visible and every image stayed hidden.
   const [ref, inView] = useInView();
   const [loaded, setLoaded] = useState(false);
+  const [nat, setNat] = useState<string | null>(null);
   return (
+    <div ref={ref} className="w-full">
     <div
-      ref={ref}
       className="relative w-full overflow-hidden bg-[#d8d8d8]"
       style={{
-        aspectRatio: ratio,
+        aspectRatio: (natural && nat) || ratio,
         clipPath: inView ? "inset(0 0 0 0)" : "inset(0 50% 0 50%)",
         transition: "clip-path 1.1s cubic-bezier(0.16,1,0.3,1)",
       }}
@@ -130,7 +137,11 @@ function MobileImage({
         alt={alt}
         loading={priority ? "eager" : "lazy"}
         decoding="async"
-        onLoad={() => setLoaded(true)}
+        onLoad={(e) => {
+          setLoaded(true);
+          const im = e.currentTarget;
+          if (natural && im.naturalWidth && im.naturalHeight) setNat(`${im.naturalWidth} / ${im.naturalHeight}`);
+        }}
         className="absolute inset-0 h-full w-full object-cover"
         style={{
           opacity: loaded ? 1 : 0,
@@ -138,6 +149,7 @@ function MobileImage({
           transition: "opacity 0.7s ease, transform 1.1s cubic-bezier(0.16,1,0.3,1)",
         }}
       />
+    </div>
     </div>
   );
 }
@@ -204,7 +216,7 @@ function MobileNav({
   };
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-[60] flex items-center justify-between px-[20px] h-[68px]">
+      <header className="fixed top-0 left-0 right-0 z-[60] flex items-center justify-between px-[20px] md:px-[40px] h-[68px] md:h-[80px]">
         <button
           onClick={() => go(onHome)}
           className="font-pt-mono-ss text-[16px] uppercase tracking-[0.02em] text-[#1e1e1f]"
@@ -221,14 +233,14 @@ function MobileNav({
 
       {/* Full-screen menu overlay */}
       <div
-        className="fixed inset-0 z-[70] bg-[#e6e6e6] flex flex-col px-[20px]"
+        className="fixed inset-0 z-[70] bg-[#e6e6e6] flex flex-col px-[20px] md:px-[40px]"
         style={{
           transform: open ? "translateY(0)" : "translateY(-100%)",
           transition: "transform 0.6s cubic-bezier(0.77,0,0.18,1)",
           pointerEvents: open ? "auto" : "none",
         }}
       >
-        <div className="flex items-center justify-between h-[68px]">
+        <div className="flex items-center justify-between h-[68px] md:h-[80px]">
           <span className="font-pt-mono-ss text-[16px] uppercase tracking-[0.02em] text-[#1e1e1f]">
             Abdul
           </span>
@@ -250,7 +262,7 @@ function MobileNav({
             <button
               key={item.label}
               onClick={() => go(item.fn)}
-              className="text-left font-pt-mono-ss text-[#1e1e1f] text-[26px] leading-[1.55] uppercase"
+              className="text-left font-pt-mono-ss text-[#1e1e1f] text-[26px] md:text-[44px] leading-[1.55] uppercase"
             >
               {item.label}
             </button>
@@ -277,7 +289,7 @@ function ProjectCard({ project, onClick }: { project: ProjectData; onClick: () =
       <MobileImage src={project.thumbnail} alt={project.title} ratio="16 / 9" />
       <Reveal>
         <div className="mt-[14px] flex items-baseline justify-between">
-          <span className="font-geist-semibold-ss text-[24px] tracking-[-0.8px] text-[#1e1e1f] uppercase">
+          <span className="font-geist-semibold-ss text-[24px] md:text-[28px] tracking-[-0.8px] text-[#1e1e1f] uppercase">
             {project.title}
           </span>
           <span className="font-pt-mono-ss text-[14px] text-[#8a8a8a]">{project.year}</span>
@@ -293,19 +305,21 @@ function ProjectCard({ project, onClick }: { project: ProjectData; onClick: () =
 // ── Dark footer ───────────────────────────────────────────────────────────────
 function MobileFooter() {
   return (
-    <footer className="relative z-10 bg-[#1e1e1f] px-[24px] pt-[64px] pb-[40px]">
+    <footer className="relative z-10 bg-[#1e1e1f] px-[24px] md:px-[40px] pt-[64px] md:pt-[88px] pb-[40px]">
+      <div className="md:grid md:grid-cols-2 md:gap-x-[48px]">
       <Reveal>
         <Label dim>[Available for new projects]</Label>
-        <h2 className="mt-[24px] font-geist-semibold-ss text-[#f2f2f2] text-[52px] leading-[1.02] tracking-[-2px] whitespace-pre-line">
+        <h2 className="mt-[24px] font-geist-semibold-ss text-[#f2f2f2] text-[52px] md:text-[72px] leading-[1.02] tracking-[-2px] whitespace-pre-line">
           {"Let's Get\nto Work"}
         </h2>
-        <p className="mt-[22px] font-geist-regular-ss text-[16px] leading-[1.6] text-[rgba(242,242,242,0.5)]">
+        <p className="mt-[22px] font-geist-regular-ss text-[16px] md:text-[18px] leading-[1.6] text-[rgba(242,242,242,0.5)] max-w-[520px]">
           If you're interested in learning more about my services, discussing a potential
           project, or just want to chat about design and creativity, I'm here to listen.
         </p>
       </Reveal>
 
-      <div className="mt-[48px] flex flex-col gap-[6px]">
+      <div className="md:pt-[40px]">
+      <div className="mt-[48px] md:mt-0 flex flex-col gap-[6px]">
         <span className="font-pt-mono-ss text-[19px] uppercase text-[#f2f2f2]">Wahid</span>
         <span className="font-pt-mono-ss text-[14px] uppercase text-[rgba(242,242,242,0.4)]">
           Multidisciplinary Designer
@@ -333,8 +347,10 @@ function MobileFooter() {
           <a href={LINKEDIN} target="_blank" rel="noopener noreferrer"><IconLinkedIn /></a>
         </div>
       </div>
+      </div>
+      </div>
 
-      <p className="mt-[48px] font-pt-mono-ss text-[12px] uppercase tracking-[0.04em] text-[rgba(242,242,242,0.4)]">
+      <p className="mt-[48px] md:mt-[72px] font-pt-mono-ss text-[12px] uppercase tracking-[0.04em] text-[rgba(242,242,242,0.4)]">
         ©2026. All rights reserved
       </p>
     </footer>
@@ -342,12 +358,12 @@ function MobileFooter() {
 }
 
 // ── Giant display heading with © (reference hero) ─────────────────────────────
-function DisplayHeading({ text, size }: { text: string; size: string }) {
+function DisplayHeading({ text, size, fluid }: { text: string; size: string; fluid?: string }) {
   return (
     <Reveal>
       <h1
         className="font-geist-semibold-ss text-[#1e1e1f] leading-[0.92] tracking-[-3px] relative inline-block"
-        style={{ fontSize: size }}
+        style={{ fontSize: `max(${size}, ${fluid ?? size})` }}
       >
         {text}
         <span className="align-super font-pt-mono-ss text-[16px] tracking-normal ml-[4px]">©</span>
@@ -360,15 +376,16 @@ function DisplayHeading({ text, size }: { text: string; size: string }) {
 function MobileHome({ onProject }: { onProject: (id: string) => void }) {
   return (
     <>
-      <section className="relative z-10 px-[24px] pt-[104px]">
-        <DisplayHeading text="Abdul" size="84px" />
+      <div className="md:grid md:grid-cols-2 md:gap-x-[40px] md:px-[40px] md:pt-[128px] md:items-start">
+      <section className="relative z-10 px-[24px] md:px-0 pt-[104px] md:pt-0">
+        <DisplayHeading text="Abdul" size="84px" fluid="min(14vw, 170px)" />
 
         <div className="mt-[36px] flex gap-[16px]">
           <div className="shrink-0 pt-[3px]">
             <Label>[Intro]</Label>
           </div>
           <Reveal>
-            <p className="font-geist-medium-ss text-[18px] leading-[1.35] tracking-[-0.3px] text-[#1e1e1f]">
+            <p className="font-geist-medium-ss text-[18px] md:text-[22px] leading-[1.35] tracking-[-0.3px] text-[#1e1e1f]">
               I build brands, digital experiences, and visual systems that help businesses
               communicate, connect, and grow.
             </p>
@@ -377,12 +394,12 @@ function MobileHome({ onProject }: { onProject: (id: string) => void }) {
 
         <Reveal delay={60}>
           <p className="mt-[40px] font-geist-medium-ss text-[30px] tracking-[-0.6px] text-[#1e1e1f]">
-            / 0{projects.length}
+            / {String(projects.length).padStart(2, "0")}
           </p>
         </Reveal>
       </section>
 
-      <section className="relative z-10 px-[24px] mt-[24px]">
+      <section className="relative z-10 px-[24px] md:px-0 mt-[24px] md:mt-0">
         <MobileImage src={portraitImg} alt="Abdul" ratio="4 / 5" priority />
         <Reveal delay={80}>
           <p className="mt-[14px] font-pt-mono-ss text-[13px] uppercase tracking-[0.04em] text-[#8a8a8a]">
@@ -390,11 +407,12 @@ function MobileHome({ onProject }: { onProject: (id: string) => void }) {
           </p>
         </Reveal>
       </section>
+      </div>
 
-      <section className="relative z-10 px-[24px] mt-[72px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[72px]">
         <Reveal>
           <Label>[Introduction]</Label>
-          <p className="mt-[16px] font-geist-regular-ss text-[19px] leading-[1.55] tracking-[-0.2px] text-[#1e1e1f]">
+          <p className="mt-[16px] font-geist-regular-ss text-[19px] md:text-[24px] leading-[1.55] tracking-[-0.2px] text-[#1e1e1f] max-w-[820px]">
             I'm Abdul Wahid, a multidisciplinary designer working across branding, visual
             identity, logo design, social media creatives, and presentation design — with
             hands-on experience in video editing and motion graphics.
@@ -402,11 +420,11 @@ function MobileHome({ onProject }: { onProject: (id: string) => void }) {
         </Reveal>
       </section>
 
-      <section className="relative z-10 px-[24px] mt-[72px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[72px]">
         <Reveal>
           <Label>[My Services]</Label>
         </Reveal>
-        <div className="mt-[8px] flex flex-col">
+        <div className="mt-[8px] flex flex-col md:grid md:grid-cols-2 md:gap-x-[40px]">
           {SERVICES.map((s, i) => (
             <Reveal key={s} delay={i * 40}>
               <div className="flex items-center justify-between border-b border-[#cfcfcf] py-[18px]">
@@ -420,14 +438,14 @@ function MobileHome({ onProject }: { onProject: (id: string) => void }) {
         </div>
       </section>
 
-      <section className="relative z-10 px-[24px] mt-[80px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[80px]">
         <Reveal>
           <div className="flex items-baseline justify-between">
             <Label>[Selected Works]</Label>
             <span className="font-pt-mono-ss text-[13px] text-[#8a8a8a]">/ {projects.length}</span>
           </div>
         </Reveal>
-        <div className="mt-[24px] flex flex-col gap-[48px]">
+        <div className="mt-[24px] flex flex-col gap-[48px] md:grid md:grid-cols-2 md:gap-x-[24px] md:gap-y-[56px]">
           {projects.map((p) => (
             <ProjectCard key={p.id} project={p} onClick={() => onProject(p.id)} />
           ))}
@@ -445,8 +463,8 @@ function MobileHome({ onProject }: { onProject: (id: string) => void }) {
 function MobileWork({ onProject }: { onProject: (id: string) => void }) {
   return (
     <>
-      <section className="relative z-10 px-[24px] pt-[112px]">
-        <DisplayHeading text="Selected Works" size="52px" />
+      <section className="relative z-10 px-[24px] md:px-[40px] pt-[112px] md:pt-[140px]">
+        <DisplayHeading text="Selected Works" size="52px" fluid="min(11vw, 128px)" />
 
         <Reveal delay={60}>
           <div className="mt-[28px]">
@@ -454,7 +472,7 @@ function MobileWork({ onProject }: { onProject: (id: string) => void }) {
           </div>
         </Reveal>
 
-        <Reveal delay={100}>
+        <Reveal delay={100} className="max-w-[820px]">
           <p className="mt-[24px] font-geist-regular-ss text-[19px] leading-[1.55] tracking-[-0.2px] text-[#1e1e1f]">
             This selection showcases my work across branding, digital experiences, and visual
             systems. Each project reflects a considered approach to a specific challenge.
@@ -466,7 +484,7 @@ function MobileWork({ onProject }: { onProject: (id: string) => void }) {
         </Reveal>
       </section>
 
-      <section className="relative z-10 px-[24px] mt-[48px] flex flex-col gap-[48px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[48px] flex flex-col gap-[48px] md:grid md:grid-cols-2 md:gap-x-[24px] md:gap-y-[56px]">
         {projects.map((p) => (
           <ProjectCard key={p.id} project={p} onClick={() => onProject(p.id)} />
         ))}
@@ -483,8 +501,8 @@ function MobileWork({ onProject }: { onProject: (id: string) => void }) {
 function MobileAbout() {
   return (
     <>
-      <section className="relative z-10 px-[24px] pt-[112px]">
-        <DisplayHeading text="About" size="84px" />
+      <section className="relative z-10 px-[24px] md:px-[40px] pt-[112px] md:pt-[140px]">
+        <DisplayHeading text="About" size="84px" fluid="min(18vw, 200px)" />
         <Reveal delay={60}>
           <div className="mt-[24px] flex justify-end">
             <Label>[EST 2005]</Label>
@@ -492,15 +510,15 @@ function MobileAbout() {
         </Reveal>
       </section>
 
-      <section className="relative z-10 px-[24px] mt-[16px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[16px] md:max-w-[640px]">
         <MobileImage src={aboutHeroImg} alt="Abdul" ratio="4 / 5" priority />
       </section>
 
-      <section className="relative z-10 px-[24px] mt-[48px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[48px]">
         <Reveal>
           <Label>[About Me]</Label>
         </Reveal>
-        <div className="mt-[16px] flex flex-col gap-[22px]">
+        <div className="mt-[16px] flex flex-col gap-[22px] max-w-[820px]">
           <Reveal>
             <p className="font-geist-regular-ss text-[19px] leading-[1.55] tracking-[-0.2px] text-[#1e1e1f]">
               I'm a multidisciplinary designer with hands-on experience in branding, visual
@@ -519,7 +537,7 @@ function MobileAbout() {
         </div>
       </section>
 
-      <section className="relative z-10 px-[24px] mt-[56px] grid grid-cols-2 gap-[20px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[56px] grid grid-cols-2 gap-[20px] md:max-w-[820px]">
         {[
           { n: "13+", l: "Design Tools & Skills" },
           { n: "5", l: "Creative Roles" },
@@ -537,11 +555,11 @@ function MobileAbout() {
         ))}
       </section>
 
-      <section className="relative z-10 px-[24px] mt-[64px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[64px]">
         <Reveal>
           <Label>[Clients]</Label>
         </Reveal>
-        <div className="mt-[8px] flex flex-col">
+        <div className="mt-[8px] flex flex-col md:grid md:grid-cols-2 md:gap-x-[40px]">
           {CLIENTS.map((c, i) => (
             <Reveal key={c} delay={i * 30}>
               <div className="flex items-center justify-between border-b border-[#cfcfcf] py-[16px]">
@@ -588,7 +606,7 @@ function MobileProject({
   return (
     <>
       {/* Hero */}
-      <section className="relative z-10 h-[64vh] min-h-[440px] w-full overflow-hidden bg-black">
+      <section className="relative z-10 h-[64vh] min-h-[440px] max-h-[760px] w-full overflow-hidden bg-black">
         <img
           src={project.heroImage}
           alt={project.title}
@@ -604,15 +622,15 @@ function MobileProject({
             className="absolute left-1/2 top-1/2 w-[46%] -translate-x-1/2 -translate-y-1/2"
           />
         )}
-        <div className="absolute bottom-[28px] left-[24px] right-[24px]">
-          <h1 className="font-geist-semibold-ss text-white text-[44px] leading-[0.98] tracking-[-1.6px] uppercase">
+        <div className="absolute bottom-[28px] md:bottom-[40px] left-[24px] right-[24px] md:left-[40px] md:right-[40px]">
+          <h1 className="font-geist-semibold-ss text-white text-[44px] md:text-[80px] leading-[0.98] tracking-[-1.6px] uppercase break-words">
             {project.title}
           </h1>
         </div>
       </section>
 
       {/* Meta */}
-      <section className="relative z-10 px-[24px] mt-[36px] grid grid-cols-2 gap-y-[22px] gap-x-[16px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[36px] md:mt-[48px] grid grid-cols-2 md:grid-cols-4 gap-y-[22px] gap-x-[16px]">
         {meta.map((m) => (
           <Reveal key={m.k}>
             <div className="font-pt-mono-ss text-[12px] uppercase tracking-[0.04em] text-[#8a8a8a]">
@@ -626,9 +644,9 @@ function MobileProject({
       </section>
 
       {/* Description */}
-      <section className="relative z-10 px-[24px] mt-[40px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[40px]">
         <Reveal>
-          <p className="font-geist-regular-ss text-[19px] leading-[1.55] tracking-[-0.2px] text-[#1e1e1f]">
+          <p className="font-geist-regular-ss text-[19px] md:text-[22px] leading-[1.55] tracking-[-0.2px] text-[#1e1e1f] max-w-[820px]">
             {project.description}
           </p>
         </Reveal>
@@ -648,20 +666,20 @@ function MobileProject({
 
       {/* Gallery */}
       {gallery.length > 0 && (
-        <section className="relative z-10 px-[24px] mt-[48px] flex flex-col gap-[18px]">
+        <section className="relative z-10 px-[24px] md:px-[40px] mt-[48px] flex flex-col gap-[18px] md:gap-[24px]">
           {gallery.map((src, i) => (
-            <MobileImage key={src + i} src={src} alt={`${project.title} ${i + 1}`} ratio="16 / 10" />
+            <MobileImage key={src + i} src={src} alt={`${project.title} ${i + 1}`} ratio="16 / 9" natural />
           ))}
         </section>
       )}
 
       {/* Next project */}
       {nextProject && (
-        <section className="relative z-10 px-[24px] mt-[80px]">
+        <section className="relative z-10 px-[24px] md:px-[40px] mt-[80px]">
           <Reveal>
             <Label>[Next Project]</Label>
           </Reveal>
-          <button onClick={() => onProject(nextProject.id)} className="mt-[16px] block w-full text-left">
+          <button onClick={() => onProject(nextProject.id)} className="mt-[16px] block w-full md:w-[60%] text-left">
             <MobileImage src={nextProject.thumbnail} alt={nextProject.title} ratio="16 / 9" />
             <Reveal>
               <div className="mt-[14px] flex items-baseline justify-between">
