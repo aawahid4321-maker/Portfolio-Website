@@ -7,6 +7,7 @@ import aboutHeroImg from "@/imports/mobile/about-portrait-purple-1280.webp";
 import aboutHeroImgSmall from "@/imports/mobile/about-portrait-purple-720.webp";
 import PhysicsTags from "@/components/PhysicsTags";
 import ProjectHero from "@/components/ProjectHero";
+import LearnMoreButton from "@/components/LearnMoreButton";
 import axorixHomeImg from "@/assets/axorix-hero.webp";
 import { DotPortrait, MobileConnect, MobileConnectCopy, TapConfetti, useScrollScrub } from "@/components/MobileFx";
 
@@ -510,6 +511,36 @@ function DisplayHeading({ text, size, fluid }: { text: string; size: string; flu
   );
 }
 
+// ── LEARN MORE: the desktop button (blob friends + balloon). Touch has no
+//    hover, so a tap plays the hover animation, then opens About. ─────────────
+function MobileLearnMore({ onClick }: { onClick: () => void }) {
+  const [play, setPlay] = useState(false);
+  const busy = useRef(false);
+  const reduce = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return (
+    <div className={`m-lm mt-[64px] ${play ? "m-lm-play" : ""}`}>
+      <style>{`
+        .m-lm-play .lm-blob--orange { transform: translateY(-18px); }
+        .m-lm-play .lm-blob--blue { transform: translateY(-24px); transition-delay: 0.06s; }
+        .m-lm-play .lm-blob--pink { transform: translateY(-18px); transition-delay: 0.12s; }
+        .m-lm-play .lm-balloon { opacity: 1; transform: translateY(-30px); transition-delay: 0.1s; }
+        .m-lm-play .lm-balloon-body { animation: lm-sway 2.2s ease-in-out infinite; }
+        .m-lm-play .lm-arrow { transform: translate(2px, -2px); }
+        .m-lm .lm-btn { -webkit-tap-highlight-color: transparent; }
+      `}</style>
+      <LearnMoreButton
+        onClick={() => {
+          if (reduce) return onClick();
+          if (busy.current) return;
+          busy.current = true;
+          setPlay(true);
+          window.setTimeout(() => { busy.current = false; onClick(); }, 650);
+        }}
+      />
+    </div>
+  );
+}
+
 // ── HOME (desktop order: hero → Selected Works → Introduction → tags → services) ─
 function MobileHome({ onProject, onAbout }: { onProject: (id: string) => void; onAbout: () => void }) {
   return (
@@ -577,12 +608,7 @@ function MobileHome({ onProject, onAbout }: { onProject: (id: string) => void; o
           </Reveal>
         </div>
         <Reveal delay={100}>
-          <button
-            onClick={onAbout}
-            className="mt-[28px] inline-flex items-center gap-[10px] bg-[#1e1e1f] px-[24px] py-[14px] rounded-[6px] font-pt-mono-ss text-[15px] uppercase tracking-[0.04em] text-white"
-          >
-            Learn More <span aria-hidden>↗</span>
-          </button>
+          <MobileLearnMore onClick={onAbout} />
         </Reveal>
       </section>
 
