@@ -15,6 +15,10 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 // We scale the whole canvas to the viewport width so it fits every
 // screen (desktop, tablet, mobile) while keeping the exact layout.
 const BASE_W = 1920;
+// Below this width (phones + tablets in portrait and landscape) the responsive
+// mobile/tablet layout is used. The 1920px desktop artboard scaled down to a
+// tablet (0.4–0.6x) made text 5–11px tall, so it is only used from 1280px up.
+const MOBILE_LAYOUT_MAX = 1280;
 // Every page canvas ends exactly at the bottom of the shared footer, so the
 // footer looks the same (same space under the copyright) on every page.
 const BASE_H = HOME_FOOTER_TOP + FOOTER_H;
@@ -32,7 +36,7 @@ type View = "home" | "about" | "work" | "project" | "nodaliq-site";
 export default function App() {
   const [scale, setScale] = useState(1);
   const [isMobile, setIsMobile] = useState(
-    typeof window !== "undefined" ? window.innerWidth < 768 : false,
+    typeof window !== "undefined" ? window.innerWidth < MOBILE_LAYOUT_MAX : false,
   );
   const [showPreloader, setShowPreloader] = useState(true);
   const [view, setView] = useState<View>("home");
@@ -97,7 +101,7 @@ export default function App() {
     // layout viewport instead so the canvas and its containing block agree.
     const update = () => {
       setScale(Math.min(1, document.documentElement.clientWidth / BASE_W));
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < MOBILE_LAYOUT_MAX);
     };
 
     update();
@@ -1476,8 +1480,8 @@ export default function App() {
     return <NodaliqSite />;
   }
 
-  // ── Mobile: dedicated stacked/single-column layout ───────────────────────────
-  // Below 768px the fixed 1920px desktop canvas would shrink to ~20% and become
+  // ── Mobile/tablet: dedicated responsive layout ─────────────────────────────
+  // Below 1280px the fixed 1920px desktop canvas would shrink to ~20% and become
   // unreadable, so we render a purpose-built mobile experience instead. The
   // desktop canvas below is left completely untouched; this only branches the
   // output for small screens and reuses the same view/history/navigation state.
