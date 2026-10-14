@@ -891,7 +891,7 @@ function Container79() {
   );
 }
 
-function Group6() {
+function GroupFinora() {
   return (
     <div className="absolute contents left-[510.29px] top-[5251.58px]">
       <Container78 />
@@ -943,7 +943,7 @@ export default function Frame() {
       <Group3 />
       <Group4 />
       <Group5 />
-      <Group6 />
+      <GroupFinora />
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[27.648px] left-[48px] text-[#1e1e1f] text-[23.04px] top-[1063px] tracking-[-0.6912px] whitespace-nowrap" style={{ marginTop: "-85px", marginBottom: "-85px" }}>Scroll Down</p>
       <Group15 />
       <div className="absolute h-0 left-[1203.29px] top-[8858.25px] w-[668.711px]">
