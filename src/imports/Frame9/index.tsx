@@ -118,7 +118,7 @@ function Group13() {
       </p>
       <p className="absolute leading-[33px] left-[1203.29px] top-[9438.20px] w-[641.38px]">
         4.1 / TURNING BRAND INTO DIGITAL EXPERIENCE
-        <br aria-hidden />I design websites that bring the brand together with clear structure, thoughtful interactions, and a strong visual point of view. I build them using modern AI tools, which keeps delivery fast without compromising on quality.
+        <br aria-hidden />I design websites with clear structure and a strong visual point of view, built with modern AI tools - fast delivery, no compromise on quality.
       </p>
       <p className="absolute leading-[33px] left-[1203.29px] top-[9694.59px] w-[589.484px] whitespace-pre-wrap">
         {`5.1 / DESIGNING CONTENT THAT STOPS THE SCROLL. I create social media posts, carousels, and campaign creatives that keep brands consistent, active, and worth following.`}

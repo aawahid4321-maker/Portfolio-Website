@@ -39,7 +39,7 @@ const SERVICES = [
   { name: "Brand Strategy", head: "1.1 / BUILDING A CLEAR BRAND DIRECTION", body: "I define the positioning, personality, audience, and visual direction that give a brand a clear place in the market." },
   { name: "Art Direction", head: "2.1 / SHAPING THE VISUAL WORLD OF A BRAND", body: "I develop the creative direction, mood, and visual language that bring an idea to life and make it feel distinctive." },
   { name: "Brand Visuals", head: "3.1 / CREATING IDENTITIES PEOPLE REMEMBER", body: "From logos and visual systems to typography and color, I build cohesive identities that feel recognizable and built to last." },
-  { name: "Website Design", head: "4.1 / TURNING BRAND INTO DIGITAL EXPERIENCE", body: "I design websites that bring the brand together with clear structure, thoughtful interactions, and a strong visual point of view. I build them using modern AI tools, which keeps delivery fast without compromising on quality." },
+  { name: "Website Design", head: "4.1 / TURNING BRAND INTO DIGITAL EXPERIENCE", body: "I design websites with clear structure and a strong visual point of view, built with modern AI tools - fast delivery, no compromise on quality." },
   { name: "Social Media Design", head: "5.1 / DESIGNING CONTENT THAT STOPS THE SCROLL.", body: "I create social media posts, carousels, and campaign creatives that keep brands consistent, active, and worth following." },
   { name: "Print Design", head: "6.1 / DESIGNING PRINT WORTH HOLDING ON TO.", body: "I design brochures, flyers, and posters with clean layouts, strong visuals, and the same brand consistency people see on screen." },
 ];
