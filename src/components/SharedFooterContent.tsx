@@ -93,7 +93,6 @@ export default function SharedFooterContent() {
         /* email underline draws left -> right on hover */
         .email-link {
           position: relative;
-          display: inline-block;
           transition: transform 0.2s ease-out;
           will-change: transform;
         }
