@@ -952,7 +952,7 @@ export default function Frame() {
           if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
           else window.scrollBy({ top: window.innerHeight * 0.9, behavior: "smooth" });
         }}
-        className="group absolute left-[48px] top-[978px] flex cursor-pointer flex-col items-start gap-[10px] bg-transparent text-[#1e1e1f] transition-colors duration-300 hover:text-[#A58CF4]"
+        className="group absolute left-[calc(50%+0.29px)] top-[978px] flex -translate-x-1/2 cursor-pointer flex-col items-center gap-[10px] bg-transparent text-[#1e1e1f] transition-colors duration-300 hover:text-[#A58CF4]"
       >
         <style>{`
           @keyframes scrollWheelMove {
