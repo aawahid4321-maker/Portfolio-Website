@@ -124,7 +124,7 @@ function Group13() {
         {`5.1 / DESIGNING CONTENT THAT STOPS THE SCROLL. I create social media posts, carousels, and campaign creatives that keep brands consistent, active, and worth following.`}
       </p>
       <p className="absolute leading-[33px] left-[1203.29px] top-[9937.37px] w-[641.38px] whitespace-pre-wrap">
-        {`6.1 / DESIGNING SCREENS THAT FEEL EASY TO USE. I design clean, intuitive interfaces and layouts that make digital products simple to understand and pleasant to use.`}
+        {`6.1 / DESIGNING PRINT WORTH HOLDING ON TO. I design brochures, flyers, and posters with clean layouts, strong visuals, and the same brand consistency people see on screen.`}
       </p>
     </div>
   );
@@ -150,7 +150,7 @@ function Group() {
       <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9193.81px] tracking-[0.5px] whitespace-nowrap">Brand Visuals</p>
       <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9450.20px] tracking-[0.5px] whitespace-nowrap">Website Design</p>
       <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9706.59px] tracking-[0.5px] whitespace-nowrap">Social Media Design</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9949.37px] tracking-[0.5px] whitespace-nowrap">Interface Design</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9949.37px] tracking-[0.5px] whitespace-nowrap">Print Design</p>
       <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[48px] text-[#1e1e1f] text-[237px] top-[8377.56px] tracking-[-9.6861px] whitespace-nowrap">My Services</p>
     </div>
   );

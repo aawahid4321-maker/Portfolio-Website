@@ -41,7 +41,7 @@ const SERVICES = [
   { name: "Brand Visuals", head: "3.1 / CREATING IDENTITIES PEOPLE REMEMBER", body: "From logos and visual systems to typography and color, I build cohesive identities that feel recognizable and built to last." },
   { name: "Website Design", head: "4.1 / TURNING BRAND INTO DIGITAL EXPERIENCE", body: "I design websites that bring the brand together with clear structure, thoughtful interactions, and a strong visual point of view." },
   { name: "Social Media Design", head: "5.1 / DESIGNING CONTENT THAT STOPS THE SCROLL.", body: "I create social media posts, carousels, and campaign creatives that keep brands consistent, active, and worth following." },
-  { name: "Interface Design", head: "6.1 / DESIGNING SCREENS THAT FEEL EASY TO USE.", body: "I design clean, intuitive interfaces and layouts that make digital products simple to understand and pleasant to use." },
+  { name: "Print Design", head: "6.1 / DESIGNING PRINT WORTH HOLDING ON TO.", body: "I design brochures, flyers, and posters with clean layouts, strong visuals, and the same brand consistency people see on screen." },
 ];
 
 // Desktop home "Selected Works": 6 projects, desktop order, years and images.
