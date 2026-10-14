@@ -326,6 +326,27 @@ export const projects: ProjectData[] = [
     liveLink: undefined,
     nextProjectId: "noire-coffee",
   },
+  {
+    id: "aivon",
+    title: "AIVON",
+    agency: "Aivon",
+    industry: "Technology",
+    service: "Social Media Design",
+    year: "2026",
+    description:
+      "Social media design for Aivon — an AI workflow platform whose copilot drafts replies, automates busywork, and surfaces predictive insights for teams. I designed a clean, blue-led Instagram content system — product launches, workflow stories, and results-driven campaigns that make AI feel fast, smart, and human.",
+    heroImage: "/assets/aivon-hero.webp",
+    heroLogo: undefined,
+    heroFit: "cover",
+    thumbnail: "/assets/aivon-hero.webp",
+    images: [
+      "/assets/aivon-01.webp",
+      "/assets/aivon-02.webp",
+      "/assets/aivon-03.webp",
+    ],
+    liveLink: undefined,
+    nextProjectId: "noire-coffee",
+  },
 ];
 
 // ── Base-path fix ──────────────────────────────────────────────────────────
