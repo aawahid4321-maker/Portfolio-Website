@@ -54,7 +54,7 @@ export const projects: ProjectData[] = [
       "/assets/noire-13.webp",
       "/assets/noire-cards.webp",
     ],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "fitflow",
   },
   {
@@ -84,7 +84,7 @@ export const projects: ProjectData[] = [
       "/assets/fitflow-37.webp",
       "/assets/fitflow-38.webp",
     ],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "axorix",
   },
   {
@@ -141,7 +141,7 @@ export const projects: ProjectData[] = [
       "/assets/nodaliq-12.webp",
       "/assets/nodaliq-13.webp",
     ],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "stint",
   },
   {
@@ -168,7 +168,7 @@ export const projects: ProjectData[] = [
       "/assets/stint-08.webp",
       "/assets/stint-09.webp",
     ],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "finora",
   },
   {
@@ -195,7 +195,7 @@ export const projects: ProjectData[] = [
       "/assets/finora-08.webp",
       "/assets/finora-09.webp",
     ],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "brand",
   },
   {
@@ -235,7 +235,7 @@ export const projects: ProjectData[] = [
       "/assets/brand-21.webp",
       "/assets/brand-22.webp",
     ],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "pypo",
   },
   {
@@ -270,7 +270,7 @@ export const projects: ProjectData[] = [
       "/assets/pypo-17.webp",
       "/assets/pypo-18.webp",
     ],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "mini",
   },
   {
@@ -297,7 +297,7 @@ export const projects: ProjectData[] = [
       "/assets/mini-09.webp",
       "/assets/mini-10.webp",
     ],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "campus-app",
   },
   {
@@ -323,7 +323,7 @@ export const projects: ProjectData[] = [
       "/assets/brochure-07.webp",
       "/assets/brochure-08.webp",
     ],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "noire-coffee",
   },
   {
@@ -344,7 +344,7 @@ export const projects: ProjectData[] = [
       "/assets/aivon-02.webp",
       "/assets/aivon-03.webp",
     ],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "noire-coffee",
   },
 ];
