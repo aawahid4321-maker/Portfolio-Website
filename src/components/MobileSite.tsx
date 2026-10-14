@@ -895,7 +895,7 @@ function MobileProject({
               {project.description}
             </p>
           </Reveal>
-          <div className="mt-[24px]">
+          <div className="mt-[40px]">
             <LearnMoreButton
               label="LIVE LINK"
               onClick={() => {

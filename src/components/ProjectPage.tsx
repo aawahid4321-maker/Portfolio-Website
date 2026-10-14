@@ -98,7 +98,7 @@ export default function ProjectPage({
       {/* LIVE LINK button — same style as the LEARN MORE button */}
       <div
         className="absolute"
-        style={{ left: 48, top: 1057 + HERO_SHIFT }}
+        style={{ left: 48, top: 1097 + HERO_SHIFT }}
         data-name="live-link-btn"
       >
         <LearnMoreButton
