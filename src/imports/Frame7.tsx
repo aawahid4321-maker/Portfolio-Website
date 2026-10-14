@@ -152,7 +152,8 @@ export default function Frame7() {
 
       {/* Heading */}
       <p className="[word-break:break-word] absolute font-['Geist:SemiBold'] leading-[normal] text-[#1e1e1f] text-[237px] tracking-[-9.6861px] whitespace-nowrap left-[48px] top-[312.07px]">
-        Selected Works
+        <span className="inline-block animate-[fadeBlurIn_0.9s_cubic-bezier(0.22,1,0.36,1)_both]">Selected</span>{" "}
+        <span className="inline-block animate-[fadeBlurIn_0.9s_cubic-bezier(0.22,1,0.36,1)_0.3s_both]">Works</span>
       </p>
 
       {/* Project cards — zig-zag layout, in normal flow so the section

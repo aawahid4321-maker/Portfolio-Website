@@ -537,7 +537,29 @@ function BigHeading({ children }: { children: React.ReactNode }) {
 }
 
 // ── Giant display heading with © (reference hero) ─────────────────────────────
-function DisplayHeading({ text, size, fluid }: { text: string; size: string; fluid?: string }) {
+function DisplayHeading({ text, size, fluid, stagger }: { text: string; size: string; fluid?: string; stagger?: boolean }) {
+  if (stagger) {
+    const words = text.split(" ");
+    return (
+      <h1
+        className="font-geist-semibold-ss text-[#1e1e1f] leading-[0.92] tracking-[-3px] relative inline-block"
+        style={{ fontSize: `max(${size}, ${fluid ?? size})` }}
+      >
+        <style>{`
+          @keyframes wordUp { from { opacity: 0; transform: translateY(46px); filter: blur(6px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+          .word-up { opacity: 0; animation: wordUp 0.85s cubic-bezier(0.22,1,0.36,1) forwards; }
+          @media (prefers-reduced-motion: reduce) { .word-up { animation: none; opacity: 1; } }
+        `}</style>
+        {words.map((w, i) => (
+          <span key={i} className="word-up inline-block" style={{ animationDelay: `${i * 220}ms` }}>
+            {w}
+            {i < words.length - 1 ? "\u00A0" : ""}
+          </span>
+        ))}
+        <span className="word-up absolute leading-none tracking-normal" style={{ fontSize: "0.19em", top: "0.5em", right: "-1.3em", animationDelay: `${words.length * 220}ms` }}>©</span>
+      </h1>
+    );
+  }
   return (
     <Reveal>
       <h1
@@ -698,7 +720,7 @@ function MobileWork({ onProject }: { onProject: (id: string) => void }) {
   return (
     <>
       <section className="relative z-10 px-[24px] md:px-[40px] pt-[112px] md:pt-[140px]">
-        <DisplayHeading text="Selected Works" size="52px" fluid="min(11vw, 128px)" />
+        <DisplayHeading text="Selected Works" size="52px" fluid="min(11vw, 128px)" stagger />
 
         <Reveal delay={60}>
           <div className="mt-[28px]">
