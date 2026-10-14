@@ -6,6 +6,12 @@ const LinkedInIcon = () => (
   </svg>
 );
 
+const BehanceIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="Behance">
+    <text x="12" y="16.5" textAnchor="middle" fontSize="10" fontWeight="700" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="-0.5">Be</text>
+  </svg>
+);
+
 export default function SharedFooterContent() {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -199,6 +205,15 @@ export default function SharedFooterContent() {
               aria-label="LinkedIn"
             >
               <LinkedInIcon />
+            </a>
+            <a
+              href="https://www.behance.net/abdulwahid235"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-circle w-[52px] h-[52px] rounded-full border border-[rgba(13,13,13,0.25)] flex items-center justify-center text-[rgba(13,13,13,0.85)] hover:border-[rgba(13,13,13,0.6)] hover:bg-[rgba(13,13,13,0.07)]"
+              aria-label="Behance"
+            >
+              <BehanceIcon />
             </a>
           </div>
         </div>

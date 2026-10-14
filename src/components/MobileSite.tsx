@@ -31,6 +31,7 @@ const PHONES = [
   { label: "+92 336 5934828", tel: "+923365934828" },
 ];
 const LINKEDIN = "https://www.linkedin.com/in/abdul-wahid-7763b8377/";
+const BEHANCE = "https://www.behance.net/abdulwahid235";
 
 // Desktop "My Services" list: [0n] / name / sub-heading / description.
 const SERVICES = [
@@ -228,10 +229,15 @@ function Label({ children, dim = false }: { children: React.ReactNode; dim?: boo
   );
 }
 
-// ── Social icon (desktop footer shows LinkedIn only) ─────────────────────────
+// ── Social icons (footer socials) ────────────────────────────────────────
 const IconLinkedIn = () => (
   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-label="LinkedIn">
     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+  </svg>
+);
+const IconBehance = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-label="Behance">
+    <text x="12" y="16.5" textAnchor="middle" fontSize="10" fontWeight="700" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="-0.5">Be</text>
   </svg>
 );
 
@@ -378,6 +384,7 @@ function MobileNav({
           <Label>[Socials]</Label>
           <div className="flex gap-[18px] text-[#1e1e1f]">
             <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><IconLinkedIn /></a>
+            <a href={BEHANCE} target="_blank" rel="noopener noreferrer" aria-label="Behance"><IconBehance /></a>
           </div>
         </div>
       </div>
@@ -470,6 +477,15 @@ function MobileFooter() {
                   className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(13,13,13,0.25)] text-[rgba(13,13,13,0.85)] active:scale-110 transition-transform"
                 >
                   <IconLinkedIn />
+                </a>
+                <a
+                  href={BEHANCE}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Behance"
+                  className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(13,13,13,0.25)] text-[rgba(13,13,13,0.85)] active:scale-110 transition-transform"
+                >
+                  <IconBehance />
                 </a>
               </div>
             </div>
