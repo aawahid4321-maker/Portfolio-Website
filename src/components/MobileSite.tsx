@@ -537,7 +537,7 @@ function BigHeading({ children }: { children: React.ReactNode }) {
 }
 
 // ── Giant display heading with © (reference hero) ─────────────────────────────
-function DisplayHeading({ text, size, fluid, stagger }: { text: string; size: string; fluid?: string; stagger?: boolean }) {
+function DisplayHeading({ text, size, fluid, stagger, mark }: { text: string; size: string; fluid?: string; stagger?: boolean; mark?: boolean }) {
   if (stagger) {
     const words = text.split(" ");
     return (
@@ -556,7 +556,9 @@ function DisplayHeading({ text, size, fluid, stagger }: { text: string; size: st
             {i < words.length - 1 ? "\u00A0" : ""}
           </span>
         ))}
-        <span className="word-up absolute leading-none tracking-normal" style={{ fontSize: "0.19em", top: "0.5em", right: "-1.3em", animationDelay: `${words.length * 220}ms` }}>©</span>
+        {mark !== false && (
+          <span className="word-up absolute leading-none tracking-normal" style={{ fontSize: "0.19em", top: "0.5em", right: "-1.3em", animationDelay: `${words.length * 220}ms` }}>©</span>
+        )}
       </h1>
     );
   }
@@ -567,7 +569,9 @@ function DisplayHeading({ text, size, fluid, stagger }: { text: string; size: st
         style={{ fontSize: `max(${size}, ${fluid ?? size})` }}
       >
         {text}
-        <span className="absolute leading-none tracking-normal" style={{ fontSize: "0.19em", top: "0.5em", right: "-1.3em" }}>©</span>
+        {mark !== false && (
+          <span className="absolute leading-none tracking-normal" style={{ fontSize: "0.19em", top: "0.5em", right: "-1.3em" }}>©</span>
+        )}
       </h1>
     </Reveal>
   );
@@ -720,7 +724,7 @@ function MobileWork({ onProject }: { onProject: (id: string) => void }) {
   return (
     <>
       <section className="relative z-10 px-[24px] md:px-[40px] pt-[112px] md:pt-[140px]">
-        <DisplayHeading text="Selected Works" size="52px" fluid="min(11vw, 128px)" stagger />
+        <DisplayHeading text="Selected Works" size="52px" fluid="min(11vw, 128px)" stagger mark={false} />
 
         <Reveal delay={60}>
           <div className="mt-[28px]">
