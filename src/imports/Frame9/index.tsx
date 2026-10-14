@@ -944,7 +944,33 @@ export default function Frame() {
       <Group4 />
       <Group5 />
       <GroupFinora />
-      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[27.648px] left-[48px] text-[#1e1e1f] text-[23.04px] top-[1063px] tracking-[-0.6912px] whitespace-nowrap" style={{ marginTop: "-85px", marginBottom: "-85px" }}>Scroll Down</p>
+      <button
+        type="button"
+        aria-label="Scroll down to Selected Works"
+        onClick={() => {
+          const el = document.querySelector('[data-project-id="noire-coffee"]');
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+          else window.scrollBy({ top: window.innerHeight * 0.9, behavior: "smooth" });
+        }}
+        className="group absolute left-[48px] top-[978px] flex cursor-pointer flex-col items-start gap-[10px] bg-transparent text-[#1e1e1f] transition-colors duration-300 hover:text-[#A58CF4]"
+      >
+        <style>{`
+          @keyframes scrollWheelMove {
+            0% { transform: translateY(0); opacity: 1; }
+            70% { transform: translateY(10px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 0; }
+          }
+          .scroll-wheel-dot { animation: scrollWheelMove 1.8s ease-in-out infinite; }
+          @media (prefers-reduced-motion: reduce) {
+            .scroll-wheel-dot { animation: none; }
+          }
+        `}</style>
+        <span className="[word-break:break-word] font-geist-medium-ss leading-[27.648px] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap">Scroll</span>
+        <svg width="27" height="45" viewBox="0 0 27 45" fill="none" aria-hidden="true">
+          <rect x="1.5" y="1.5" width="24" height="42" rx="12" stroke="currentColor" strokeWidth="2.5" />
+          <rect className="scroll-wheel-dot" x="12" y="8" width="3" height="8" rx="1.5" fill="currentColor" />
+        </svg>
+      </button>
       <Group15 />
       <div className="absolute h-0 left-[1203.29px] top-[8858.25px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
