@@ -292,13 +292,9 @@ function MobileNav({
     <>
       <style>{`
 
-        @keyframes seqWord {
-          0% { opacity: 0.15; }
-          10% { opacity: 1; }
-          78% { opacity: 1; }
-          92%, 100% { opacity: 0.15; }
-        }
-        .seq-word { display: inline-block; opacity: 0.15; animation: seqWord 3.6s ease-in-out infinite; }
+        @keyframes seqIn { from { opacity: 0.15; } to { opacity: 1; } }
+        .seq-word { display: inline-block; opacity: 0.15; }
+        .seq-line.play .seq-word { animation: seqIn 0.7s ease-out forwards; }
         @media (prefers-reduced-motion: reduce) { .seq-word { animation: none; opacity: 1; } }
         .m-pill { box-shadow: 0 0 0 2.5px #FAFAFA, 6px 6px 0 #A58CF4; animation: mPillDrop 0.6s cubic-bezier(0.34,1.56,0.64,1) both; }
         @keyframes mPillDrop {
@@ -771,6 +767,7 @@ function MetricMascot({ label, n, color, blink, delay }: { label: string; n: str
 
 // ── ABOUT ────────────────────────────────────────────────────────────────────
 function MobileAbout() {
+  const [seqRef, seqInView] = useInView(0.4);
   return (
     <>
       <section className="relative z-10 px-[24px] md:px-[40px] pt-[112px] md:pt-[140px]">
@@ -819,9 +816,11 @@ function MobileAbout() {
 
       <section className="relative z-10 px-[24px] md:px-[40px] mt-[64px]">
         <Reveal>
+          <div ref={seqRef} className={"seq-line" + (seqInView ? " play" : "")}>
           <p className="font-geist-semibold-ss text-[#1e1e1f] leading-[1.05] tracking-[-1.5px]" style={{ fontSize: "clamp(30px, 7vw, 64px)" }}>
             <span className="seq-word">STRATEGY</span>{` \u2192 `}<span className="seq-word" style={{ animationDelay: "0.45s" }}>BRAND</span>{` \u2192 `}<span className="seq-word" style={{ animationDelay: "0.9s" }}>PRODUCT</span>{` \u2192 `}<span className="seq-word" style={{ animationDelay: "1.35s" }}>EXPERIENCE</span>
           </p>
+          </div>
         </Reveal>
       </section>
 
