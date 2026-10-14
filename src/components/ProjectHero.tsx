@@ -517,14 +517,14 @@ export default function ProjectHero({
           }
           .ph-title { font-size: clamp(34px, 11vw, 56px); }
           .ph-tags { flex-wrap: wrap; } /* tags wrap in 2 rows on mobile */
-          .ph-card-wrap { width: 92vw; aspect-ratio: 4 / 3; }
+          .ph-card-wrap { width: 92vw; aspect-ratio: 16 / 9; }
           .ph-card { border-radius: 22px; clip-path: inset(0 round 22px); }
           .ph-card-shadow { border-radius: 22px; }
           /* mobile: 4 emoji only, 44-52px, at card corners */
           .ph-emoji-wrap .ph-emoji:nth-child(n+5) { display: none; }
           .ph-emoji { width: 48px !important; height: 48px !important; font-size: 26px !important; }
           .ph-card {
-            aspect-ratio: 4 / 3;
+            aspect-ratio: 16 / 9;
             box-shadow:
               0 0 0 2px var(--ph-soft-white),
               6px 6px 0 var(--ph-purple-light);
