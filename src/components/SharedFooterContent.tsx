@@ -7,8 +7,8 @@ const LinkedInIcon = () => (
 );
 
 const BehanceIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-label="Behance">
-    <text x="12" y="16.5" textAnchor="middle" fontSize="10" fontWeight="700" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="-0.5">Be</text>
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-label="Behance">
+    <text x="12" y="17" textAnchor="middle" fontSize="13" fontWeight="700" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="-0.5">Be</text>
   </svg>
 );
 
