@@ -53,7 +53,7 @@ const HOME_WORKS: { id: string; year: string; img?: string }[] = [
   { id: "finora", year: "2026" },
 ];
 // Desktop Work page order.
-const WORK_ORDER = ["noire-coffee", "fitflow", "axorix", "nodaliq", "stint", "finora", "brochure", "brand", "pypo", "mini", "aivon", "wildflower-atelier"];
+const WORK_ORDER = ["noire-coffee", "fitflow", "axorix", "nodaliq", "stint", "finora", "brochure", "brand", "pypo", "mini", "aivon", "wildflower-atelier", "baseway"];
 const byId = (id: string) => projects.find((p) => p.id === id);
 
 // Desktop About: metrics + experience.

@@ -370,6 +370,27 @@ export const projects: ProjectData[] = [
       "/assets/wildflower-07.png",
     ],
     liveLink: "https://thevoyage.studio/",
+    nextProjectId: "baseway",
+  },
+  {
+    id: "baseway",
+    title: "BASEWAY",
+    agency: "Baseway",
+    industry: "Footwear",
+    service: "Social Media Design",
+    year: "2026",
+    description:
+      "Social media design for Baseway — a modern footwear brand built for all-day movement, from morning commutes to long days on your feet. I designed a bold black-and-lime Instagram system around their 'Built to Move' idea — launch posts and carousels covering comfort, durability, and performance, made to stop the scroll and keep the brand moving.",
+    heroImage: "/assets/baseway-hero.png",
+    heroLogo: undefined,
+    heroFit: "cover",
+    thumbnail: "/assets/baseway-hero.png",
+    images: [
+      "/assets/baseway-01.png",
+      "/assets/baseway-02.png",
+      "/assets/baseway-03.png",
+    ],
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "noire-coffee",
   },
 ];

@@ -9,6 +9,7 @@ const imgPypo = `${assetPathPrefix}/pypo-hero.webp`;
 const imgMini = `${assetPathPrefix}/mini-hero.webp`;
 const imgAivon = `${assetPathPrefix}/aivon-hero.webp`;
 const imgWildflower = `${assetPathPrefix}/wildflower-hero.png`;
+const imgBaseway = `${assetPathPrefix}/baseway-hero.png`;
 const imgNoireCoffee = `${assetPathPrefix}/noire-hero.webp`;
 const imgContainer = `${assetPathPrefix}/35bcf.webp`;
 const imgFireflyGlass2 = `${assetPathPrefix}/67005.webp`;
@@ -40,6 +41,7 @@ const WORK_CARDS = [
   { name: "Mini", year: "2026", img: imgMini },
   { name: "AIVON", year: "2026", img: imgAivon },
   { name: "WILDFLOWER ATELIER", year: "2026", img: imgWildflower },
+  { name: "BASEWAY", year: "2026", img: imgBaseway },
 ];
 
 // Dynamic work-page canvas height so the footer is never clipped when cards
