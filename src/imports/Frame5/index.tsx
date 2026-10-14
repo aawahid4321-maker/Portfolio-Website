@@ -679,6 +679,15 @@ export default function Frame() {
   return (
     <div className="bg-[#e6e6e6] relative size-full" data-metrics>
       <style>{`
+
+        @keyframes seqWord {
+          0% { opacity: 0.15; }
+          10% { opacity: 1; }
+          78% { opacity: 1; }
+          92%, 100% { opacity: 0.15; }
+        }
+        .seq-word { display: inline-block; opacity: 0.15; animation: seqWord 3.6s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .seq-word { animation: none; opacity: 1; } }
         /* Metric circles: entrance pop on load, then gentle continuous pulse.
            No scroll-timeline — plain CSS animations that always work and
            always end fully visible (no opacity:0 end states). */
@@ -753,7 +762,7 @@ export default function Frame() {
       </div>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[71.674px] left-[48px] text-[#0f0f0f] text-[71.674px] top-[2076.42px] tracking-[-2.8669px] w-[1133.111px] whitespace-pre-wrap">{`        Results: A Snapshot of My Professional Achievements and Key Performance Metrics.`}</p>
       <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[24.96px] left-[510px] not-italic text-[#0f0f0f] text-[19.2px] top-[545.07px] uppercase w-[523.479px]">Multidisciplinary Designer</p>
-      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[108.446px] left-[44.52px] text-[83.42px] text-black top-[1788.58px] tracking-[-2.5026px] w-[1827.479px]">STRATEGY → BRAND → PRODUCT → EXPERIENCE</p>
+      <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[108.446px] left-[44.52px] text-[83.42px] text-black top-[1788.58px] tracking-[-2.5026px] w-[1827.479px]"><span className="seq-word">STRATEGY</span>{` \u2192 `}<span className="seq-word" style={{ animationDelay: "0.45s" }}>BRAND</span>{` \u2192 `}<span className="seq-word" style={{ animationDelay: "0.9s" }}>PRODUCT</span>{` \u2192 `}<span className="seq-word" style={{ animationDelay: "1.35s" }}>EXPERIENCE</span></p>
       <Group1 />
       <Group2 />
       <Group3 />
