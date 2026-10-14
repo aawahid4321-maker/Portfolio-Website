@@ -40,8 +40,8 @@ const SERVICES = [
   { name: "Art Direction", head: "2.1 / SHAPING THE VISUAL WORLD OF A BRAND", body: "I develop the creative direction, mood, and visual language that bring an idea to life and make it feel distinctive." },
   { name: "Brand Visuals", head: "3.1 / CREATING IDENTITIES PEOPLE REMEMBER", body: "From logos and visual systems to typography and color, I build cohesive identities that feel recognizable and built to last." },
   { name: "Website Design", head: "4.1 / TURNING BRAND INTO DIGITAL EXPERIENCE", body: "I design websites that bring the brand together with clear structure, thoughtful interactions, and a strong visual point of view." },
-  { name: "UI/UX Design", head: "5.1 / MAKING DIGITAL PRODUCTS FEEL SIMPLE.", body: "I create intuitive interfaces and user experiences that balance function, clarity, and visual character." },
-  { name: "Campaign Big Ideas", head: "6.1 / TURNING IDEAS INTO CAMPAIGNS PEOPLE NOTICE.", body: "I develop big creative ideas and campaign directions that give brands something worth saying, seeing, and remembering." },
+  { name: "Social Media Design", head: "5.1 / DESIGNING CONTENT THAT STOPS THE SCROLL.", body: "I create social media posts, carousels, and campaign creatives that keep brands consistent, active, and worth following." },
+  { name: "Interface Design", head: "6.1 / DESIGNING SCREENS THAT FEEL EASY TO USE.", body: "I design clean, intuitive interfaces and layouts that make digital products simple to understand and pleasant to use." },
 ];
 
 // Desktop home "Selected Works": 6 projects, desktop order, years and images.
