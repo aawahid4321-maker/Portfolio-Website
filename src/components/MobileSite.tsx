@@ -797,7 +797,7 @@ function MobileAbout() {
   return (
     <>
       <section className="relative z-10 px-[24px] md:px-[40px] pt-[112px] md:pt-[140px]">
-        <DisplayHeading text="About" size="84px" fluid="min(18vw, 200px)" />
+        <DisplayHeading text="About" size="84px" fluid="min(18vw, 200px)" mark={false} />
         <Reveal delay={60}>
           <div className="mt-[24px] flex items-baseline justify-between gap-[16px]">
             <Label>Multidisciplinary Designer</Label>
