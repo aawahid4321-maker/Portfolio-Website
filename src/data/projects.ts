@@ -358,7 +358,7 @@ const IMG_SLOT_H = Math.round((1823.5 * 9) / 16); // 1025
 const IMG_GAP = 44;
 const IMAGES_TOP = 1396;
 // Hero is ~800px tall; content below it is shifted by this much.
-const HERO_SHIFT = 4;
+const HERO_SHIFT = 100;
 // Footer starts this far below the last project image (after Next Project +
 // Let's Connect). The canvas ends exactly at the bottom of the footer, so
 // TAIL_H = Next Project + Let's Connect + Footer.

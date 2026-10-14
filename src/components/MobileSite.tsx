@@ -887,7 +887,7 @@ function MobileProject({
         />
       </div>
 
-      <section className="relative z-10 px-[24px] md:px-[40px] mt-[48px]">
+      <section className="relative z-10 px-[24px] md:px-[40px] mt-[72px]">
         <div>
           <BigHeading>Overview</BigHeading>
           <Reveal>
