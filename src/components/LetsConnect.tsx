@@ -17,6 +17,42 @@ const CSS_VARS = {
 
 const INK = "#0D0D0D";
 
+/* ── Character voices ─────────────────────────────────────────────────────
+   A tiny WebAudio cartoon "pop" per character — no audio files needed.
+   Each of the six characters gets its own pitch. The context is created
+   lazily on the first press (browsers only allow sound after a gesture). */
+let _charAC: AudioContext | null = null;
+const CHAR_FREQS = [392, 440, 494, 587, 659, 784];
+function playCharSound(i: number) {
+  try {
+    const AC =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext;
+    if (!AC) return;
+    if (!_charAC) _charAC = new AC();
+    if (_charAC.state === "suspended") void _charAC.resume();
+    const ac = _charAC;
+    const t = ac.currentTime;
+    const f = CHAR_FREQS[Math.max(0, Math.min(CHAR_FREQS.length - 1, i))] ?? 440;
+    const osc = ac.createOscillator();
+    const gain = ac.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(f * 0.9, t);
+    osc.frequency.exponentialRampToValueAtTime(f * 1.6, t + 0.07);
+    osc.frequency.exponentialRampToValueAtTime(f, t + 0.16);
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.exponentialRampToValueAtTime(0.2, t + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.24);
+    osc.connect(gain);
+    gain.connect(ac.destination);
+    osc.start(t);
+    osc.stop(t + 0.26);
+  } catch {
+    /* sound is a bonus — never let an audio failure break the scene */
+  }
+}
+
 export default function LetsConnect() {
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -538,10 +574,14 @@ export default function LetsConnect() {
         });
       };
       const onLeave = () => ch.classList.remove("is-happy");
-      const onClick = () => activate(m);
+      const onClick = () => {
+        playCharSound(movers.indexOf(m));
+        activate(m);
+      };
       const onKey = (e: KeyboardEvent) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
+          playCharSound(movers.indexOf(m));
           activate(m);
         }
       };
