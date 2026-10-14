@@ -20,7 +20,7 @@ const imgContainer1 = `${assetPathPrefix}/fitflow-hero.webp`;
 const imgContainer2 = `${assetPathPrefix}/f95a7.webp`;
 const imgContainer3 = `${assetPathPrefix}/91219.webp`;
 const imgContainer4 = `${assetPathPrefix}/stint-hero.webp`;
-const imgContainer5 = `${assetPathPrefix}/49ca5.webp`;
+const imgContainer5 = `${assetPathPrefix}/finora-hero.webp`;
 
 /* Work page project cards, top-to-bottom display order.
    To add a project, append one entry here — the zig-zag CSS
@@ -31,7 +31,7 @@ const WORK_CARDS = [
   { name: "AXORIX", year: "2025", img: imgContainer2 },
   { name: "Nodaliq", year: "2026", img: imgNodaliq },
   { name: "STINT", year: "2025", img: imgContainer4 },
-  { name: "CHATBLAST", year: "2025", img: imgContainer5 },
+  { name: "FINORA", year: "2026", img: imgContainer5 },
   { name: "BROCHURE", year: "2026", img: imgCampusApp },
   { name: "BRAND", year: "2026", img: imgGradia },
   { name: "Pypo", year: "2025", img: imgPypo },
