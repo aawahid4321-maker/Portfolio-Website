@@ -1545,7 +1545,7 @@ export default function App() {
             <Frame9 />
             <p className="absolute left-[1203.29px] top-[348px] w-[669px] leading-[29.952px] tracking-[-0.6912px] text-[#1e1e1f]" style={{ fontSize: "30px", marginTop: "-51px", marginBottom: "-51px", fontFamily: "'Geist:Medium',sans-serif", fontWeight: 500 }}>
               <span className="inline-bold">
-                / 28
+                / 21
               </span>
             </p>
           </>

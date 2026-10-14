@@ -565,7 +565,7 @@ function MobileHome({ onProject, onAbout }: { onProject: (id: string) => void; o
 
         <section className="relative z-10 px-[24px] md:px-0 mt-[32px] md:mt-0">
           <Reveal delay={60}>
-            <p className="mb-[12px] font-geist-medium-ss text-[30px] tracking-[-0.6px] text-[#1e1e1f]">/ 28</p>
+            <p className="mb-[12px] font-geist-medium-ss text-[30px] tracking-[-0.6px] text-[#1e1e1f]">/ 21</p>
           </Reveal>
           <DotPortrait src={portraitImg} alt="Wahid" ratio="4 / 5" />
           <Reveal delay={80}>
