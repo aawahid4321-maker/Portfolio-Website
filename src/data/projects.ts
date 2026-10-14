@@ -347,6 +347,31 @@ export const projects: ProjectData[] = [
     liveLink: "https://thevoyage.studio/",
     nextProjectId: "noire-coffee",
   },
+  {
+    id: "wildflower-atelier",
+    title: "WILDFLOWER ATELIER",
+    agency: "Wildflower Atelier",
+    industry: "Fashion",
+    service: "Social Media Design",
+    year: "2026",
+    description:
+      "Social media design for Wildflower Atelier — a slow-fashion label making fewer, better pieces in natural fibers and colors that last. I designed a fresh green-and-pink Instagram system for the Spring '26 collection — launch posts, sale campaigns, lookbook stories, and brand quotes that feel quietly bold, just like the clothes.",
+    heroImage: "/assets/wildflower-hero.png",
+    heroLogo: undefined,
+    heroFit: "cover",
+    thumbnail: "/assets/wildflower-hero.png",
+    images: [
+      "/assets/wildflower-01.png",
+      "/assets/wildflower-02.png",
+      "/assets/wildflower-03.png",
+      "/assets/wildflower-04.png",
+      "/assets/wildflower-05.png",
+      "/assets/wildflower-06.png",
+      "/assets/wildflower-07.png",
+    ],
+    liveLink: "https://thevoyage.studio/",
+    nextProjectId: "noire-coffee",
+  },
 ];
 
 // ── Base-path fix ──────────────────────────────────────────────────────────
