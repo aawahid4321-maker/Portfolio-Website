@@ -196,7 +196,7 @@ export const projects: ProjectData[] = [
       "/assets/finora-09.webp",
     ],
     liveLink: "https://thevoyage.studio/",
-    nextProjectId: "brand",
+    nextProjectId: "brochure",
   },
   {
     id: "brand",
@@ -298,7 +298,7 @@ export const projects: ProjectData[] = [
       "/assets/mini-10.webp",
     ],
     liveLink: "https://thevoyage.studio/",
-    nextProjectId: "campus-app",
+    nextProjectId: "aivon",
   },
   {
     id: "brochure",
@@ -324,7 +324,7 @@ export const projects: ProjectData[] = [
       "/assets/brochure-08.webp",
     ],
     liveLink: "https://thevoyage.studio/",
-    nextProjectId: "noire-coffee",
+    nextProjectId: "brand",
   },
   {
     id: "aivon",
@@ -345,7 +345,7 @@ export const projects: ProjectData[] = [
       "/assets/aivon-03.webp",
     ],
     liveLink: "https://thevoyage.studio/",
-    nextProjectId: "noire-coffee",
+    nextProjectId: "wildflower-atelier",
   },
   {
     id: "wildflower-atelier",
