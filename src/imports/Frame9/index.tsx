@@ -14,21 +14,21 @@ import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFirefly
 import SiteFooter from "@/components/SiteFooter";
 
 // Canvas y where the shared footer starts on the home page.
-export const HOME_FOOTER_TOP = 10873.27;
+export const HOME_FOOTER_TOP = 10993.27;
 import PhysicsTags from "@/components/PhysicsTags";
 import LetsConnect from "@/components/LetsConnect";
 import LearnMoreButton from "@/components/LearnMoreButton";
 
 function Container() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10672px] left-[48px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10792px] left-[48px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container1() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10672px] left-[279px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10792px] left-[279px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container2() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10672px] left-[510px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10792px] left-[510px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Link() {
@@ -41,26 +41,26 @@ function Link() {
 
 function Container3() {
   return (
-    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10672px] left-[741px] top-0 w-[207px]" data-name="Container">
+    <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10792px] left-[741px] top-0 w-[207px]" data-name="Container">
       <Link />
     </div>
   );
 }
 
 function Container8() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10672px] left-[972px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10792px] left-[972px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container9() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10672px] left-[1203px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10792px] left-[1203px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container10() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10672px] left-[1434px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10792px] left-[1434px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container11() {
-  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10672px] left-[1665px] top-0 w-[207px]" data-name="Container" />;
+  return <div className="absolute border-[#cfcfcf] border-l border-r border-solid h-[10792px] left-[1665px] top-0 w-[207px]" data-name="Container" />;
 }
 
 function Container12() {
@@ -362,8 +362,8 @@ function Container20() {
 
 function Group14() {
   return (
-    <div className="absolute contents left-0 top-[10110.15px]">
-      <div className="absolute left-0 top-[10110.15px] w-[1920px] h-[763px]">
+    <div className="absolute contents left-0 top-[10230.15px]">
+      <div className="absolute left-0 top-[10230.15px] w-[1920px] h-[763px]">
         <LetsConnect />
       </div>
       <Container20 />
