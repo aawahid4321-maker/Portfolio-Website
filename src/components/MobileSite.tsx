@@ -50,6 +50,7 @@ const HOME_WORKS: { id: string; year: string; img?: string }[] = [
   { id: "axorix", year: "2025", img: axorixHomeImg },
   { id: "pypo", year: "2025" },
   { id: "brochure", year: "2024" },
+  { id: "finora", year: "2026" },
 ];
 // Desktop Work page order.
 const WORK_ORDER = ["noire-coffee", "fitflow", "axorix", "nodaliq", "stint", "finora", "brochure", "brand", "pypo", "mini", "aivon", "wildflower-atelier"];

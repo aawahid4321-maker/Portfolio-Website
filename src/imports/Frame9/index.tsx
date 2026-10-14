@@ -9,11 +9,12 @@ import imgContainer3 from "@/assets/stint-hero.webp";
 import imgContainer4 from "@/assets/axorix-hero.webp";
 const imgContainer5 = `${import.meta.env.BASE_URL}assets/pypo-hero.webp`;
 import imgContainer6 from "@/assets/brochure-hero.webp";
+const imgContainer7 = `${import.meta.env.BASE_URL}assets/finora-hero.webp`;
 import { imgFreepikTheStyleIsCandidImagePhotographyWithNatural586811, imgFireflyDispersed3DGlassSharpEdgesCleanTransparentBlackBackground57637Copy3 } from "./svg-8vx37";
 import SiteFooter from "@/components/SiteFooter";
 
 // Canvas y where the shared footer starts on the home page.
-export const HOME_FOOTER_TOP = 10222.27;
+export const HOME_FOOTER_TOP = 10873.27;
 import PhysicsTags from "@/components/PhysicsTags";
 import LetsConnect from "@/components/LetsConnect";
 import LearnMoreButton from "@/components/LearnMoreButton";
@@ -32,7 +33,7 @@ function Container2() {
 
 function Link() {
   return (
-    <div className="absolute left-[-1px] top-[6424px]" data-name="Link" data-learnmore-btn="true">
+    <div className="absolute left-[-1px] top-[7075px]" data-name="Link" data-learnmore-btn="true">
       <LearnMoreButton />
     </div>
   );
@@ -68,7 +69,7 @@ function Container12() {
 
 function Container13() {
   return (
-    <div className="-translate-x-1/2 absolute left-1/2 top-[6641px] w-[1818px]" data-name="Container" data-cursor="drag">
+    <div className="-translate-x-1/2 absolute left-1/2 top-[7292px] w-[1818px]" data-name="Container" data-cursor="drag">
       <PhysicsTags />
     </div>
   );
@@ -92,7 +93,7 @@ function Container16() {
 
 function Container14() {
   return (
-    <div className="absolute content-stretch flex h-[38.092px] items-start justify-between left-[51.49px] top-[7615px] w-[1817.023px]" data-name="Container">
+    <div className="absolute content-stretch flex h-[38.092px] items-start justify-between left-[51.49px] top-[8266px] w-[1817.023px]" data-name="Container">
       <Container15 />
       <Container16 />
     </div>
@@ -101,28 +102,28 @@ function Container14() {
 
 function Group13() {
   return (
-    <div className="[word-break:break-word] absolute contents font-pt-mono-ss left-[1203.29px] not-italic text-[#0f0f0f] text-[22px] top-[8018.03px] uppercase">
-      <div className="absolute leading-[0] left-[1203.29px] top-[8018.03px] w-[589.484px]">
+    <div className="[word-break:break-word] absolute contents font-pt-mono-ss left-[1203.29px] not-italic text-[#0f0f0f] text-[22px] top-[8669.03px] uppercase">
+      <div className="absolute leading-[0] left-[1203.29px] top-[8669.03px] w-[589.484px]">
         <p className="leading-[33px] mb-0">1.1 / BUILDING A CLEAR BRAND DIRECTION</p>
         <p className="leading-[33px]">I define the positioning, personality, audience, and visual direction that give a brand a clear place in the market.</p>
       </div>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[8274.42px] w-[589.484px]">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[8925.42px] w-[589.484px]">
         2.1 / SHAPING THE VISUAL WORLD OF A BRAND
         <br aria-hidden />I develop the creative direction, mood, and visual language that bring an idea to life and make it feel distinctive.
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[8530.81px] w-[589.484px]">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[9181.81px] w-[589.484px]">
         3.1 / CREATING IDENTITIES PEOPLE REMEMBER
         <br aria-hidden />
         From logos and visual systems to typography and color, I build cohesive identities that feel recognizable and built to last.
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[8787.20px] w-[641.38px]">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[9438.20px] w-[641.38px]">
         4.1 / TURNING BRAND INTO DIGITAL EXPERIENCE
         <br aria-hidden />I design websites that bring the brand together with clear structure, thoughtful interactions, and a strong visual point of view.
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[9043.59px] w-[589.484px] whitespace-pre-wrap">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[9694.59px] w-[589.484px] whitespace-pre-wrap">
         {`5.1 / MAKING DIGITAL PRODUCTS FEEL SIMPLE. I create intuitive interfaces and user experiences that balance function, clarity, and visual character.`}
       </p>
-      <p className="absolute leading-[33px] left-[1203.29px] top-[9286.37px] w-[641.38px] whitespace-pre-wrap">
+      <p className="absolute leading-[33px] left-[1203.29px] top-[9937.37px] w-[641.38px] whitespace-pre-wrap">
         {`6.1 / TURNING IDEAS INTO CAMPAIGNS PEOPLE NOTICE. I develop big creative ideas and campaign directions that give brands something worth saying, seeing, and remembering.`}
       </p>
     </div>
@@ -144,13 +145,13 @@ function Group() {
       <Container13 />
       <Container14 />
       <Group13 />
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8030.03px] tracking-[0.5px] whitespace-nowrap">Brand Strategy</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8286.42px] tracking-[0.5px] whitespace-nowrap">Art Direction</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8542.81px] tracking-[0.5px] whitespace-nowrap">Brand Visuals</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8799.20px] tracking-[0.5px] whitespace-nowrap">Website Design</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9055.59px] tracking-[0.5px] whitespace-nowrap">UI/UX Design</p>
-      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9298.37px] tracking-[0.5px] whitespace-nowrap">Campaign Big Ideas</p>
-      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[48px] text-[#1e1e1f] text-[237px] top-[7726.56px] tracking-[-9.6861px] whitespace-nowrap">My Services</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8681.03px] tracking-[0.5px] whitespace-nowrap">Brand Strategy</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[8937.42px] tracking-[0.5px] whitespace-nowrap">Art Direction</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9193.81px] tracking-[0.5px] whitespace-nowrap">Brand Visuals</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9450.20px] tracking-[0.5px] whitespace-nowrap">Website Design</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9706.59px] tracking-[0.5px] whitespace-nowrap">UI/UX Design</p>
+      <p className="[text-box-edge:cap_alphabetic] [text-box-trim:trim-both] [word-break:break-word] absolute font-geist-medium-ss leading-[66.269px] left-[741px] text-[#0f0f0f] text-[22px] top-[9949.37px] tracking-[0.5px] whitespace-nowrap">Campaign Big Ideas</p>
+      <p className="[word-break:break-word] absolute font-geist-semibold-ss leading-[normal] left-[48px] text-[#1e1e1f] text-[237px] top-[8377.56px] tracking-[-9.6861px] whitespace-nowrap">My Services</p>
     </div>
   );
 }
@@ -158,8 +159,8 @@ function Group() {
 
 function Group12() {
   return (
-    <div className="absolute contents left-[974.8px] top-[9780.99px]">
-      <p className="absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[9780.99px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
+    <div className="absolute contents left-[974.8px] top-[10431.99px]">
+      <p className="absolute font-geist-medium-ss leading-[49.62px] left-[974.8px] text-[32px] text-white top-[10431.99px] tracking-[-1.1451px] w-[796.5px]">{`If you're looking for a partner to help you explore new ideas, refine your brand, or simply need someone to bounce ideas off of, I'm here to listen and collaborate.`}</p>
     </div>
   );
 }
@@ -361,8 +362,8 @@ function Container20() {
 
 function Group14() {
   return (
-    <div className="absolute contents left-0 top-[9459.15px]">
-      <div className="absolute left-0 top-[9459.15px] w-[1920px] h-[763px]">
+    <div className="absolute contents left-0 top-[10110.15px]">
+      <div className="absolute left-0 top-[10110.15px] w-[1920px] h-[763px]">
         <LetsConnect />
       </div>
       <Container20 />
@@ -857,16 +858,58 @@ function Group5() {
   );
 }
 
+function Container78() {
+  return (
+    <div className="group -translate-x-1/2 absolute h-[506px] left-[calc(50%+0.29px)] overflow-clip top-[5420.63px] w-[900px] cursor-pointer" data-name="Container" data-cursor="view" data-project-id="finora">
+      <img alt="" className="absolute inset-0 max-w-none object-cover pointer-events-none size-full transition-transform duration-700 ease-out group-hover:scale-105" src={imgContainer7} loading="eager" decoding="async" />
+    </div>
+  );
+}
+
+function Container80() {
+  return (
+    <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">FINORA</p>
+    </div>
+  );
+}
+
+function Container81() {
+  return (
+    <div className="content-stretch flex flex-col items-start relative shrink-0" data-name="Container">
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#29292b] text-[19.2px] uppercase whitespace-nowrap">2026</p>
+    </div>
+  );
+}
+
+function Container79() {
+  return (
+    <div className="absolute content-stretch flex items-start justify-between left-[510.29px] top-[5934.63px] w-[900px]" data-name="Container">
+      <Container80 />
+      <Container81 />
+    </div>
+  );
+}
+
+function Group6() {
+  return (
+    <div className="absolute contents left-[510.29px] top-[5251.58px]">
+      <Container78 />
+      <Container79 />
+    </div>
+  );
+}
+
 function Group15() {
   return (
-    <div className="[word-break:break-word] absolute contents left-[48px] top-[5678px]">
-      <p className="absolute font-pt-mono-ss leading-[23.04px] left-[510.29px] not-italic text-[#29292b] text-[19.2px] top-[6089.12px] uppercase whitespace-nowrap">[Process]</p>
-      <div className="absolute font-geist-medium-ss leading-[0] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[6089.12px] tracking-[-0.6912px] w-[786.817px] whitespace-pre-wrap">
+    <div className="[word-break:break-word] absolute contents left-[48px] top-[6329px]">
+      <p className="absolute font-pt-mono-ss leading-[23.04px] left-[510.29px] not-italic text-[#29292b] text-[19.2px] top-[6740.12px] uppercase whitespace-nowrap">[Process]</p>
+      <div className="absolute font-geist-medium-ss leading-[0] left-[741.29px] text-[#1e1e1f] text-[23.04px] top-[6740.12px] tracking-[-0.6912px] w-[786.817px] whitespace-pre-wrap">
         <p className="leading-[29.952px] mb-0">I’m Abdul Wahid, a multidisciplinary designer working across branding, visual identity, logo design, social media creatives, and presentation design — with hands-on experience in video editing and motion graphics.</p>
         <p className="leading-[29.952px] mb-0">​</p>
         <p className="leading-[29.952px]">{`For me, good design starts with understanding the business, the audience, and the goal. I turn those insights into a clear creative direction — building strong brand identities and compelling visual experiences that communicate clearly, connect with people, and help businesses grow.`}</p>
       </div>
-      <p className="absolute font-geist-semibold-ss leading-[normal] left-[48px] text-[#1e1e1f] text-[237px] top-[5678px] tracking-[-9.6861px] whitespace-nowrap">Introduction</p>
+      <p className="absolute font-geist-semibold-ss leading-[normal] left-[48px] text-[#1e1e1f] text-[237px] top-[6329px] tracking-[-9.6861px] whitespace-nowrap">Introduction</p>
     </div>
   );
 }
@@ -877,12 +920,12 @@ export default function Frame() {
       <Group />
       <Group14 />
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[71.674px] left-[46px] text-[#0f0f0f] text-[71.674px] top-[1144px] tracking-[-2.8669px] w-[912px] animate-[fadeUpIn_0.9s_0.35s_cubic-bezier(0.22,1,0.36,1)_both]">Selected Works</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8018.03px] uppercase w-[85.255px]">[01]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8274.42px] uppercase w-[85.255px]">[02]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8530.81px] uppercase w-[85.255px]">[03]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8787.20px] uppercase w-[85.255px]">[04]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9043.59px] uppercase w-[85.255px]">[05]</p>
-      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9286.37px] uppercase w-[85.255px]">[06]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8669.03px] uppercase w-[85.255px]">[01]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[8925.42px] uppercase w-[85.255px]">[02]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9181.81px] uppercase w-[85.255px]">[03]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9438.20px] uppercase w-[85.255px]">[04]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9694.59px] uppercase w-[85.255px]">[05]</p>
+      <p className="[word-break:break-word] absolute font-pt-mono-ss leading-[41.009px] left-[510.29px] not-italic text-[#0f0f0f] text-[22px] top-[9937.37px] uppercase w-[85.255px]">[06]</p>
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[29.952px] left-[1203.29px] text-[#1e1e1f] text-[35px] top-[357.07px] tracking-[-0.6912px] w-[523.479px]">/ 30</p>
       <Banner />
       <div className="absolute inset-[3.14%_50.92%_96.42%_46.37%] animate-[fadeRotateIn_1s_0.5s_cubic-bezier(0.22,1,0.36,1)_both]" data-name="Vector">
@@ -900,37 +943,38 @@ export default function Frame() {
       <Group3 />
       <Group4 />
       <Group5 />
+      <Group6 />
       <p className="[word-break:break-word] absolute font-geist-medium-ss leading-[27.648px] left-[48px] text-[#1e1e1f] text-[23.04px] top-[1063px] tracking-[-0.6912px] whitespace-nowrap" style={{ marginTop: "-85px", marginBottom: "-85px" }}>Scroll Down</p>
       <Group15 />
-      <div className="absolute h-0 left-[1203.29px] top-[8207.25px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[8858.25px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[8463.09px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[9114.09px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[8718.93px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[9369.93px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[8974.77px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[9625.77px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
           </svg>
         </div>
       </div>
-      <div className="absolute h-0 left-[1203.29px] top-[9226.30px] w-[668.711px]">
+      <div className="absolute h-0 left-[1203.29px] top-[9877.30px] w-[668.711px]">
         <div className="absolute inset-[-1px_0_0_0]">
           <svg className="block size-full" fill="none" height="1" preserveAspectRatio="none" viewBox="0 0 668.711 1" width="668.711">
             <line id="Line 31" stroke="#BABABA" x2="668.711" y1="0.5" y2="0.5" />
