@@ -167,7 +167,9 @@ export default function SharedFooterContent() {
             <div className="flex flex-col gap-[8px] items-start">
               <a
                 ref={emailRef}
-                href="mailto:aawahid321@gmail.com"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=aawahid321@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#0D0D0D] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap flex group items-center gap-[14px] transition-colors duration-300 hover:text-[#A58CF4]"
               >
                 <span className="flex h-[44px] w-[44px] shrink-0 items-center justify-center rounded-full border border-[rgba(13,13,13,0.18)] bg-[rgba(13,13,13,0.05)] transition-colors duration-300 group-hover:border-[#A58CF4] group-hover:bg-[#A58CF4] group-hover:text-white"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
