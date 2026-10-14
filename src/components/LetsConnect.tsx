@@ -808,7 +808,7 @@ export default function LetsConnect() {
           z-index: 1;
           width: 1920px; height: 763px;
           /* night landscape bg image (purple/dark, matches site) */
-          background: var(--connect-bg) url("/Portfolio-Website/assets/lets-connect-bg.webp?v=2") center / cover no-repeat;
+          background: var(--connect-bg) url("${import.meta.env.BASE_URL}assets/lets-connect-bg.webp?v=2") center / cover no-repeat;
           overflow: hidden;
         }
         body.connect-in-view [class*="h-[11035px]"][class*="border-l"] {
@@ -860,7 +860,7 @@ export default function LetsConnect() {
           position: absolute;
           inset: 0;
           z-index: 1;
-          background: url("/Portfolio-Website/assets/lc-forest-overlay.png") left top / auto 100% repeat-x;
+          background: url("${import.meta.env.BASE_URL}assets/lc-forest-overlay.png") left top / auto 100% repeat-x;
           opacity: 0.5;
           pointer-events: none;
         }
