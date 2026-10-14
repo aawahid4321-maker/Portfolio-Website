@@ -2,6 +2,7 @@ import { type ProjectData, getProjectCanvasH, IMG_SLOT_H, IMG_GAP, IMAGES_TOP, H
 import SiteFooter from "@/components/SiteFooter";
 import LetsConnect from "@/components/LetsConnect";
 import ProjectHero from "@/components/ProjectHero";
+import LearnMoreButton from "@/components/LearnMoreButton";
 
 /* Hero is now ~800px tall (flex: 152 top pad + tags + card + 72 bottom pad, no title).
    Content is shifted by HERO_SHIFT (see data/projects.ts) so Overview starts
@@ -94,39 +95,19 @@ export default function ProjectPage({
         {project.description}
       </p>
 
-      {/* LIVE LINK button */}
+      {/* LIVE LINK button — same style as the LEARN MORE button */}
       <div
-        className="absolute bg-[#1e1e1f] content-stretch flex gap-[8px] h-[47px] items-center justify-center overflow-clip p-[12px] rounded-[5px] w-[157px] cursor-pointer"
+        className="absolute"
         style={{ left: 48, top: 1057 + HERO_SHIFT }}
-        onClick={() => {
-          if (project.siteView && onNavigateSite) { onNavigateSite(); window.scrollTo({ top: 0 }); }
-          else if (project.liveLink) window.open(project.liveLink, "_blank");
-        }}
         data-name="live-link-btn"
       >
-        <div className="content-stretch flex flex-col items-start relative shrink-0">
-          <p className="[word-break:break-word] font-['Zilla_Slab'] leading-[19.2px] not-italic relative shrink-0 text-[#f2f2f2] text-[19.2px] uppercase whitespace-nowrap">
-            LiVE link
-          </p>
-        </div>
-        <div className="content-stretch flex flex-col h-[23px] items-start overflow-clip relative shrink-0 w-[18px]">
-          <div className="content-stretch flex flex-col h-[23px] items-start relative shrink-0 w-full">
-            <div className="absolute flex items-center justify-center left-[-5.45px] size-[28.991px] top-[-2.85px]">
-              <div className="-rotate-45 flex-none">
-                <p className="[word-break:break-word] font-['Geist:Medium'] leading-[23.04px] relative shrink-0 text-[#f2f2f2] text-[23.04px] whitespace-nowrap">
-                  →
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="absolute flex items-center justify-center left-[-23.89px] size-[30.406px] top-[19.34px]">
-            <div className="-rotate-45 flex-none">
-              <p className="[word-break:break-word] font-['Geist:Medium'] leading-[23.04px] relative shrink-0 text-[#f2f2f2] text-[23.04px] whitespace-nowrap">
-                →
-              </p>
-            </div>
-          </div>
-        </div>
+        <LearnMoreButton
+          label="LIVE LINK"
+          onClick={() => {
+            if (project.siteView && onNavigateSite) { onNavigateSite(); window.scrollTo({ top: 0 }); }
+            else if (project.liveLink) window.open(project.liveLink, "_blank");
+          }}
+        />
       </div>
 
       {/* ── Metadata columns ─────────────────────────────────── */}

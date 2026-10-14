@@ -4,9 +4,10 @@
 
 interface LearnMoreButtonProps {
   onClick?: () => void;
+  label?: string;
 }
 
-export default function LearnMoreButton({ onClick }: LearnMoreButtonProps) {
+export default function LearnMoreButton({ onClick, label = "LEARN MORE" }: LearnMoreButtonProps) {
   return (
     <>
       <style>{`
@@ -129,7 +130,7 @@ export default function LearnMoreButton({ onClick }: LearnMoreButtonProps) {
           </span>
         </span>
         <button className="lm-btn" type="button" onClick={onClick}>
-          LEARN MORE <span className="lm-arrow" aria-hidden="true">↗</span>
+          {label} <span className="lm-arrow" aria-hidden="true">↗</span>
         </button>
       </span>
     </>

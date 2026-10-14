@@ -111,7 +111,7 @@ export const projects: ProjectData[] = [
       "/assets/axorix-08.webp",
     ],
     imageHeights: [null, null, null, null, null, null, null, 1927],
-    liveLink: undefined,
+    liveLink: "https://thevoyage.studio/",
     nextProjectId: "nodaliq",
   },
   {

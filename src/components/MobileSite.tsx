@@ -895,16 +895,15 @@ function MobileProject({
               {project.description}
             </p>
           </Reveal>
-          <button
-            onClick={() => {
-              if (project.siteView && onSite) { onSite(); window.scrollTo({ top: 0 }); }
-              else if (project.liveLink) window.open(project.liveLink, "_blank");
-            }}
-            className="mt-[24px] inline-flex items-center gap-[10px] bg-[#1e1e1f] px-[22px] py-[13px] rounded-[5px] font-pt-mono-ss text-[16px] uppercase text-[#f2f2f2]"
-          >
-            LiVE link
-            <span aria-hidden className="inline-block -rotate-45">→</span>
-          </button>
+          <div className="mt-[24px]">
+            <LearnMoreButton
+              label="LIVE LINK"
+              onClick={() => {
+                if (project.siteView && onSite) { onSite(); window.scrollTo({ top: 0 }); }
+                else if (project.liveLink) window.open(project.liveLink, "_blank");
+              }}
+            />
+          </div>
         </div>
 
         <div className="mt-[40px] grid grid-cols-2 md:grid-cols-4 gap-y-[26px] gap-x-[16px]">
