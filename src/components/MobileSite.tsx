@@ -391,9 +391,9 @@ function MobileNav({
         <div className="mt-[40px] mb-[48px] flex flex-col gap-[16px]">
           <Label>[Socials]</Label>
           <div className="flex gap-[18px] text-[#1e1e1f]">
-            <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><IconLinkedIn /></a>
-            <a href={BEHANCE} target="_blank" rel="noopener noreferrer" aria-label="Behance"><IconBehance /></a>
-            <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IconInstagram /></a>
+            <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="transition-colors hover:text-[#A58CF4] active:text-[#A58CF4]"><IconLinkedIn /></a>
+            <a href={BEHANCE} target="_blank" rel="noopener noreferrer" aria-label="Behance" className="transition-colors hover:text-[#A58CF4] active:text-[#A58CF4]"><IconBehance /></a>
+            <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="transition-colors hover:text-[#A58CF4] active:text-[#A58CF4]"><IconInstagram /></a>
           </div>
         </div>
       </div>
@@ -458,7 +458,7 @@ function MobileFooter() {
 
             <div className="mt-[40px] flex flex-col gap-[12px]">
               <p className="font-pt-mono-ss text-[15px] md:text-[18px] uppercase text-[rgba(13,13,13,0.5)]">[Contact]</p>
-              <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center gap-[10px] font-geist-medium-ss text-[19px] md:text-[21px] tracking-[-0.5px] text-[#0D0D0D]">
+              <a href={`mailto:${CONTACT_EMAIL}`} className="flex items-center gap-[10px] font-geist-medium-ss text-[19px] md:text-[21px] tracking-[-0.5px] text-[#0D0D0D] transition-colors hover:text-[#A58CF4] active:text-[#A58CF4]">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <rect x="2" y="4" width="20" height="16" rx="2" />
                   <path d="m22 7-10 6L2 7" />
@@ -466,7 +466,7 @@ function MobileFooter() {
                 {CONTACT_EMAIL}
               </a>
               {PHONES.map((ph) => (
-                <a key={ph.tel} href={`tel:${ph.tel}`} className="flex items-center gap-[10px] font-geist-medium-ss text-[19px] md:text-[21px] tracking-[-0.5px] text-[#0D0D0D]">
+                <a key={ph.tel} href={`tel:${ph.tel}`} className="flex items-center gap-[10px] font-geist-medium-ss text-[19px] md:text-[21px] tracking-[-0.5px] text-[#0D0D0D] transition-colors hover:text-[#A58CF4] active:text-[#A58CF4]">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
                   </svg>
@@ -483,7 +483,7 @@ function MobileFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(13,13,13,0.25)] text-[rgba(13,13,13,0.85)] active:scale-110 transition-transform"
+                  className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(13,13,13,0.25)] text-[rgba(13,13,13,0.85)] transition-all hover:border-[#A58CF4] hover:bg-[#A58CF4] hover:text-white active:border-[#A58CF4] active:bg-[#A58CF4] active:text-white active:scale-110"
                 >
                   <IconLinkedIn />
                 </a>
@@ -492,7 +492,7 @@ function MobileFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Behance"
-                  className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(13,13,13,0.25)] text-[rgba(13,13,13,0.85)] active:scale-110 transition-transform"
+                  className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(13,13,13,0.25)] text-[rgba(13,13,13,0.85)] transition-all hover:border-[#A58CF4] hover:bg-[#A58CF4] hover:text-white active:border-[#A58CF4] active:bg-[#A58CF4] active:text-white active:scale-110"
                 >
                   <IconBehance />
                 </a>
@@ -501,7 +501,7 @@ function MobileFooter() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(13,13,13,0.25)] text-[rgba(13,13,13,0.85)] active:scale-110 transition-transform"
+                  className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(13,13,13,0.25)] text-[rgba(13,13,13,0.85)] transition-all hover:border-[#A58CF4] hover:bg-[#A58CF4] hover:text-white active:border-[#A58CF4] active:bg-[#A58CF4] active:text-white active:scale-110"
                 >
                   <IconInstagram />
                 </a>

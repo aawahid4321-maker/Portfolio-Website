@@ -169,7 +169,7 @@ export default function SharedFooterContent() {
               <a
                 ref={emailRef}
                 href="mailto:aawahid321@gmail.com"
-                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#0D0D0D] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap flex items-center gap-[10px]"
+                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#0D0D0D] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap flex items-center gap-[10px] transition-colors duration-300 hover:text-[#A58CF4]"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -179,7 +179,7 @@ export default function SharedFooterContent() {
               </a>
               <a
                 href="tel:+923295460848"
-                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#0D0D0D] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap flex items-center gap-[10px]"
+                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#0D0D0D] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap flex items-center gap-[10px] transition-colors duration-300 hover:text-[#A58CF4]"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -188,7 +188,7 @@ export default function SharedFooterContent() {
               </a>
               <a
                 href="tel:+923365934828"
-                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#0D0D0D] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap flex items-center gap-[10px]"
+                className="email-link font-['Geist:Medium'] leading-[27.648px] text-[#0D0D0D] text-[23.04px] tracking-[-0.6912px] whitespace-nowrap flex items-center gap-[10px] transition-colors duration-300 hover:text-[#A58CF4]"
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z" />
@@ -209,7 +209,7 @@ export default function SharedFooterContent() {
               href="https://www.linkedin.com/in/abdul-wahid-7763b8377/"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-circle w-[52px] h-[52px] rounded-full border border-[rgba(13,13,13,0.25)] flex items-center justify-center text-[rgba(13,13,13,0.85)] hover:border-[rgba(13,13,13,0.6)] hover:bg-[rgba(13,13,13,0.07)]"
+              className="social-circle w-[52px] h-[52px] rounded-full border border-[rgba(13,13,13,0.25)] flex items-center justify-center text-[rgba(13,13,13,0.85)] hover:border-[#A58CF4] hover:bg-[#A58CF4] hover:text-white transition-colors duration-300"
               aria-label="LinkedIn"
             >
               <LinkedInIcon />
@@ -218,7 +218,7 @@ export default function SharedFooterContent() {
               href="https://www.behance.net/abdulwahid235"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-circle w-[52px] h-[52px] rounded-full border border-[rgba(13,13,13,0.25)] flex items-center justify-center text-[rgba(13,13,13,0.85)] hover:border-[rgba(13,13,13,0.6)] hover:bg-[rgba(13,13,13,0.07)]"
+              className="social-circle w-[52px] h-[52px] rounded-full border border-[rgba(13,13,13,0.25)] flex items-center justify-center text-[rgba(13,13,13,0.85)] hover:border-[#A58CF4] hover:bg-[#A58CF4] hover:text-white transition-colors duration-300"
               aria-label="Behance"
             >
               <BehanceIcon />
@@ -227,7 +227,7 @@ export default function SharedFooterContent() {
               href="https://www.instagram.com/graphicdija_wahid/"
               target="_blank"
               rel="noopener noreferrer"
-              className="social-circle w-[52px] h-[52px] rounded-full border border-[rgba(13,13,13,0.25)] flex items-center justify-center text-[rgba(13,13,13,0.85)] hover:border-[rgba(13,13,13,0.6)] hover:bg-[rgba(13,13,13,0.07)]"
+              className="social-circle w-[52px] h-[52px] rounded-full border border-[rgba(13,13,13,0.25)] flex items-center justify-center text-[rgba(13,13,13,0.85)] hover:border-[#A58CF4] hover:bg-[#A58CF4] hover:text-white transition-colors duration-300"
               aria-label="Instagram"
             >
               <InstagramIcon />
