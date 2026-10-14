@@ -422,7 +422,7 @@ function Banner() {
 function Container20() {
   return (
     <div className="absolute left-[510px] top-[593.07px] w-[1366px] h-[768px] overflow-hidden" data-name="Container">
-      <img alt="" className="block w-[1366px] h-[768px] object-cover" style={{ aspectRatio: "1366 / 768" }} src="/Portfolio-Website/assets/about-portrait-purple.png" loading="eager" decoding="async" />
+      <img alt="" className="block w-[1366px] h-[768px] object-cover" style={{ aspectRatio: "1366 / 768" }} src={import.meta.env.BASE_URL + "assets/about-portrait-purple.png"} loading="eager" decoding="async" />
     </div>
   );
 }
