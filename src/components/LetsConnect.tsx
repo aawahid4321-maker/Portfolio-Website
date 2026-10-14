@@ -18,36 +18,98 @@ const CSS_VARS = {
 const INK = "#0D0D0D";
 
 /* ── Character voices ─────────────────────────────────────────────────────
-   A tiny WebAudio cartoon "pop" per character — no audio files needed.
-   Each of the six characters gets its own pitch. The context is created
-   lazily on the first press (browsers only allow sound after a gesture). */
+   One sound per character, matched to how each cartoon looks and acts —
+   synthesized live with WebAudio, no audio files needed. The context is
+   created lazily on the first press (sound needs a user gesture anyway).
+     0 purple blob  → soft round "bloop"
+     1 yellow tri   → springy cheerful "boing"
+     2 pink square  → deadpan square-wave "beep beep"
+     3 orange spiky → angry sawtooth growl
+     4 white ghost  → spooky floating "wooo"
+     5 orange star  → sparkly twinkle arpeggio                                        */
 let _charAC: AudioContext | null = null;
-const CHAR_FREQS = [392, 440, 494, 587, 659, 784];
-function playCharSound(i: number) {
+function charCtx(): AudioContext | null {
   try {
     const AC =
       window.AudioContext ||
       (window as unknown as { webkitAudioContext?: typeof AudioContext })
         .webkitAudioContext;
-    if (!AC) return;
+    if (!AC) return null;
     if (!_charAC) _charAC = new AC();
     if (_charAC.state === "suspended") void _charAC.resume();
-    const ac = _charAC;
-    const t = ac.currentTime;
-    const f = CHAR_FREQS[Math.max(0, Math.min(CHAR_FREQS.length - 1, i))] ?? 440;
-    const osc = ac.createOscillator();
-    const gain = ac.createGain();
-    osc.type = "triangle";
-    osc.frequency.setValueAtTime(f * 0.9, t);
-    osc.frequency.exponentialRampToValueAtTime(f * 1.6, t + 0.07);
-    osc.frequency.exponentialRampToValueAtTime(f, t + 0.16);
-    gain.gain.setValueAtTime(0.0001, t);
-    gain.gain.exponentialRampToValueAtTime(0.2, t + 0.015);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.24);
-    osc.connect(gain);
-    gain.connect(ac.destination);
-    osc.start(t);
-    osc.stop(t + 0.26);
+    return _charAC;
+  } catch {
+    return null;
+  }
+}
+type ToneOpts = {
+  type: OscillatorType;
+  f0: number;
+  f1?: number;
+  at?: number;
+  dur: number;
+  vol: number;
+  wobbleHz?: number;
+  wobbleAmt?: number;
+};
+function tone(ac: AudioContext, o: ToneOpts) {
+  const t = ac.currentTime + (o.at ?? 0);
+  const osc = ac.createOscillator();
+  const gain = ac.createGain();
+  osc.type = o.type;
+  osc.frequency.setValueAtTime(Math.max(30, o.f0), t);
+  if (o.f1 !== undefined) {
+    osc.frequency.exponentialRampToValueAtTime(Math.max(30, o.f1), t + o.dur);
+  }
+  if (o.wobbleHz && o.wobbleAmt) {
+    const lfo = ac.createOscillator();
+    const lfoGain = ac.createGain();
+    lfo.frequency.value = o.wobbleHz;
+    lfoGain.gain.value = o.wobbleAmt;
+    lfo.connect(lfoGain);
+    lfoGain.connect(osc.frequency);
+    lfo.start(t);
+    lfo.stop(t + o.dur + 0.05);
+  }
+  gain.gain.setValueAtTime(0.0001, t);
+  gain.gain.exponentialRampToValueAtTime(o.vol, t + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.0001, t + o.dur);
+  osc.connect(gain);
+  gain.connect(ac.destination);
+  osc.start(t);
+  osc.stop(t + o.dur + 0.05);
+}
+function playCharSound(i: number) {
+  const ac = charCtx();
+  if (!ac) return;
+  try {
+    switch (i) {
+      case 0: // purple blob — soft, round, deep bloop
+        tone(ac, { type: "sine", f0: 320, f1: 130, dur: 0.24, vol: 0.24 });
+        break;
+      case 1: // yellow triangle — cheerful springy boing
+        tone(ac, { type: "triangle", f0: 480, f1: 940, dur: 0.09, vol: 0.2 });
+        tone(ac, { type: "triangle", f0: 940, f1: 430, at: 0.09, dur: 0.16, vol: 0.18 });
+        break;
+      case 2: // pink square — flat deadpan beep beep
+        tone(ac, { type: "square", f0: 220, dur: 0.08, vol: 0.1 });
+        tone(ac, { type: "square", f0: 220, at: 0.13, dur: 0.1, vol: 0.1 });
+        break;
+      case 3: // orange spiky — angry growl with a shake
+        tone(ac, { type: "sawtooth", f0: 130, f1: 82, dur: 0.36, vol: 0.13, wobbleHz: 32, wobbleAmt: 26 });
+        break;
+      case 4: // white ghost — floating spooky wooo
+        tone(ac, { type: "sine", f0: 740, f1: 1180, dur: 0.22, vol: 0.15, wobbleHz: 9, wobbleAmt: 34 });
+        tone(ac, { type: "sine", f0: 1180, f1: 660, at: 0.22, dur: 0.26, vol: 0.13, wobbleHz: 9, wobbleAmt: 30 });
+        break;
+      case 5: // orange star — happy sparkle twinkle
+        tone(ac, { type: "triangle", f0: 880, dur: 0.12, vol: 0.16 });
+        tone(ac, { type: "triangle", f0: 1174, at: 0.07, dur: 0.12, vol: 0.16 });
+        tone(ac, { type: "triangle", f0: 1568, at: 0.14, dur: 0.2, vol: 0.17 });
+        break;
+      default: // any extra character — friendly pop
+        tone(ac, { type: "triangle", f0: 520, f1: 760, dur: 0.16, vol: 0.18 });
+    }
   } catch {
     /* sound is a bonus — never let an audio failure break the scene */
   }
