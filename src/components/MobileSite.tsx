@@ -545,7 +545,7 @@ function DisplayHeading({ text, size, fluid }: { text: string; size: string; flu
         style={{ fontSize: `max(${size}, ${fluid ?? size})` }}
       >
         {text}
-        <span className="align-super font-pt-mono-ss text-[16px] tracking-normal ml-[4px]">©</span>
+        <span className="absolute font-pt-mono-ss leading-none tracking-normal" style={{ fontSize: "0.16em", top: "0.55em", right: "-1.25em" }}>©</span>
       </h1>
     </Reveal>
   );
