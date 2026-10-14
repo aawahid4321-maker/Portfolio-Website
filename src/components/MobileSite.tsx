@@ -32,6 +32,7 @@ const PHONES = [
 ];
 const LINKEDIN = "https://www.linkedin.com/in/abdul-wahid-7763b8377/";
 const BEHANCE = "https://www.behance.net/abdulwahid235";
+const INSTAGRAM = "https://www.instagram.com/graphicdija_wahid/";
 
 // Desktop "My Services" list: [0n] / name / sub-heading / description.
 const SERVICES = [
@@ -240,6 +241,13 @@ const IconBehance = () => (
     <text x="12" y="16.5" textAnchor="middle" fontSize="10" fontWeight="700" fontFamily="Arial, Helvetica, sans-serif" letterSpacing="-0.5">Be</text>
   </svg>
 );
+const IconInstagram = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Instagram">
+    <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" />
+    <circle cx="12" cy="12" r="4.2" />
+    <circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none" />
+  </svg>
+);
 
 // ── Desktop pill nav (smiley logo · Home / Work / About · Hire me ↗) ──────────
 //    Links sit inline from 768px; phones get a MENU button + full-screen menu.
@@ -385,6 +393,7 @@ function MobileNav({
           <div className="flex gap-[18px] text-[#1e1e1f]">
             <a href={LINKEDIN} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><IconLinkedIn /></a>
             <a href={BEHANCE} target="_blank" rel="noopener noreferrer" aria-label="Behance"><IconBehance /></a>
+            <a href={INSTAGRAM} target="_blank" rel="noopener noreferrer" aria-label="Instagram"><IconInstagram /></a>
           </div>
         </div>
       </div>
@@ -486,6 +495,15 @@ function MobileFooter() {
                   className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(13,13,13,0.25)] text-[rgba(13,13,13,0.85)] active:scale-110 transition-transform"
                 >
                   <IconBehance />
+                </a>
+                <a
+                  href={INSTAGRAM}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[rgba(13,13,13,0.25)] text-[rgba(13,13,13,0.85)] active:scale-110 transition-transform"
+                >
+                  <IconInstagram />
                 </a>
               </div>
             </div>

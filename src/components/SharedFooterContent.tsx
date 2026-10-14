@@ -12,6 +12,14 @@ const BehanceIcon = () => (
   </svg>
 );
 
+const InstagramIcon = () => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-label="Instagram">
+    <rect x="2.5" y="2.5" width="19" height="19" rx="5.5" />
+    <circle cx="12" cy="12" r="4.2" />
+    <circle cx="17.4" cy="6.6" r="1.15" fill="currentColor" stroke="none" />
+  </svg>
+);
+
 export default function SharedFooterContent() {
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -214,6 +222,15 @@ export default function SharedFooterContent() {
               aria-label="Behance"
             >
               <BehanceIcon />
+            </a>
+            <a
+              href="https://www.instagram.com/graphicdija_wahid/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-circle w-[52px] h-[52px] rounded-full border border-[rgba(13,13,13,0.25)] flex items-center justify-center text-[rgba(13,13,13,0.85)] hover:border-[rgba(13,13,13,0.6)] hover:bg-[rgba(13,13,13,0.07)]"
+              aria-label="Instagram"
+            >
+              <InstagramIcon />
             </a>
           </div>
         </div>
