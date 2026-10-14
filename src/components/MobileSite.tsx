@@ -49,7 +49,7 @@ const HOME_WORKS: { id: string; year: string; img?: string }[] = [
   { id: "stint", year: "2025" },
   { id: "axorix", year: "2025", img: axorixHomeImg },
   { id: "pypo", year: "2025" },
-  { id: "brochure", year: "2024" },
+  { id: "brochure", year: "2026" },
   { id: "finora", year: "2026" },
 ];
 // Desktop Work page order.

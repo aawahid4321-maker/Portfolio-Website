@@ -625,7 +625,7 @@ function Container39() {
 function Container45() {
   return (
     <div className="content-stretch flex flex-col h-full items-start relative shrink-0" data-name="Container">
-      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#f2f2f2] text-[19.2px] uppercase whitespace-nowrap">©2026. All right reserved</p>
+      <p className="[word-break:break-word] font-pt-mono-ss leading-[23.04px] not-italic relative shrink-0 text-[#f2f2f2] text-[19.2px] uppercase whitespace-nowrap">©2026. All rights reserved</p>
     </div>
   );
 }
