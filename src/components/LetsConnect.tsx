@@ -18,15 +18,16 @@ const CSS_VARS = {
 const INK = "#0D0D0D";
 
 /* ── Character voices ─────────────────────────────────────────────────────
-   One sound per character, matched to how each cartoon looks and acts —
-   synthesized live with WebAudio, no audio files needed. The context is
-   created lazily on the first press (sound needs a user gesture anyway).
-     0 purple blob  → soft round "bloop"
-     1 yellow tri   → springy cheerful "boing"
-     2 pink square  → deadpan square-wave "beep beep"
-     3 orange spiky → angry sawtooth growl
-     4 white ghost  → spooky floating "wooo"
-     5 orange star  → sparkly twinkle arpeggio                                        */
+   Real cartoon-style character voices, synthesized live with WebAudio —
+   no audio files. A buzzy vocal source runs through two moving formant
+   filters (like a throat shaping vowels) while the pitch follows each
+   character's expression, so every cartoon actually SOUNDS like itself:
+     0 purple blob  (calm smile)    → low warm hum "bloop"
+     1 yellow tri   (excited grin)  → giggly "he-he-he!"
+     2 pink square  (X_X deadpan)   → flat nasal "meh."
+     3 orange spiky (angry frown)   → growly "grrr!"
+     4 white ghost  (surprised O)   → floating "oooo!"
+     5 orange star  (serene happy)  → soft humming "la-la-la"                  */
 let _charAC: AudioContext | null = null;
 function charCtx(): AudioContext | null {
   try {
@@ -42,73 +43,161 @@ function charCtx(): AudioContext | null {
     return null;
   }
 }
-type ToneOpts = {
-  type: OscillatorType;
-  f0: number;
-  f1?: number;
-  at?: number;
+type VoiceCfg = {
   dur: number;
   vol: number;
-  wobbleHz?: number;
-  wobbleAmt?: number;
+  type?: OscillatorType;
+  pitch: [number, number][]; // [time, frequency]
+  vowel: [number, number, number][]; // [time, formant1, formant2]
+  amp: [number, number][]; // [time, 0..1] syllable envelope
+  bright?: number; // lowpass cutoff — lower = more muffled/closed-mouth
+  vibratoHz?: number;
+  vibratoAmt?: number;
+  tremoloHz?: number;
+  tremoloAmt?: number; // 0..1 depth
 };
-function tone(ac: AudioContext, o: ToneOpts) {
-  const t = ac.currentTime + (o.at ?? 0);
-  const osc = ac.createOscillator();
-  const gain = ac.createGain();
-  osc.type = o.type;
-  osc.frequency.setValueAtTime(Math.max(30, o.f0), t);
-  if (o.f1 !== undefined) {
-    osc.frequency.exponentialRampToValueAtTime(Math.max(30, o.f1), t + o.dur);
-  }
-  if (o.wobbleHz && o.wobbleAmt) {
+function voice(ac: AudioContext, cfg: VoiceCfg) {
+  const t0 = ac.currentTime + 0.01;
+  const dur = cfg.dur;
+  const src = ac.createOscillator();
+  src.type = cfg.type ?? "sawtooth";
+  cfg.pitch.forEach(([dt, f], idx) => {
+    if (idx === 0) src.frequency.setValueAtTime(Math.max(30, f), t0 + dt);
+    else src.frequency.exponentialRampToValueAtTime(Math.max(30, f), t0 + dt);
+  });
+  if (cfg.vibratoHz && cfg.vibratoAmt) {
     const lfo = ac.createOscillator();
-    const lfoGain = ac.createGain();
-    lfo.frequency.value = o.wobbleHz;
-    lfoGain.gain.value = o.wobbleAmt;
-    lfo.connect(lfoGain);
-    lfoGain.connect(osc.frequency);
-    lfo.start(t);
-    lfo.stop(t + o.dur + 0.05);
+    const lg = ac.createGain();
+    lfo.frequency.value = cfg.vibratoHz;
+    lg.gain.value = cfg.vibratoAmt;
+    lfo.connect(lg);
+    lg.connect(src.frequency);
+    lfo.start(t0);
+    lfo.stop(t0 + dur + 0.1);
   }
-  gain.gain.setValueAtTime(0.0001, t);
-  gain.gain.exponentialRampToValueAtTime(o.vol, t + 0.02);
-  gain.gain.exponentialRampToValueAtTime(0.0001, t + o.dur);
-  osc.connect(gain);
-  gain.connect(ac.destination);
-  osc.start(t);
-  osc.stop(t + o.dur + 0.05);
+  // two formant bandpasses in parallel = the "throat"
+  const f1 = ac.createBiquadFilter();
+  f1.type = "bandpass";
+  f1.Q.value = 5;
+  const f2 = ac.createBiquadFilter();
+  f2.type = "bandpass";
+  f2.Q.value = 8;
+  const f2g = ac.createGain();
+  f2g.gain.value = 0.55;
+  cfg.vowel.forEach(([dt, a, b], idx) => {
+    if (idx === 0) {
+      f1.frequency.setValueAtTime(a, t0 + dt);
+      f2.frequency.setValueAtTime(b, t0 + dt);
+    } else {
+      f1.frequency.linearRampToValueAtTime(a, t0 + dt);
+      f2.frequency.linearRampToValueAtTime(b, t0 + dt);
+    }
+  });
+  const mix = ac.createGain();
+  mix.gain.value = 1;
+  src.connect(f1);
+  f1.connect(mix);
+  src.connect(f2);
+  f2.connect(f2g);
+  f2g.connect(mix);
+  const body = ac.createGain(); // a little raw source for body
+  body.gain.value = 0.1;
+  src.connect(body);
+  body.connect(mix);
+  // syllable envelope
+  const amp = ac.createGain();
+  cfg.amp.forEach(([dt, g], idx) => {
+    const v = Math.max(0.0001, g);
+    if (idx === 0) amp.gain.setValueAtTime(v, t0 + dt);
+    else amp.gain.linearRampToValueAtTime(v, t0 + dt);
+  });
+  mix.connect(amp);
+  let head: AudioNode = amp;
+  if (cfg.tremoloHz && cfg.tremoloAmt) {
+    const tg = ac.createGain();
+    tg.gain.value = 1 - cfg.tremoloAmt / 2;
+    const lfo = ac.createOscillator();
+    const lg = ac.createGain();
+    lfo.frequency.value = cfg.tremoloHz;
+    lg.gain.value = cfg.tremoloAmt / 2;
+    lfo.connect(lg);
+    lg.connect(tg.gain);
+    lfo.start(t0);
+    lfo.stop(t0 + dur + 0.1);
+    amp.connect(tg);
+    head = tg;
+  }
+  const lp = ac.createBiquadFilter();
+  lp.type = "lowpass";
+  lp.frequency.value = cfg.bright ?? 3600;
+  const master = ac.createGain();
+  master.gain.value = cfg.vol;
+  head.connect(lp);
+  lp.connect(master);
+  master.connect(ac.destination);
+  src.start(t0);
+  src.stop(t0 + dur + 0.1);
 }
 function playCharSound(i: number) {
   const ac = charCtx();
   if (!ac) return;
   try {
     switch (i) {
-      case 0: // purple blob — soft, round, deep bloop
-        tone(ac, { type: "sine", f0: 320, f1: 130, dur: 0.24, vol: 0.24 });
+      case 0: // purple blob — calm smile: low warm closed hum, one soft swell
+        voice(ac, {
+          dur: 0.38, vol: 0.6, bright: 1200,
+          pitch: [[0, 150], [0.12, 192], [0.3, 132]],
+          vowel: [[0, 300, 870]],
+          amp: [[0, 0], [0.05, 1], [0.3, 0.9], [0.38, 0]],
+        });
         break;
-      case 1: // yellow triangle — cheerful springy boing
-        tone(ac, { type: "triangle", f0: 480, f1: 940, dur: 0.09, vol: 0.2 });
-        tone(ac, { type: "triangle", f0: 940, f1: 430, at: 0.09, dur: 0.16, vol: 0.18 });
+      case 1: // yellow triangle — excited grin: bright giggle, three hops
+        voice(ac, {
+          dur: 0.42, vol: 0.5, bright: 4200,
+          pitch: [[0, 520], [0.07, 645], [0.14, 545], [0.21, 665], [0.28, 585], [0.36, 780]],
+          vowel: [[0, 300, 2300]],
+          amp: [[0, 0], [0.02, 1], [0.09, 0.15], [0.12, 1], [0.19, 0.15], [0.22, 1], [0.32, 0.9], [0.42, 0]],
+        });
         break;
-      case 2: // pink square — flat deadpan beep beep
-        tone(ac, { type: "square", f0: 220, dur: 0.08, vol: 0.1 });
-        tone(ac, { type: "square", f0: 220, at: 0.13, dur: 0.1, vol: 0.1 });
+      case 2: // pink square — X_X deadpan: flat nasal "meh", barely moves
+        voice(ac, {
+          dur: 0.2, vol: 0.5, bright: 1700,
+          pitch: [[0, 138], [0.2, 116]],
+          vowel: [[0, 520, 1450]],
+          amp: [[0, 0], [0.02, 0.85], [0.16, 0.85], [0.2, 0]],
+        });
         break;
-      case 3: // orange spiky — angry growl with a shake
-        tone(ac, { type: "sawtooth", f0: 130, f1: 82, dur: 0.36, vol: 0.13, wobbleHz: 32, wobbleAmt: 26 });
+      case 3: // orange spiky — angry frown: low growl with a hard shake
+        voice(ac, {
+          dur: 0.5, vol: 0.55, bright: 1100, tremoloHz: 26, tremoloAmt: 0.55,
+          pitch: [[0, 108], [0.1, 96], [0.3, 88], [0.5, 70]],
+          vowel: [[0, 280, 640]],
+          amp: [[0, 0], [0.04, 1], [0.44, 1], [0.5, 0]],
+        });
         break;
-      case 4: // white ghost — floating spooky wooo
-        tone(ac, { type: "sine", f0: 740, f1: 1180, dur: 0.22, vol: 0.15, wobbleHz: 9, wobbleAmt: 34 });
-        tone(ac, { type: "sine", f0: 1180, f1: 660, at: 0.22, dur: 0.26, vol: 0.13, wobbleHz: 9, wobbleAmt: 30 });
+      case 4: // white ghost — surprised O mouth: floating vibrato "oooo"
+        voice(ac, {
+          dur: 0.6, vol: 0.5, type: "triangle", bright: 2100, vibratoHz: 6, vibratoAmt: 22,
+          pitch: [[0, 480], [0.18, 765], [0.42, 700], [0.6, 425]],
+          vowel: [[0, 400, 800]],
+          amp: [[0, 0], [0.06, 1], [0.5, 0.95], [0.6, 0]],
+        });
         break;
-      case 5: // orange star — happy sparkle twinkle
-        tone(ac, { type: "triangle", f0: 880, dur: 0.12, vol: 0.16 });
-        tone(ac, { type: "triangle", f0: 1174, at: 0.07, dur: 0.12, vol: 0.16 });
-        tone(ac, { type: "triangle", f0: 1568, at: 0.14, dur: 0.2, vol: 0.17 });
+      case 5: // orange star — serene happy: soft three-note hum "la-la-la"
+        voice(ac, {
+          dur: 0.55, vol: 0.5, bright: 2600, vibratoHz: 5, vibratoAmt: 6,
+          pitch: [[0, 392], [0.17, 396], [0.21, 523], [0.35, 527], [0.39, 659], [0.55, 662]],
+          vowel: [[0, 730, 1120]],
+          amp: [[0, 0], [0.03, 1], [0.14, 0.5], [0.19, 1], [0.31, 0.5], [0.37, 1], [0.5, 0.9], [0.55, 0]],
+        });
         break;
-      default: // any extra character — friendly pop
-        tone(ac, { type: "triangle", f0: 520, f1: 760, dur: 0.16, vol: 0.18 });
+      default: // any extra character — friendly little chirp
+        voice(ac, {
+          dur: 0.22, vol: 0.5, bright: 3000,
+          pitch: [[0, 420], [0.1, 640], [0.22, 520]],
+          vowel: [[0, 500, 1200]],
+          amp: [[0, 0], [0.03, 1], [0.18, 0.9], [0.22, 0]],
+        });
     }
   } catch {
     /* sound is a bonus — never let an audio failure break the scene */
