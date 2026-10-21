@@ -209,9 +209,15 @@ function GridLines() {
       aria-hidden
       className="pointer-events-none fixed inset-0 z-0"
       style={{
+        // 7 lines pinned to the 24px content gutters at every viewport width:
+        // first line at 24px, last at 24px from the right edge, 5 evenly
+        // spaced between — so mobile and tablet stay symmetric (the old fixed
+        // 56px repeat left an uneven gap on the right edge).
         backgroundImage:
-          "repeating-linear-gradient(to right, #d4d4d4 0, #d4d4d4 1px, transparent 1px, transparent 56px)",
+          "linear-gradient(to right, #d4d4d4 0, #d4d4d4 1px, transparent 1px)",
+        backgroundSize: "calc((100% - 48px) / 6) 100%",
         backgroundPosition: "24px 0",
+        backgroundRepeat: "repeat",
       }}
     />
   );
