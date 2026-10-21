@@ -323,7 +323,8 @@ function MobileNav({
         .m-pp-eyes { transform-box: fill-box; transform-origin: center; animation: mBlink 4.5s ease-in-out infinite; }
         @keyframes mBlink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
         .m-pill-link { transition: background-color 0.3s ease, color 0.2s ease; }
-        .m-hire:active { transform: translateY(2px) scale(1.02); }
+        .m-hire { transition: background-color 0.2s ease; }
+        .m-hire:active { transform: translateY(2px) scale(1.02); background-color: #FFD60A; }
         @media (prefers-reduced-motion: reduce) { .m-pill, .m-pp-eyes { animation: none; } }
       `}</style>
       <header
