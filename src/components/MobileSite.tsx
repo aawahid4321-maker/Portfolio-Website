@@ -203,23 +203,35 @@ function MobileImage({
 }
 
 // ── Vertical grid lines background — same device as the desktop grid columns ───
+// Phones (<768px): 7 lines pinned to the 24px content gutters.
+// Tablets (768–1280px, md:): same 7 lines pinned to the 40px gutters, matching
+// the md:px-[40px] used by every section — so text always sits on the grid.
 function GridLines() {
+  const line =
+    "linear-gradient(to right, #d4d4d4 0, #d4d4d4 1px, transparent 1px)";
   return (
-    <div
-      aria-hidden
-      className="pointer-events-none fixed inset-0 z-0"
-      style={{
-        // 7 lines pinned to the 24px content gutters at every viewport width:
-        // first line at 24px, last at 24px from the right edge, 5 evenly
-        // spaced between — so mobile and tablet stay symmetric (the old fixed
-        // 56px repeat left an uneven gap on the right edge).
-        backgroundImage:
-          "linear-gradient(to right, #d4d4d4 0, #d4d4d4 1px, transparent 1px)",
-        backgroundSize: "calc((100% - 48px) / 6) 100%",
-        backgroundPosition: "24px 0",
-        backgroundRepeat: "repeat",
-      }}
-    />
+    <>
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0 md:hidden"
+        style={{
+          backgroundImage: line,
+          backgroundSize: "calc((100% - 48px) / 6) 100%",
+          backgroundPosition: "24px 0",
+          backgroundRepeat: "repeat",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none fixed inset-0 z-0 hidden md:block"
+        style={{
+          backgroundImage: line,
+          backgroundSize: "calc((100% - 80px) / 6) 100%",
+          backgroundPosition: "40px 0",
+          backgroundRepeat: "repeat",
+        }}
+      />
+    </>
   );
 }
 
