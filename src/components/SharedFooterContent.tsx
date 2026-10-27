@@ -234,6 +234,19 @@ export default function SharedFooterContent() {
               <InstagramIcon />
             </a>
           </div>
+          <a
+            href={`${import.meta.env.BASE_URL}Abdul_Wahid_CV.pdf`}
+            download="Abdul_Wahid_CV.pdf"
+            className="social-circle mt-[4px] flex h-[52px] w-fit items-center gap-[10px] rounded-full border border-[rgba(13,13,13,0.25)] px-[22px] font-['Geist:Medium'] text-[18px] tracking-[-0.3px] text-[rgba(13,13,13,0.85)] hover:border-[#A58CF4] hover:bg-[#A58CF4] hover:text-white transition-colors duration-300"
+            aria-label="Download CV"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" x2="12" y1="15" y2="3" />
+            </svg>
+            Download CV
+          </a>
         </div>
 
         {/* ── Copyright ────────────────────────────────────────────── */}
